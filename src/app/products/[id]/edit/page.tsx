@@ -1,9 +1,13 @@
 'use client'
 
 import { Button, Preset } from "@/components/button/button";
+import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { NothingHere } from "@/components/NothingHere";
 import { MultiPriceEdit } from "@/components/products/multi-price/MultiPriceEdit";
+import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
 import { ProductLinked } from "@/components/products/ProductLinked";
+import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
+import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
@@ -12,6 +16,7 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
+import useTempStorage from "@/stores/useTempStorage";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
@@ -19,14 +24,15 @@ export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { subCategories, brands, quantityUnits, providers, locations } = useProductNewLogic();
+  const { subCategories, brands, quantityUnits, providers: providersData, locations } = useProductNewLogic();
   const { loading: loadingProduct, product } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
-  const {  openModal } = useModalStore();
   const { onSubmit } = useProductEditLogic(id, setValue);
   const router = useRouter();
-
+  const providers = providersData?.data;
+  const { modals, closeModal, openModal } = useModalStore();
+  const { setElement, clearElement } = useTempStorage();
 
   if (!product && !loadingProduct) {
     return <NothingHere text="Producto no encontrado." />;
@@ -101,7 +107,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
 
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="provider_id" className="input-label" >Proveedor (Click para agregar)</label>
+                <label htmlFor="provider_id" className="input-label clickeable" onClick={() => {openModal('contactAdd'); setElement('isFromProducts', true)}}>Proveedor (Click para agregar)</label>
                 <select id="provider_id" {...register("provider_id")} className="input-select">
                   {providers && providers.map((value: any) => {
                     return (
@@ -115,7 +121,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             { activeConfig && activeConfig.includes('product-locations') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
+                <label htmlFor="location_id" className="input-label clickeable" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
                 <select id="location_id" {...register("location_id")} className="input-select">
                   {locations && locations.map((value: any) => {
                     return (
@@ -129,7 +135,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             { activeConfig && activeConfig.includes('product-brand') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="brand_id" className="input-label">Marca</label>
+                <label htmlFor="brand_id" className="input-label clickeable" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
                 <select  id="brand_id" {...register("brand_id")} className="input-select">
                   {brands && brands.map((value: any) => {
                     return (
@@ -198,6 +204,10 @@ export default function Page({ params }: { params: { id: string } }) {
           <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
         </div>   
       </div> 
+        <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
+        <AddContactModal isShow={modals.contactAdd} onClose={()=>{closeModal('contactAdd'); clearElement('isFromProducts');}} />
+        <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
+        <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
         <ToasterMessage />
     </div>
   );
