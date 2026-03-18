@@ -1,12 +1,12 @@
 'use client';
-import { Product } from "@/interfaces/products"; 
-import { NothingHere } from "../NothingHere";
-import { productTypeIcon } from "./utils";
 import { useProductLinkedDetailsLogic } from "@/hooks/products/useProductLinkedDetailsLogic";
-import SkeletonTable from "../skeleton/skeleton-table";
-import { Button, Preset } from "../button/button";
+import { Product } from "@/interfaces/products";
 import useModalStore from "@/stores/modalStorage";
+import { Button, Preset } from "../button/button";
+import { NothingHere } from "../NothingHere";
+import SkeletonTable from "../skeleton/skeleton-table";
 import { ProductsLinkedModal } from "./new/ProductsLinkedModal";
+import { productTypeIcon } from "./utils";
 
 export interface ProductLinkedProps {
   isShow: boolean;

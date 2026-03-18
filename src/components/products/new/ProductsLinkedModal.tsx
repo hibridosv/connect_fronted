@@ -48,14 +48,18 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
 
   };
 
-  const linkedRows = productsLinked && productsLinked.map((item: any) => (
+  const linkedRows = productsLinked && productsLinked.map((item: any) => {
+    console.log(item);
+    return (
     <tr key={item.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+      <td className="px-3 py-2 whitespace-nowrap">{item?.composed?.cod}</td>
       <td className="px-3 py-2 whitespace-nowrap">
         <div className="flex items-center gap-1.5">
           {productTypeIcon(item?.composed?.product_type)}
-          <span className="truncate max-w-[120px]">{item?.composed?.description}</span>
+          <span className="truncate max-w-[400px]" title={item?.composed?.description}>{item?.composed?.description}</span>
         </div>
       </td>
+      <td className="px-3 py-2 whitespace-nowrap">{item?.composed?.quantity}</td>
       <td className="px-3 py-2 text-center whitespace-nowrap tabular-nums font-semibold">
         {item.quantity}
       </td>
@@ -65,7 +69,8 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
         </button>
       </td>
     </tr>
-  ));
+  )
+  });
 
   const searchResults = products.data && products.data.map((productMap: Product) => {
     if (product.id === productMap.id) return null;
@@ -100,7 +105,9 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
               <table className="w-full text-sm text-left">
                 <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b border-bg-subtle sticky top-0">
                   <tr>
+                    <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Cod</th>
                     <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Producto</th>
+                    <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Stock</th>
                     <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle text-center w-16">Cant</th>
                     <th className="px-3 py-2 font-bold tracking-wider text-center w-12"></th>
                   </tr>
