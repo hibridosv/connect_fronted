@@ -2,10 +2,13 @@
 
 import { ViewTitle } from "@/components/ViewTitle";
 import { Button, Preset } from "@/components/button/button";
+import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
+import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
+import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
@@ -20,13 +23,14 @@ import { useForm } from "react-hook-form";
 export default function Page() {
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, subCategories, brands, quantityUnits, providers, locations, products } = useProductNewLogic();
+  const { onSubmit, subCategories, brands, quantityUnits, providers: providersData, locations, products } = useProductNewLogic();
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
-  const { getElement } = useTempStorage();
+  const { getElement, setElement, clearElement } = useTempStorage();
+  const providers = providersData?.data;
 
 
   return (
@@ -116,7 +120,7 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="provider_id" className="input-label" >Proveedor (Click para agregar)</label>
+                  <label htmlFor="provider_id" className="input-label clickeable" onClick={() => {openModal('contactAdd'); setElement('isFromProducts', true)}}>Proveedor (Click para agregar)</label>
                   <select id="provider_id" {...register("provider_id")} className="input-select">
                     {providers && providers.map((value: any) => {
                       return (
@@ -130,7 +134,7 @@ export default function Page() {
 
               { activeConfig && activeConfig.includes('product-locations') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="location_id" className="input-label">Ubicación (Click para agregar)</label>
+                  <label htmlFor="location_id" className="input-label clickeable" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
                   <select id="location_id" {...register("location_id")} className="input-select">
                     {locations && locations.map((value: any) => {
                       return (
@@ -141,10 +145,11 @@ export default function Page() {
                     })}
                   </select>
                 </div> )}
+              
 
-              { activeConfig && activeConfig.includes('product-brand') && (
+               { activeConfig && activeConfig.includes('product-brand') && ( 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="brand_id" className="input-label">Marca</label>
+                  <label htmlFor="brand_id" className="input-label clickeable" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
                   <select  id="brand_id" {...register("brand_id")} className="input-select">
                     {brands && brands.map((value: any) => {
                       return (
@@ -155,6 +160,7 @@ export default function Page() {
                     })}
                   </select>
                 </div> )}
+               
 
                 { activeConfig && activeConfig.includes('product-measures') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
@@ -216,6 +222,9 @@ export default function Page() {
         <ProductsLinkedModal isShow={modals.productLinked} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
         <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} /> 
         <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
+        <AddContactModal isShow={modals.contactAdd} onClose={()=>{closeModal('contactAdd'); clearElement('isFromProducts');}} />
+        <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
+        <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
         <ToasterMessage />
     </div>
   );

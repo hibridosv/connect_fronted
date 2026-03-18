@@ -17,7 +17,8 @@ export default function SettingsAddBrandModal({ show, onClose }: SettingsAddBran
 
   useEffect(() => {
     if (show) {
-      getServices('contacts?filter[is_provider]==1&filterWhere[status]==1').then((res) => {
+      getServices('contacts?filterWhere[is_provider]==1&filterWhere[status]==1').then((res) => {
+        console.log(res.data.data);
         setProviders(res.data.data ?? []);
       });
     }

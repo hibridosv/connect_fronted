@@ -30,9 +30,9 @@ export function ContactsTable() {
             <td className="px-1 py-1 text-left  font-medium clickeable" onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>
                 { record?.name }
             </td>
-            <td className="px-1 py-1 text-left text-sm whitespace-normal">
+            {/* <td className="px-1 py-1 text-left text-sm whitespace-normal">
             { record?.address }
-            </td>
+            </td> */}
             <td className="px-1 py-1 text-center" >
             { record?.phone }
             </td>
@@ -58,7 +58,7 @@ export function ContactsTable() {
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
             <tr className="border-b-2 border-bg-subtle">
               <th scope="col" className="px-1 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Nombre</th>
-              <th scope="col" className="px-1 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Dirección</th>
+              {/* <th scope="col" className="px-1 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Dirección</th> */}
               <th scope="col" className="w-24 px-1 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Tel&eacute;fono</th>
               <th scope="col" className="w-auto px-1 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Email</th>
               <th scope="col" className="w-12 px-1 py-3 font-bold tracking-wider text-center">OP</th>

@@ -1,13 +1,15 @@
 import { Button, Preset } from '@/components/button/button';
 import { DeleteModal } from '@/components/DeleteModal';
+import useModalStore from '@/stores/modalStorage';
 import useBrandsStore from '@/stores/products/brandsStore';
 import { useEffect, useState } from 'react';
 import SettingsAddBrandModal from './SettingsAddBrandModal';
 
 export default function SettingsBrandList() {
   const { brands, loading, loadBrands, deleteBrand, deleting } = useBrandsStore();
-  const [showAdd, setShowAdd] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<any>(null);
+  const { openModal, closeModal, modals } =useModalStore();
+
 
   useEffect(() => {
     loadBrands();
@@ -25,10 +27,10 @@ export default function SettingsBrandList() {
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <span className="text-sm font-semibold text-text-base">Marcas</span>
-        <Button preset={Preset.add} text="Agregar" onClick={() => setShowAdd(true)} />
+        <Button preset={Preset.add} text="Agregar" onClick={() => openModal('brandAdd')} />
       </div>
       <div className="p-8 text-center text-text-muted text-sm">No hay marcas</div>
-      <SettingsAddBrandModal show={showAdd} onClose={() => setShowAdd(false)} />
+       <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
     </div>
   );
 
@@ -37,7 +39,7 @@ export default function SettingsBrandList() {
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <span className="text-sm font-semibold text-text-base">Marcas</span>
-          <Button preset={Preset.add} text="Agregar" onClick={() => setShowAdd(true)} />
+          <Button preset={Preset.add} text="Agregar" onClick={() => openModal('brandAdd')} />
         </div>
 
         <div className="divide-y divide-bg-subtle">
@@ -50,7 +52,7 @@ export default function SettingsBrandList() {
         </div>
       </div>
 
-      <SettingsAddBrandModal show={showAdd} onClose={() => setShowAdd(false)} />
+      <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
 
       <DeleteModal
         isShow={!!deleteTarget}

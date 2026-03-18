@@ -33,14 +33,14 @@ export function useProductNewLogic() {
     if (!categories) {
       loadCategories("categories?sort=-created_at&included=subcategories&filterWhere[category_type]==1&filterWhere[is_restaurant]==0");
     }
-    if (!brands) {
+    if (!brands && (activeConfig && activeConfig.includes('product-brand'))) {
       loadBrands("brands");
     }
     if (!quantityUnits) {
       loadQuantityUnits("quantityunits");
     }
     if (!providers) {
-      loadContacts('contacts?filterWhere[is_provider]==1');
+      loadContacts('contacts?sort=-created_at&filterWhere[is_provider]==1&perPage=100&page=1');
     }
     if (!locations && (activeConfig && activeConfig.includes('product-locations'))) {
       loadLocations('locations');

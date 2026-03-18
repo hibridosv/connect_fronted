@@ -1,13 +1,15 @@
 import { Button, Preset } from '@/components/button/button';
 import { DeleteModal } from '@/components/DeleteModal';
+import useModalStore from '@/stores/modalStorage';
 import useLocationStore from '@/stores/products/LocationsStore';
 import { useEffect, useState } from 'react';
 import SettingsAddLocationModal from './SettingsAddLocationModal';
 
 export default function SettingsLocationList() {
   const { locations, loading, loadLocations, deleteLocation, deleting } = useLocationStore();
-  const [showAdd, setShowAdd] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<any>(null);
+  const { modals, closeModal, openModal} = useModalStore();
+
 
   useEffect(() => {
     loadLocations();
@@ -26,10 +28,10 @@ export default function SettingsLocationList() {
     <div className="p-4">
       <div className="flex justify-between items-center mb-4">
         <span className="text-sm font-semibold text-text-base">Ubicaciones</span>
-        <Button preset={Preset.add} text="Agregar" onClick={() => setShowAdd(true)} />
+        <Button preset={Preset.add} text="Agregar" onClick={() => openModal('locationAdd')} />
       </div>
       <div className="p-8 text-center text-text-muted text-sm">No hay ubicaciones</div>
-      <SettingsAddLocationModal show={showAdd} onClose={() => setShowAdd(false)} />
+      <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
     </div>
   );
 
@@ -38,7 +40,7 @@ export default function SettingsLocationList() {
       <div className="p-4">
         <div className="flex justify-between items-center mb-4">
           <span className="text-sm font-semibold text-text-base">Ubicaciones</span>
-          <Button preset={Preset.add} text="Agregar" onClick={() => setShowAdd(true)} />
+          <Button preset={Preset.add} text="Agregar" onClick={() => openModal('locationAdd')} />
         </div>
 
         <div className="divide-y divide-bg-subtle">
@@ -56,7 +58,7 @@ export default function SettingsLocationList() {
         </div>
       </div>
 
-      <SettingsAddLocationModal show={showAdd} onClose={() => setShowAdd(false)} />
+      <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
 
       <DeleteModal
         isShow={!!deleteTarget}

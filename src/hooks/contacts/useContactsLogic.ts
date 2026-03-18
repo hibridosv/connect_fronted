@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
 import useContactStore from '@/stores/ContactStore';
 import useModalStore from '@/stores/modalStorage';
+import { useEffect } from 'react';
 
 
 export function useContactsLogic(currentPage: string, searchTerm: string, param: string = "") {
@@ -11,9 +11,9 @@ export function useContactsLogic(currentPage: string, searchTerm: string, param:
 
     useEffect(() => {
         if (searchTerm === "") {
-            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=10${currentPage}${searchTerm}`);
+            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=25${currentPage}${searchTerm}`);
         } else {
-            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=10&page=1${searchTerm}`);
+            loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=25&page=1${searchTerm}`);
         }
     }, [loadContacts, currentPage, searchTerm, param]);
 
@@ -21,7 +21,7 @@ export function useContactsLogic(currentPage: string, searchTerm: string, param:
         closeModal('deleteContact');
         try {
             await deleteContact(`contacts/${id}`);
-            await loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=10&page=1`);
+            await loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=25&page=1`);
         } catch (error) {
             console.error(error);
         }

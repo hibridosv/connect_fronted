@@ -60,11 +60,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
         {item.quantity}
       </td>
       <td className="px-3 py-2 text-center">
-        <button
-          onClick={() => onDeleteLinked(item.id)}
-          disabled={isDeleting}
-          className="text-text-muted hover:text-danger transition-colors clickeable disabled:opacity-40"
-        >
+        <button onClick={() => onDeleteLinked(item.id)} disabled={isDeleting} className="text-text-muted hover:text-danger transition-colors clickeable disabled:opacity-40">
           <LuTrash2 size={14} />
         </button>
       </td>

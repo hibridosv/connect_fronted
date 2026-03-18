@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
-import useContactStore from '@/stores/ContactStore';
 import { formatDocument, formatDuiWithAll } from '@/lib/utils';
+import useContactStore from '@/stores/ContactStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import useUserStore from '@/stores/UserStore';
+import useTempStorage from '@/stores/useTempStorage';
+import { useEffect } from 'react';
 
 
 export function useContactsAddLogic(isShow: boolean, record:any, setValue:any, departaments: any, countries: any, town: any, param: string = "") {
   const { createContact, loadContacts, updateContact } = useContactStore();
   const { loadUsers } = useUserStore();
+    const { getElement, clearElement } = useTempStorage();
 
 
   useEffect(() => {
@@ -72,7 +74,14 @@ useEffect(() => {
         } else {
             await createContact(data);
         }
-        await loadContacts(`contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=10&page=1`);
+        let url = '';
+        if (getElement('isFromProducts')) {
+            url = 'contacts?sort=-created_at&filterWhere[is_provider]==1&perPage=100&page=1';
+        } else {
+            url = `contacts?sort=-created_at&included=employee&filterWhere[status]==1${param}&perPage=25&page=1`;
+        }
+        await loadContacts(url);
+        clearElement('isFromProducts');
     } catch (error) {
         console.error(error);
     }
