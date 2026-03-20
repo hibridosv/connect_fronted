@@ -23,6 +23,7 @@ export const nameOfPaymentType = (type: number) => {
     case 3: return "Transferencia"
     case 4: return "Cheque"
     case 5: return "Credito"
+    default: return "N/A"
   }
 }
 

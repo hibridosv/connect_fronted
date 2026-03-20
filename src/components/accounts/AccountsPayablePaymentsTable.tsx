@@ -6,6 +6,7 @@ import { getFirstElement, numberToMoney } from "@/lib/utils";
 import useAccountPayableStore from "@/stores/accounts/accountPayableStore";
 import useConfigStore from "@/stores/configStore";
 import { DeleteButton } from "../button/DeleteButton";
+import { nameOfPaymentType } from "../orders/products/PayModal";
 import { statusPayment } from "./utils";
 
 
@@ -37,6 +38,9 @@ export function AccountsPayablePaymentsTable(props: AccountsPayablePaymentsTable
       <td className="px-2 text-left whitespace-nowrap" >
        { record?.employee?.name }
       </td>
+      <td className="px-2 text-left whitespace-nowrap" >
+        { nameOfPaymentType(record?.payment_type) }
+      </td>
       <td className={`px-2 text-center whitespace-nowrap`}>
         { statusPayment(record?.status) }
       </td>
@@ -62,6 +66,7 @@ export function AccountsPayablePaymentsTable(props: AccountsPayablePaymentsTable
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cantidad</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Usuario </th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Tipo</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Del</th>
             </tr>
