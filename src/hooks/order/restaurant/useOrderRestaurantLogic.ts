@@ -81,7 +81,6 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   useEffect(() => {
     if (!pusherEventData) return;
     if (user && user.id == pusherEventData?.userId) return;
-    console.log(pusherEventData)
     if (serviceType == 2) {
        loadTables(`tables?included=tables`, true);
     }

@@ -2,7 +2,8 @@
 import { NothingHere } from '@/components/NothingHere';
 import qrReaderStore from '@/stores/annexes/qrReaderStore';
 import { useEffect, useRef, useState } from 'react';
-import { LuAlertTriangle, LuFileJson, LuShieldCheck, LuX } from 'react-icons/lu';
+import { FiAlertTriangle } from 'react-icons/fi';
+import { LuFileJson, LuShieldCheck, LuX } from 'react-icons/lu';
 
 const DTE_TYPES: Record<string, string> = {
   '01': 'Factura',
@@ -356,7 +357,7 @@ export function QrInvoiceView() {
         ) : (
           <div className="rounded-lg border border-warning/40 bg-warning/8 px-4 py-3 flex items-start gap-3">
             <div className="shrink-0 mt-0.5">
-              <LuAlertTriangle size={16} className="text-warning" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+              <FiAlertTriangle size={16} className="text-warning" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
             </div>
             <div>
               <p className="text-xs font-bold text-warning uppercase tracking-wider">Sin sello del Ministerio de Hacienda</p>

@@ -39,7 +39,6 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     set({ loading: true });
     try {
       const response = await getServices(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from`);
-      console.log(response);
       const data = response.data;
       const first = data?.data?.[0];
       if (first?.status === 1) {

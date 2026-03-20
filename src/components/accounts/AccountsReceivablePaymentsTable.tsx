@@ -33,7 +33,6 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
   const reversed = [...records].reverse();
 
   const listItems = reversed.map((record: any) => {
-    console.log(record)
     return (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-50'}`}>
       <td className="px-2 whitespace-nowrap font-medium text-primary">
