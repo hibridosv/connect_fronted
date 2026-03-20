@@ -10,6 +10,7 @@ import { FaPrint } from "react-icons/fa";
 import { Button, Preset } from "../button/button";
 import { ButtonDownload } from "../button/button-download";
 import { DeleteButton } from "../button/DeleteButton";
+import { nameOfPaymentType } from "../orders/products/PayModal";
 import { statusPayment } from "./utils";
 
 
@@ -31,7 +32,9 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
 
   const reversed = [...records].reverse();
 
-  const listItems = reversed.map((record: any) => (
+  const listItems = reversed.map((record: any) => {
+    console.log(record)
+    return (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-50'}`}>
       <td className="px-2 whitespace-nowrap font-medium text-primary">
         {formatDateAsDMY(record?.created_at)}  {formatHourAsHM(record?.created_at)}
@@ -41,6 +44,9 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
       </td>
       <td className="px-2 text-left whitespace-nowrap" >
        { record?.employee?.name }
+      </td>
+      <td className="px-2 text-left whitespace-nowrap" >
+        { nameOfPaymentType(record?.payment_type) }
       </td>
       <td className={`px-2 text-center whitespace-nowrap ${record?.status == 0 && 'cursor-help' }`} title={`${record?.status == 0 ? `Borrada por: ${record?.deleted_by?.name} el dia ${formatDateAsDMY(record?.deleted_at)}` : ``}`}>
         { statusPayment(record?.status) }
@@ -64,7 +70,8 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
         } 
       </td>
     </tr>
-  ));
+  )
+  });
 
   return (
     <div className="m-4">
@@ -75,6 +82,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Fecha </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cantidad</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Usuario </th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Tipo</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Del</th>
             </tr>

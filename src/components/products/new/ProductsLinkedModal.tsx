@@ -49,7 +49,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
   };
 
   const linkedRows = productsLinked && productsLinked.map((item: any) => {
-    console.log(item);
+
     return (
     <tr key={item.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
       <td className="px-3 py-2 whitespace-nowrap">{item?.composed?.cod}</td>
@@ -82,8 +82,6 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
   return (
     <Modal show={isShow} onClose={handleClose} size="xl2" headerTitle="Administrar Productos Vinculados" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
-
-        {/* Producto principal */}
         <div className="flex items-center justify-between px-3 py-2 bg-bg-subtle/60 rounded-lg border border-bg-subtle mb-3">
           <div className="flex items-center gap-2 min-w-0">
             <LuPackage size={14} className="shrink-0 text-text-muted" />
@@ -95,7 +93,6 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
           </span>
         </div>
 
-        {/* Tabla de vinculados */}
         <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden mb-3">
           <div className="px-3 py-2 bg-bg-subtle/60 border-b border-bg-subtle">
             <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Productos vinculados</span>
@@ -125,7 +122,6 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
           )}
         </div>
 
-        {/* Buscar y vincular */}
         <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden">
           <div className="px-3 py-2 bg-bg-subtle/60 border-b border-bg-subtle">
             <span className="text-xs font-bold uppercase tracking-wider text-text-muted">
