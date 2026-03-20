@@ -54,11 +54,13 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
   };
 
   let total = 0;
+  let totalQuantity = 0;
 
   const listItems = products.map((record: any) => {
     const unitCost = record?.product_json ? JSON.parse(record.product_json)?.unit_cost : 0;
     const subtotal = unitCost * (record?.quantity || 0);
     total += subtotal;
+    totalQuantity += Number(record?.quantity) || 0;
 
     return (
       <tr
@@ -109,10 +111,20 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
           <tbody className="divide-y divide-bg-subtle/50">
             {listItems}
           </tbody>
+          <tfoot className="border-t-2 border-bg-subtle bg-bg-subtle/60 text-xs font-bold text-text-base uppercase">
+            <tr className="divide-x divide-bg-subtle">
+              <td colSpan={3} className="px-6 py-3 tracking-wider">
+                <span>{products.length} producto{products.length !== 1 ? 's' : ''}</span>
+              </td>
+              <td className="px-3 py-3 text-center tabular-nums">{totalQuantity}</td>
+              <td className="px-3 py-3 text-right">
+                <span className="text-[10px] font-semibold text-text-muted normal-case tracking-normal block leading-none mb-0.5">Valor total</span>
+                <span className="text-sm font-extrabold text-primary tabular-nums">{numberToMoney(total, system)}</span>
+              </td>
+              <td />
+            </tr>
+          </tfoot>
         </table>
-        <div className="w-full flex justify-end p-4">
-          <p className="text-lg font-semibold text-primary uppercase">Total: {numberToMoney(total, system)}</p>
-        </div>
       </div>
 
       <DeleteModal
