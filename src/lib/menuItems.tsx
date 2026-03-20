@@ -144,6 +144,7 @@ export const menuItems: MenuItem[] = [
       { label: "Anexos de IVA", href: "/annexes/annexes", permission: "reports-attaches" },
       { label: "Libros de compras", href: "/annexes/purchases", permission: "reports-attaches" },
       { label: "Descargas de Documentos", href: "/annexes/downloads", permission: "reports-attaches" },
+      { label: "Lector de JSON", href: "/annexes/qr-reader" },
     ],
   },
   {

@@ -194,3 +194,34 @@ body {
 .button-options-sales {
   @apply w-full uppercase text-slate-700 py-2 px-4 hover:bg-slate-100 clickeable text-[12px] font-medium
 }
+
+/* QR Reader — Transmission animations */
+@keyframes qr-scan-down {
+  0%   { top: -2px; opacity: 0; }
+  8%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { top: calc(100% + 2px); opacity: 0; }
+}
+
+@keyframes qr-signal-pulse {
+  0%   { transform: scale(0.5); opacity: 0.65; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+@keyframes qr-data-float {
+  0%   { transform: translateY(0px); opacity: 0; }
+  15%  { opacity: 0.55; }
+  85%  { opacity: 0.55; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+@keyframes qr-reveal-section {
+  0%   { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes qr-flash-scan {
+  0%   { opacity: 0.7; }
+  60%  { opacity: 0.15; }
+  100% { opacity: 0; }
+}
