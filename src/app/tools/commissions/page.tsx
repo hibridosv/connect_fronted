@@ -85,7 +85,7 @@ export default function Page() {
         )}
       </div>
 
-      <CommissionViewModal isShow={modals.commissionDetail} onClose={() => closeModal('commissionDetail')} record={elements.commissionDetail} />
+          <CommissionViewModal isShow={modals.commissionDetail} onClose={() => closeModal('commissionDetail')} record={elements.commissionDetail} />
           <ToasterMessage />
     </div>
   );

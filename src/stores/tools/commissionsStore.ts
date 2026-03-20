@@ -123,7 +123,7 @@ const commissionsStore = create<CommissionsStoreI>((set, get) => ({
         useToastMessageStore.getState().setMessage(response);
         return true;
       }
-      useToastMessageStore.getState().setError('Error al pagar');
+      useToastMessageStore.getState().setError(response);
       return false;
     } catch (error) {
       useToastMessageStore.getState().setError(error);

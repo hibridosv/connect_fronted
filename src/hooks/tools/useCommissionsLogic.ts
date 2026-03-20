@@ -72,5 +72,6 @@ export function useCommissionsLogic() {
     currentPage,
     handlePageNumber,
     handelDeleteCommission,
+    url
   };
 }

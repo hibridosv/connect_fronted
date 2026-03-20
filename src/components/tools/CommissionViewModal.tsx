@@ -20,8 +20,8 @@ interface CommissionViewModalProps {
 
 export function CommissionViewModal({ isShow, onClose, record }: CommissionViewModalProps) {
   const { system } = useConfigStore();
-  const { payCommission, saving } = commissionsStore();
-  const { handelDeleteCommission } = useCommissionsLogic();
+  const { payCommission, saving, loadCommissions } = commissionsStore();
+  const { handelDeleteCommission, url } = useCommissionsLogic();
 
   if (!record) return null;
 
@@ -52,7 +52,10 @@ export function CommissionViewModal({ isShow, onClose, record }: CommissionViewM
 
   const handlePay = async () => {
     const success = await payCommission(record.id);
-    if (success) onClose();
+    if (success){
+      await loadCommissions(url);
+      onClose();
+    } 
   };
 
   return (
