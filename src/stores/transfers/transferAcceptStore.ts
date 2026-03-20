@@ -1,7 +1,7 @@
-import { deleteService, getServices, updateService } from '@/services/services';
+import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
-import useToastMessageStore from '../toastMessageStore';
 import useConfigStore from '../configStore';
+import useToastMessageStore from '../toastMessageStore';
 
 interface TransferAcceptStoreI {
   transfers: any;
@@ -30,7 +30,7 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
     const tenant = useConfigStore.getState().tenant;
     set({ loading: true });
     try {
-      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant}&included=products,to,from`);
+      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
       set({ transfers: response.data.data });
     } catch (error) {
       useToastMessageStore.getState().setError(error);

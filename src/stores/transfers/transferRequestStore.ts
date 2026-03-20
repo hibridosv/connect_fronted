@@ -38,8 +38,8 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
     const tenant = useConfigStore.getState().tenant;
     set({ loading: true });
     try {
-      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant}&included=products,to,from`);
-      const data = response.data.data;
+      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
+      const data = response.data;
       const first = getFirstWithStatus6(data?.data);
       if (first) {
         set({ activeTransfer: first, productsAdded: first.products || [], transfers: data });

@@ -29,9 +29,9 @@ function SummarySkeleton() {
 export function TransferSummary({ records, loading }: TransferSummaryProps) {
   if (loading) return <SummarySkeleton />;
 
-  if (!records?.data || records.data.length === 0) return <NothingHere width='120' height='120' text="No tienes transferencias"/>;
+  if (!records || records.length === 0) return <NothingHere width='120' height='120' text="No tienes transferencias"/>;
 
-  const data = records.data;
+  const data = records;
 
   return (
     <div>

@@ -1,13 +1,13 @@
 'use client';
 
-import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
-import { statusOfTransfer } from '@/components/transfers/utils';
-import useConfigStore from '@/stores/configStore';
-import { IoMdAlert } from 'react-icons/io';
-import { MdCheck } from 'react-icons/md';
-import { FaSpinner } from 'react-icons/fa';
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
+import { statusOfTransfer } from '@/components/transfers/utils';
+import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
+import useConfigStore from '@/stores/configStore';
+import { FaSpinner } from 'react-icons/fa';
+import { IoMdAlert } from 'react-icons/io';
+import { MdCheck } from 'react-icons/md';
 
 interface TransfersHistoryTableProps {
   records: any;
@@ -18,7 +18,9 @@ interface TransfersHistoryTableProps {
 }
 
 export function TransfersHistoryTable({ records, onRowClick, onGetProductsOnline, sending, loading }: TransfersHistoryTableProps) {
-  const tenant = useConfigStore((s) => s.tenant);
+  const tenantConf = useConfigStore((s) => s.tenant);
+  const tenant = tenantConf?.id;
+
 
   if (loading) return <SkeletonTable rows={10} columns={7} />;
 

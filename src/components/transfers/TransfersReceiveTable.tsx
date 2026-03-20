@@ -1,8 +1,8 @@
 'use client';
-import { formatDate, formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
-import { statusOfTransfer } from '@/components/transfers/utils';
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
+import { statusOfTransfer } from '@/components/transfers/utils';
+import { formatDate, formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { AiOutlineFundView } from 'react-icons/ai';
 
 interface TransfersReceiveTableProps {
@@ -14,7 +14,7 @@ interface TransfersReceiveTableProps {
 export function TransfersReceiveTable({ records, onShowTransfer, loading }: TransfersReceiveTableProps) {
   if (loading) return <SkeletonTable rows={10} columns={9} />;
 
-  if (!records?.data || records.data.length === 0) return <NothingHere />;
+  if (!records || records.length === 0) return <NothingHere />;
 
   return (
     <div className="w-full overflow-auto">
@@ -33,7 +33,7 @@ export function TransfersReceiveTable({ records, onShowTransfer, loading }: Tran
           </tr>
         </thead>
         <tbody className="divide-y divide-bg-subtle">
-          {records.data.map((record: any) => (
+          {records.map((record: any) => (
             <tr
               key={record.id}
               className={`hover:bg-bg-subtle ${record.status === 2 ? 'bg-success/10' : ''}`}

@@ -105,7 +105,7 @@ export default function Page() {
                   <Button
                     isFull
                     disabled={sending}
-                    preset={Preset.primary}
+                    preset={Preset.save}
                     text="Guardar"
                     onClick={handleSave}
                   />
@@ -115,7 +115,7 @@ export default function Page() {
                 <Button
                   isFull
                   disabled={sending}
-                  preset={Preset.cancel}
+                  preset={Preset.danger}
                   text="Cancelar"
                   onClick={cancelTransfer}
                 />
@@ -125,8 +125,8 @@ export default function Page() {
                   <Button
                     isFull
                     disabled={sending}
-                    preset={sending ? Preset.saving : Preset.save}
-                    text="Enviar todo"
+                    preset={sending ? Preset.saving : Preset.send}
+                    text="Enviar"
                     onClick={sendTransfer}
                   />
                 )}

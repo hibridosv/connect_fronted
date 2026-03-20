@@ -51,13 +51,8 @@ const branchesStore = create<BranchesStoreI>((set) => ({
     set({ sending: true });
     try {
       const response = await createService('tenants/linked', { to_tenant_id: tenantId });
-      if (response.data?.type === 'successful') {
-        useToastMessageStore.getState().setMessage(response.data.message);
+        useToastMessageStore.getState().setMessage(response);
         return true;
-      } else {
-        useToastMessageStore.getState().setError(response.data?.message);
-        return false;
-      }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       return false;
