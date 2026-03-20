@@ -140,6 +140,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                   <input
                     type="number"
                     id="quantity"
+                    step="any"
                     {...register("quantity", { required: true, min: 1, max: product ? product.quantity : 1 })}
                     className="input"
                     defaultValue={1}
