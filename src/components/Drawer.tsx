@@ -14,9 +14,6 @@ import { IoClose } from "react-icons/io5";
 const SubMenu: FC<{ item: MenuItem; onClose: () => void; permissions: any }> = ({ item, onClose, permissions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(!isOpen);
-  const { tenant } = useConfigStore();
-  const isRest = isRestaurant(tenant?.system);
-
   const visibleChildren = item.children?.filter(
     (child) => !child.permission || permissionExists(permissions, child.permission)
   );
@@ -64,11 +61,12 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const { theme, setTheme } = useThemeStore();
   const { tenant, permission } = useConfigStore();
   if (!isOpen) return null;
-
   const hasAnyPermission = (perms: string[]): boolean => {
     return perms.some(p => permissionExists(permission, p));
   };
 
+  const isRest = isRestaurant(tenant?.system);
+  
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-60 z-50 transition-opacity"
