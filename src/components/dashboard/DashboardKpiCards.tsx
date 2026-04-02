@@ -26,19 +26,18 @@ export function DashboardKpiCards() {
   if (!hasData) return null
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
       {formattedCards.map((card: any) => (
-        <div
-          key={card.title}
+        <div key={card.title}
           className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-3.5 sm:p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex justify-start items-center">
             <div className={`p-2.5 rounded-xl ${card.bg} transition-transform duration-300 hover:scale-110`}>
               <card.icon className={`w-5 h-5 ${card.color}`} />
             </div>
+            <p className="text-text-muted font-semibold ml-2 text-xl">{card.title}</p>
           </div>
-          <div className="mt-4">
-            <p className="text-sm text-text-muted font-medium">{card.title}</p>
+          <div className="mt-2">
             <p className="text-xl sm:text-2xl font-bold text-text-base mt-0.5">{card.value}</p>
           </div>
         </div>
