@@ -62,7 +62,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className="px-2 py-1 text-left whitespace-nowrap flex" >
             {/* { record.product.slice(0, 50) } */}
             <span className={`${!isOtherSales && 'clickeable ' } w-full`} 
-            onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetails'); setElement('productDetails', record.cod); }}>
+            onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetailsList'); setElement('productDetailsOnNavbar', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
             { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 

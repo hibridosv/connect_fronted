@@ -58,7 +58,7 @@ export default function Page() {
         <DiscountsModal isShow={modals.discountModal} onClose={()=>{ closeModal('discountModal')}} />
         <ChangePriceProductModal isShow={modals.changePriceProduct} onClose={()=>{ closeModal('changePriceProduct')}} />
         <ChangeRowProductModal isShow={modals.changeRow} onClose={()=>{ closeModal('changeRow')}} />
-        <ProductDetailsGetModal isShow={modals.productDetails} onClose={()=>{ closeModal('productDetails')}} row="cod" />
+        <ProductDetailsGetModal isShow={modals.productDetailsList} onClose={()=>{ closeModal('productDetailsList')}} row="cod" />
         <ChangeQuantityModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
         <SetRemissionNoteModal isShow={modals.setRemissionNote} onClose={()=>{ closeModal('setRemissionNote')}} />
         <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
