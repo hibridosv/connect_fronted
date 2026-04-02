@@ -24,10 +24,10 @@ const protectedRoutes = [
     "/transfers", 
     "/protected", 
     "/protected-ssr",
+    "/login",
   ];
 
   const publicOnlyRoutes = ["/"]; // The login page
-
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
 
   // --- Redirect authenticated users from public-only routes ---
