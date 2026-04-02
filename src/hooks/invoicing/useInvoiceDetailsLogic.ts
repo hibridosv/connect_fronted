@@ -37,7 +37,7 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
           const response = await createService(`documents/print`, { invoice: id });
           if (response.status === 200) {
             if (activeConfig && activeConfig.includes("print-local")) {
-              await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', response.data);
+              await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', response.data.data);
             }
             setMessage(response)
           }

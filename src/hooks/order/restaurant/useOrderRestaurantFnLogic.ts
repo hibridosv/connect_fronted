@@ -53,7 +53,8 @@ const addNew = async (producId: any, quantity = 1) => {
       if (!error && withOrder) {
         setMessage({message: "Imprimiendo pre cuenta"})
         if (activeConfig && activeConfig.includes("print-local")) {
-          await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', lastResponse);
+          let orderToPrint = {...order, is_pre_account: true};
+          await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
         }
       }
   }
