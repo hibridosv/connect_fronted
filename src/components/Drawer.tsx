@@ -1,6 +1,6 @@
 'use client';
 import { MenuItem, menuItems } from "@/lib/menuItems";
-import { permissionExists } from "@/lib/utils";
+import { isRestaurant, permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { signOut } from "next-auth/react";
@@ -14,6 +14,8 @@ import { IoClose } from "react-icons/io5";
 const SubMenu: FC<{ item: MenuItem; onClose: () => void; permissions: any }> = ({ item, onClose, permissions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggle = () => setIsOpen(!isOpen);
+  const { tenant } = useConfigStore();
+  const isRest = isRestaurant(tenant?.system);
 
   const visibleChildren = item.children?.filter(
     (child) => !child.permission || permissionExists(permissions, child.permission)
@@ -101,11 +103,13 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
         {/* Menu List (Scrollable)*/}
         <div className="flex-grow overflow-y-auto z-10 custom-scrollbar relative">
           <ul className="p-4 relative z-10">
-            {menuItems.map((item, index) => {
-              if (item.children) {
-                if (item.permissions && !hasAnyPermission(item.permissions)) return null;
-                return <SubMenu key={index} item={item} onClose={onClose} permissions={permission} />;
-              }
+            {menuItems
+              .filter(item => !(item.label === "Restaurante" && !isRest))
+              .map((item, index) => {
+                if (item.children) {
+                  if (item.permissions && !hasAnyPermission(item.permissions)) return null;
+                  return <SubMenu key={index} item={item} onClose={onClose} permissions={permission} />;
+                }
 
               if (item.permission && !permissionExists(permission, item.permission)) return null;
 
