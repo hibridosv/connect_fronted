@@ -6,7 +6,6 @@ import useModalStore from '@/stores/modalStorage';
 import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
-import { useState } from 'react';
 
 
 export interface ImageMenuI {
@@ -18,22 +17,20 @@ export interface ImageMenuI {
 
 export function ImageMenu(props:  ImageMenuI) {
   const { record, index, imageLoader } = props;
-  const { sending } = ordersStore();
+  const { sending, sendingProductId } = ordersStore();
   const { addNew } = useOrderRestaurantFnLogic();
   const { setElement } = useTempStorage();
   const { openModal, closeModal } = useModalStore();
   const { activeConfig } = useConfigStore();
-  const [isSending, setIsSending] = useState(false);
 
   const isProduct = record.icon_type == 1;
   const label = isProduct ? record?.product?.description : record?.category?.name;
   const imageSrc = isProduct ? record?.product?.restaurant?.image : record?.category?.img;
+  const isSending = sendingProductId !== null && sendingProductId === record.product_id;
 
 const sendProduct = async(productId: number) => {
-    setIsSending(true);
     await addNew(productId);
     dismiss();
-    setIsSending(false);
 }
 
 const dismiss = () => {

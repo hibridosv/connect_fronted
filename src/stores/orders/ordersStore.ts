@@ -9,6 +9,7 @@ interface ordersStoreI {
   error: boolean;
   loading: boolean;
   sending: boolean;
+  sendingProductId: number | null;
   saving: boolean;
   collecting: boolean;
   deleting: boolean;
@@ -19,9 +20,10 @@ const ordersStore = create<ordersStoreI>((set) => ({
   order: null,
   lastResponse: null,
   tables: null,
-  error: false, 
+  error: false,
   loading: false,
   sending: false,
+  sendingProductId: null,
   saving: false,
   collecting: false,
   deleting: false,

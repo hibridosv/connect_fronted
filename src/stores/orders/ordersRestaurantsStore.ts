@@ -25,7 +25,7 @@ interface ordersRestaurantsStoreI {
 const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
 
   addOrder: async (url, data) => {
-        ordersStore.setState({ sending: true });
+        ordersStore.setState({ sending: true, sendingProductId: data.product_id ?? null });
         try {
             const response = await createService(url, data);
             if (response.status == 200) {
@@ -42,7 +42,7 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             errorSound();
             return false;
         } finally {
-            ordersStore.setState({ sending: false });
+            ordersStore.setState({ sending: false, sendingProductId: null });
         }
     },
 
