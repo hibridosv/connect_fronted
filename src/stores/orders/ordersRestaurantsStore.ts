@@ -25,7 +25,11 @@ interface ordersRestaurantsStoreI {
 const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
 
   addOrder: async (url, data) => {
-        ordersStore.setState({ sending: true, sendingProductId: data.product_id ?? null });
+        const productId: number | null = data.product_id ?? null;
+        ordersStore.setState((state) => ({
+          sending: true,
+          sendingProductIds: productId !== null ? [...state.sendingProductIds, productId] : state.sendingProductIds,
+        }));
         try {
             const response = await createService(url, data);
             if (response.status == 200) {
@@ -42,7 +46,10 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
             errorSound();
             return false;
         } finally {
-            ordersStore.setState({ sending: false, sendingProductId: null });
+            ordersStore.setState((state) => {
+              const remaining = state.sendingProductIds.filter(id => id !== productId);
+              return { sendingProductIds: remaining, sending: remaining.length > 0 };
+            });
         }
     },
 

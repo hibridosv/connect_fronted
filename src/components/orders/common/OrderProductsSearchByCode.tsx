@@ -17,6 +17,8 @@ export function OrderProductsSearchByCode() {
     const { addNew } = useOrderFnLogic();
     const { getElement } = useTempStorage();
     const typeOfSearch = getElement('typeOfSearch');
+    const queueRef = useRef<{ cod: string }[]>([]);
+    const processingRef = useRef(false);
 
 
     useEffect(() => {
@@ -28,13 +30,25 @@ export function OrderProductsSearchByCode() {
     if (typeOfSearch) return null;
 
 
+    const processQueue = async () => {
+        if (processingRef.current) return;
+        processingRef.current = true;
+        while (queueRef.current.length > 0) {
+            const data = queueRef.current.shift()!;
+            await addNew(data);
+        }
+        processingRef.current = false;
+    };
+
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (inputRef.current) {
-          const data = { cod: inputRef.current.value };
-          addNew(data);
-          inputRef.current.focus(); // Mantiene el foco en el input después de enviar
+          const cod = inputRef.current.value.trim();
+          if (!cod) return;
+          queueRef.current.push({ cod });
           inputRef.current.value = "";
+          inputRef.current.focus();
+          processQueue();
         }
 
     };

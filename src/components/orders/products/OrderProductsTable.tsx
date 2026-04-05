@@ -11,6 +11,7 @@ import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
+import { useRef } from "react";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
 
 
@@ -25,7 +26,8 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { setElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { sending } = ordersStore();
-  
+  const rowQueuesRef = useRef<Map<string, { queue: number[]; processing: boolean }>>(new Map());
+
   let data = order?.invoiceproducts ?? [];
   
   const isShowCode = activeConfig && activeConfig.includes("sales-show-code");
@@ -39,9 +41,20 @@ export function OrderProductsTable(props: OrderProductsTableI) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
   }
   
-  const handleProductSend = (product: any, type: number) => {
-    product.addOrSubtract = type;
-    addNew(product);
+  const handleProductSend = async (product: any, type: number) => {
+    const key = String(product.id);
+    if (!rowQueuesRef.current.has(key)) {
+      rowQueuesRef.current.set(key, { queue: [], processing: false });
+    }
+    const entry = rowQueuesRef.current.get(key)!;
+    entry.queue.push(type);
+    if (entry.processing) return;
+    entry.processing = true;
+    while (entry.queue.length > 0) {
+      const nextType = entry.queue.shift()!;
+      await addNew({ ...product, addOrSubtract: nextType });
+    }
+    entry.processing = false;
   };
   
   
@@ -51,7 +64,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
 
     return (
         <tr key={record.id}
-            className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
+            className={`${sending ? 'opacity-50' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
           <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
             onClick={isOtherSales ? ()=>{} : ()=>{ setElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }

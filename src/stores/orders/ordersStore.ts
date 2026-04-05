@@ -9,7 +9,7 @@ interface ordersStoreI {
   error: boolean;
   loading: boolean;
   sending: boolean;
-  sendingProductId: number | null;
+  sendingProductIds: number[];
   saving: boolean;
   collecting: boolean;
   deleting: boolean;
@@ -23,7 +23,7 @@ const ordersStore = create<ordersStoreI>((set) => ({
   error: false,
   loading: false,
   sending: false,
-  sendingProductId: null,
+  sendingProductIds: [],
   saving: false,
   collecting: false,
   deleting: false,
