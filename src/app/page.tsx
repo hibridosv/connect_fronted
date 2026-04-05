@@ -1,8 +1,6 @@
 'use client';
 
 import { getBrand, isCustomBrand } from "@/lib/brand";
-import useConfigStore from "@/stores/configStore";
-import restauranMenuStore from "@/stores/orders/restauranMenuStore";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -20,16 +18,14 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { clearConfig, isLoaded } = useConfigStore();
-  const { isLoaded: isLoadedMenu, clearConfig: clearConfigMenu  } = restauranMenuStore()
   const brand = useMemo(() => getBrand(), []);
   const custom = isCustomBrand(brand);
   const c = brand.colors;
 
   useEffect(() => {
-    if (isLoaded) { clearConfig(); }
-    if (isLoadedMenu) { clearConfigMenu(); }
-  }, [isLoaded, isLoadedMenu, clearConfig, clearConfigMenu]);
+    localStorage.removeItem('config-storage');
+    localStorage.removeItem('menu-storage');
+  }, []);
 
 
   const handleSubmit = async (e: React.FormEvent) => {

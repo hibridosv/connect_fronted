@@ -3,8 +3,9 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
-import { getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 import { AiOutlineFundView } from "react-icons/ai";
 import { statusOfTransfer } from "../transfers/utils";
 
@@ -16,6 +17,8 @@ export interface HistoryTransfersTableI {
 export function HistoryTransfersTable(props: HistoryTransfersTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
+  const { openModal } = useModalStore();
+  const { setElement } = useTempStorage();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -51,7 +54,7 @@ export function HistoryTransfersTable(props: HistoryTransfersTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <span className="flex justify-between">
-          <AiOutlineFundView size={20} title="Ver detalles" className="text-red-600 clickeable" onClick={()=> {}} />
+          <AiOutlineFundView size={20} title="Ver detalles" className="text-primary clickeable" onClick={() => { setElement('historySelectedTransfer', record); openModal('historyTransferDetails'); }} />
         </span>
       </td>
     </tr>
@@ -78,16 +81,6 @@ export function HistoryTransfersTable(props: HistoryTransfersTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
-            <div>
-                <p className="text-sm text-text-muted">Total descuentos: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "discount"), system) }</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Total de venta: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "total"), system) }</p>
-            </div>
-          </div>
       </div>
     </div>
   );

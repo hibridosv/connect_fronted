@@ -13,6 +13,15 @@ export function countByStatus(data: any[], status: number): number {
   return data.filter((item: any) => item?.status === status).length;
 }
 
+export const statusOfProductTransfer = (status: number) => {
+  switch (status) {
+    case 1: return <span className="status-info uppercase">Activo</span>;
+    case 2: return <span className="status-success uppercase">Aceptado</span>;
+    case 3: return <span className="status-danger uppercase">Rechazado</span>;
+    default: return <span className="status-info uppercase">Activo</span>;
+  }
+}
+
 export const statusOfTransfer = (status: number)=>{
   switch (status) {
     case 1: return <span className="status-info uppercase">En Progreso</span>
