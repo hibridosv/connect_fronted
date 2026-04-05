@@ -6,10 +6,13 @@ import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
+import { useState } from "react";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
 import { NothingHere } from "../NothingHere";
+import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductDetailsSkeleton } from "../skeleton/ProductDetailsSkeleton";
+import { ProductImagesViewer } from "./images/ProductImagesViewer";
 import { ProductLinked } from "./ProductLinked";
 // Obtiene el producto a travez del id
 // El id pasa desde el storage
@@ -25,7 +28,7 @@ export interface ProductDetailsGetModalI {
 
 export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
-  const { system } = useConfigStore();
+  const { system, hasLinked } = useConfigStore();
   const { getElement, clearElement } = useTempStorage();
   const productId = getElement('productDetailsOnNavbar');
   
@@ -34,6 +37,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
+  const [showAvailability, setShowAvailability] = useState(false);
 
   if (!isShow) { return null; }
 
@@ -178,12 +182,32 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
           </>)}
 
           <ProductLinked record={record} isShow={isShow} />
+
+          <ProductImagesViewer productId={String(record.id)} />
         </div>
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
+        <div className="flex w-full justify-between items-center">
+          <button
+            type="button"
+            disabled={!record}
+            onClick={() => setShowAvailability(true)}
+            className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-bg-subtle text-text-muted hover:text-primary hover:border-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Ver Disponibilidad
+          </button>
+          <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
+        </div>
       </Modal.Footer>
+      {record && (
+        <ProductAvailabilityModal
+          isShow={showAvailability}
+          onClose={() => setShowAvailability(false)}
+          cod={record.cod}
+          description={record.description}
+        />
+      )}
     </Modal>
   );
 }

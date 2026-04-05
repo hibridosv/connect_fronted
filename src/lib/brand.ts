@@ -41,6 +41,8 @@ const brands: Record<string, BrandConfig> = {
   },
 };
 
+export const defaultBrand = brands.hibrido;
+
 export function getBrand(): BrandConfig {
   if (typeof window === 'undefined') return brands.hibrido;
   const host = window.location.hostname;

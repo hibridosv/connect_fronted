@@ -10,6 +10,7 @@ interface ProductImagesStoreI {
   loadImages: (productId: string) => Promise<void>;
   uploadImage: (data: FormData, productId: string) => Promise<boolean>;
   deleteImage: (imageId: string, productId: string) => Promise<void>;
+  clearImages: () => void;
 }
 
 const productImagesStore = create<ProductImagesStoreI>((set, get) => ({
@@ -23,8 +24,8 @@ const productImagesStore = create<ProductImagesStoreI>((set, get) => ({
     try {
       const response = await getServices(`images/${productId}`);
       set({ images: response.data.data ?? response.data ?? [] });
-    } catch {
-      useToastMessageStore.getState().setError({ message: 'Error al cargar imágenes' });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
     }
@@ -44,6 +45,8 @@ const productImagesStore = create<ProductImagesStoreI>((set, get) => ({
       set({ saving: false });
     }
   },
+
+  clearImages: () => set({ images: [] }),
 
   deleteImage: async (imageId: string, productId: string) => {
     set({ deleting: true });

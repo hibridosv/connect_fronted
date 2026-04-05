@@ -1,6 +1,6 @@
 'use client';
 
-import { getBrand, isCustomBrand } from "@/lib/brand";
+import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -18,11 +18,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const brand = useMemo(() => getBrand(), []);
+  const [brand, setBrand] = useState(defaultBrand);
   const custom = isCustomBrand(brand);
   const c = brand.colors;
 
   useEffect(() => {
+    setBrand(getBrand());
     localStorage.removeItem('config-storage');
     localStorage.removeItem('menu-storage');
   }, []);
