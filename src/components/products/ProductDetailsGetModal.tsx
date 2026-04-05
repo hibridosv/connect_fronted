@@ -4,15 +4,15 @@ import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic"
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
+import { useState } from "react";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
-import { useState } from "react";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
 import { NothingHere } from "../NothingHere";
-import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductDetailsSkeleton } from "../skeleton/ProductDetailsSkeleton";
 import { ProductImagesViewer } from "./images/ProductImagesViewer";
+import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductLinked } from "./ProductLinked";
 // Obtiene el producto a travez del id
 // El id pasa desde el storage
@@ -189,14 +189,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex w-full justify-between items-center">
-          <button
-            type="button"
-            disabled={!record}
-            onClick={() => setShowAvailability(true)}
-            className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-bg-subtle text-text-muted hover:text-primary hover:border-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Ver Disponibilidad
-          </button>
+          { hasLinked && <Button text="Ver Disponibilidad" onClick={() => setShowAvailability(true)} preset={Preset.success} disabled={!hasLinked} style="text-xs" /> }
           <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
         </div>
       </Modal.Footer>

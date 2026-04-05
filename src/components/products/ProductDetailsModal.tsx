@@ -3,13 +3,13 @@ import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic"
 import { Product } from "@/interfaces/products";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import { useState } from "react";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
-import { useState } from "react";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
-import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductImagesViewer } from "./images/ProductImagesViewer";
+import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductLinked } from "./ProductLinked";
 
 export interface ProductDetailsModalProps {
@@ -170,13 +170,7 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex w-full justify-between items-center">
-          <button
-            type="button"
-            onClick={() => setShowAvailability(true)}
-            className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-lg border border-bg-subtle text-text-muted hover:text-primary hover:border-primary transition-colors"
-          >
-            Ver Disponibilidad
-          </button>
+          { hasLinked && <Button text="Ver Disponibilidad" onClick={() => setShowAvailability(true)} preset={Preset.success} disabled={!hasLinked} style="text-xs" /> }
           <Button onClick={onClose} preset={Preset.close} disabled={false} />
         </div>
       </Modal.Footer>
