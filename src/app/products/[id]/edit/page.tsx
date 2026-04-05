@@ -3,6 +3,8 @@
 import { Button, Preset } from "@/components/button/button";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { NothingHere } from "@/components/NothingHere";
+import { ProductImageAddModal } from "@/components/products/images/ProductImageAddModal";
+import { ProductImagesSection } from "@/components/products/images/ProductImagesSection";
 import { MultiPriceEdit } from "@/components/products/multi-price/MultiPriceEdit";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
 import { ProductLinked } from "@/components/products/ProductLinked";
@@ -200,14 +202,17 @@ export default function Page({ params }: { params: { id: string } }) {
 
         <ProductLinked record={product} isShow={true} isEditable={true} />
   
+        <ProductImagesSection productId={id} />
+
         <div className="w-full p-4 flex justify-end">
-          <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />   
+          <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} />
         </div>   
       </div> 
         <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
         <AddContactModal isShow={modals.contactAdd} onClose={()=>{closeModal('contactAdd'); clearElement('isFromProducts');}} />
         <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
         <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
+        <ProductImageAddModal isShow={modals['productImageAdd'] ?? false} onClose={() => closeModal('productImageAdd')} productId={id} />
         <ToasterMessage />
     </div>
   );

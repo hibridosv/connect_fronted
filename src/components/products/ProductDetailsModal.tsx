@@ -3,10 +3,13 @@ import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic"
 import { Product } from "@/interfaces/products";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import { useState } from "react";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
+import { ProductImagesViewer } from "./images/ProductImagesViewer";
+import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductLinked } from "./ProductLinked";
 
 export interface ProductDetailsModalProps {
@@ -17,10 +20,10 @@ export interface ProductDetailsModalProps {
 
 export function ProductDetailsModal(props: ProductDetailsModalProps) {
   const { onClose, isShow, record } = props;
-  const { system } = useConfigStore();
+  const { system, hasLinked } = useConfigStore();
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
-
+  const [showAvailability, setShowAvailability] = useState(false);
 
     if (!isShow || !record) { return null; }
 
@@ -161,11 +164,22 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
 
           <ProductLinked record={record} isShow={isShow} />
 
+          <ProductImagesViewer productId={String(record.id)} />
+
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        <div className="flex w-full justify-between items-center">
+          { hasLinked && <Button text="Ver Disponibilidad" onClick={() => setShowAvailability(true)} preset={Preset.success} disabled={!hasLinked} style="text-xs" /> }
+          <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        </div>
       </Modal.Footer>
+      <ProductAvailabilityModal
+        isShow={showAvailability}
+        onClose={() => setShowAvailability(false)}
+        cod={record.cod}
+        description={record.description}
+      />
     </Modal>
   );
 }

@@ -6,10 +6,10 @@ import { countSendPrintZero } from "../../utils";
 
 
 export function SaveButton() {
-  const { order, saving, collecting} = ordersStore();
+  const { order, saving, collecting, sending} = ordersStore();
   const { save } = useOrderRestaurantFnLogic();
   const isPrintable = countSendPrintZero(order) != 0;
-  const isBlock = collecting || saving;
+  const isBlock = collecting || saving || sending;
   
   if (!order) return <></>
 

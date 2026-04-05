@@ -27,7 +27,7 @@ export function Buttons(props: ButtonsI) {
   const isOtherSales = activeConfig && activeConfig.includes("sales-other-sales");
   const isSpecial = activeConfig && activeConfig.includes("sales-special");
   const isComment = activeConfig && activeConfig.includes("sales-comment");
-  const isSpliter =  JSON.parse(order.attributes.clients).length > 1;
+  const isSpliter = (() => { try { return JSON.parse(order.attributes?.clients ?? '[]').length > 1; } catch { return false; } })();
   const { setIsOpen } = usePopper();
   const router = useRouter();
 

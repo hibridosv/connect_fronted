@@ -22,7 +22,7 @@ export interface ProductsLinkedModalProps {
 
 export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
   const { onClose, isShow, product, requiredLink = true } = props;
-  const { register, handleSubmit, resetField } = useForm();
+  const { register, handleSubmit, resetField, formState: { errors } } = useForm();
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
   const { currentPage, handlePageNumber } = usePagination("&page=1");
   const sortBy = "-updated_at";
@@ -141,10 +141,13 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
                     type="number"
                     id="quantity"
                     step="any"
-                    {...register("quantity", { required: true, min: 1, max: product ? product.quantity : 1 })}
+                    {...register("quantity", { required: true, min: 0, max: product ? product.quantity : 1 })}
                     className="input"
                     defaultValue={1}
                   />
+                  {errors.quantity?.type === 'min' && (
+                    <p className="text-xs text-danger mt-1">La cantidad no puede ser menor a cero.</p>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <Button onClick={() => clearElement("product")} text="Cancelar" preset={Preset.cancel} />

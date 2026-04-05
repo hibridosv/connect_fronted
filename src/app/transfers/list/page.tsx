@@ -3,17 +3,22 @@ import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { HistoryTransfersTable } from "@/components/history/HistoryTransfersTable";
 import { ToasterMessage } from "@/components/toaster-message";
+import { TransferDetailsModal } from "@/components/transfers/TransferDetailsModal";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/transfers', 'excel/transfers/');
-  const isLoading = loading.history ?? false; 
+  const isLoading = loading.history ?? false;
+  const { modals, closeModal } = useModalStore();
+  const { getElement } = useTempStorage();
 
-    const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'histories/transfers', 'excel/transfers/');
-    }
+  const handleFormSubmit = async (values: DateRangeValues) => {
+    await handleGet(values, 'histories/transfers', 'excel/transfers/');
+  }
 
 
   return (
@@ -33,6 +38,11 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
+    <TransferDetailsModal
+      isShow={modals['historyTransferDetails'] ?? false}
+      transfer={getElement('historySelectedTransfer')}
+      onClose={() => closeModal('historyTransferDetails')}
+    />
     <ToasterMessage />
 </div>
   );

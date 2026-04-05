@@ -4,7 +4,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import { useRef, useState } from 'react';
 import { LuFileJson, LuUpload } from 'react-icons/lu';
 
-const REQUIRED_FIELDS = ['identificacion', 'emisor', 'receptor', 'cuerpoDocumento', 'resumen'];
+const REQUIRED_FIELDS = ['identificacion', 'emisor', 'cuerpoDocumento', 'resumen'];
 
 const DATA_TOKENS = [
   'tipoDte', 'nit', 'codigoGeneracion', 'numeroControl',
@@ -20,6 +20,7 @@ function validateDteJson(data: any): string | null {
   }
   if (!data.identificacion?.tipoDte) return 'Falta "identificacion.tipoDte"';
   if (!Array.isArray(data.cuerpoDocumento)) return 'El campo "cuerpoDocumento" debe ser un arreglo';
+  if (!data.receptor && !data.sujetoExcluido) return 'Falta el campo "receptor" o "sujetoExcluido"';
   return null;
 }
 

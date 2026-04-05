@@ -19,6 +19,7 @@ interface ConfigStoreState {
   client: any | null;
   tenant: any;
   invoiceTypes: any;
+  hasLinked: boolean;
   isLoaded: boolean;
   loading: boolean;
   error: boolean;
@@ -48,6 +49,7 @@ const useConfigStore = create(
       client: null,
       tenant: null,
       invoiceTypes: null,
+      hasLinked: false,
       isLoaded: false,
       loading: false,
       error: false,
@@ -69,6 +71,7 @@ const useConfigStore = create(
           set({ client: data.client });
           set({ tenant: data.tenant });
           set({ invoiceTypes: data.invoiceTypes });
+          set({ hasLinked: data.hasLinked });
           set({ isLoaded: true });
           set({ error: false });
         } catch (error) {
@@ -108,6 +111,7 @@ const useConfigStore = create(
             client: null,
             tenant: null,
             invoiceTypes: null,
+            hasLinked: false,
             isLoaded: false,
             loading: false,
             error: false,

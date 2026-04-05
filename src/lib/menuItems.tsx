@@ -3,6 +3,7 @@ import { BiDownload, BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWit
 import { FaCashRegister, FaFileInvoice, FaTools } from "react-icons/fa";
 import { GrConfigure } from "react-icons/gr";
 import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
+import { LuUtensilsCrossed } from "react-icons/lu";
 
 export interface MenuItem {
   label: string;
@@ -14,10 +15,10 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  { label: "Panel Principal", href: "/dashboard", icon: <BiFingerprint className="mt-1 mr-2" />, permission: "dashboard" },
-  { label: "Control de cajas", href: "/cashdrawers", icon: <FaCashRegister className="mt-1 mr-2" />, permission: "cashdrawer" },
+  { label: "Panel Principal", href: "/dashboard", icon: <BiFingerprint size={15} />, permission: "dashboard" },
+  { label: "Control de cajas", href: "/cashdrawers", icon: <FaCashRegister size={15} />, permission: "cashdrawer" },
   {
-    label: "Restaurante", icon: <MdInventory className="mt-1 mr-2" />,
+    label: "Restaurante", icon: <LuUtensilsCrossed size={15} />,
     permissions: ["restaurant-add-product", "restaurant-producs", "restaurant-screen", "restaurant-counter", "restaurant-orders"],
     children: [
       { label: "Registrar Producto", href: "/restaurant/new", permission: "restaurant-add-product" },
@@ -29,7 +30,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Inventario", icon: <MdInventory className="mt-1 mr-2" />,
+    label: "Inventario", icon: <MdInventory size={15} />,
     permissions: ["inventory", "inventory-register", "inventory-edit", "inventory-add", "inventory-failure", "inventory-linked", "inventory-stock", "inventory-expiration", "inventory-karex"],
     children: [
       { label: "Ver Productos", href: "/products", permission: "inventory" },
@@ -44,7 +45,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Efectivo", icon: <BiMoney className="mt-1 mr-2" />,
+    label: "Efectivo", icon: <BiMoney size={15} />,
     permissions: ["cash-bills", "cash-remittance", "cash-accounts", "cash-inout", "cash-history"],
     children: [
       { label: "Registro de Gastos", href: "/cash/expenses", permission: "cash-bills" },
@@ -55,7 +56,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Cuentas", icon: <BiMoneyWithdraw className="mt-1 mr-2" />,
+    label: "Cuentas", icon: <BiMoneyWithdraw size={15} />,
     permissions: ["credits-receivable", "credits-payable"],
     children: [
       { label: "Cuentas por cobrar", href: "/accounts/receivable", permission: "credits-receivable" },
@@ -63,7 +64,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Directorio", icon: <BiUserPin className="mt-1 mr-2" />,
+    label: "Directorio", icon: <BiUserPin size={15} />,
     permissions: ["directory"],
     children: [
       { label: "Contactos", href: "/contacts/search", permission: "directory" },
@@ -74,7 +75,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Historiales", icon: <BiHistory className="mt-1 mr-2" />,
+    label: "Historiales", icon: <BiHistory size={15} />,
     permissions: ["histories-sales", "histories-bills", "histories-remittance", "histories-cut", "histories-discount", "histories-list", "histories-by-user", "histories-by-client", "histories-deleted", "histories-cost", "histories-shipping-notes", "histories-payments", "histories-commission-pay"],
     children: [
       { label: "Ventas", href: "/history/sales", permission: "histories-sales" },
@@ -95,7 +96,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Herramientas", icon: <FaTools className="mt-1 mr-2" />,
+    label: "Herramientas", icon: <FaTools size={15} />,
     permissions: ["tools-quotes", "tools-commissions", "tools-adjustment"],
     children: [
       { label: "Cotizaciones", href: "/tools/quotes", permission: "tools-quotes" },
@@ -105,7 +106,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Reportes", icon: <MdReport className="mt-1 mr-2" />,
+    label: "Reportes", icon: <MdReport size={15} />,
     permissions: ["reports-sales", "reports-bills", "reports-products"],
     children: [
       { label: "Detalle de Ventas", href: "/reports/sales", permission: "reports-sales" },
@@ -116,7 +117,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Facturación", icon: <FaFileInvoice className="mt-1 mr-2" />,
+    label: "Facturación", icon: <FaFileInvoice size={15} />,
     permissions: ["invoices-documents", "invoices-correlative", "invoices-electronic", "invoices-search"],
     children: [
       { label: "Documentos Emitidos", href: "/invoicing/documents", permission: "invoices-documents" },
@@ -128,7 +129,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Transferencias", icon: <MdTransferWithinAStation className="mt-1 mr-2" />,
+    label: "Transferencias", icon: <MdTransferWithinAStation size={15} />,
     permissions: ["transfers-send", "transfers-receive", "transfers-request", "histories-transfers"],
     children: [
       { label: "Crear Transferencia", href: "/transfers/new", permission: "transfers-send" },
@@ -138,7 +139,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Anexos y Descargas", icon: <BiDownload className="mt-1 mr-2" />,
+    label: "Anexos y Descargas", icon: <BiDownload size={15} />,
     permissions: ["reports-attaches"],
     children: [
       { label: "Anexos de IVA", href: "/annexes/annexes", permission: "reports-attaches" },
@@ -148,7 +149,7 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Configuraciones", icon: <GrConfigure className="mt-1 mr-2" />,
+    label: "Configuraciones", icon: <GrConfigure size={15} />,
     permissions: ["config", "config-products", "config-user", "config-permissions", "config-transfers"],
     children: [
       { label: "Principal", href: "/settings/general", permission: "config" },
@@ -159,5 +160,5 @@ export const menuItems: MenuItem[] = [
       { label: "Pagos", href: "/settings/payments" },
     ],
   },
-  { label: "Ayuda", href: "/help", icon: <BiHelpCircle className="mt-1 mr-2" /> },
+  { label: "Ayuda", href: "/help", icon: <BiHelpCircle size={15} /> },
 ];

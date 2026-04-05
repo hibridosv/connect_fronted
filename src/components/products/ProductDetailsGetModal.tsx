@@ -4,12 +4,15 @@ import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic"
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
+import { useState } from "react";
 import { FaBox, FaCheckCircle, FaTag, FaTimesCircle, FaUserTie } from "react-icons/fa";
 import { MdOutlineAttachMoney, MdOutlineBrandingWatermark, MdOutlineCategory, MdOutlineHomeRepairService, MdOutlineInfo, MdOutlineInventory, MdOutlineLocationOn, MdProductionQuantityLimits } from "react-icons/md"; // Icons
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
 import { NothingHere } from "../NothingHere";
 import { ProductDetailsSkeleton } from "../skeleton/ProductDetailsSkeleton";
+import { ProductImagesViewer } from "./images/ProductImagesViewer";
+import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductLinked } from "./ProductLinked";
 // Obtiene el producto a travez del id
 // El id pasa desde el storage
@@ -25,7 +28,7 @@ export interface ProductDetailsGetModalI {
 
 export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   const { onClose, isShow, row = "id" } = props;
-  const { system } = useConfigStore();
+  const { system, hasLinked } = useConfigStore();
   const { getElement, clearElement } = useTempStorage();
   const productId = getElement('productDetailsOnNavbar');
   
@@ -34,6 +37,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
   
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
+  const [showAvailability, setShowAvailability] = useState(false);
 
   if (!isShow) { return null; }
 
@@ -178,12 +182,25 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
           </>)}
 
           <ProductLinked record={record} isShow={isShow} />
+
+          <ProductImagesViewer productId={String(record.id)} />
         </div>
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
+        <div className="flex w-full justify-between items-center">
+          { hasLinked && <Button text="Ver Disponibilidad" onClick={() => setShowAvailability(true)} preset={Preset.success} disabled={!hasLinked} style="text-xs" /> }
+          <Button onClick={handleClose} preset={Preset.close} disabled={loadingRecord} />
+        </div>
       </Modal.Footer>
+      {record && (
+        <ProductAvailabilityModal
+          isShow={showAvailability}
+          onClose={() => setShowAvailability(false)}
+          cod={record.cod}
+          description={record.description}
+        />
+      )}
     </Modal>
   );
 }

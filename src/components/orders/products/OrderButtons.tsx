@@ -24,7 +24,7 @@ export function OrderButtons(props: OrderButtonsI) {
   const { order } = props
   const { cashdrawer } = useConfigStore();
   const { save, pay, cancel } = useOrderFnLogic();
-  const { saving } = ordersStore();
+  const { saving, sending } = ordersStore();
   const { modals, closeModal, openModal} = useModalStore();
 
   const invoice = order;
@@ -38,7 +38,7 @@ export function OrderButtons(props: OrderButtonsI) {
   }
 
   let fieldsRequired = validateFields();
-  let payDisabled = !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0;
+  let payDisabled = sending || !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0;
 
   return (<div>
         { !cashdrawer && 
@@ -58,9 +58,9 @@ export function OrderButtons(props: OrderButtonsI) {
           <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
           </Popper>
-        <div className='button-cyan rounded-lg sm:rounded-none text-xs sm:text-sm clickeable py-2.5 sm:py-2' onClick={saving ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />} Guardar</div>
-        <div className={`button-lime rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${payDisabled ? 'cursor-not-allowed' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar</div>
-        <div className='button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-xs sm:text-sm clickeable py-2.5 sm:py-2' onClick={()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar</div>
+        <div className={`button-cyan rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${saving || sending ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={saving || sending ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />} Guardar</div>
+        <div className={`button-lime rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${payDisabled ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar</div>
+        <div className={`button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-xs sm:text-sm py-2.5 sm:py-2 ${sending ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={sending ? ()=>{} : ()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar</div>
       </div>
       <DeleteModal
               isShow={modals.deleteOrder}

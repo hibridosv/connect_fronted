@@ -110,8 +110,10 @@ export function QrInvoiceView() {
     );
   }
 
-  const { emisor, receptor, identificacion, cuerpoDocumento, resumen, selloRecibido } = currentInvoice;
+  const { emisor, receptor, sujetoExcluido, identificacion, cuerpoDocumento, resumen, selloRecibido } = currentInvoice;
 
+  const isSujetoExcluido = identificacion?.tipoDte === '14';
+  const counterpart = receptor ?? sujetoExcluido;
   const dteLabel = DTE_TYPES[identificacion?.tipoDte] ?? `Tipo ${identificacion?.tipoDte}`;
   const condicionLabel = CONDICION_LABELS[resumen?.condicionOperacion] ?? '—';
   const ambienteLabel = AMBIENTE_LABELS[identificacion?.ambiente] ?? identificacion?.ambiente;
@@ -221,19 +223,25 @@ export function QrInvoiceView() {
 
           <div className="bg-bg-content border border-bg-subtle rounded-lg p-4">
             <p className="text-xs font-bold uppercase text-text-muted tracking-widest mb-2 pb-1 border-b border-bg-subtle">
-              Receptor
+              {isSujetoExcluido ? 'Sujeto Excluido' : 'Receptor'}
             </p>
-            <p className="font-bold text-text-base leading-snug">{receptor?.nombre}</p>
+            <p className="font-bold text-text-base leading-snug">{counterpart?.nombre}</p>
             {receptor?.nombreComercial && receptor.nombreComercial !== receptor.nombre && (
               <p className="text-text-muted text-xs mt-0.5">{receptor.nombreComercial}</p>
             )}
             <div className="mt-2 space-y-0.5">
-              <InfoRow label="NIT" value={receptor?.nit} />
-              <InfoRow label="NRC" value={receptor?.nrc} />
-              <InfoRow label="Actividad" value={receptor?.descActividad} />
-              <InfoRow label="Dirección" value={receptor?.direccion?.complemento} />
-              <InfoRow label="Teléfono" value={receptor?.telefono} />
-              <InfoRow label="Correo" value={receptor?.correo} />
+              {isSujetoExcluido ? (
+                <InfoRow label="Documento" value={sujetoExcluido?.numDocumento} />
+              ) : (
+                <>
+                  <InfoRow label="NIT" value={receptor?.nit} />
+                  <InfoRow label="NRC" value={receptor?.nrc} />
+                </>
+              )}
+              <InfoRow label="Actividad" value={counterpart?.descActividad} />
+              <InfoRow label="Dirección" value={counterpart?.direccion?.complemento} />
+              <InfoRow label="Teléfono" value={counterpart?.telefono} />
+              <InfoRow label="Correo" value={counterpart?.correo} />
             </div>
           </div>
         </div>
@@ -250,7 +258,9 @@ export function QrInvoiceView() {
                 <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Cant.</th>
                 <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Precio Unit.</th>
                 <th className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap text-right">Descuento</th>
-                <th className="px-3 py-2 font-bold tracking-wider whitespace-nowrap text-right">Venta Gravada</th>
+                <th className="px-3 py-2 font-bold tracking-wider whitespace-nowrap text-right">
+                  {isSujetoExcluido ? 'Compra' : 'Venta Gravada'}
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-bg-subtle/50">
@@ -265,7 +275,9 @@ export function QrInvoiceView() {
                   <td className="px-3 py-2 whitespace-nowrap text-right">{item.cantidad}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-right font-mono">{fmt(item.precioUni)}</td>
                   <td className="px-3 py-2 whitespace-nowrap text-right font-mono">{fmt(item.montoDescu)}</td>
-                  <td className="px-3 py-2 whitespace-nowrap text-right font-mono font-bold">{fmt(item.ventaGravada)}</td>
+                  <td className="px-3 py-2 whitespace-nowrap text-right font-mono font-bold">
+                    {fmt(item.ventaGravada ?? item.compra ?? 0)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -317,19 +329,32 @@ export function QrInvoiceView() {
               Resumen
             </p>
             <div className="space-y-1.5">
-              {resumen?.totalNoSuj > 0 && <SummaryRow label="Total No Sujeto" value={resumen.totalNoSuj} />}
-              {resumen?.totalExenta > 0 && <SummaryRow label="Total Exento" value={resumen.totalExenta} />}
-              <SummaryRow label="Total Gravado" value={resumen?.totalGravada ?? 0} />
-              <SummaryRow label="Subtotal Ventas" value={resumen?.subTotalVentas ?? 0} />
-              {resumen?.totalDescu > 0 && <SummaryRow label="Descuento Total" value={resumen.totalDescu} />}
-              <SummaryRow label="Subtotal" value={resumen?.subTotal ?? 0} />
-              {resumen?.ivaRete1 > 0 && <SummaryRow label="IVA Retenido (1%)" value={resumen.ivaRete1} />}
-              {resumen?.ivaPerci1 > 0 && <SummaryRow label="IVA Percibido (1%)" value={resumen.ivaPerci1} />}
-              {resumen?.reteRenta > 0 && <SummaryRow label="Retención Renta" value={resumen.reteRenta} />}
-              {resumen?.totalNoGravado > 0 && <SummaryRow label="No Gravado" value={resumen.totalNoGravado} />}
-              <div className="border-t border-bg-subtle pt-2 mt-2">
-                <SummaryRow label="Monto Total Operación" value={resumen?.montoTotalOperacion ?? 0} bold />
-              </div>
+              {isSujetoExcluido ? (
+                <>
+                  {resumen?.totalCompra > 0 && <SummaryRow label="Total Compra" value={resumen.totalCompra} />}
+                  {resumen?.descu > 0 && <SummaryRow label="Descuento" value={resumen.descu} />}
+                  {resumen?.totalDescu > 0 && <SummaryRow label="Descuento Total" value={resumen.totalDescu} />}
+                  <SummaryRow label="Subtotal" value={resumen?.subTotal ?? 0} />
+                  {resumen?.ivaRete1 > 0 && <SummaryRow label="IVA Retenido (1%)" value={resumen.ivaRete1} />}
+                  {resumen?.reteRenta > 0 && <SummaryRow label="Retención Renta" value={resumen.reteRenta} />}
+                </>
+              ) : (
+                <>
+                  {resumen?.totalNoSuj > 0 && <SummaryRow label="Total No Sujeto" value={resumen.totalNoSuj} />}
+                  {resumen?.totalExenta > 0 && <SummaryRow label="Total Exento" value={resumen.totalExenta} />}
+                  <SummaryRow label="Total Gravado" value={resumen?.totalGravada ?? 0} />
+                  <SummaryRow label="Subtotal Ventas" value={resumen?.subTotalVentas ?? 0} />
+                  {resumen?.totalDescu > 0 && <SummaryRow label="Descuento Total" value={resumen.totalDescu} />}
+                  <SummaryRow label="Subtotal" value={resumen?.subTotal ?? 0} />
+                  {resumen?.ivaRete1 > 0 && <SummaryRow label="IVA Retenido (1%)" value={resumen.ivaRete1} />}
+                  {resumen?.ivaPerci1 > 0 && <SummaryRow label="IVA Percibido (1%)" value={resumen.ivaPerci1} />}
+                  {resumen?.reteRenta > 0 && <SummaryRow label="Retención Renta" value={resumen.reteRenta} />}
+                  {resumen?.totalNoGravado > 0 && <SummaryRow label="No Gravado" value={resumen.totalNoGravado} />}
+                  <div className="border-t border-bg-subtle pt-2 mt-2">
+                    <SummaryRow label="Monto Total Operación" value={resumen?.montoTotalOperacion ?? 0} bold />
+                  </div>
+                </>
+              )}
               <div className="border-t-2 border-primary/30 pt-2 mt-1">
                 <SummaryRow label="Total a Pagar" value={resumen?.totalPagar ?? 0} bold large highlight />
               </div>
