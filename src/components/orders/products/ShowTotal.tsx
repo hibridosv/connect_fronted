@@ -3,8 +3,8 @@ import { Order } from '@/interfaces/order';
 import { formatDuiWithAll, getCountryProperty } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import { IoMdUnlock } from 'react-icons/io';
 import { sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from '../utils';
+import { MultiPriceChange } from './MultiPriceChange';
 import { OrderTotal } from './OrderTotal';
 
 export interface ShowTotalI {
@@ -19,8 +19,6 @@ export function ShowTotal(props: ShowTotalI) {
   const { openModal} = useModalStore();
 
   const showSeller = activeConfig && activeConfig.includes("sales-show-other-seller");
-  const multiPriceStatus = true; // This seems to be a placeholder, will keep it
-
   const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta = sumarTotalRetentionRenta(order);
 
@@ -46,14 +44,7 @@ export function ShowTotal(props: ShowTotalI) {
 
       <div className="flex items-center justify-between rounded-md bg-primary/10 px-3 py-2 text-sm font-bold uppercase text-primary">
         <span onClick={() => openModal('invoiceType')} className='clickeable'>{order?.invoice_assigned?.name}</span> 
-        {multiPriceStatus ? (
-          <span className='flex items-center gap-2'>
-            Normal
-            <IoMdUnlock className="h-4 w-4 text-success" />
-          </span>
-        ) : (
-          <span>Normal</span> 
-        )}
+        <MultiPriceChange />
       </div>
 
       <div className="space-y-3 pt-2 text-sm">

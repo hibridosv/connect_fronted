@@ -32,3 +32,10 @@ export enum DocumentTypesNames {
   factura = "Factura",
   creditoFiscal = "Credito Fiscal",
 }
+
+
+  export enum TypeOfPrice {
+    normal = 1,
+    wholesaler = 2,
+    promotion = 3,
+  }

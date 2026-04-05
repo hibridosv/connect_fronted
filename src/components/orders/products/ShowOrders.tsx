@@ -1,14 +1,18 @@
 'use client'
+import { Alert } from '@/components/Alert/Alert';
 import { ButtonDownload } from '@/components/button/button-download';
 import { Popper } from '@/components/popper/Popper';
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { numberToMoney } from '@/lib/utils';
+import { TypeOfPrice } from '@/services/enums';
 import useConfigStore from '@/stores/configStore';
 import ordersStore from '@/stores/orders/ordersStore';
+import useTempStorage from '@/stores/useTempStorage';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { FaDownload } from 'react-icons/fa';
+import { MultiPriceChange, setPriceName } from './MultiPriceChange';
 
 
 
@@ -19,6 +23,8 @@ export function ShowOrders() {
     const { data: session } = useSession();
     const downloadStatus = true;
     const  remoteUrl  = session?.url;
+    const { getElement } = useTempStorage();
+    const typeOfPriceSelect = getElement('typeOfPrice');
 
     if (order) return null;
 
@@ -80,6 +86,11 @@ export function ShowOrders() {
           ))}
         </div> 
       }
+      <div className="flex justify-center rounded-md bg-primary/10 px-3 py-2 text-sm font-bold uppercase text-primary">
+        <MultiPriceChange />
+      </div>
+        { typeOfPriceSelect != TypeOfPrice.normal && 
+        <div className="flex justify-center mt-2"><Alert text={`EL PRECIO ESTA COMO: ${setPriceName(typeOfPriceSelect)}`} type='danger' /></div> }
     </div>
     );
 }
