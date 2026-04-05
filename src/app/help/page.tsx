@@ -1299,7 +1299,7 @@ export default function HelpPage() {
               {filteredSections.length === 0 ? (
                 <div className="text-center py-16 text-text-muted">
                   <LuSearch size={36} className="mx-auto mb-3 opacity-30" />
-                  <p className="text-sm">No se encontraron resultados para <strong>"{searchTerm}"</strong></p>
+                  <p className="text-sm">No se encontraron resultados para <strong>&ldquo;{searchTerm}&rdquo;</strong></p>
                 </div>
               ) : (
                 filteredSections.map((section) => (

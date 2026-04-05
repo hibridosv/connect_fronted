@@ -62,6 +62,7 @@ export function ProductImageAddModal({ isShow, onClose, productId }: ProductImag
             >
               {preview ? (
                 <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={preview} alt="Vista previa" className="w-full h-full object-contain max-h-40" />
                   <button
                     type="button"

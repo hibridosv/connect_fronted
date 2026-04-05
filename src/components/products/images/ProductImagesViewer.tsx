@@ -21,6 +21,7 @@ export function ProductImagesViewer({ productId }: ProductImagesViewerProps) {
 
   useEffect(() => {
     return () => { clearImages(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const imageLoader = ({ src }: { src: string }) =>

@@ -19,6 +19,7 @@ export function ProductAvailabilityModal({ isShow, onClose, cod, description }: 
   useEffect(() => {
     if (!isShow) return;
     getRequest(`transactions/products/stock/${cod}`, false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isShow]);
 
   const stock: any[] = Array.isArray(responseData)

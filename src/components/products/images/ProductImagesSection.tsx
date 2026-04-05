@@ -25,6 +25,7 @@ export function ProductImagesSection({ productId }: ProductImagesSectionProps) {
 
   useEffect(() => {
     loadImages(productId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
   const imageLoader = ({ src }: { src: string }) =>
