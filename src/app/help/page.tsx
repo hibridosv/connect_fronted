@@ -1,19 +1,55 @@
 'use client';
 
-import { useState, useMemo, useRef, useEffect } from 'react';
+import { isProducts, isRestaurant } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
-import { isRestaurant, isProducts } from '@/lib/utils';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  LuLayoutDashboard, LuPackage, LuShoppingCart, LuWallet, LuCreditCard,
-  LuUsers, LuFileText, LuHistory, LuChartBar, LuArrowLeftRight,
-  LuWrench, LuUtensilsCrossed, LuSettings, LuPaperclip, LuSearch,
-  LuChevronRight, LuCircleCheckBig, LuLightbulb, LuCircleAlert,
-  LuPackagePlus, LuPackageMinus, LuLink2, LuTriangleAlert, LuCalendarClock,
-  LuScanLine, LuTrendingUp, LuTrendingDown, LuReceipt, LuBanknote,
-  LuArrowUpDown, LuClipboardList, LuStore, LuConciergeBell,
-  LuMonitor, LuSlidersHorizontal, LuUserCog, LuShield,
-  LuTag, LuBuilding2, LuFileJson, LuDownload, LuQrCode,
-  LuPrinter, LuStar, LuChevronDown, LuX, LuBookOpen,
+  LuArrowLeftRight,
+  LuArrowUpDown,
+  LuBanknote,
+  LuBookOpen,
+  LuBuilding2,
+  LuCalendarClock,
+  LuChartBar,
+  LuChevronDown,
+  LuChevronRight,
+  LuCircleAlert,
+  LuCircleCheckBig,
+  LuClipboardList,
+  LuConciergeBell,
+  LuCreditCard,
+  LuDownload,
+  LuFileJson,
+  LuFileText, LuHistory,
+  LuLayoutDashboard,
+  LuLightbulb,
+  LuLink2,
+  LuMonitor,
+  LuPackage,
+  LuPackageMinus,
+  LuPackagePlus,
+  LuPaperclip,
+  LuPrinter,
+  LuQrCode,
+  LuReceipt,
+  LuScanLine,
+  LuSearch,
+  LuSettings,
+  LuShield,
+  LuShoppingCart,
+  LuSlidersHorizontal,
+  LuStar,
+  LuStore,
+  LuTag,
+  LuTrendingDown,
+  LuTrendingUp,
+  LuTriangleAlert,
+  LuUserCog,
+  LuUsers,
+  LuUtensilsCrossed,
+  LuWallet,
+  LuWrench,
+  LuX,
 } from 'react-icons/lu';
 
 interface HelpSection {
@@ -1179,7 +1215,7 @@ export default function HelpPage() {
           <div className="flex items-center gap-2.5">
             <LuBookOpen size={20} className="text-primary" />
             <h1 className="text-lg font-extrabold uppercase text-primary tracking-wide">
-              Guía de Ayuda — Pulse
+              Guía de Ayuda
             </h1>
           </div>
           <div className="relative w-full max-w-xs">
