@@ -1,11 +1,12 @@
 'use client'
+import { DateRangeValues } from '@/components/button/DateRange';
 import { postForPrint } from '@/services/OtherServices';
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { useEffect } from 'react';
-import { usePostRequest } from '../request/usePostRequest';
+import { useCallback, useEffect } from 'react';
 import { usePutRequest } from '../request/usePutRequest';
+import { useDownloadLink } from '../useDownloadLink';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
   const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
@@ -13,8 +14,8 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   const selectedOption = getElement("optionSelected");
   const contactSelected = getElement('clientSelectedBySearch');
   const receivableRecord = getElement('paymentReceivableAdd');
-  const { responseData: postData, loading: postLoading, postRequest } = usePostRequest() as { responseData: any; loading: boolean; postRequest: any };
   const { responseData: putData, loading: putLoading, putRequest } = usePutRequest() as { responseData: any; loading: boolean; putRequest: any };
+  const { links, addLink } = useDownloadLink();
 
   const { activeConfig, system } = useConfigStore();
 
@@ -58,5 +59,13 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
     } 
   }
 
-  return { savePayment, isPrint, handleCheckIn };  
+  const handleGet = useCallback(async (data: DateRangeValues) => {
+    const params = [
+      ...(contactSelected?.id ? [{ name: 'client', value: contactSelected.id }] : []),
+      ...(selectedOption?.id != 2 ? [{ name: 'status', value: selectedOption?.id }] : []),
+    ];
+    addLink(data, 'excel/credits/', params, 3, 'Descargar Reporte');
+  }, [addLink, contactSelected, selectedOption]);
+
+  return { savePayment, isPrint, handleCheckIn, links, handleGet };
 }

@@ -1,7 +1,8 @@
 'use client';
 import { AccountsReceivableTable } from "@/components/accounts/AccountsReceivableTable";
 import { AddReceivableAddModal } from "@/components/accounts/AddReceivableAddModal";
-import { DateRange } from "@/components/button/DateRange";
+import { DateRange, DateRangeValues } from "@/components/button/DateRange";
+import { LinksList } from "@/components/button/LinkList";
 import { Option, RadioButton } from "@/components/button/RadioButton";
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { Pagination } from "@/components/Pagination";
@@ -27,15 +28,15 @@ export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { modals, closeModal, openModal} = useModalStore();
 
-  useAccountReceivableLogic(currentPage, true);
+  const { links, handleGet } = useAccountReceivableLogic(currentPage, true);
   const { accounts, loading } = accountReceivableStore();
 
   const data = accounts?.data || [];
   const { getElement} = useTempStorage();
   const documentSelected = getElement('documentSelected') ?? {};
 
-  const handleFormSubmit = async (values: any) => {
-    console.log("DateRange values:", values);
+  const handleFormSubmit = async (values: DateRangeValues) => {
+    await handleGet(values);
   }
 
   return (
@@ -64,6 +65,9 @@ export default function Page() {
             <ViewTitle text="Rango de fechas" />
             <div className="mt-2 p-2">
               <DateRange onSubmit={handleFormSubmit} loading={loading} />
+            </div>
+            <div className="p-4">
+              <LinksList links={links} text="DESCARGAS" />
             </div>
 
     </div> 

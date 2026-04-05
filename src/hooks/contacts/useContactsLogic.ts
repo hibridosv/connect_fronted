@@ -1,11 +1,28 @@
+import { LinkUrls } from '@/components/button/LinkList';
 import useContactStore from '@/stores/ContactStore';
 import useModalStore from '@/stores/modalStorage';
-import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useEffect, useMemo } from 'react';
 
+const downloadLinkNames: Record<string, string> = {
+  '&filterWhere[is_client]==1': 'Descargar clientes',
+  '&filterWhere[is_provider]==1': 'Descargar proveedores',
+  '&filterWhere[is_employee]==1': 'Descargar empleados',
+  '&filterWhere[is_referred]==1': 'Descargar referidos',
+};
 
 export function useContactsLogic(currentPage: string, searchTerm: string, param: string = "") {
   const { loadContacts, deleteContact } = useContactStore();
   const { closeModal} = useModalStore();
+  const { data: session } = useSession();
+  const remoteUrl = session?.url;
+
+  const links: LinkUrls[] = useMemo(() => {
+    if (!remoteUrl) return [];
+    const name = downloadLinkNames[param] ?? 'Descargar contactos';
+    const filterParam = param ? param.replace(/^&/, '&') : '';
+    return [{ name, link: encodeURI(`${remoteUrl}/download/excel/contacts/?sort=name${filterParam}`), isUrl: true }];
+  }, [remoteUrl, param]);
 
 
 
@@ -27,5 +44,5 @@ export function useContactsLogic(currentPage: string, searchTerm: string, param:
         }
     }
 
-    return { onDelete };
+    return { onDelete, links };
 }

@@ -1,5 +1,6 @@
 'use client';
 import { Button, Preset } from "@/components/button/button";
+import { LinksList } from "@/components/button/LinkList";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { ContactsTable } from "@/components/contacs/ContactsTable";
 import { getParamString } from "@/components/contacs/utils";
@@ -25,7 +26,7 @@ export default function Page() {
   const pageParam = searchParams.get('page');
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
-  const { onDelete } = useContactsLogic(currentPage, searchTerm, getParamString(pageParam));
+  const { onDelete, links } = useContactsLogic(currentPage, searchTerm, getParamString(pageParam));
   const { contacts } = useContactStore();
   const { getElement, clearElement } =  useTempStorage();
   const { modals, closeModal, openModal} = useModalStore();
@@ -54,6 +55,9 @@ export default function Page() {
         </div>
         <div className="p-4 flex justify-center">
           <Button preset={Preset.add} text="Agregar Contacto" onClick={()=>{openModal('contactAdd'); clearElement('contactAdd'); }} />
+        </div>
+        <div className="p-4">
+          <LinksList links={links} text="DESCARGAS" />
         </div>
     </div> 
     <ViewContactModal isShow={modals.contactDetails} onClose={()=>closeModal('contactDetails')} record={getElement('contactDetails')} />
