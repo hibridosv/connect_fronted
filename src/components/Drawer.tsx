@@ -91,7 +91,7 @@ const SubMenu: FC<{
       </button>
 
       {isOpen && (
-        <ul className="mt-1 ml-4 pl-3 border-l border-white/15 space-y-0.5 pb-1">
+        <ul className="mt-1 ml-4 pl-3 border-l border-white/15 space-y-1 pb-1">
           {visibleChildren.map((child, i) => {
             const active = child.href
               ? pathname === child.href || pathname.startsWith(child.href.split('?')[0] + '/')
@@ -104,7 +104,7 @@ const SubMenu: FC<{
                 <Link
                   href={child.href!}
                   onClick={onClose}
-                  className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-sm transition-all duration-150 ${
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 ${
                     active
                       ? 'bg-white/20 text-text-inverted font-semibold'
                       : 'text-text-inverted/55 hover:bg-white/10 hover:text-text-inverted hover:pl-3.5'
@@ -197,7 +197,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
 
           {/* Menu */}
           <div className="relative flex-grow overflow-y-auto custom-scrollbar">
-            <ul className="px-2.5 py-3 space-y-0.5">
+            <ul className="px-2.5 py-3 space-y-1.5">
               {menuItems
                 .filter((item) => !(item.label === 'Restaurante' && !isRest))
                 .map((item) => {
