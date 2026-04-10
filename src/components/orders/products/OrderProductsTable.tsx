@@ -36,7 +36,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const isChangeName = activeConfig && activeConfig.includes("sales-change-name");
   const isChangeComment = activeConfig && activeConfig.includes("sales-change-comment");
   const isChangeLot = activeConfig && activeConfig.includes("sales-change-lot");
-
+  const isDiscount = activeConfig && activeConfig.includes("sales-discount");
 
   if (!data || data.length === 0) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
@@ -94,7 +94,9 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             </CodeRequestGuard>  
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className="clickeable" onClick={()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1) }}>
+            <span className={ isDiscount ? 'clickeable' : '' } onClick={ isDiscount ? 
+              ()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1)} : 
+              ()=> {} }>
               { numberToMoney(record.discount ?? 0, system) }
             </span>
           </td>
