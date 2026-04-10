@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Preset } from "@/components/button/button";
+import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
 import { Order } from "@/interfaces/order";
@@ -9,9 +10,9 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
+import { useRef } from "react";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
-import { useRef } from "react";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
 
 
@@ -86,9 +87,11 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             onClick={()=> { openModal('changeLot'); setElement('productSelected', record); }}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className="clickeable" onClick={()=>{ openModal('changePriceProduct'); setElement('productSelected', record); }}>
-              { numberToMoney(record.unit_price ?? 0, system) }
-            </span>
+            <CodeRequestGuard permission="code-request-change-price" onAuthorized={()=>{ openModal('changePriceProduct'); setElement('productSelected', record); }} >
+                <span className="clickeable">
+                  { numberToMoney(record.unit_price ?? 0, system) }
+                </span>
+            </CodeRequestGuard>  
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
             <span className="clickeable" onClick={()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1) }}>
