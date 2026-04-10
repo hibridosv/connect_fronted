@@ -24,6 +24,7 @@ export function useOrderRestaurantFnLogic() {
   const deliveryType: number = getElement('deliveryType'); // aqui, llevar, delivery
   const serviceType: number = getElement('serviceType'); // aqui, mesas, delivery
   const { setMessage} = useToastMessageStore();
+  const isPrintLocal = activeConfig && activeConfig.includes("print-local");
 
 const addNew = async (producId: any, quantity = 1) => {
     if (!producId){
@@ -52,7 +53,7 @@ const addNew = async (producId: any, quantity = 1) => {
       await saveOrder(`orders/restaurant/${id}/save`, { with_order: withOrder });
       if (!error && withOrder) {
         setMessage({message: "Imprimiendo pre cuenta"})
-        if (activeConfig && activeConfig.includes("print-local")) {
+        if (isPrintLocal) {
           let orderToPrint = {...order, is_pre_account: true};
           await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
         }
@@ -118,7 +119,11 @@ const pay = async (data: any) => {
       client_active: clientActive, // Cliente activo para asignar producto
       client_number: null
     };
-    await payOrder(`orders/restaurant/${order.id}/pay`, values);
+    const response = await payOrder(`orders/restaurant/${order.id}/pay`, values);
+      if (response && isPrintLocal) {
+        let orderToPrint = getElement("paymentSuccess");
+        await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
+      }
     clearElement('invoiceTypeSelected');
 }
 
@@ -132,7 +137,11 @@ const paySplit = async (data: any) => {
       client_active: clientActive, // Cliente activo para asignar producto
       client_number: clientActive
     };
-     await payOrderSplit(`orders/restaurant/${order.id}/pay`, values);
+    const response = await payOrderSplit(`orders/restaurant/${order.id}/pay`, values);
+    if (response && isPrintLocal) {
+        let orderToPrint = getElement("paymentSuccess");
+        await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
+    }
   }
 
   return { addNew, save, saveAndOut, update, changeClient, addClient, addName, cancel, del, option, select, pay, paySplit }

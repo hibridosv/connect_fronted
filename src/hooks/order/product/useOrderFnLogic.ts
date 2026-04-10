@@ -1,5 +1,7 @@
 'use client'
 import { UpdateServiceInterface } from '@/services/Interfaces';
+import { postForPrint } from '@/services/OtherServices';
+import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import ordersStore from '@/stores/orders/ordersStore';
@@ -15,6 +17,8 @@ export function useOrderFnLogic() {
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
   const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
+  const { activeConfig, system } = useConfigStore();
+  const isPrintLocal = activeConfig && activeConfig.includes("print-local");
 
 /// agrega una orden o un producto
 const addNew = async (data: any) => {
@@ -56,7 +60,11 @@ const addNew = async (data: any) => {
           cash: data.cash,
           invoice_type_id: order?.invoice_type_id,
         };
-      await payOrder(`orders/${order?.id}/pay`, values);
+      const response = await payOrder(`orders/${order?.id}/pay`, values);
+      if (response && isPrintLocal) {
+          let orderToPrint = getElement("paymentSuccess");
+          await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
+      }
       clearElement('invoiceTypeSelected');
   }
 

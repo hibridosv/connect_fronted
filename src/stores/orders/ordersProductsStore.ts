@@ -11,7 +11,7 @@ interface ordersProductsStoreI {
   addOrder: (url: string, data: any) => Promise<boolean>;
   loadOrders: (url: string, showToast?: boolean) => Promise<void>;
   loadOrder: (url: string, showToast?: boolean) => Promise<void>;
-  payOrder: (url: string, data: any) => Promise<void>;
+  payOrder: (url: string, data: any) => Promise<boolean>;
   saveOrder: (url: string, data: any) => Promise<void>;
   deleteOrder: (url: string) => Promise<void>;
   updateOrder: (url: string, data: any, showToast?: boolean) => Promise<boolean>;
@@ -88,9 +88,11 @@ const ordersProductsStore = create<ordersProductsStoreI>(() => ({
             useToastMessageStore.getState().setMessage(response);
             useModalStore.getState().closeModal('payOrder');
             useModalStore.getState().openModal('paymentSuccess');
+            return true;
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             ordersStore.setState({ error: true });
+            return false;
         } finally {
             ordersStore.setState({ collecting: false });
         }
