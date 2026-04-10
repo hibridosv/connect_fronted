@@ -3,7 +3,7 @@
 import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
@@ -43,7 +43,7 @@ export default function Home() {
         redirect: false,
       });
       if (result?.error) {
-        setError(result.error);
+        setError("Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.");
         setLoading(false);
         setMessage(null);
       } else if (result?.ok) {
@@ -252,9 +252,10 @@ export default function Home() {
 
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="bg-danger/10 border border-danger/20 text-danger px-4 py-3 rounded-lg text-sm flex items-start gap-2 animate-slide-up" role="alert">
-                  <strong className="font-semibold shrink-0">Error:</strong>
-                  <span>{error}</span>
+                <div className="border-l-4 border-danger bg-danger/8 rounded-r-lg px-4 py-3.5 flex items-start gap-3 animate-slide-up" role="alert">
+                  <div>
+                    <p className="text-xs text-danger/80 mt-0.5">{error}</p>
+                  </div>
                 </div>
               )}
               <div className="animate-slide-up-delay">
