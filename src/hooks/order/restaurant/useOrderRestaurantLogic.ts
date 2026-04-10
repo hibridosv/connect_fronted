@@ -18,7 +18,6 @@ import { useEffect, useRef } from 'react';
 export function useOrderRestaurantLogic(initialLoad: boolean = false) {
   const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
-  const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const serviceType = getElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
   const deliveryType = getElement('deliveryType'); // aqui, llevar, delivery
   const clientActive = getElement('clientActive'); // Cliente activo para asignar producto ( numero )
@@ -49,16 +48,13 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
                   setElement('deliveryType', 2); // llevar
                }
             }
-           if (!invoiceTypeSelected) {
-              setElement('invoiceTypeSelected', invoiceSelected);
-           }
            if (!clientActive) {
               setElement('clientActive', 1);
            }
            setElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, invoiceTypeSelected, setElement, serviceType])
+  }, [initialLoad, activeConfig, invoiceSelected, setElement, serviceType])
 
 
   useEffect(() => {

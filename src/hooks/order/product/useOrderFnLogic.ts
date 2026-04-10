@@ -65,7 +65,6 @@ const addNew = async (data: any) => {
           let orderToPrint = getElement("paymentSuccess");
           await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
       }
-      clearElement('invoiceTypeSelected');
   }
 
   /** Eliminar la orden */

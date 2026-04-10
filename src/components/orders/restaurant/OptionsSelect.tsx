@@ -15,13 +15,12 @@ export function OptionsSelect( { order }: any) {
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
   const { openModal} = useModalStore();
-  const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const deliveryType = getElement('deliveryType');
 
 
   if (!order?.invoiceproducts) return <></>
   if (order?.invoiceproducts.length == 0) return <></>
-
+  const invoiceTypeSelected = order && order?.invoice_assigned;
 
       return (
             <div>

@@ -43,7 +43,7 @@ export function ShowTotal(props: ShowTotalI) {
       </div>
 
       <div className="flex items-center justify-between rounded-md bg-primary/10 px-3 py-2 text-sm font-bold uppercase text-primary">
-        <span onClick={() => openModal('invoiceType')} className='clickeable'>{order?.invoice_assigned?.name}</span> 
+        <span onClick={() => openModal('invoiceType')} className='clickeable'>{ order?.invoice_assigned?.name }</span> 
         <MultiPriceChange />
       </div>
 

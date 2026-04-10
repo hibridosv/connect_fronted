@@ -21,14 +21,15 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
   const { tenant } = useConfigStore();
   const { order, sending } = ordersStore();
   const { setElement, getElement} = useTempStorage();
-  const invoiceTypeSelected = getElement('invoiceTypeSelected');
   const { invoiceTypes } = useConfigStore();
   const { update: updateProduct } = useOrderFnLogic();
   const { update: updateRestaurant } = useOrderRestaurantFnLogic();
   const { closeModal} = useModalStore();
-
-
+  
+  
   if (!isShow || !order) return null;
+
+  const invoiceTypeSelected = order && order?.invoice_assigned;
 
   const handleUpdate = async (type: any) => {
     let values: UpdateServiceInterface = {
@@ -42,7 +43,6 @@ export function InvoiceTypesModal(props: InvoiceTypesModalI) {
       success = await updateProduct(order.id, values);
     }
     if (success) {
-        setElement('invoiceTypeSelected', type);
         closeModal('invoiceType');
     }
   }
