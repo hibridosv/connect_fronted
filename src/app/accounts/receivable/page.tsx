@@ -1,6 +1,7 @@
 'use client';
 import { AccountsReceivableTable } from "@/components/accounts/AccountsReceivableTable";
 import { AddReceivableAddModal } from "@/components/accounts/AddReceivableAddModal";
+import { ButtonDownload } from "@/components/button/button-download";
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { Option, RadioButton } from "@/components/button/RadioButton";
@@ -34,6 +35,7 @@ export default function Page() {
   const data = accounts?.data || [];
   const { getElement} = useTempStorage();
   const documentSelected = getElement('documentSelected') ?? {};
+  const clientSearched = getElement('clientSelectedBySearch') ?? {};
 
   const handleFormSubmit = async (values: DateRangeValues) => {
     await handleGet(values);
@@ -60,6 +62,14 @@ export default function Page() {
             <div className="p-4">
               <ClientsSearch param="customers" placeholder="Buscar Cliente" />
               <ShowClientSearched />
+              {
+                clientSearched.id && (
+                  <ButtonDownload autoclass={false} href={`download/pdf/creditStatement/${clientSearched?.id}`}>
+                  <button className="mt-4 w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/80 transition-colors">Descargar Estado de Cuenta</button>
+                 </ButtonDownload>
+                  
+                )
+              }
             </div>
             <RadioButton options={optionsRadioButton} />
             <ViewTitle text="Rango de fechas" />
