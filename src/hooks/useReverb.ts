@@ -8,24 +8,35 @@ declare global {
   }
 }
 
+type ReverbConfig = {
+  host: string;
+  port: string;
+  scheme: string;
+  key: string;
+};
+
 let echoInstance: Echo<'reverb'> | null = null;
+let reverbConfig: ReverbConfig | null = null;
 
-function getEchoInstance(): Echo<'reverb'> {
+async function getReverbConfig(): Promise<ReverbConfig> {
+  if (reverbConfig) return reverbConfig;
+  const res = await fetch('/api/reverb-config');
+  if (!res.ok) throw new Error('No se pudo obtener configuración de Reverb');
+  reverbConfig = await res.json();
+  return reverbConfig!;
+}
+
+async function getEchoInstance(): Promise<Echo<'reverb'>> {
   if (!echoInstance) {
+    const config = await getReverbConfig();
     window.Pusher = Pusher;
-
-    const REVERB_HOST = process.env.NEXT_PUBLIC_REVERB_HOST;
-    const REVERB_PORT = process.env.NEXT_PUBLIC_REVERB_PORT;
-    const REVERB_SCHEME = process.env.NEXT_PUBLIC_REVERB_SCHEME;
-    const REVERB_KEY = process.env.NEXT_PUBLIC_REVERB_KEY;
-
     echoInstance = new Echo({
       broadcaster: 'reverb',
-      key: REVERB_KEY,
-      wsHost: REVERB_HOST,
-      wsPort: Number(REVERB_PORT),
-      wssPort: Number(REVERB_PORT),
-      forceTLS: (REVERB_SCHEME ?? 'https') === 'https',
+      key: config.key,
+      wsHost: config.host,
+      wsPort: Number(config.port),
+      wssPort: Number(config.port),
+      forceTLS: (config.scheme ?? 'https') === 'https',
       enabledTransports: ['ws', 'wss'],
     });
   }
@@ -40,21 +51,34 @@ const useReverb = (channelName: string, eventName: string, status = false) => {
   useEffect(() => {
     if (!status) return;
 
-    const echo = getEchoInstance();
-    const channel = echo.channel(channelName);
-    channelRef.current = channel;
+    let cancelled = false;
 
-    const handleEvent = (eventData: any) => {
-        setRandom(Math.random());
-        setData(eventData);
+    const subscribe = async () => {
+      try {
+        const echo = await getEchoInstance();
+        if (cancelled) return;
+
+        const channel = echo.channel(channelName);
+        channelRef.current = channel;
+
+        channel.listen(eventName, (eventData: any) => {
+          setRandom(Math.random());
+          setData(eventData);
+        });
+      } catch (error) {
+        console.error('Error al conectar con Reverb:', error);
+      }
     };
 
-    channel.listen(eventName, handleEvent);
+    subscribe();
 
     return () => {
-      channel.stopListening(eventName);
-      echo.leave(channelName);
-      channelRef.current = null;
+      cancelled = true;
+      if (channelRef.current) {
+        channelRef.current.stopListening(eventName);
+        if (echoInstance) echoInstance.leave(channelName);
+        channelRef.current = null;
+      }
     };
   }, [channelName, eventName, status]);
 
