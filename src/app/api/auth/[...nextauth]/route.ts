@@ -19,8 +19,8 @@ const handler = NextAuth({
           },
           body: JSON.stringify({
             grant_type: 'password',
-            client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID,
-            client_secret: process.env.NEXT_PUBLIC_AUTH_SECRET_ID,
+            client_id: process.env.AUTH_CLIENT_ID,
+            client_secret: process.env.AUTH_SECRET_ID,
             username: credentials?.username,
             password: credentials?.password,
           }),
