@@ -22,6 +22,7 @@ export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: 
             addLink(data, linkUrl, params);
         } catch (error) {
             console.error(error);
+            setHistory(null);
         } finally {
             closeLoading("history");
         }
