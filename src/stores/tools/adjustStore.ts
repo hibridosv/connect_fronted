@@ -49,7 +49,11 @@ const adjustStore = create<adjustStoreI>((set) => ({
     set({ loadingAdjustment: true });
     try {
       const response = await getServices(url);
-      set({ adjustment: response.data.data, error: false });
+      if (response.data.data.length === 0) {
+        set({ adjustment: null, error: false });
+      } else {
+        set({ adjustment: response.data.data, error: false });
+      }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
