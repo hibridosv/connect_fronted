@@ -1,10 +1,10 @@
 'use client';
 import { ViewTitle } from "@/components/ViewTitle";
 import { ANEXO_OPTIONS, SUCURSAL_OPTIONS, useTaxAnnexesLogic } from "@/hooks/reports/useTaxAnnexesLogic";
-import { LuDownload } from "react-icons/lu";
+import { LuDownload, LuLoader } from "react-icons/lu";
 
 export default function Page() {
-  const { months, selectedSucursal, setSelectedSucursal, buildUrl } = useTaxAnnexesLogic();
+  const { months, selectedSucursal, setSelectedSucursal, handleDownload, isUrlLoading } = useTaxAnnexesLogic();
 
   const downloadBtnClass = selectedSucursal === '0'
     ? 'bg-primary/5 text-primary hover:bg-primary/15'
@@ -56,15 +56,17 @@ export default function Page() {
                   </td>
                   {months.map((month) => (
                     <td key={`${month.monthName}-${month.year}`} className="px-4 py-3 whitespace-nowrap text-center">
-                      <a
-                        href={`${buildUrl(month, opt.value)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 clickeable ${downloadBtnClass}`}
+                      <button
+                        onClick={() => handleDownload(month, opt.value)}
+                        disabled={isUrlLoading(month, opt.value)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 clickeable disabled:opacity-50 disabled:cursor-not-allowed ${downloadBtnClass}`}
                       >
-                        <LuDownload size={13} />
+                        {isUrlLoading(month, opt.value)
+                          ? <LuLoader size={13} className="animate-spin" />
+                          : <LuDownload size={13} />
+                        }
                         Descargar
-                      </a>
+                      </button>
                     </td>
                   ))}
                 </tr>

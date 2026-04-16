@@ -1,7 +1,6 @@
 "use client";
 
 import { useGetRequest } from '@/hooks/request/useGetRequest';
-import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { LuLoader } from 'react-icons/lu';
 
@@ -14,7 +13,6 @@ export interface ButtonDownloadGetProps {
 }
 
 export function ButtonDownloadGet({ href, children, titleText = "Descargar", autoclass = true, style = "" }: ButtonDownloadGetProps) {
-  const { data: session } = useSession();
   const { responseData, loading, getRequest } = useGetRequest();
 
   useEffect(() => {

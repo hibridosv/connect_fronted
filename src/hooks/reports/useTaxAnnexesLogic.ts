@@ -2,7 +2,7 @@
 import { get } from '@/services/httpService';
 import { DateTime } from 'luxon';
 import { useSession } from 'next-auth/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const MONTHS_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -19,14 +19,10 @@ export const SUCURSAL_OPTIONS = [
   { value: '1', label: 'Todas' },
 ];
 
-type UrlEntry = { url: string; loading: boolean };
-type UrlMap = Record<string, UrlEntry>;
-
 export function useTaxAnnexesLogic() {
   const { data: session } = useSession();
-  const remoteUrl = session?.url;
   const [selectedSucursal, setSelectedSucursal] = useState('0');
-  const [urlMap, setUrlMap] = useState<UrlMap>({});
+  const [loadingMap, setLoadingMap] = useState<Record<string, boolean>>({});
 
   const months = useMemo(() => Array.from({ length: 3 }, (_, i) => {
     const dt = DateTime.now().minus({ months: i });
@@ -38,46 +34,31 @@ export function useTaxAnnexesLogic() {
     };
   }), []);
 
-  useEffect(() => {
-    if (!remoteUrl) return;
+  const handleDownload = async (month: typeof months[0], anexoValue: string) => {
+    const key = `${month.initialDate}-${anexoValue}`;
+    if (loadingMap[key]) return;
 
-    const initialMap: UrlMap = {};
-    months.forEach(month => {
-      ANEXO_OPTIONS.forEach(opt => {
-        initialMap[`${month.initialDate}-${opt.value}`] = { url: '#', loading: true };
-      });
-    });
-    setUrlMap(initialMap);
+    const params = [
+      `option=2`,
+      `initialDate=${encodeURIComponent(month.initialDate)}`,
+      `finalDate=${encodeURIComponent(month.finalDate)}`,
+      `anexo=${anexoValue}`,
+      `sucursal=${selectedSucursal}`,
+    ].join('&');
 
-    months.forEach(month => {
-      ANEXO_OPTIONS.forEach(async (opt) => {
-        const key = `${month.initialDate}-${opt.value}`;
-        const params = [
-          `option=2`,
-          `initialDate=${encodeURIComponent(month.initialDate)}`,
-          `finalDate=${encodeURIComponent(month.finalDate)}`,
-          `anexo=${opt.value}`,
-          `sucursal=${selectedSucursal}`,
-        ].join('&');
-
-        try {
-          const response = await get(`config/url?route=download.excel.electronic&${params}`);
-          const resolvedUrl = response.data?.url ?? '#';
-          setUrlMap(prev => ({ ...prev, [key]: { url: resolvedUrl, loading: false } }));
-        } catch {
-          setUrlMap(prev => ({ ...prev, [key]: { url: '#', loading: false } }));
-        }
-      });
-    });
-  }, [remoteUrl, selectedSucursal, months]);
-
-  const buildUrl = (month: typeof months[0], anexoValue: string) => {
-    return urlMap[`${month.initialDate}-${anexoValue}`]?.url ?? '#';
+    setLoadingMap(prev => ({ ...prev, [key]: true }));
+    try {
+      const response = await get(`config/url?route=download.excel.electronic&${params}`);
+      const resolvedUrl = response.data?.url;
+      if (resolvedUrl) window.open(resolvedUrl, '_blank');
+    } finally {
+      setLoadingMap(prev => ({ ...prev, [key]: false }));
+    }
   };
 
   const isUrlLoading = (month: typeof months[0], anexoValue: string) => {
-    return urlMap[`${month.initialDate}-${anexoValue}`]?.loading ?? true;
+    return loadingMap[`${month.initialDate}-${anexoValue}`] ?? false;
   };
 
-  return { months, selectedSucursal, setSelectedSucursal, buildUrl, isUrlLoading };
+  return { months, selectedSucursal, setSelectedSucursal, handleDownload, isUrlLoading };
 }
