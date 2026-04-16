@@ -1,6 +1,6 @@
 'use client';
 import { Button, Preset } from '@/components/button/button';
-import { ButtonDownload } from '@/components/button/button-download';
+import { ButtonDownloadGet } from '@/components/button/button-download-get';
 import { ProductsSearch } from '@/components/search/ProductsSearch';
 import { ShowProductSearched } from '@/components/search/ShowProductSearched';
 import { ToasterMessage } from '@/components/toaster-message';
@@ -133,9 +133,9 @@ export default function Page() {
               </div>
               <div className="col-span-1">
                 {productsAdded?.length > 0 && (
-                  <ButtonDownload href={`download/pdf/transfer/${activeTransfer.id}`}>
+                  <ButtonDownloadGet href={`id=${activeTransfer.id}&route=download.pdf.transfer`}>
                     <FaDownload size={22} />
-                  </ButtonDownload>
+                  </ButtonDownloadGet>
                 )}
               </div>
             </div>

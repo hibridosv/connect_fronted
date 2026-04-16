@@ -1,6 +1,6 @@
 "use client";
 import { Button, Preset } from "@/components/button/button";
-import { ButtonDownload } from "@/components/button/button-download";
+import { ButtonDownloadGet } from "@/components/button/button-download-get";
 import Modal from "@/components/modal/Modal";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -69,7 +69,8 @@ export function PayedModal(props: PayedModal) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-       { activeConfig && activeConfig.includes("print-link") && <ButtonDownload autoclass={false} href={`download/pdf/invoice/${orderPayed.id}`}><Button text="Imprimir" preset={Preset.primary} isFull disabled={sending} /></ButtonDownload>  }
+       { activeConfig && activeConfig.includes("print-link") && 
+       <ButtonDownloadGet href={`id=${orderPayed.id}&route=download.pdf.invoice`}><Button text="Imprimir" preset={Preset.primary} isFull disabled={sending} /></ButtonDownloadGet>  }
         <Button onClick={handleClose} preset={Preset.close} isFull disabled={sending} /> 
       </Modal.Footer>
     </Modal>

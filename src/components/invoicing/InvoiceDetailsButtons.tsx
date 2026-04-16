@@ -5,7 +5,7 @@ import useToastMessageStore from "@/stores/toastMessageStore";
 import { FaPrint } from "react-icons/fa";
 import { MdCreditScore } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { ButtonDownload } from "../button/button-download";
+import { ButtonDownloadGet } from "../button/button-download-get";
 import { DeleteModal } from "../DeleteModal";
 
 
@@ -34,16 +34,16 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
               <div className="flex items-center justify-center gap-8">
 
                 { activeConfig && activeConfig.includes("print-link") ? (
-                  <ButtonDownload
+                  <ButtonDownloadGet
                     autoclass={false} 
-                    href={`download/pdf/invoice/${order?.id}`}
+                    href={`id=${order?.id}&route=download.pdf.invoice`}
                     style="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-blue-600 transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <FaPrint size={28} />
                     </div>
                     <span className="text-xs font-medium">Imprimir</span>
-                  </ButtonDownload>
+                  </ButtonDownloadGet>
                 ) : (
                   <button
                     title="Imprimir"

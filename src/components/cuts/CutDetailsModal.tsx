@@ -1,11 +1,11 @@
 "use client";
-import { Button, Preset } from "../button/button";
-import { FaDownload } from "react-icons/fa";
-import useConfigStore from "@/stores/configStore";
-import Modal from "../modal/Modal";
 import { formatDate, formatTime } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
-import { ButtonDownload } from "../button/button-download";
+import useConfigStore from "@/stores/configStore";
+import { FaDownload } from "react-icons/fa";
+import { Button, Preset } from "../button/button";
+import { ButtonDownloadGet } from "../button/button-download-get";
+import Modal from "../modal/Modal";
 
 
 export interface CutDetailsModalProps {
@@ -141,7 +141,7 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonDownload href={`download/pdf/cut/${record.id}`}><FaDownload  size={24}/></ButtonDownload>
+        <ButtonDownloadGet href={`id=${record.id}&route=download.pdf.cut`}><FaDownload  size={24}/></ButtonDownloadGet>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>

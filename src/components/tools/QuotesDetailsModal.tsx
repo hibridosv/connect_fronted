@@ -8,7 +8,7 @@ import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { FaDownload } from "react-icons/fa";
 import { Alert } from "../Alert/Alert";
-import { ButtonDownload } from "../button/button-download";
+import { ButtonDownloadGet } from "../button/button-download-get";
 import { Loader } from "../Loader";
 
 export interface QuotesDetailsModalI {
@@ -154,7 +154,7 @@ export function QuotesDetailsModal({ onClose, isShow }: QuotesDetailsModalI) {
         <div className="flex justify-end gap-4">
           {
            quote && !isSending && 
-           <ButtonDownload href={`download/pdf/quote/${quote.id}`}><FaDownload  size={24}/></ButtonDownload>
+           <ButtonDownloadGet href={`id=${quote.id}&route=download.pdf.quote`}><FaDownload  size={24}/></ButtonDownloadGet>
           }
           <Button onClick={()=>chargeRegisters(quote.id)} preset={isSending ? Preset.saving : Preset.save} text="Facturar" disabled={isSending} />
         <Button onClick={onClose} preset={Preset.close} disabled={false} />

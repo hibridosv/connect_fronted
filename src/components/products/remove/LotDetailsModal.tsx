@@ -1,8 +1,8 @@
 
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
+import { ButtonDownloadGet } from "@/components/button/button-download-get";
+import Modal from "@/components/modal/Modal";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { ButtonDownload } from "@/components/button/button-download";
 import { FaDownload } from "react-icons/fa";
 import { typeFailure } from "../utils";
 
@@ -73,7 +73,7 @@ export function LotDetailsModal(props: LotDetailsModalProps) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonDownload href={`download/pdf/failure/${product?.id}`}><FaDownload size={24} /></ButtonDownload>
+        <ButtonDownloadGet href={`id=${product?.id}&route=download.pdf.failure`}><FaDownload size={24} /></ButtonDownloadGet>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>

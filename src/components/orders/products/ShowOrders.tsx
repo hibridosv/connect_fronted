@@ -1,6 +1,6 @@
 'use client'
 import { Alert } from '@/components/Alert/Alert';
-import { ButtonDownload } from '@/components/button/button-download';
+import { ButtonDownloadGet } from '@/components/button/button-download-get';
 import { Popper } from '@/components/popper/Popper';
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
@@ -80,7 +80,7 @@ export function ShowOrders() {
                 </span>
                 { downloadStatus && 
                 <div className="ml-1">
-                  <ButtonDownload autoclass={false} href={`download/pdf/order/${order.id}`}><FaDownload /></ButtonDownload>
+                  <ButtonDownloadGet autoclass={false} href={`id=${order.id}&route=download.pdf.order`}><FaDownload /></ButtonDownloadGet>
                 </div> }
               </div>
           ))}

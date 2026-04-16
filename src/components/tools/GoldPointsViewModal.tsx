@@ -1,8 +1,7 @@
 'use client';
 
-import Modal from '@/components/modal/Modal';
 import { Button, Preset } from '@/components/button/button';
-import { ButtonDownload } from '@/components/button/button-download';
+import Modal from '@/components/modal/Modal';
 import { formatDate, formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { formatDuiWithAll, numberToMoney } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -10,6 +9,7 @@ import goldPointsStore from '@/stores/tools/goldPointsStore';
 import { useEffect } from 'react';
 import { FaDownload } from 'react-icons/fa';
 import { LuLoaderCircle } from 'react-icons/lu';
+import { ButtonDownloadGet } from '../button/button-download-get';
 import { commissionTypeMap } from './utils';
 
 interface GoldPointsViewModalProps {
@@ -92,9 +92,9 @@ export function GoldPointsViewModal({ isShow, onClose, record, onAction }: GoldP
                         <td className="px-3 py-2 text-right">{numberToMoney(item?.total ?? 0, system)}</td>
                         <td className="px-3 py-2 text-right font-bold">{numberToMoney(commissionValue, system)}</td>
                         <td className="px-3 py-2 text-center">
-                          <ButtonDownload href={`download/pdf/commission/${item.id}`}>
+                          <ButtonDownloadGet href={`id=${item.id}&route=download.pdf.commission`}>
                             <FaDownload size={12} className="text-primary" />
-                          </ButtonDownload>
+                          </ButtonDownloadGet>
                         </td>
                       </tr>
                     );
@@ -127,9 +127,9 @@ export function GoldPointsViewModal({ isShow, onClose, record, onAction }: GoldP
       </Modal.Body>
       <Modal.Footer>
         {record.status === 3 && (
-          <ButtonDownload href={`download/pdf/commission/gold/${record.id}`}>
+          <ButtonDownloadGet href={`id=${record.id}&route=download.pdf.commission.gold`}>
             <FaDownload size={20} className="text-primary" />
-          </ButtonDownload>
+          </ButtonDownloadGet>
         )}
         {record.status === 2 && (
           <Button onClick={handleDelete} preset={Preset.cancel} disabled={saving} text="ELIMINAR REPORTE" />

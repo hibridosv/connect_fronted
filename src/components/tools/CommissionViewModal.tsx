@@ -1,7 +1,6 @@
 'use client';
 
 import { Button, Preset } from '@/components/button/button';
-import { ButtonDownload } from '@/components/button/button-download';
 import Modal from '@/components/modal/Modal';
 import { useCommissionsLogic } from '@/hooks/tools/useCommissionsLogic';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
@@ -10,6 +9,7 @@ import useConfigStore from '@/stores/configStore';
 import commissionsStore from '@/stores/tools/commissionsStore';
 import { FaDownload } from 'react-icons/fa';
 import { LuLoaderCircle } from 'react-icons/lu';
+import { ButtonDownloadGet } from '../button/button-download-get';
 import { commissionStatusMap } from './utils';
 
 interface CommissionViewModalProps {
@@ -161,9 +161,9 @@ export function CommissionViewModal({ isShow, onClose, record }: CommissionViewM
       </Modal.Body>
       <Modal.Footer>
         {record.status === 3 && (
-          <ButtonDownload href={`download/pdf/commission/${record.id}`}>
+          <ButtonDownloadGet href={`id=${record.id}&route=download.pdf.commission`}>
             <FaDownload size={18} className="text-primary" />
-          </ButtonDownload>
+          </ButtonDownloadGet>
         )}
         {record.status === 2 && (
           <Button onClick={() => handelDeleteCommission(record.id)} preset={Preset.cancel} disabled={saving} text="ELIMINAR" />

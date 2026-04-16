@@ -1,9 +1,9 @@
 'use client';
 import { Button, Preset } from '@/components/button/button';
-import { ButtonDownload } from '@/components/button/button-download';
 import Modal from '@/components/modal/Modal';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { FaDownload } from 'react-icons/fa';
+import { ButtonDownloadGet } from '../button/button-download-get';
 import { statusOfProductTransfer, statusOfTransfer } from './utils';
 
 export interface TransferDetailsModalProps {
@@ -130,9 +130,9 @@ export function TransferDetailsModal({ onClose, isShow, transfer }: TransferDeta
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonDownload href={`download/pdf/transfer/${transfer.id}`}>
+        <ButtonDownloadGet href={`id=${transfer.id}&route=download.pdf.transfer`}>
           <FaDownload size={20} />
-        </ButtonDownload>
+        </ButtonDownloadGet>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
       </Modal.Footer>
     </Modal>

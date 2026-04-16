@@ -8,7 +8,7 @@ import accountReceivableStore from "@/stores/accounts/accountReceivableStore";
 import useConfigStore from "@/stores/configStore";
 import { FaPrint } from "react-icons/fa";
 import { Button, Preset } from "../button/button";
-import { ButtonDownload } from "../button/button-download";
+import { ButtonDownloadGet } from "../button/button-download-get";
 import { DeleteButton } from "../button/DeleteButton";
 import { nameOfPaymentType } from "../orders/products/PayModal";
 import { statusPayment } from "./utils";
@@ -62,9 +62,9 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
         {
         getFirstElement(reversed, "account_type", record?.account_type)?.id == record.id && (
         activeConfig && activeConfig.includes("print-link") ? 
-        <ButtonDownload autoclass={false} href={`/download/pdf/creditPayment/${record.id}`}>
+        <ButtonDownloadGet autoclass={false} href={`id=${record.id}&route=download.pdf.creditPayment`}>
          <FaPrint className="clickeable ml-2" size={25} color="blue" />
-        </ButtonDownload> :          
+        </ButtonDownloadGet> :          
         <Button preset={Preset.smallPrint} noText onClick={isPrint} style="ml-2" />)
         } 
       </td>

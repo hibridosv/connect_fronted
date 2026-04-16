@@ -3,7 +3,7 @@
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { getCountryProperty, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import { ButtonDownload } from "../button/button-download";
+import { ButtonDownloadGet } from "../button/button-download-get";
 import { NothingHere } from "../NothingHere";
 import SkeletonTable from "../skeleton/skeleton-table";
 
@@ -28,12 +28,11 @@ export function InvoicingCorrelativeTable(props: InvoicingCorrelativeTableI) {
   const listItems = records && records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        <ButtonDownload
-            href={`/download/pdf/invoices/correlative/?invoiceId=${invoiceId}&date=${record?.date}`}
-            autoclass={false}
-            divider="&">
+        <ButtonDownloadGet
+            href={`id=${invoiceId}&date=${record?.date}&route=download.pdf.invoices.correlative`}
+            autoclass={false}>
             { formatDateAsDMY(record?.date) }
-      </ButtonDownload>
+      </ButtonDownloadGet>
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
         { record?.invoices }

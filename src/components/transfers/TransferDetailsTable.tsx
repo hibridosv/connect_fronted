@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { NothingHere } from '@/components/NothingHere';
-import SkeletonTable from '@/components/skeleton/skeleton-table';
 import { DeleteModal } from '@/components/DeleteModal';
+import { NothingHere } from '@/components/NothingHere';
 import { Button, Preset } from '@/components/button/button';
-import { ButtonDownload } from '@/components/button/button-download';
-import { MdCheck, MdOutlineDownloading } from 'react-icons/md';
+import SkeletonTable from '@/components/skeleton/skeleton-table';
+import useToastMessageStore from '@/stores/toastMessageStore';
+import { useState } from 'react';
 import { AiOutlineFundView } from 'react-icons/ai';
 import { FaDownload } from 'react-icons/fa';
-import useToastMessageStore from '@/stores/toastMessageStore';
+import { MdCheck, MdOutlineDownloading } from 'react-icons/md';
+import { ButtonDownloadGet } from '../button/button-download-get';
 
 const statusOfProductTransfer = (status: number) => {
   switch (status) {
@@ -150,9 +150,9 @@ export function TransferDetailsTable({
               />
             </>
           ) : (
-            <ButtonDownload href={`download/pdf/transfer/${transfer.id}`}>
+            <ButtonDownloadGet href={`id=${transfer.id}&route=download.pdf.transfer`}>
               <FaDownload size={22} />
-            </ButtonDownload>
+            </ButtonDownloadGet>
           )}
         </div>
       </div>

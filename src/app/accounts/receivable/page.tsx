@@ -1,7 +1,7 @@
 'use client';
 import { AccountsReceivableTable } from "@/components/accounts/AccountsReceivableTable";
 import { AddReceivableAddModal } from "@/components/accounts/AddReceivableAddModal";
-import { ButtonDownload } from "@/components/button/button-download";
+import { ButtonDownloadGet } from "@/components/button/button-download-get";
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { Option, RadioButton } from "@/components/button/RadioButton";
@@ -64,9 +64,9 @@ export default function Page() {
               <ShowClientSearched />
               {
                 clientSearched.id && (
-                  <ButtonDownload autoclass={false} href={`download/pdf/creditStatement/${clientSearched?.id}`}>
+                  <ButtonDownloadGet autoclass={false} href={`id=${clientSearched?.id}&route=download.pdf.creditStatement`}>
                   <button className="mt-4 w-full bg-primary text-white py-2 rounded-lg hover:bg-primary/80 transition-colors">Descargar Estado de Cuenta</button>
-                 </ButtonDownload>
+                 </ButtonDownloadGet>
                   
                 )
               }
