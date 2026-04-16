@@ -1,9 +1,7 @@
 import { LinkUrls } from '@/components/button/LinkList';
-import { get } from '@/services/httpService';
 import useContactStore from '@/stores/ContactStore';
 import useModalStore from '@/stores/modalStorage';
-import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const downloadLinkNames: Record<string, string> = {
   '&filterWhere[is_client]==1': 'Descargar clientes',
@@ -15,27 +13,11 @@ const downloadLinkNames: Record<string, string> = {
 export function useContactsLogic(currentPage: string, searchTerm: string, param: string = "") {
   const { loadContacts, deleteContact } = useContactStore();
   const { closeModal } = useModalStore();
-  const { data: session } = useSession();
-  const remoteUrl = session?.url;
-  const [links, setLinks] = useState<LinkUrls[]>([]);
 
-  useEffect(() => {
-    if (!remoteUrl) return;
-
+  const links: LinkUrls[] = useMemo(() => {
     const name = downloadLinkNames[param] ?? 'Descargar contactos';
-    const filterParam = param ?? '';
-
-    setLinks([{ name, link: '', isUrl: true, loading: true }]);
-
-    get(`config/url?route=download.excel.contacts&sort=name${filterParam}`)
-      .then(response => {
-        const resolvedUrl = response.data?.url;
-        setLinks([{ name, link: resolvedUrl ?? '', isUrl: true, loading: false }]);
-      })
-      .catch(() => {
-        setLinks([]);
-      });
-  }, [remoteUrl, param]);
+    return [{ name, route: `download.excel.contacts&sort=name${param}`, isUrl: true }];
+  }, [param]);
 
   useEffect(() => {
     if (searchTerm === "") {
