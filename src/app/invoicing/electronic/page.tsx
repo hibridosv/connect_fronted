@@ -14,7 +14,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { history, handleGet,links, resendDocument } = useInvoicingElectronicLogic('electronic/documents', 'excel/electronic/');
+  const { history, handleGet,links, resendDocument } = useInvoicingElectronicLogic('electronic/documents', 'download.excel.electronic');
   const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1&FilterWhereIn[status]==1,0');
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
   const { getElement} = useTempStorage();
@@ -27,7 +27,7 @@ export default function Page() {
       if (values.invoiceId == 4) values.invoiceId = '14';
       if (values.invoiceId == 5) values.invoiceId = '05';
       if (values.invoiceId == 8) values.invoiceId = '04';
-        await handleGet(values, 'electronic/documents', 'excel/electronic/');
+        await handleGet(values, 'electronic/documents', 'download.excel.electronic');
     }
 
   return (

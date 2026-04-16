@@ -11,13 +11,13 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/transfers', 'excel/transfers/');
+  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/transfers', 'download.excel.transfers');
   const isLoading = loading.history ?? false;
   const { modals, closeModal } = useModalStore();
   const { getElement } = useTempStorage();
 
   const handleFormSubmit = async (values: DateRangeValues) => {
-    await handleGet(values, 'histories/transfers', 'excel/transfers/');
+    await handleGet(values, 'histories/transfers', 'download.excel.transfers');
   }
 
 

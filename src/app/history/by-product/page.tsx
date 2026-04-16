@@ -17,7 +17,7 @@ import { DateTime } from "luxon";
 export default function Page() {
   const { getElement } = useTempStorage();
   const elementSelected = getElement('productSearched');
-  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-product', 'excel/by-product/', false);
+  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-product', 'download.excel.by-product', false);
   const isLoading = loading.history ?? false;
   const { activeConfig } = useConfigStore();
   const isShowLot = activeConfig && activeConfig.includes('sales-change-lot')
@@ -28,7 +28,7 @@ export default function Page() {
       return;
     }
     values.product_id = elementSelected?.id;
-    await handleGet(values, 'histories/by-product', 'excel/by-product/', [{ name: "product_id", value: elementSelected?.id }]);
+    await handleGet(values, 'histories/by-product', 'download.excel.by-product', [{ name: "product_id", value: elementSelected?.id }]);
   };
 
   const handleLotSearch = async (lot: string) => {
@@ -42,7 +42,7 @@ export default function Page() {
     await handleGet(
       params,
       'histories/by-product',
-      'excel/by-product/',
+      'download.excel.by-product',
       [{ name: "product_id", value: elementSelected?.id }, ...(lot ? [{ name: "lot", value: lot }] : [])]
     );
   };

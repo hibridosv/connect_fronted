@@ -20,7 +20,7 @@ export default function Page() {
 
   const { history, loading, links } = useHistoryCostLogic(
     `histories/cost?perPage=25${elementSelected?.id ? `&product_id=${elementSelected?.id}` : ''}`, 
-    'excel/cost/', 
+    'download.excel.cost', 
     params
   );
   const isLoading = loading.history ?? false; 
@@ -41,7 +41,7 @@ export default function Page() {
             <ShowProductSearched />
           </div>
           <div className="p-4">
-            <LinksList links={links} text="DESCARGAS" separator={ elementSelected ? '&' : '?'} />
+            <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
 </div>

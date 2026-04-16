@@ -11,7 +11,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useInvoicingLogic('documents', 'excel/invoices/documents/');
+  const { history, handleGet, loading, links } = useInvoicingLogic('documents', 'download.excel.invoices.documents');
   const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
@@ -20,7 +20,7 @@ export default function Page() {
   const documentSelected = getElement('documentSelected') ?? {};
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'documents', 'excel/invoices/documents/');
+        await handleGet(values, 'documents', 'download.excel.invoices.documents');
     }
 
 

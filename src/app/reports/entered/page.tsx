@@ -7,11 +7,11 @@ import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useReportsLogic('reports/products-in', 'excel/reports/products-in/');
+  const { history, handleGet, loading, links } = useReportsLogic('reports/products-in', 'download.excel.reports.products-in');
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'reports/products-in', 'excel/reports/products-in/');
+        await handleGet(values, 'reports/products-in', 'download.excel.reports.products-in');
     }
 
   return (

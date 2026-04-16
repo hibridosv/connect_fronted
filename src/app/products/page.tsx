@@ -54,7 +54,7 @@ export default function Page() {
 
           { permissionExists(permission, "inventory-download") && 
               <div className="mt-2 p-2">
-                <LinksList links={links} separator="?" text="DESCARGAS" />
+                <LinksList links={links} text="DESCARGAS" />
                 <div onClick={loadingRequest ? ()=>{} : ()=>getRequest('transactions/products/prices')} >
                     {loadingRequest ? <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
                       ACTUALIZANDO...

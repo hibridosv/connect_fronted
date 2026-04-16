@@ -7,11 +7,11 @@ import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useReportsLogic('reports/failures', 'excel/reports/failures/');
+  const { history, handleGet, loading, links } = useReportsLogic('reports/failures', 'download.excel.reports.failures');
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'reports/failures', 'excel/reports/failures/');
+        await handleGet(values, 'reports/failures', 'download.excel.reports.failures');
     }
 
   return (

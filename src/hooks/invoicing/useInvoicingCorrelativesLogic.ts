@@ -20,8 +20,8 @@ export function useInvoicingCorrelativesLogic(url: string, loadAtStart: boolean 
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
             if (response.status === 200) {
-                addLink(data, 'excel/invoices/correlatives/', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar Excel");
-                addLink(data, 'pdf/invoices/correlatives/', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar PDF");
+                addLink(data, 'download.excel.invoices.correlatives', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar Excel");
+                addLink(data, 'download.pdf.invoices.correlatives', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar PDF");
             }
         } catch (error) {
             console.error(error);

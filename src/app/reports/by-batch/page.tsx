@@ -14,7 +14,7 @@ import useTempStorage from "@/stores/useTempStorage";
 export default function Page() {
   const { getElement } = useTempStorage();
   const elementSelected = getElement('productSearched');
-  const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'excel/reports/by-lot/');
+  const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'download.excel.reports.by-lot');
   const isLoading = loading.history ?? false; 
 
 
@@ -25,7 +25,7 @@ export default function Page() {
         } else {
           urlFixed = '?perPage=20&page=1';
         }
-        await handleGet(values, `reports/lot${urlFixed}`, 'excel/reports/by-lot/', elementSelected ? [{name: "product_id", value: elementSelected?.id}] : []);
+        await handleGet(values, `reports/lot${urlFixed}`, 'download.excel.reports.by-lot', elementSelected ? [{name: "product_id", value: elementSelected?.id}] : []);
     }
 
 

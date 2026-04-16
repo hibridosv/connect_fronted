@@ -7,11 +7,11 @@ import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/cuts', 'excel/cut/');
+  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/cuts', 'download.excel.cut');
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        await handleGet(values, 'histories/cuts', 'excel/cut/');
+        await handleGet(values, 'histories/cuts', 'download.excel.cut');
     }
 
   return (

@@ -47,7 +47,7 @@ export function useDownloadsLogic(url: string) {
     
     const handleCreateLinks = async (values: DateRangeValues) => { 
         openLoading('loading')
-        addLink(values, 'excel/electronic/', values.anexo ? [{name: "anexo", value: values.anexo } , { name: "sucursal", value: values.sucursal }] : null);
+        addLink(values, 'download.excel.electronic', values.anexo ? [{name: "anexo", value: values.anexo } , { name: "sucursal", value: values.sucursal }] : null);
         closeLoading('loading')
     }
 

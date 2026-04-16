@@ -11,7 +11,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  const { history, resendDocument } = useInvoicingElectronicLogic('electronic/documents/rejected', 'excel/electronic/', true);
+  const { history, resendDocument } = useInvoicingElectronicLogic('electronic/documents/rejected', 'download.excel.electronic', true);
   const { getElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();
   const documentSelected = getElement('documentSelected') ?? {};

@@ -1,23 +1,23 @@
 'use client';
 
-import { dateToNumberValidate } from "@/lib/utils";
-import { md5 } from "js-md5";
+import { LuLoader } from "react-icons/lu";
 import { LiComponent } from "./LiComponent";
 
 export interface LinkUrls {
   name: string;
   link: string;
   isUrl?: boolean;
+  loading?: boolean;
+  _id?: string;
 }
 
 export interface LinksListProps {
   links: LinkUrls[];
   text?: string;
-  separator?: string;
 }
 
 export function LinksList(props: LinksListProps) {
-  const { links, text = "Descargas", separator = '&' } = props;
+  const { links, text = "Descargas" } = props;
 
   if (!links || links.length === 0) {
     return null;
@@ -30,9 +30,17 @@ export function LinksList(props: LinksListProps) {
       </div>
       <ul className="divide-y divide-bg-subtle">
         {links.map((item, key) => {
+          if (item.loading) {
+            return (
+              <li key={key} className="flex justify-between items-center p-3">
+                <span className="font-medium text-text-muted">{item.name}</span>
+                <LuLoader className="animate-spin text-text-muted" size={16} />
+              </li>
+            );
+          }
           if (item.name && item.link) {
             return (
-              <LiComponent key={key} text={item.name} href={`${item.link}${separator}code=${md5(dateToNumberValidate())}`} />
+              <LiComponent key={key} text={item.name} href={`${item.link}`} />
             );
           }
           return null;

@@ -1,8 +1,6 @@
 'use client';
 import { ViewTitle } from "@/components/ViewTitle";
 import { ANEXO_OPTIONS, SUCURSAL_OPTIONS, useTaxAnnexesLogic } from "@/hooks/reports/useTaxAnnexesLogic";
-import { dateToNumberValidate } from "@/lib/utils";
-import { md5 } from "js-md5";
 import { LuDownload } from "react-icons/lu";
 
 export default function Page() {
@@ -59,7 +57,7 @@ export default function Page() {
                   {months.map((month) => (
                     <td key={`${month.monthName}-${month.year}`} className="px-4 py-3 whitespace-nowrap text-center">
                       <a
-                        href={`${buildUrl(month, opt.value)}&code=${md5(dateToNumberValidate())}`}
+                        href={`${buildUrl(month, opt.value)}`}
                         target="_blank"
                         rel="noreferrer"
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 clickeable ${downloadBtnClass}`}

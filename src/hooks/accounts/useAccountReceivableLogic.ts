@@ -64,7 +64,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
       ...(contactSelected?.id ? [{ name: 'client', value: contactSelected.id }] : []),
       ...(selectedOption?.id != 2 ? [{ name: 'status', value: selectedOption?.id }] : []),
     ];
-    addLink(data, 'excel/credits/', params, 3, 'Descargar Reporte');
+    addLink(data, 'download.excel.credits', params, 3, 'Descargar Reporte');
   }, [addLink, contactSelected, selectedOption]);
 
   return { savePayment, isPrint, handleCheckIn, links, handleGet };
