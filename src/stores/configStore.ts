@@ -2,6 +2,7 @@ import { CashDrawer } from '@/interfaces/cashdrawers';
 import { User } from '@/interfaces/user';
 import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
+import { encryptedStorage } from '@/lib/encryptedStorage';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
 
@@ -121,7 +122,7 @@ const useConfigStore = create(
     }),
     {
       name: 'config-storage',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => encryptedStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
