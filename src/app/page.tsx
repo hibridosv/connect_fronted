@@ -43,7 +43,7 @@ export default function Home() {
         redirect: false,
       });
       if (result?.error) {
-        setError("Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.");
+        setError(result.error);
         setLoading(false);
         setMessage(null);
       } else if (result?.ok) {

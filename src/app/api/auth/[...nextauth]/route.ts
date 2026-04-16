@@ -30,19 +30,17 @@ const handler = NextAuth({
         // console.log("Backend response body:", user);
 
         if (res.ok && user) {
-          // console.log("Authorization successful.");
-            return { 
-              ...user, 
-              accessToken: user.access_token, 
-              refreshToken: user.refresh_token, 
-              expiresAt: user.expires_at, 
+            return {
+              ...user,
+              accessToken: user.access_token,
+              refreshToken: user.refresh_token,
+              expiresAt: user.expires_at,
               url: user.url,
               status: user.status,
               redirect: user.redirect
             }
         }
-        // console.log("Authorization failed.");
-        return null
+        throw new Error(user?.message || user?.error_description || 'Usuario o contraseña incorrectos')
       }
     })
   ],
