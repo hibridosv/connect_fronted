@@ -23,11 +23,16 @@ function LinkItem({ item }: { item: LinkUrls }) {
 
   const handleClick = async () => {
     if (loading) return;
+    const newWindow = window.open('', '_blank');
     setLoading(true);
     try {
       const response = await get(`config/url?route=${item.route}`);
       const resolvedUrl = response.data?.url;
-      if (resolvedUrl) window.open(resolvedUrl, '_blank');
+      if (resolvedUrl && newWindow) {
+        newWindow.location.href = resolvedUrl;
+      } else {
+        newWindow?.close();
+      }
     } finally {
       setLoading(false);
     }
