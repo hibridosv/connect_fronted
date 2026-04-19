@@ -51,6 +51,37 @@ function getClientIp(req: NextRequest): string {
 }
 // ---------------------------------------------------------------------------
 
+// Renueva el access token usando el refresh token de Laravel Passport.
+// Retorna el token actualizado, o el token con error si falla.
+async function refreshAccessToken(token: any) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        grant_type: "refresh_token",
+        client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID,
+        client_secret: process.env.NEXT_PUBLIC_AUTH_SECRET_ID,
+        refresh_token: token.refreshToken,
+      }),
+    });
+
+    const refreshed = await res.json();
+
+    if (!res.ok) throw new Error(refreshed?.message ?? "Refresh failed");
+
+    return {
+      ...token,
+      accessToken: refreshed.access_token,
+      refreshToken: refreshed.refresh_token ?? token.refreshToken,
+      expiresAt: refreshed.expires_at,
+      error: undefined,
+    };
+  } catch {
+    return { ...token, error: "RefreshTokenError" as const };
+  }
+}
+
 const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
@@ -92,6 +123,7 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }: any) {
+      // Login inicial: poblar el token con los datos del backend
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -99,8 +131,19 @@ const authOptions: AuthOptions = {
         token.url = user.url;
         token.status = user.status;
         token.redirect = user.redirect;
+        return token;
       }
-      return token
+
+      // expiresAt es Unix timestamp en segundos; renovar 60s antes para evitar
+      // que una petición en vuelo use un token a punto de expirar.
+      const BUFFER_SECS = 60;
+      const isValid =
+        token.expiresAt &&
+        Date.now() < (Number(token.expiresAt) - BUFFER_SECS) * 1000;
+
+      if (isValid) return token;
+
+      return refreshAccessToken(token);
     },
     async session({ session, token }: any) {
       session.accessToken = token.accessToken;
@@ -109,6 +152,7 @@ const authOptions: AuthOptions = {
       session.url = token.url;
       session.status = token.status;
       session.redirect = token.redirect;
+      session.error = token.error;
       return session
     },
     async redirect({ url, baseUrl }) {

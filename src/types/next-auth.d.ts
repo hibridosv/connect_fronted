@@ -8,6 +8,7 @@ declare module "next-auth" {
     url?: string;
     status?: string;
     redirect?: string;
+    error?: "RefreshTokenError";
   }
 }
 
@@ -19,5 +20,6 @@ declare module "next-auth/jwt" {
     url?: string;
     status?: string;
     redirect?: string;
+    error?: "RefreshTokenError";
   }
 }
