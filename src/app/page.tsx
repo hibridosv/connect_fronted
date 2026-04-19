@@ -42,11 +42,7 @@ export default function Home() {
         password,
         redirect: false,
       });
-      if (result?.status === 429) {
-        setError("Demasiados intentos fallidos. Espera unos minutos antes de intentarlo de nuevo.");
-        setLoading(false);
-        setMessage(null);
-      } else if (result?.error) {
+      if (result?.error) {
         setError("Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.");
         setLoading(false);
         setMessage(null);

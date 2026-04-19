@@ -1,17 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { getSession, signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 
+// Define una interfaz que extiende la configuración de Axios para incluir nuestra propiedad personalizada
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
-}
-
-// Evita llamar signOut múltiples veces cuando varias peticiones fallan a la vez
-let isSigningOut = false;
-
-async function forceSignOut() {
-  if (isSigningOut) return;
-  isSigningOut = true;
-  await signOut({ redirect: true, callbackUrl: '/' });
 }
 
 const httpService = axios.create({
@@ -23,13 +15,9 @@ const httpService = axios.create({
 httpService.interceptors.request.use(
   async (config) => {
     const session = await getSession();
+    // console.log('Session:', session);
 
-    // Si el refresh token falló (token revocado), cerrar sesión antes de continuar
-    if (session?.error === 'RefreshTokenError') {
-      forceSignOut();
-      return Promise.reject(new Error('Sesión expirada'));
-    }
-
+    // Si la sesión tiene una URL, úsala como baseURL para esta petición
     if (session?.url) {
       config.baseURL = `${session.url}/api/v2`;
     }
@@ -61,13 +49,17 @@ httpService.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Token inválido o revocado: cerrar sesión y redirigir al login
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      forceSignOut();
-      return Promise.reject(error);
+    if (error.response?.status === 401) {
+      console.error('401 Unauthorized: Session might be expired or invalid.');
+      // NextAuth.js debería manejar la redirección al login si la sesión es inválida.
+      // No se necesita lógica de refresco de token aquí.
     }
 
+    if (error.response) {
+      console.error(`Error en la petición: ${error.response.status} - ${(error.response.data as any)?.message || error.message}`);
+    } else if (originalRequest) {
+      console.error('Error en la petición:', error.message);
+    }
     return Promise.reject(error);
   }
 );

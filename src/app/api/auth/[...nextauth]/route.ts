@@ -1,88 +1,8 @@
 
-import NextAuth, { AuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { NextRequest, NextResponse } from "next/server"
 
-// ---------------------------------------------------------------------------
-// Rate limiter en memoria (persiste por proceso Node.js)
-// Para deployments multi-instancia reemplazar con Upstash Redis o similar.
-// ---------------------------------------------------------------------------
-interface RateLimitRecord {
-  count: number;
-  resetAt: number;
-}
-
-const loginAttempts = new Map<string, RateLimitRecord>();
-
-const WINDOW_MS = 15 * 60 * 1000; // ventana de 15 minutos
-const MAX_ATTEMPTS = 10;           // máximo de intentos por ventana
-
-// Limpieza periódica para evitar memory leaks en procesos de larga duración
-setInterval(() => {
-  const now = Date.now();
-  for (const [ip, record] of loginAttempts.entries()) {
-    if (now > record.resetAt) loginAttempts.delete(ip);
-  }
-}, WINDOW_MS);
-
-function checkRateLimit(ip: string): { limited: boolean; retryAfterSecs: number } {
-  const now = Date.now();
-  const record = loginAttempts.get(ip);
-
-  if (!record || now > record.resetAt) {
-    loginAttempts.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return { limited: false, retryAfterSecs: 0 };
-  }
-
-  if (record.count >= MAX_ATTEMPTS) {
-    return { limited: true, retryAfterSecs: Math.ceil((record.resetAt - now) / 1000) };
-  }
-
-  record.count++;
-  return { limited: false, retryAfterSecs: 0 };
-}
-
-function getClientIp(req: NextRequest): string {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "127.0.0.1"
-  );
-}
-// ---------------------------------------------------------------------------
-
-// Renueva el access token usando el refresh token de Laravel Passport.
-// Retorna el token actualizado, o el token con error si falla.
-async function refreshAccessToken(token: any) {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        grant_type: "refresh_token",
-        client_id: process.env.NEXT_PUBLIC_AUTH_CLIENT_ID,
-        client_secret: process.env.NEXT_PUBLIC_AUTH_SECRET_ID,
-        refresh_token: token.refreshToken,
-      }),
-    });
-
-    const refreshed = await res.json();
-
-    if (!res.ok) throw new Error(refreshed?.message ?? "Refresh failed");
-
-    return {
-      ...token,
-      accessToken: refreshed.access_token,
-      refreshToken: refreshed.refresh_token ?? token.refreshToken,
-      expiresAt: refreshed.expires_at,
-      error: undefined,
-    };
-  } catch {
-    return { ...token, error: "RefreshTokenError" as const };
-  }
-}
-
-const authOptions: AuthOptions = {
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -90,7 +10,8 @@ const authOptions: AuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
+        // console.log("Attempting to authorize...");
         const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
           method: 'POST',
           headers: {
@@ -104,26 +25,29 @@ const authOptions: AuthOptions = {
             password: credentials?.password,
           }),
         })
+        // console.log("Backend response status:", res.status);
         const user = await res.json()
+        // console.log("Backend response body:", user);
 
         if (res.ok && user) {
-            return {
-              ...user,
-              accessToken: user.access_token,
-              refreshToken: user.refresh_token,
-              expiresAt: user.expires_at,
+          // console.log("Authorization successful.");
+            return { 
+              ...user, 
+              accessToken: user.access_token, 
+              refreshToken: user.refresh_token, 
+              expiresAt: user.expires_at, 
               url: user.url,
               status: user.status,
               redirect: user.redirect
             }
         }
+        // console.log("Authorization failed.");
         return null
       }
     })
   ],
   callbacks: {
     async jwt({ token, user }: any) {
-      // Login inicial: poblar el token con los datos del backend
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -131,19 +55,8 @@ const authOptions: AuthOptions = {
         token.url = user.url;
         token.status = user.status;
         token.redirect = user.redirect;
-        return token;
       }
-
-      // expiresAt es Unix timestamp en segundos; renovar 60s antes para evitar
-      // que una petición en vuelo use un token a punto de expirar.
-      const BUFFER_SECS = 60;
-      const isValid =
-        token.expiresAt &&
-        Date.now() < (Number(token.expiresAt) - BUFFER_SECS) * 1000;
-
-      if (isValid) return token;
-
-      return refreshAccessToken(token);
+      return token
     },
     async session({ session, token }: any) {
       session.accessToken = token.accessToken;
@@ -152,42 +65,17 @@ const authOptions: AuthOptions = {
       session.url = token.url;
       session.status = token.status;
       session.redirect = token.redirect;
-      session.error = token.error;
       return session
     },
     async redirect({ url, baseUrl }) {
+      // console.log("Redirecting to:", url, "from base URL:", baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
   },
   pages: {
     signIn: '/',
   }
-}
+})
 
-const handler = NextAuth(authOptions)
-
-export const GET = handler
-
-export async function POST(req: NextRequest, context: { params: { nextauth: string[] } }) {
-  const isCredentialsCallback =
-    context.params.nextauth?.join("/") === "callback/credentials";
-
-  if (isCredentialsCallback) {
-    const ip = getClientIp(req);
-    const { limited, retryAfterSecs } = checkRateLimit(ip);
-
-    if (limited) {
-      const minutes = Math.ceil(retryAfterSecs / 60);
-      return NextResponse.json(
-        { error: `Demasiados intentos fallidos. Intenta de nuevo en ${minutes} min.` },
-        {
-          status: 429,
-          headers: { "Retry-After": String(retryAfterSecs) },
-        }
-      );
-    }
-  }
-
-  return handler(req, context as any)
-}
+export { handler as GET, handler as POST }
 
