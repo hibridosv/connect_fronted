@@ -9,7 +9,7 @@ export function useProductsSearchModalLogic(currentPage: any, searchTerm: string
   useEffect(() => {
         if ((searchTerm != searchTermNew) && searchTerm != "") {
           setSearchTermNew(searchTerm);
-          loadProducts(`products?sort=description&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices&perPage=50&page=1${searchTerm}`)
+          loadProducts(`products?sort=description&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices&perPage=100&page=1${searchTerm}`)
         }
   }, [loadProducts, currentPage, searchTerm, searchTermNew])
 
