@@ -1,6 +1,5 @@
 'use client';
 
-import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { getLastElement, numberToMoney } from "@/lib/utils";
@@ -75,9 +74,9 @@ export function RestaurantProductsAdded({ order } : any) {
             { numberToMoney(record.total, system) }
             </td>
             <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-              <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ del(order.id, record.cod)} } >
+              {/* <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ del(order.id, record.cod)} } > */}
                 <AiFillCloseCircle size={20} className={`${isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? 'text-grey-800' : 'text-red-800'} clickeable`}  />
-              </CodeRequestGuard>
+              {/* </CodeRequestGuard> */}
             </td>
         </tr>
         )
@@ -104,9 +103,9 @@ export function RestaurantProductsAdded({ order } : any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
-                <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } >
+                {/* <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } > */}
                 { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> : <MdDelete size={22} className={`text-red-800 clickeable`}  /> }
-                </CodeRequestGuard>
+                {/* </CodeRequestGuard> */}
               </th>
             </tr>
           </thead>
