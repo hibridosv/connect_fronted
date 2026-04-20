@@ -2,6 +2,34 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
+async function refreshAccessToken(token: any) {
+  const res = await fetch(`${token.url}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      grant_type: 'refresh_token',
+      refresh_token: token.refreshToken,
+      client_id: process.env.AUTH_CLIENT_ID,
+      client_secret: process.env.AUTH_SECRET_ID,
+      scope: '',
+    }),
+  })
+
+  const refreshed = await res.json()
+
+  if (!res.ok) {
+    return { ...token, error: 'RefreshAccessTokenError' }
+  }
+
+  return {
+    ...token,
+    accessToken: refreshed.access_token,
+    refreshToken: refreshed.refresh_token,
+    expiresAt: Date.now() + refreshed.expires_in * 1000,
+    error: undefined,
+  }
+}
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -10,13 +38,10 @@ const handler = NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
-        // console.log("Attempting to authorize...");
+      async authorize(credentials) {
         const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             grant_type: 'password',
             client_id: process.env.AUTH_CLIENT_ID,
@@ -25,20 +50,19 @@ const handler = NextAuth({
             password: credentials?.password,
           }),
         })
-        // console.log("Backend response status:", res.status);
+
         const user = await res.json()
-        // console.log("Backend response body:", user);
 
         if (res.ok && user) {
-            return {
-              ...user,
-              accessToken: user.access_token,
-              refreshToken: user.refresh_token,
-              expiresAt: user.expires_at,
-              url: user.url,
-              status: user.status,
-              redirect: user.redirect
-            }
+          return {
+            ...user,
+            accessToken: user.access_token,
+            refreshToken: user.refresh_token,
+            expiresAt: Date.now() + user.expires_in * 1000,
+            url: user.url,
+            status: user.status,
+            redirect: user.redirect,
+          }
         }
         throw new Error(user?.message || user?.error_description || 'Usuario o contraseña incorrectos')
       }
@@ -53,8 +77,14 @@ const handler = NextAuth({
         token.url = user.url;
         token.status = user.status;
         token.redirect = user.redirect;
+        return token
       }
-      return token
+
+      if (Date.now() < token.expiresAt) {
+        return token
+      }
+
+      return refreshAccessToken(token)
     },
     async session({ session, token }: any) {
       session.accessToken = token.accessToken;
@@ -63,10 +93,10 @@ const handler = NextAuth({
       session.url = token.url;
       session.status = token.status;
       session.redirect = token.redirect;
+      session.error = token.error;
       return session
     },
     async redirect({ url, baseUrl }) {
-      // console.log("Redirecting to:", url, "from base URL:", baseUrl);
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
   },
@@ -76,4 +106,3 @@ const handler = NextAuth({
 })
 
 export { handler as GET, handler as POST }
-
