@@ -53,7 +53,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
                 <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad extra a agregar</label>
-                <input type="number" step="any" {...register("quantity", { required: true, min: 0.1})} className="input" />
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0.00001})} className="input" />
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>
