@@ -21,7 +21,8 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
   const orderPayed = getElement('paymentSuccess') ?? null;
   const paymentType = getElement('paymentType') ?? 1;
   const { sending, collecting } = ordersStore();
-
+  const tips =  orderPayed?.attributes?.tips ?? 0;
+  const total = orderPayed?.total - orderPayed?.retention + tips;
 
   if (!isShow) return null;
 
@@ -85,10 +86,10 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
           }
 
           <div className="flex justify-center mt-6 text-text-muted text-lg">TOTAL</div>
-          <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(orderPayed?.total - orderPayed?.retention, system)}</div>
+          <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(total, system)}</div>
           { paymentType === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
           <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
-          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(orderPayed?.change, system)}
+          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(orderPayed?.change - tips, system)}
           </div></> : 
           <div className='flex justify-center text-xl font-semibold uppercase text-info'>
             { paymentType === 5 ? 
