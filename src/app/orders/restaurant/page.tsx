@@ -18,6 +18,7 @@ import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeMo
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
+import { PercentSalesType } from "@/components/orders/restaurant/PercentSalesType";
 import { ProductOptionsModal } from "@/components/orders/restaurant/ProductOptionsModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantClients } from "@/components/orders/restaurant/RestaurantClients";
@@ -59,6 +60,7 @@ export default function Page() {
               <RestaurantShowTotal order={order} />
               <RestaurantButtons order={order} />
               <OptionsSelect order={order} />
+              <PercentSalesType />
               <DeliveryContactSearch order={order} />
               <InitialButtons />
           </div>
