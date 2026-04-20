@@ -26,7 +26,7 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
   const listItems = records.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
-        { formatDate(record?.order?.charged_at) } { formatHourAsHM(record?.order?.charged_at)}
+        { formatDate(record?.order?.charged_at ?? record?.updated_at ) } { formatHourAsHM(record?.order?.charged_at  ?? record?.updated_at)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
         { record?.order?.casheir?.name ?? "--" }
@@ -43,6 +43,9 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { record?.product ?? "--" }
+      </td>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
+        { record?.lot ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { record?.quantity ?? "--" }
@@ -71,6 +74,7 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cliente</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Codigo</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Producto</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Lote</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cantidad</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descuento</th>
