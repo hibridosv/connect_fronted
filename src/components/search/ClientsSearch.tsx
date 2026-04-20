@@ -21,7 +21,7 @@ export function ClientsSearch(props: ClientsSearchI) {
     const { param, placeholder = "Buscar Cliente", pagination = 10, tempSelectedName = "clientSelectedBySearch", onSelect } = props;
     const { contacts, loading } = useContactStore();
     const { setElement} = useTempStorage();
-    const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number"], 500);
+    const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
     useContactSearchLogic(currentPage, searchTerm, sortBy, getParamString(param), pagination);
