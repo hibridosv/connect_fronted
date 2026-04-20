@@ -8,8 +8,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { HiMenu } from 'react-icons/hi';
-import { IoHome } from 'react-icons/io5';
-import { IoReloadOutline } from 'react-icons/io5';
+import { IoHome, IoReloadOutline } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
 import { SearchProductModal } from './modal/SearchProductModal';
 import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
