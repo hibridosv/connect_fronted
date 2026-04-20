@@ -34,6 +34,7 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
         body: JSON.stringify({ email: user?.email, change: tenantSelect?.url }),
       });
       const data = await response.json();
+      console.log('oauth response:', JSON.stringify(data));
       if (data.type === 'error') {
         setErrorMessage(true);
       } else {
@@ -50,6 +51,7 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
 
   const handleFormSubmit = async (data: any) => {
     setSending(true);
+    console.log('remoteUrlData completo:', JSON.stringify(remoteUrlData));
     try {
       const result = await signIn('credentials', {
         username: data.username,
