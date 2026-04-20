@@ -1,5 +1,7 @@
 'use client';
 
+import { ENCRYPT_CLIENT_ID } from '@/constants';
+import { encryptText } from '@/lib/encrypt';
 import { getSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
@@ -98,10 +100,10 @@ export default function OverduePage() {
   useEffect(() => { setMounted(true); }, []);
 
   const handleContinue = async () => {
-    document.cookie = 'tenant-status=Active; path=/; SameSite=Lax';
+    const encrypted = encryptText('Active', ENCRYPT_CLIENT_ID);
+    document.cookie = `tenant-status=${encrypted}; path=/; SameSite=Lax`;
     const session = await getSession();
-    const redirectTo = session?.redirect || '/dashboard';
-    window.location.href = redirectTo;
+    window.location.href = session?.redirect || '/dashboard';
   };
 
   return (
@@ -199,7 +201,7 @@ export default function OverduePage() {
           {/* Botones */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
-              onClick={() => { document.cookie = 'tenant-status=Active; path=/; SameSite=Lax'; window.location.href = '/settings/payments'; }}
+              onClick={() => { const enc = encryptText('Active', ENCRYPT_CLIENT_ID); document.cookie = `tenant-status=${enc}; path=/; SameSite=Lax`; window.location.href = '/settings/payments'; }}
               className="group relative z-20 inline-flex items-center gap-2.5 rounded-xl bg-warning px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-warning/20 transition-all duration-300 hover:shadow-xl hover:shadow-warning/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden cursor-pointer"
             >
               <svg className="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

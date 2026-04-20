@@ -52,6 +52,12 @@ const protectedRoutes = [
     if (tenantStatus === "Overdue") {
       return NextResponse.redirect(new URL("/redirects/overdue", req.url));
     }
+    if (tenantStatus === "Info") {
+      return NextResponse.redirect(new URL("/redirects/info", req.url));
+    }
+    if (tenantStatus === "Expiring") {
+      return NextResponse.redirect(new URL("/redirects/expiring", req.url));
+    }
   }
 
   // Allow other requests
