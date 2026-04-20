@@ -1,7 +1,7 @@
 'use client';
 import { useGetProductLogic } from "@/hooks/products/useGetProductLogic";
 import { useProductDetailsLogic } from "@/hooks/products/useProductDetailsLogic";
-import { numberToMoney } from "@/lib/utils";
+import { numberToMoney, numberToMoney4Digits } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
@@ -162,7 +162,7 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
           <div className="space-y-2">
             <h4 className="text-md font-semibold text-text-base border-b border-bg-subtle pb-1">Detalles Adicionales</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <DetailRow label="Costo Unitario" value={numberToMoney(record.unit_cost, system)} icon={<MdOutlineAttachMoney />} />
+              <DetailRow label="Costo Unitario" value={numberToMoney4Digits(record.unit_cost, system)} icon={<MdOutlineAttachMoney />} />
               <DetailRow label="Impuestos" value={`${record.taxes}%`} icon={<FaTag />} />
               {record.information && <DetailRow label="Información" value={record.information} icon={<MdOutlineInfo />} />} 
               {record.tags && <DetailRow label="Stock Minimo" value={record.minimum_stock} icon={<MdProductionQuantityLimits />} />} 
