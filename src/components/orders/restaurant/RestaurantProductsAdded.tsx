@@ -75,7 +75,7 @@ export function RestaurantProductsAdded({ order } : any) {
             </td>
             <td className={`px-2 py-1 text-center whitespace-nowrap`}>
               {/* <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ del(order.id, record.cod)} } > */}
-                <AiFillCloseCircle size={20} className={`${isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? 'text-grey-800' : 'text-red-800'} clickeable`}  />
+                <AiFillCloseCircle onClick={()=>{ del(order.id, record.cod)}} size={20} className={`${isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? 'text-grey-800' : 'text-red-800'} clickeable`}  />
               {/* </CodeRequestGuard> */}
             </td>
         </tr>
@@ -104,7 +104,7 @@ export function RestaurantProductsAdded({ order } : any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
                 {/* <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } > */}
-                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> : <MdDelete size={22} className={`text-red-800 clickeable`}  /> }
+                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> : <MdDelete size={22} className={`text-red-800 clickeable`} onClick={()=>{ cancel(order.id)}}  /> }
                 {/* </CodeRequestGuard> */}
               </th>
             </tr>
