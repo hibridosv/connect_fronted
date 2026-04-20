@@ -1,5 +1,6 @@
-import Modal from "@/components/modal/Modal";
 import { Button, Preset } from "@/components/button/button";
+import Modal from "@/components/modal/Modal";
+import useConfigStore from "@/stores/configStore";
 import { ContactAddSV } from "./ContactAddSV";
 
 export interface AddContactModalProps {
@@ -12,6 +13,8 @@ export interface AddContactModalProps {
 
 export function AddContactModal(props : AddContactModalProps) {
     const { onClose, isShow, record } = props;
+    const { system } = useConfigStore();
+
 
     if (!isShow) return null;
 
@@ -19,7 +22,12 @@ export function AddContactModal(props : AddContactModalProps) {
         <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles del contacto">
         <Modal.Body>
             <div className="p-2">
+                { system.country == 1 && 
                 <ContactAddSV isShow={isShow} record={record} />
+                }
+                { system.country == 2 && 
+                <div> Nuevo registro de contacto</div>
+                }
             </div>
         </Modal.Body>
         <Modal.Footer>

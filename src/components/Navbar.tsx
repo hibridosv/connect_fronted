@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome } from 'react-icons/io5';
+import { IoReloadOutline } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
 import { SearchProductModal } from './modal/SearchProductModal';
 import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
@@ -16,7 +17,7 @@ import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
   const { user, client, tenant } = useConfigStore();
- useConfigLogic(); // carga todas las configuraciones necesarias
+  const { configFailed } = useConfigLogic();
   const { modals, closeModal, openModal } = useModalStore();
 
 
@@ -41,12 +42,20 @@ export const Navbar = () => {
           </div>
 
           <div className='flex'>
-            { isProducts(tenant?.system) &&
-              <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={()=>{ openModal('searchProductOnBar')}}/>
-            }
-            <Link href="/orders" className="text-text-inverted hover:text-secondary">
-              <IoHome size={22} className="sm:w-7 sm:h-7" />
-            </Link>
+            { configFailed ? (
+              <button onClick={() => window.location.reload()} className="text-text-inverted hover:text-secondary clickeable">
+                <IoReloadOutline size={22} className="sm:w-7 sm:h-7" />
+              </button>
+            ) : (
+              <>
+                { isProducts(tenant?.system) &&
+                  <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={() => openModal('searchProductOnBar')} />
+                }
+                <Link href="/orders" className="text-text-inverted hover:text-secondary">
+                  <IoHome size={22} className="sm:w-7 sm:h-7" />
+                </Link>
+              </>
+            )}
           </div>
 
         </div>
