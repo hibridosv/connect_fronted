@@ -1,5 +1,7 @@
 'use client';
 
+import { isProducts } from '@/lib/utils';
+import useConfigStore from '@/stores/configStore';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -116,6 +118,8 @@ export default function NotFound() {
   const fullText = 'La página que buscas no existe o fue movida.';
   const parallax = useMouseParallax();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { tenant } = useConfigStore();
+  const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
 
   useEffect(() => {
     setMounted(true);
@@ -237,7 +241,7 @@ export default function NotFound() {
           {/* Botón */}
           <div className={`mt-8 transition-all duration-600 delay-[900ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <Link
-              href="/dashboard"
+              href={redirect}
               className="group relative inline-flex items-center gap-2.5 rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-text-inverted shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />

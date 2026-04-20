@@ -18,7 +18,7 @@ export const Navbar = () => {
   const { user, client, tenant } = useConfigStore();
   const { configFailed } = useConfigLogic();
   const { modals, closeModal, openModal } = useModalStore();
-
+  const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
 
   return (
     <>
@@ -50,7 +50,7 @@ export const Navbar = () => {
                 { isProducts(tenant?.system) &&
                   <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={() => openModal('searchProductOnBar')} />
                 }
-                <Link href="/orders" className="text-text-inverted hover:text-secondary">
+                <Link href={redirect} className="text-text-inverted hover:text-secondary">
                   <IoHome size={22} className="sm:w-7 sm:h-7" />
                 </Link>
               </>

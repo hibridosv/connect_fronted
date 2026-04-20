@@ -6,26 +6,20 @@ import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourl
 import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
 import { KeyModal } from '@/components/dashboard/KeyModal';
 import { ViewTitle } from '@/components/ViewTitle';
-import { permissionExists } from '@/lib/utils';
+import { usePermissionGuard } from '@/hooks/usePermissionGuard';
+import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { BiPlusCircle } from 'react-icons/bi';
 
 
 export default function DashboardPage() {
     const { modals, openModal, closeModal} = useModalStore();
-    const { permission } = useConfigStore();
-    const router = useRouter();
+    const { permission, tenant } = useConfigStore();
+    const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
+    const isUnauthorized = usePermissionGuard('dashboard', redirect);
 
-  useEffect(() => {
-      if (permission && !permissionExists(permission, 'dashboard')) {
-          router.push("/orders");
-      }
-  }, [router, permission]);
-  
-  if (permission && !permissionExists(permission, 'dashboard')) return null;
+  if (isUnauthorized) return null;
 
   return (
     <div className="bg-bg-base min-h-screen pb-8">
