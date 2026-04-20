@@ -51,7 +51,8 @@ export function RemittancesTable() {
 
 
   return (
-    <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+    <div className="flex flex-col gap-3">
+      <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
             <tr className="border-b-2 border-bg-subtle">
@@ -66,7 +67,13 @@ export function RemittancesTable() {
             {listItems}
           </tbody>
         </table>
-        <div className="font-bold uppercase text-right ml-4 text-subtle p-4">Total ingresado: {numberToMoney(total, system)}</div>
       </div>
+      <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle flex">
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total remesas</span>
+          <span className="text-xl font-bold text-success mt-0.5">{numberToMoney(total, system)}</span>
+        </div>
+      </div>
+    </div>
   );
 }

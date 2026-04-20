@@ -1,8 +1,8 @@
 import { CashDrawer } from '@/interfaces/cashdrawers';
 import { User } from '@/interfaces/user';
+import { encryptedStorage } from '@/lib/encryptedStorage';
 import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
-import { encryptedStorage } from '@/lib/encryptedStorage';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
 
@@ -87,7 +87,7 @@ const useConfigStore = create(
         try {
           const response = await updateService(`config/${id}`, { active });
           set({ configurations: response.data.data });
-          useToastMessageStore.getState().setMessage('Configuración actualizada');
+          useToastMessageStore.getState().setMessage({ message: 'Configuración actualizada'});
         } catch (error) {
           useToastMessageStore.getState().setError(error);
         }

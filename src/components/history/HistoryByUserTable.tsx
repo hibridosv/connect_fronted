@@ -51,7 +51,7 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
   ));
 
   return (
-    <div className="m-4">
+    <div className="m-4 flex flex-col gap-3">
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
@@ -69,16 +69,16 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
-            <div>
-                <p className="text-sm text-text-muted">Total descuentos: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "discount"), system) }</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Total de venta: </p>
-                <p className="text-lg font-semibold text-text-base">{ numberToMoney(getTotalOfItem(records, "total"), system) }</p>
-            </div>
-          </div>
+      </div>
+      <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle divide-x divide-bg-subtle flex">
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total descuentos</span>
+          <span className="text-xl font-bold text-danger mt-0.5">{ numberToMoney(getTotalOfItem(records, "discount"), system) }</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total ventas</span>
+          <span className="text-xl font-bold text-success mt-0.5">{ numberToMoney(getTotalOfItem(records, "total"), system) }</span>
+        </div>
       </div>
     </div>
   );

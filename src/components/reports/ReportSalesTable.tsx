@@ -83,7 +83,7 @@ export function ReportSalesTable(props: ReportSalesTableI) {
   const marginPercentage = totalSale > 0 ? percentage(totalCost, totalSale).toFixed(2) : '0.00';
 
   return (
-    <div className="m-4">
+    <div className="m-4 flex flex-col gap-3">
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
@@ -107,28 +107,28 @@ export function ReportSalesTable(props: ReportSalesTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
-            <div>
-                <p className="text-sm text-text-muted">Subtotal</p>
-                <p className="text-lg font-semibold text-text-base">{numberToMoney(getTotalOfItem(records, "subtotal"), system)}</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Impuestos</p>
-                <p className="text-lg font-semibold text-success">{numberToMoney(getTotalOfItem(records, "taxes"), system)}</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Ventas</p>
-                <p className="text-lg font-semibold text-primary">{numberToMoney(getTotalOfItem(records, "total"), system)}</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Margen</p>
-                <p className="text-lg font-semibold text-primary">{numberToMoney(totalMargin, system)}</p>
-            </div>
-            <div>
-                <p className="text-sm text-text-muted">Margen</p>
-                <p className="text-lg font-semibold text-primary">{marginPercentage} %</p>
-            </div>
-          </div>
+      </div>
+      <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle divide-x divide-bg-subtle flex flex-wrap">
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Subtotal</span>
+          <span className="text-xl font-bold text-text-base mt-0.5">{numberToMoney(getTotalOfItem(records, "subtotal"), system)}</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Impuestos</span>
+          <span className="text-xl font-bold text-info mt-0.5">{numberToMoney(getTotalOfItem(records, "taxes"), system)}</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total ventas</span>
+          <span className="text-xl font-bold text-success mt-0.5">{numberToMoney(getTotalOfItem(records, "total"), system)}</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Margen bruto</span>
+          <span className="text-xl font-bold text-success mt-0.5">{numberToMoney(totalMargin, system)}</span>
+        </div>
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Margen %</span>
+          <span className="text-xl font-bold text-success mt-0.5">{marginPercentage} %</span>
+        </div>
       </div>
     </div>
   );

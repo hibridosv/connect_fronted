@@ -59,7 +59,7 @@ export function HistoryCostTable(props: HistoryCostTableI) {
   ));
 
   return (
-    <div className="m-4">
+    <div className="m-4 flex flex-col gap-3">
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
@@ -80,12 +80,12 @@ export function HistoryCostTable(props: HistoryCostTableI) {
             {listItems}
           </tbody>
         </table>
-          <div className="w-full flex justify-center gap-4 p-4 mx-4 my-4 bg-bg-content rounded-lg shadow-sm border border-bg-subtle text-center">
-            <div>
-                <p className="text-sm text-text-muted">Total Registros: </p>
-                <p className="text-lg font-semibold text-text-base">{ records?.length }</p>
-            </div>
-          </div>
+      </div>
+      <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle flex">
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total registros</span>
+          <span className="text-xl font-bold text-text-base mt-0.5">{ records?.length }</span>
+        </div>
       </div>
     </div>
   );
