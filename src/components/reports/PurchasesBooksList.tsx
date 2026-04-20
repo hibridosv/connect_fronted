@@ -23,8 +23,7 @@ interface Props {
 }
 
 export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, onSelect, disabled = false }: Props) {
-  const { data: session } = useSession();
-  const remoteUrl = session?.url;
+
   if (!purchases || purchases.length === 0) {
     return (
       <p className="text-xs text-text-muted italic">No hay libros disponibles.</p>
