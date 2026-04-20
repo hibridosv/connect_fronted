@@ -26,7 +26,6 @@ const protectedRoutes = [
     "/transfers", 
     "/protected", 
     "/protected-ssr",
-    "/login",
     "/help",
   ];
 
@@ -59,6 +58,16 @@ const protectedRoutes = [
     if (tenantStatus === "Expiring") {
       return NextResponse.redirect(new URL("/redirects/expiring", req.url));
     }
+  }
+
+  // --- Redirect /login to root ---
+  if (pathname.startsWith("/login")) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  // --- Redirect legacy /sales routes ---
+  if (pathname.startsWith("/sales/quick") || pathname.startsWith("/sales/orders")) {
+    return NextResponse.redirect(new URL("/orders", req.url));
   }
 
   // Allow other requests
