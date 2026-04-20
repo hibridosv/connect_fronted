@@ -75,7 +75,7 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
                 <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad</label>
-                <input type="number" step="any" {...register("quantity", { required: true, min: 0.00001})} className="input" />
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0})} className="input" />
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>

@@ -60,7 +60,7 @@ export function ChangePriceProductModal(props: ChangePriceProductModalI) {
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
                 <label htmlFor="quantity" className="input-label" >Nuevo Precio</label>
-                <input type="number" step="any" {...register("quantity", { required: true, min: 0.00001})} className="input" />
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0})} className="input" />
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>

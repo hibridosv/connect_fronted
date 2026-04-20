@@ -81,11 +81,11 @@ export function OtherSalesModal(props: OtherSalesModalI) {
             <div className="flex gap-3">
               <div className="w-1/2">
                 <label htmlFor="quantity" className="block text-sm font-medium text-text-muted mb-1">Cantidad</label>
-                <input type="number" step="any" {...register("quantity", { required: true, min: 0.00001})} className="input" />
+                <input type="number" step="any" {...register("quantity", { required: true, min: 0})} className="input" />
               </div>
               <div className="w-1/2">
                 <label htmlFor="total" className="block text-sm font-medium text-text-muted mb-1">Precio</label>
-                <input type="number" step="any" {...register("total", { required: true, min: 0.00001})} className="input" />
+                <input type="number" step="any" {...register("total", { required: true, min: 0})} className="input" />
               </div>
             </div>
             <div className="w-full">
