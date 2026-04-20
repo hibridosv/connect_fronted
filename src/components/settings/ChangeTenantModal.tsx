@@ -2,9 +2,8 @@
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
-import { API_URL } from '@/constants';
 import useConfigStore from '@/stores/configStore';
-import { getSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
@@ -19,44 +18,18 @@ interface ChangeTenantModalProps {
 export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenantModalProps) {
   const [sending, setSending] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
-  const [remoteUrlData, setRemoteUrlData] = useState<any>(null);
   const [errorMessage, setErrorMessage] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { user, clearConfig } = useConfigStore();
-
-  const getRemoteUrl = async () => {
-    setSending(true);
-    try {
-      const response = await fetch(`${API_URL}oauth`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: user?.email, change: tenantSelect?.url }),
-      });
-      const data = await response.json();
-      console.log('oauth response:', JSON.stringify(data));
-      if (data.type === 'error') {
-        setErrorMessage(true);
-      } else {
-        setRemoteUrlData(data);
-        setValue('username', user?.email ?? '');
-        setErrorMessage(false);
-      }
-    } catch {
-      setErrorMessage(true);
-    } finally {
-      setSending(false);
-    }
-  };
 
   const handleFormSubmit = async (data: any) => {
     setSending(true);
-    console.log('remoteUrlData completo:', JSON.stringify(remoteUrlData));
     try {
       const result = await signIn('credentials', {
-        username: data.username,
+        username: user?.email,
         password: data.password,
-        tenantUrl: remoteUrlData?.url ?? tenantSelect?.url,
+        change: tenantSelect?.url,
         redirect: false,
       });
 
@@ -66,10 +39,8 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
         setRedirecting(true);
         setErrorMessage(false);
         clearConfig();
-        const session = await getSession();
         localStorage.removeItem('config-storage');
         localStorage.removeItem('menu-storage');
-        document.cookie = `tenant-status=${session?.status ?? 0}; path=/; SameSite=Lax`;
         window.location.href = '/dashboard';
       }
     } catch {
@@ -80,24 +51,17 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
   };
 
   useEffect(() => {
-    if (isShow && tenantSelect) {
+    if (isShow) {
       setErrorMessage(false);
-      setRemoteUrlData(null);
       setShowPassword(false);
-      getRemoteUrl();
+      reset();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isShow]);
+  }, [isShow, reset]);
 
   return (
     <Modal show={isShow} onClose={onClose} size="sm" headerTitle="CAMBIAR SISTEMA">
       <Modal.Body>
-        {sending ? (
-          <div className="flex flex-col items-center justify-center py-8">
-            <LuLoaderCircle className="animate-spin text-primary" size={40} />
-            <p className="mt-3 text-text-muted text-sm">Conectando...</p>
-          </div>
-        ) : redirecting ? (
+        {redirecting ? (
           <div className="flex flex-col items-center justify-center py-8">
             <LuLoaderCircle className="animate-spin text-primary" size={40} />
             <p className="mt-3 text-text-muted text-sm">Cargando datos...</p>
@@ -107,7 +71,6 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
             <form onSubmit={handleSubmit(handleFormSubmit)} className="w-full">
               <div className="max-w-sm">
                 <div className="input-disabled py-2 px-4 mb-3">{user?.email}</div>
-                <input type="hidden" {...register('username')} />
 
                 <div className="flex items-center gap-2 mt-2">
                   <div className="w-full">

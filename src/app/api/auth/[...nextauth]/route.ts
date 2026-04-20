@@ -38,6 +38,7 @@ const handler = NextAuth({
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
         tenantUrl: { label: "Tenant URL", type: "text" },
+        change: { label: "Change URL", type: "text" },
       },
       async authorize(credentials) {
         const baseUrl = credentials?.tenantUrl ?? process.env.NEXT_PUBLIC_URL_API;
@@ -50,6 +51,7 @@ const handler = NextAuth({
             client_secret: process.env.AUTH_SECRET_ID,
             username: credentials?.username,
             password: credentials?.password,
+            ...(credentials?.change ? { change: credentials.change } : {}),
           }),
         })
 
@@ -108,3 +110,4 @@ const handler = NextAuth({
 })
 
 export { handler as GET, handler as POST }
+
