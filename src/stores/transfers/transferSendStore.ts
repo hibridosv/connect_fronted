@@ -40,9 +40,9 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     try {
       const response = await getServices(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from`);
       const data = response.data;
-      const first = data?.data?.[0];
-      if (first?.status === 1) {
-        set({ activeTransfer: first, productsAdded: first.products || [], transfers: data });
+      const activeTransfer = data?.data?.find((transfer: any) => transfer.status === 1) ?? null;
+      if (activeTransfer) {
+        set({ activeTransfer, productsAdded: activeTransfer.products || [], transfers: data });
       } else {
         set({ activeTransfer: null, productsAdded: [], transfers: data });
         get().loadLinkedSystems();
