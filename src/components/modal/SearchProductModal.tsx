@@ -46,7 +46,7 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
                                 return (
                                     <li key={item.id} onClick={() => handleSelected(item)}>
                                         <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
-                                            <span className="text-text-base">
+                                            <span className="text-text-base justify-start">
                                                 {item.cod} | 
                                                 {item.description} 
                                                 {item?.prices && <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1">{ numberToMoney(item?.prices[0]?.price ?? 0, system) }</span>}
