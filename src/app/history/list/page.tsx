@@ -2,14 +2,20 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { HistoryListTable } from "@/components/history/HistoryListTable";
+import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/list', 'download.excel.list');
   const isLoading = loading.history ?? false; 
-
+  const { modals, closeModal } = useModalStore();
+  const { getElement } = useTempStorage();
+  const documentSelected = getElement('documentSelected') ?? {};
+  
     const handleFormSubmit = async (values: DateRangeValues) => { 
         await handleGet(values, 'histories/list', 'download.excel.list');
     }
@@ -32,6 +38,7 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
 </div>
   );
 }

@@ -2,11 +2,13 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { HistoryByCustomerTable } from "@/components/history/HistoryByCustomerTable";
+import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
+import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 
@@ -17,6 +19,8 @@ export default function Page() {
   const elementSelected = getElement('clientSelectedBySearch');
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-client', 'download.excel.by-client', false);
   const isLoading = loading.history ?? false; 
+  const { modals, closeModal } = useModalStore();
+  const documentSelected = getElement('documentSelected') ?? {};
 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
@@ -50,6 +54,7 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
     <ToasterMessage />
 </div>
   );

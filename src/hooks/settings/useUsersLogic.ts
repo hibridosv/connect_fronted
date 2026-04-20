@@ -1,9 +1,9 @@
-import { useEffect, useCallback } from 'react';
 import useUserStore from '@/stores/UserStore';
-import useModalStore from '@/stores/modalStorage';
 import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
+import { useCallback, useEffect } from 'react';
 
-const USERS_URL = 'users?included=roles&sort=-created_at';
+const USERS_URL = 'users?filterWhere[is_visible]=1&included=roles&sort=-created_at';
 
 export function useUsersLogic() {
   const { loadUsers, createUser, deleteUser, updateUserName, updateUserPassword, updateUserRole, saving, deleting } = useUserStore();

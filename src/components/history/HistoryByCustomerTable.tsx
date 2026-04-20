@@ -5,6 +5,8 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 
 
 export interface HistoryByCustomerTableI {
@@ -15,6 +17,8 @@ export interface HistoryByCustomerTableI {
 export function HistoryByCustomerTable(props: HistoryByCustomerTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
+  const { setElement} = useTempStorage();
+  const { openModal } = useModalStore();
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
@@ -31,7 +35,7 @@ export function HistoryByCustomerTable(props: HistoryByCustomerTableI) {
       <td className="px-3 py-2 whitespace-nowrap">
         { record?.casheir?.name ?? "--" }
       </td>
-      <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >
+      <td className="px-3 py-2 text-left whitespace-nowrap font-medium clickeable" onClick={()=> { setElement('documentSelected', record); openModal('documentDetail')  }} >
         <span>{ record?.invoice_assigned?.name ?? "--" }:</span>
         <span className="ml-3">{ record?.invoice ?? "--" }</span>
       </td>
