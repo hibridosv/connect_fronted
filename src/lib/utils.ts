@@ -13,13 +13,13 @@ export const getCountryProperty = (country: number): { name: string, subname: st
 
 export const numberToMoney = (number: number, systemInformation = null as any): string => {
     let num = number ? number : 0;
-    let symbol =  systemInformation ? getCountryProperty(parseInt(systemInformation?.system?.country)).currency : '$';
+    let symbol =  systemInformation ? getCountryProperty(parseInt(systemInformation?.country)).currency : '$';
     return `${symbol}${num.toFixed(2)}`
 }
 
 export const numberToMoney4Digits = (number: number, systemInformation = null as any): string => {
   let num = number ? number : 0;
-  let symbol =  systemInformation ? getCountryProperty(parseInt(systemInformation?.system?.country)).currency : '$';
+  let symbol =  systemInformation ? getCountryProperty(parseInt(systemInformation?.country)).currency : '$';
   return `${symbol}${num.toFixed(4)}`
 }
 
