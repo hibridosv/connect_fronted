@@ -4,15 +4,16 @@ import { postFormData } from "@/services/OtherServices";
 import purchasesStore from "@/stores/reports/purchasesStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useRef, useState } from "react";
-import { LuFileJson, LuUpload, LuX } from "react-icons/lu";
+import { LuFileJson, LuInfo, LuUpload, LuX } from "react-icons/lu";
 
 interface Props {
   bookName?: string;
   bookId?: string;
   onUploadingChange: (v: boolean) => void;
+  hasBooks: boolean;
 }
 
-export function PurchasesImportSection({ bookName, bookId, onUploadingChange }: Props) {
+export function PurchasesImportSection({ bookName, bookId, onUploadingChange, hasBooks }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -64,6 +65,27 @@ export function PurchasesImportSection({ bookName, bookId, onUploadingChange }: 
       onUploadingChange(false);
     }
   };
+
+  if (!hasBooks) {
+    return (
+      <div>
+        <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3">
+          Importar facturas
+        </p>
+        <div className="rounded-lg border border-bg-subtle bg-bg-content p-5 flex flex-col items-center gap-3 text-center">
+          <div className="w-11 h-11 rounded-full bg-info/10 flex items-center justify-center">
+            <LuInfo size={20} className="text-info" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm font-semibold text-text-base">Aún no hay ningún libro de compras</p>
+            <p className="text-xs text-text-muted leading-relaxed">
+              Esta sección recibirá automáticamente los JSON DTE de compras y los procesará para generar los archivos Excel y CSV listos para revisión. También podrás subir los archivos manualmente cuando lo necesites.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>

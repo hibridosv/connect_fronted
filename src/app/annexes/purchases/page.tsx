@@ -49,6 +49,7 @@ export default function Page() {
           bookName={selectedBook?.name}
           bookId={selectedBook?.id}
           onUploadingChange={setIsUploading}
+          hasBooks={!!purchases?.length}
         />
       </div>
 

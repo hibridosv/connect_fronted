@@ -27,6 +27,7 @@ const protectedRoutes = [
     "/protected", 
     "/protected-ssr",
     "/login",
+    "/help",
   ];
 
   const publicOnlyRoutes = ["/"]; // The login page
