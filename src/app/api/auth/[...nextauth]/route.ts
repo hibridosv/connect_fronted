@@ -36,10 +36,12 @@ const handler = NextAuth({
       name: 'Credentials',
       credentials: {
         username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        tenantUrl: { label: "Tenant URL", type: "text" },
       },
       async authorize(credentials) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
+        const baseUrl = credentials?.tenantUrl ?? process.env.NEXT_PUBLIC_URL_API;
+        const res = await fetch(`${baseUrl}oauth2`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

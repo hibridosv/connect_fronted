@@ -54,6 +54,7 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
       const result = await signIn('credentials', {
         username: data.username,
         password: data.password,
+        tenantUrl: remoteUrlData?.url ?? tenantSelect?.url,
         redirect: false,
       });
 
@@ -64,6 +65,8 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
         setErrorMessage(false);
         clearConfig();
         const session = await getSession();
+        localStorage.removeItem('config-storage');
+        localStorage.removeItem('menu-storage');
         document.cookie = `tenant-status=${session?.status ?? 0}; path=/; SameSite=Lax`;
         window.location.href = '/dashboard';
       }
