@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 
 
 export function useCutLogic(url: string, isShow: boolean) {
-  const { loadCut, cut } = useCutStore()
+  const { loadCut, cut, loading } = useCutStore()
 
   useEffect(() => {
       if (isShow){
@@ -12,5 +12,5 @@ export function useCutLogic(url: string, isShow: boolean) {
       }
   }, [loadCut, url, isShow])
 
-  return { cut }
+  return { cut, loading }
 }

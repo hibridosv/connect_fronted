@@ -4,6 +4,7 @@ import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
+import { SkeletonCashDrawerDetails } from "../skeleton/SkeletonCashDrawerDetails";
 
 export interface CashdrawerDetailsProps {
   onClose: () => void;
@@ -13,11 +14,15 @@ export interface CashdrawerDetailsProps {
 export function CashdrawerDetails(props: CashdrawerDetailsProps) {
     const { onClose, isShow } = props;
     const { system } = useConfigStore();
-    const { cut } = useCutLogic(`cuts/last?included=employee,cashdrawer`, isShow);
+    const { cut, loading } = useCutLogic(`cuts/last?included=employee,cashdrawer`, isShow);
+
+  if (!isShow) return null
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
+        { loading && <SkeletonCashDrawerDetails /> }
+        { !loading && <>
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6"> {/* Added gap and mb */}
           {/* Card 1: Efectivo Apertura */}
           <div className="col-span-3 bg-white rounded-lg shadow-md p-4 flex flex-col items-center justify-center"> {/* Professional styling */}
@@ -58,6 +63,7 @@ export function CashdrawerDetails(props: CashdrawerDetailsProps) {
             </div>
           </div>
         </div>
+        </> }
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
