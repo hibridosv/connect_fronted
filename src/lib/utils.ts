@@ -129,10 +129,10 @@ export function formatNumberPhone(num: any) {
 
 /// suma una item de un arreglo con aulgun estado
 export const getTotalOfItemWithStatus = (datos: any, item: string = 'total', filter: string =  "status", status: any =  1): any => {
-  if (!datos) return 0; 
+  if (!datos || !Array.isArray(datos)) return 0;
   let totalSuma = 0;
 
-  datos?.forEach((elemento: any) => {
+  datos.forEach((elemento: any) => {
     if (elemento.hasOwnProperty(item)  && elemento[filter] == status) {
       totalSuma += elemento[item];
     }
@@ -143,10 +143,10 @@ export const getTotalOfItemWithStatus = (datos: any, item: string = 'total', fil
 
 
 export const getTotalOfItem = (datos: any, item: string = 'total'): any => {
-  if (!datos) return 0; 
+  if (!datos || !Array.isArray(datos)) return 0;
   let totalSuma = 0;
 
-  datos?.forEach((elemento: any) => {
+  datos.forEach((elemento: any) => {
     if (elemento.hasOwnProperty(item)) {
       totalSuma += elemento[item];
     }
@@ -157,9 +157,9 @@ export const getTotalOfItem = (datos: any, item: string = 'total'): any => {
 
 // cuenta los elementos de un arreglo con algun estado
 export const countItemsWithStatus = (datos: any, filter: string =  "status", status: any =  1): any => {
-  if (!datos) return 0; 
+  if (!datos || !Array.isArray(datos)) return 0;
   let count = 0;
-  datos?.forEach((elemento: any) => {
+  datos.forEach((elemento: any) => {
     if (elemento[filter] == status) {
       count += 1;
     }
@@ -171,7 +171,7 @@ export const countItemsWithStatus = (datos: any, filter: string =  "status", sta
 
 // obtiene el ultimo elemento de un arreglo
 export const getLastElement = (items: any, row = "status", status = 1)=> {
-  if(!items) return null;
+  if(!items || !Array.isArray(items)) return null;
   const elementsWithStatus1 = items.filter((element:any) => element[row] === status);
 
   if (elementsWithStatus1 && elementsWithStatus1.length > 0) {
@@ -184,7 +184,7 @@ export const getLastElement = (items: any, row = "status", status = 1)=> {
 
 // obtiene el primer elemento de un arreglo
 export const getFirstElement = (items: any, row = "status", status = 1)=> {
-  if(!items) return null;
+  if(!items || !Array.isArray(items)) return null;
 
   const elementsWithStatus1 = items.filter((element: any) => element[row] === status);
 
