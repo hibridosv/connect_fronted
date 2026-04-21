@@ -1,7 +1,6 @@
 
 import { useCutLogic } from "@/hooks/cuts/useCutLogic";
 import { numberToMoney } from "@/lib/utils";
-import useCutStore from "@/stores/cashdrawer/cutStore";
 import useConfigStore from "@/stores/configStore";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
@@ -14,8 +13,7 @@ export interface CashdrawerDetailsProps {
 export function CashdrawerDetails(props: CashdrawerDetailsProps) {
     const { onClose, isShow } = props;
     const { system } = useConfigStore();
-    useCutLogic(`cuts/last?included=employee,cashdrawer`);
-    const { cut } = useCutStore();
+    const { cut } = useCutLogic(`cuts/last?included=employee,cashdrawer`, isShow);
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={true}>
