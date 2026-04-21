@@ -10,6 +10,7 @@ import { ProductsCategoriesModal } from "@/components/products/new/ProductsCateg
 import { ProductLinked } from "@/components/products/ProductLinked";
 import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
+import { SkeletonProductEditForm } from "@/components/skeleton/SkeletonProductEditForm";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
@@ -26,7 +27,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { subCategories, brands, quantityUnits, providers: providersData, locations } = useProductNewLogic();
+  const { subCategories, brands, quantityUnits, providers: providersData, locations, loadingSelects } = useProductNewLogic();
   const { loading: loadingProduct, product } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
@@ -35,6 +36,7 @@ export default function Page({ params }: { params: { id: string } }) {
   const providers = providersData?.data;
   const { modals, closeModal, openModal } = useModalStore();
   const { setElement, clearElement } = useTempStorage();
+  const isLoading = loadingProduct || loadingSelects;
 
   if (!product && !loadingProduct) {
     return <NothingHere text="Producto no encontrado." />;
@@ -46,7 +48,8 @@ export default function Page({ params }: { params: { id: string } }) {
           <ViewTitle text="Editar Producto" />
 
           <div className="w-full px-4">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            { isLoading && <SkeletonProductEditForm /> }
+            <form onSubmit={handleSubmit(onSubmit)} className={`w-full ${isLoading ? 'hidden' : ''}`}>
   
               <div className="flex flex-wrap -mx-3 mb-6">
 
@@ -188,7 +191,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
   
               <div className="flex justify-center">
-              <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+              <Button type="submit" disabled={isSending || isLoading} preset={isSending ? Preset.saving : Preset.save} />
               </div>
             </form>
         </div>

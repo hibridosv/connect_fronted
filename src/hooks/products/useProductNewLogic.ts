@@ -13,16 +13,16 @@ import useToastMessageStore from '@/stores/toastMessageStore'
 import { useEffect, useState } from 'react'
 import { useGetRequest } from '../request/useGetRequest'
 
-export function useProductNewLogic() {
-  const { loadCategories, categories } = useCategoriesStore();
-  const { loadBrands, brands } = useBrandsStore();
-  const { loadQuantityUnits, quantityUnits } = useQuantityUnitStore();
-  const { loadContacts, contacts: providers } = useContactStore();
-  const { loadLocations, locations } = useLocationStore();
+export function useProductNewLogic(setValue?: (field: string, value: any) => void, reset?: () => void) {
+  const { loadCategories, categories, loading: loadingCategories } = useCategoriesStore();
+  const { loadBrands, brands, loading: loadingBrands } = useBrandsStore();
+  const { loadQuantityUnits, quantityUnits, loading: loadingQuantityUnits } = useQuantityUnitStore();
+  const { loadContacts, contacts: providers, loading: loadingProviders } = useContactStore();
+  const { loadLocations, locations, loading: loadingLocations } = useLocationStore();
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
-  const [subCategories, setSubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState<any[]>([]);
   const { getRequest, responseData: products } = useGetRequest();
   
   useEffect(() => {
@@ -62,6 +62,16 @@ export function useProductNewLogic() {
       const response = await createService('products', data);
       useToastMessageStore.getState().setMessage(response);
       await getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+      if (reset) {
+        reset();
+        if (setValue) {
+          if (subCategories?.length > 0) setValue('category_id', subCategories[0].id);
+          if (quantityUnits?.length > 0) setValue('quantity_unit_id', quantityUnits[0].id);
+          if (providers?.data?.length > 0) setValue('provider_id', providers.data[0].id);
+          if (brands?.length > 0) setValue('brand_id', brands[0].id);
+          if (locations?.length > 0) setValue('location_id', locations[0].id);
+        }
+      }
       if (data.product_type == 3) {
         openModal('productLinked');
       }
@@ -73,15 +83,42 @@ export function useProductNewLogic() {
     }
   }
 
-    useEffect(() => {
-      if (categories) {
-        const allSubcategories = categories.flatMap((category: any) => category.subcategories || []);
-        setSubCategories(allSubcategories);
-      }
-      // eslint-disable-next-line
+  useEffect(() => {
+    if (categories) {
+      const allSubcategories = categories.flatMap((category: any) => category.subcategories || []);
+      setSubCategories(allSubcategories);
+    }
+    // eslint-disable-next-line
   }, [categories]);
 
+  useEffect(() => {
+    if (setValue && subCategories?.length > 0) setValue('category_id', subCategories[0].id);
+    // eslint-disable-next-line
+  }, [subCategories]);
 
-  return { onSubmit, subCategories, products, brands, quantityUnits, providers, locations }
+  useEffect(() => {
+    if (setValue && quantityUnits?.length > 0) setValue('quantity_unit_id', quantityUnits[0].id);
+    // eslint-disable-next-line
+  }, [quantityUnits]);
+
+  useEffect(() => {
+    const providersList = providers?.data;
+    if (setValue && providersList?.length > 0) setValue('provider_id', providersList[0].id);
+    // eslint-disable-next-line
+  }, [providers]);
+
+  useEffect(() => {
+    if (setValue && brands?.length > 0) setValue('brand_id', brands[0].id);
+    // eslint-disable-next-line
+  }, [brands]);
+
+  useEffect(() => {
+    if (setValue && locations?.length > 0) setValue('location_id', locations[0].id);
+    // eslint-disable-next-line
+  }, [locations]);
+
+  const loadingSelects = loadingCategories || loadingQuantityUnits || loadingProviders || loadingBrands || loadingLocations;
+
+  return { onSubmit, subCategories, products, brands, quantityUnits, providers, locations, loadingSelects }
 
 }

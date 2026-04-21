@@ -9,6 +9,7 @@ import { ProductsCategoriesModal } from "@/components/products/new/ProductsCateg
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
 import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
+import { SkeletonProductNewForm } from "@/components/skeleton/SkeletonProductNewForm";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
@@ -23,7 +24,7 @@ import { useForm } from "react-hook-form";
 export default function Page() {
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, subCategories, brands, quantityUnits, providers: providersData, locations, products } = useProductNewLogic();
+  const { onSubmit, subCategories, brands, quantityUnits, providers: providersData, locations, products, loadingSelects } = useProductNewLogic(setValue, reset);
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
@@ -39,7 +40,8 @@ export default function Page() {
             <ViewTitle text="Registrar nuevo Producto" />
 
             <div className="w-full px-4">
-              <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+              { loadingSelects && <SkeletonProductNewForm /> }
+              <form onSubmit={handleSubmit(onSubmit)} className={`w-full ${loadingSelects ? 'hidden' : ''}`}>
     
                 <div className="flex flex-wrap -mx-3 mb-6">
 
@@ -108,7 +110,7 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="quantity_unit_id" className="input-label">Unidad de Medida</label>
-                  <select  id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
+                  <select   id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
                     {quantityUnits && quantityUnits.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -207,7 +209,7 @@ export default function Page() {
                 </div>
     
                 <div className="flex justify-center">
-                <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
+                <Button type="submit" disabled={isSending || loadingSelects} preset={isSending ? Preset.saving : Preset.save} />
                 </div>
               </form>
           </div>
