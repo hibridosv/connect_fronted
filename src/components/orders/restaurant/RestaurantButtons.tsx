@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IoMdOptions } from "react-icons/io";
 import Keyboard from 'react-simple-keyboard';
+// @ts-ignore
 import 'react-simple-keyboard/build/css/index.css';
 import { Buttons } from "./Buttons";
 import { PayButton } from "./Buttons/PayButton";
