@@ -79,7 +79,7 @@ export function AddInitialForm() {
                         <Switch
                             checked={isTaxesActive}
                             onChange={() => setElement('isTaxesActive', !isTaxesActive)}
-                            label="Crear Cuenta por Pagar"
+                            label="Sumar Impuestos"
                         />
                     </div>
 

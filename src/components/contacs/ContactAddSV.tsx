@@ -10,6 +10,7 @@ import useUserStore from "@/stores/UserStore";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
+import { SkeletonContactAddSV } from "../skeleton/SkeletonContactAddSV";
 import { getParamString } from "./utils";
 
 export interface ContactAddSVPropd {
@@ -32,7 +33,11 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const { saving } = useContactStore();
   const { users } = useUserStore();
 
+  const isLoading = !departaments || !countries || !townsExtracted.length;
+
   if (!isShow) return null;
+
+  if (isLoading) return <SkeletonContactAddSV />;
 
   return (
     <div className="p-2"> 
