@@ -1,8 +1,6 @@
 'use client';
 
-import { ENCRYPT_CLIENT_ID } from '@/constants';
-import { encryptText } from '@/lib/encrypt';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 function useMouseParallax() {
@@ -81,14 +79,13 @@ const pendingInvoices = [
 export default function ExpiringPage() {
   const [mounted, setMounted] = useState(false);
   const parallax = useMouseParallax();
+  const { data: sessionData, update } = useSession();
 
   useEffect(() => { setMounted(true); }, []);
 
   const handleContinue = async () => {
-    const encrypted = encryptText('Active', ENCRYPT_CLIENT_ID);
-    document.cookie = `tenant-status=${encrypted}; path=/; SameSite=Lax`;
-    const session = await getSession();
-    window.location.href = session?.redirect || '/dashboard';
+    await update({ tenantStatus: 'Active' });
+    window.location.href = sessionData?.redirect || '/dashboard';
   };
 
   return (
@@ -236,7 +233,7 @@ export default function ExpiringPage() {
 
           <div className={`flex flex-col sm:flex-row items-center justify-center gap-2.5 transition-all duration-600 delay-[950ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <button
-              onClick={() => { const enc = encryptText('Active', ENCRYPT_CLIENT_ID); document.cookie = `tenant-status=${enc}; path=/; SameSite=Lax`; window.location.href = '/settings/payments'; }}
+              onClick={async () => { await update({ tenantStatus: 'Active' }); window.location.href = '/settings/payments'; }}
               className="group relative z-20 w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-danger px-7 py-2.5 text-sm font-semibold text-white shadow-lg shadow-danger/25 transition-all duration-300 hover:shadow-xl hover:shadow-danger/35 hover:brightness-110 overflow-hidden cursor-pointer"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />

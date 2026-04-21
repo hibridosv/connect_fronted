@@ -73,7 +73,12 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, session, trigger }: any) {
+      if (trigger === "update" && session?.tenantStatus !== undefined) {
+        token.tenantStatus = session.tenantStatus;
+        return token;
+      }
+
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -81,6 +86,7 @@ const handler = NextAuth({
         token.url = user.url;
         token.status = user.status;
         token.redirect = user.redirect;
+        token.tenantStatus = user.status ?? null;
         return token
       }
 
@@ -98,6 +104,7 @@ const handler = NextAuth({
       session.status = token.status;
       session.redirect = token.redirect;
       session.error = token.error;
+      session.tenantStatus = token.tenantStatus;
       return session
     },
     async redirect({ url, baseUrl }) {

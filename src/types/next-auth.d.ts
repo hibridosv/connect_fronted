@@ -9,6 +9,7 @@ declare module "next-auth" {
     status?: string;
     redirect?: string;
     error?: string;
+    tenantStatus?: string | null;
   }
 }
 
@@ -21,5 +22,6 @@ declare module "next-auth/jwt" {
     status?: string;
     redirect?: string;
     error?: string;
+    tenantStatus?: string | null;
   }
 }

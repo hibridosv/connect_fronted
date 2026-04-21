@@ -78,7 +78,6 @@ export default function SuspendedPage() {
   useEffect(() => { setMounted(true); }, []);
 
   const handleLogout = () => {
-    document.cookie = 'tenant-status=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
     signOut({ callbackUrl: '/' });
   };
 

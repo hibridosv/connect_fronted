@@ -1,8 +1,6 @@
 'use client';
 
-import { ENCRYPT_CLIENT_ID } from '@/constants';
-import { encryptText } from '@/lib/encrypt';
-import { getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 function useMouseParallax() {
@@ -159,14 +157,13 @@ const newFeatures = [
 export default function InfoPage() {
   const [mounted, setMounted] = useState(false);
   const parallax = useMouseParallax();
+  const { data: sessionData, update } = useSession();
 
   useEffect(() => { setMounted(true); }, []);
 
   const handleContinue = async () => {
-    const encrypted = encryptText('Active', ENCRYPT_CLIENT_ID);
-    document.cookie = `tenant-status=${encrypted}; path=/; SameSite=Lax`;
-    const session = await getSession();
-    window.location.href = session?.redirect || '/dashboard';
+    await update({ tenantStatus: 'Active' });
+    window.location.href = sessionData?.redirect || '/dashboard';
   };
 
   return (

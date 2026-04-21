@@ -1,5 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { getSession, signOut } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import sessionStore, { sessionChecked } from '@/stores/sessionStore';
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -16,7 +17,10 @@ const httpService = axios.create({
 
 httpService.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
+    if (!sessionStore.getState().accessToken) {
+      await sessionChecked;
+    }
+    const session = sessionStore.getState();
 
     if (session?.url) {
       config.baseURL = `${session.url}/api/v2`;

@@ -1,7 +1,5 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { ENCRYPT_CLIENT_ID } from "./constants";
-import { decryptText } from "./lib/encrypt";
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -45,7 +43,7 @@ const protectedRoutes = [
 
   // --- Verify tenant status for authenticated users on protected routes ---
   if (token && isProtectedRoute) {
-    const tenantStatus = decryptText(req.cookies.get("tenant-status")?.value || "", ENCRYPT_CLIENT_ID);
+    const tenantStatus = token?.tenantStatus;
     if (tenantStatus === "Suspended") {
       return NextResponse.redirect(new URL("/redirects/suspended", req.url));
     }
