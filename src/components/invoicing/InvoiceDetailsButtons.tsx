@@ -2,7 +2,7 @@ import { useInvoiceDetailsLogic } from "@/hooks/invoicing/useInvoiceDetailsLogic
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
-import { FaPrint } from "react-icons/fa";
+import { FaFilePdf, FaPrint } from "react-icons/fa";
 import { MdCreditScore } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownloadGet } from "../button/button-download-get";
@@ -17,14 +17,16 @@ export interface InvoiceDetailsButtonsI {
 
 export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
-    const { activeConfig } = useConfigStore();
+    const { activeConfig, client } = useConfigStore();
     const { setError } = useToastMessageStore();
     const { printOrder, loading, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
     const { modals, closeModal, openModal} = useModalStore();
+    const API_URL = process.env.NEXT_PUBLIC_URL_API;
     const isSending = loading.printing ?? false;
-    const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2); 
+    const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2);
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
+    const isElectronic = order?.invoice_assigned?.is_electronic === 1;
     
   if (!order) return null;
 
@@ -56,6 +58,20 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     </div>
                     <span className="text-xs font-medium">Imprimir</span>
                   </button>
+                )}
+
+                {isElectronic && (
+                  <a
+                    href={`${API_URL}documents/download/pdf/${order?.id}/${client?.id}`}
+                    target="_blank"
+                    title="Descargar PDF electrónico"
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-red-600 transition-colors duration-200 clickeable"
+                  >
+                    <div className="p-3 bg-bg-subtle rounded-full">
+                      <FaFilePdf size={28} />
+                    </div>
+                    <span className="text-xs font-medium">PDF DTE</span>
+                  </a>
                 )}
 
                 {isCreditNoteAvailable && (
