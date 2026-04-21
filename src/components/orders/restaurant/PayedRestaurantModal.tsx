@@ -22,7 +22,7 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
   const paymentType = getElement('paymentType') ?? 1;
   const { sending, collecting } = ordersStore();
   const tips =  orderPayed?.attributes?.tips ?? 0;
-  const total = orderPayed?.total - orderPayed?.retention + tips;
+  const total = (paymentType === 1) ? (orderPayed?.total - orderPayed?.retention + tips) : 0;
 
   if (!isShow) return null;
 
