@@ -27,7 +27,7 @@ export default function Page() {
       <div className="col-span-3">
         <ViewTitle text="ULTIMAS FACTURAS" />
         <div className="mr-3 sm:mt-3 px-2">
-          <InvoiceSystemTable records={invoices} isLoading={loading} />
+          <InvoiceSystemTable records={invoices?.data} isLoading={loading} />
         </div>
       </div>
 
