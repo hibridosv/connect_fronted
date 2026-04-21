@@ -45,7 +45,7 @@ export function HistoryByProductTable(props: HistoryByProductTableI) {
         { record?.product ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { record?.lot ?? "--" }
+        { record?.lot?.lot ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { record?.quantity ?? "--" }
