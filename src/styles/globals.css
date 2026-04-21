@@ -124,7 +124,7 @@ body {
 
 
 .clickeable {
-  @apply cursor-pointer active:relative active:top-1
+  @apply cursor-pointer active:scale-75 active:opacity-50 transition-all duration-75
 }
 .input {
   @apply bg-bg-content appearance-none border-2 border-bg-subtle rounded-md w-full py-2 px-4 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm
