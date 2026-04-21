@@ -11,6 +11,7 @@ import Modal from "../modal/Modal";
 import { ProductImagesViewer } from "./images/ProductImagesViewer";
 import { ProductAvailabilityModal } from "./ProductAvailabilityModal";
 import { ProductLinked } from "./ProductLinked";
+import { excludedRoles } from "./utils";
 
 export interface ProductDetailsModalProps {
   onClose: () => void;
@@ -20,7 +21,7 @@ export interface ProductDetailsModalProps {
 
 export function ProductDetailsModal(props: ProductDetailsModalProps) {
   const { onClose, isShow, record } = props;
-  const { system, hasLinked } = useConfigStore();
+  const { system, hasLinked, role } = useConfigStore();
   const { responseData, loading } = useProductDetailsLogic(record, isShow);
   const realQuantity = (responseData?.data) ? record.quantity - responseData?.data : record?.quantity;
   const [showAvailability, setShowAvailability] = useState(false);
@@ -28,13 +29,16 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
     if (!isShow || !record) { return null; }
 
   // Helper para renderizar una fila de detalle
-  const DetailRow = ({ label, value, icon }: { label: string; value: React.ReactNode; icon?: React.ReactNode }) => (
-    <div className="flex items-center gap-2 text-text-base">
+  const DetailRow = ({ label, value, icon, isHiden = false }: { label: string; value: React.ReactNode; icon?: React.ReactNode; isHiden?: boolean }) => {
+    if (isHiden) return null;
+    return (
+      <div className="flex items-center gap-2 text-text-base">
       {icon && <span className="text-text-muted">{icon}</span>}
       <span className="font-medium text-text-muted">{label}:</span>
       <span className="font-semibold">{value}</span>
     </div>
-  );
+    );
+  };
 
   // Helper para badge de estado
   const StatusBadge = ({ status }: { status: number }) => {
@@ -143,7 +147,7 @@ export function ProductDetailsModal(props: ProductDetailsModalProps) {
           <div className="space-y-2">
             <h4 className="text-md font-semibold text-text-base border-b border-bg-subtle pb-1">Detalles Adicionales</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <DetailRow label="Costo Unitario" value={numberToMoney(record.unit_cost, system)} icon={<MdOutlineAttachMoney />} />
+              <DetailRow label="Costo Unitario" value={numberToMoney(record.unit_cost, system)} icon={<MdOutlineAttachMoney />} isHiden={role ? excludedRoles.includes(role) : false} />
               <DetailRow label="Impuestos" value={`${record.taxes}%`} icon={<FaTag />} />
               {record.information && <DetailRow label="Información" value={record.information} icon={<MdOutlineInfo />} />} 
               {record.tags && <DetailRow label="Stock Minimo" value={record.minimum_stock} icon={<MdProductionQuantityLimits />} />} 

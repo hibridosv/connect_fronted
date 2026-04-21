@@ -30,3 +30,5 @@ import { Indicator } from "../Indicators";
     case 5: return <Indicator type="dark" text="Otros" />
   }
 }
+
+export const excludedRoles: string[]  = ['Cajero', 'Mesero', 'Usuario', 'Contador']; // Roles denegados para ver detalles
