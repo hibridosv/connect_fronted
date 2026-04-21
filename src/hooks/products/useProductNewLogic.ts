@@ -10,6 +10,7 @@ import useLocationStore from '@/stores/products/LocationsStore'
 import useQuantityUnitStore from '@/stores/products/QuantityUnitStore'
 import useStateStore from '@/stores/stateStorage'
 import useToastMessageStore from '@/stores/toastMessageStore'
+import useTempStorage from '@/stores/useTempStorage'
 import { useEffect, useState } from 'react'
 import { useGetRequest } from '../request/useGetRequest'
 
@@ -22,9 +23,17 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
+  const { getElement, setElement } = useTempStorage();
   const [subCategories, setSubCategories] = useState<any[]>([]);
   const { getRequest, responseData: products } = useGetRequest();
-  
+
+  const productType: number = getElement('productNewType') ?? 1;
+
+  useEffect(() => {
+    if (!getElement('productNewType')) setElement('productNewType', 1);
+  // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
 
     if (!products) {
@@ -50,7 +59,8 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
 
   const onSubmit = async (data: any) => {
     openLoading("productForm");
-    if (data.product_type != 1) {
+    data.product_type = productType;
+    if (productType != 1) {
       data.quantity = 1;
       data.minimum_stock = 1;
     }
@@ -64,6 +74,7 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
       await getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
       if (reset) {
         reset();
+        setElement('productNewType', 1);
         if (setValue) {
           if (subCategories?.length > 0) setValue('category_id', subCategories[0].id);
           if (quantityUnits?.length > 0) setValue('quantity_unit_id', quantityUnits[0].id);
@@ -72,7 +83,7 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
           if (locations?.length > 0) setValue('location_id', locations[0].id);
         }
       }
-      if (data.product_type == 3) {
+      if (productType == 3) {
         openModal('productLinked');
       }
     } catch (error) {
@@ -119,6 +130,6 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
 
   const loadingSelects = loadingCategories || loadingQuantityUnits || loadingProviders || loadingBrands || loadingLocations;
 
-  return { onSubmit, subCategories, products, brands, quantityUnits, providers, locations, loadingSelects }
+  return { onSubmit, productType, setElement, subCategories, products, brands, quantityUnits, providers, locations, loadingSelects }
 
 }

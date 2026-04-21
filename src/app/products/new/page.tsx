@@ -18,21 +18,26 @@ import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
+import { LuBox, LuLink, LuWrench } from "react-icons/lu";
 import { useForm } from "react-hook-form";
 
+const PRODUCT_TYPES = [
+  { value: 1, label: 'Producto', icon: LuBox },
+  { value: 2, label: 'Servicio', icon: LuWrench },
+  { value: 3, label: 'Relacionado', icon: LuLink },
+];
 
 export default function Page() {
-  const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, subCategories, brands, quantityUnits, providers: providersData, locations, products, loadingSelects } = useProductNewLogic(setValue, reset);
+  const { onSubmit, productType, setElement, subCategories, brands, quantityUnits, providers: providersData, locations, products, loadingSelects } = useProductNewLogic(setValue, reset);
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
-  const { getElement, setElement, clearElement } = useTempStorage();
+  const { getElement, clearElement } = useTempStorage();
   const providers = providersData?.data;
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -42,16 +47,31 @@ export default function Page() {
             <div className="w-full px-4">
               { loadingSelects && <SkeletonProductNewForm /> }
               <form onSubmit={handleSubmit(onSubmit)} className={`w-full ${loadingSelects ? 'hidden' : ''}`}>
-    
+
                 <div className="flex flex-wrap -mx-3 mb-6">
 
-                <div className="w-full px-3 mb-2">
-                  <label htmlFor="product_type" className={"input-label"}>Tipo de Registro</label>
-                  <select id="product_type" {...register("product_type")} className="input-select" >
-                    <option value={1}> Producto </option>
-                    <option  value={2}> Servicio </option>
-                    <option  value={3}> Relacionado </option>
-                  </select>
+                <div className="w-full px-3 mb-3">
+                  <span className="input-label">Tipo de Registro</span>
+                  <div className="flex w-full mt-1">
+                    {PRODUCT_TYPES.map(({ value, label, icon: Icon }, index) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => setElement('productNewType', value)}
+                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 border text-xs font-medium transition-colors duration-150 cursor-pointer
+                          ${index === 0 ? 'rounded-l-md' : ''}
+                          ${index === PRODUCT_TYPES.length - 1 ? 'rounded-r-md' : 'border-r-0'}
+                          ${productType === value
+                            ? 'bg-primary text-text-inverted border-primary'
+                            : 'bg-bg-content text-text-muted border-bg-subtle hover:bg-bg-subtle'
+                          }`}
+                      >
+                        <Icon size={13} />
+                        <span className="hidden sm:inline">{label}</span>
+                        <span className="sm:hidden">{label.charAt(0)}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="w-full px-3 mb-2">
@@ -63,7 +83,7 @@ export default function Page() {
                   <label htmlFor="description" className="input-label">Descripción</label>
                   <input type="text" id="description" {...register("description", { required: true })} className="input" />
                 </div>
-                { watch("product_type") == 1 && (<>
+                { productType === 1 && (<>
                 <div className="w-full md:w-1/2 px-3 mb-2">
                   <label htmlFor="quantity" className="input-label">Cantidad</label>
                   <input type="number" id="quantity" {...register("quantity", { required: true, min: 0 })} className="input" />
@@ -80,7 +100,7 @@ export default function Page() {
                   <input type="number" step={"any"} id="unit_cost" {...register("unit_cost")} className="input" />
                 </div>
 
-                
+
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="sale_price" className="input-label">Precio de venta</label>
                   <input type="number" step={"any"} id="sale_price" {...register("sale_price", { required: true, min: 0 })} className="input" />
@@ -88,13 +108,12 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="saved" className={"input-label"}>Gavado</label>
-                  <select id="saved" {...register("saved")} className="input-select"
-                  >
+                  <select id="saved" {...register("saved")} className="input-select">
                     <option value={1}> Gravado </option>
                     <option  value={0}> Exento </option>
                   </select>
                 </div>
-                { watch("product_type") == 1 && (<>
+                { productType === 1 && (<>
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
                   <select id="category_id" {...register("category_id")} className="input-select">
@@ -110,7 +129,7 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="quantity_unit_id" className="input-label">Unidad de Medida</label>
-                  <select   id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
+                  <select id="quantity_unit_id" {...register("quantity_unit_id")} className="input-select">
                     {quantityUnits && quantityUnits.map((value: any) => {
                       return (
                         <option key={value.id} value={value.id}>
@@ -147,9 +166,9 @@ export default function Page() {
                     })}
                   </select>
                 </div> )}
-              
 
-               { activeConfig && activeConfig.includes('product-brand') && ( 
+
+               { activeConfig && activeConfig.includes('product-brand') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label htmlFor="brand_id" className="input-label clickeable" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
                   <select  id="brand_id" {...register("brand_id")} className="input-select">
@@ -162,7 +181,7 @@ export default function Page() {
                     })}
                   </select>
                 </div> )}
-               
+
 
                 { activeConfig && activeConfig.includes('product-measures') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
@@ -207,7 +226,7 @@ export default function Page() {
 
 
                 </div>
-    
+
                 <div className="flex justify-center">
                 <Button type="submit" disabled={isSending || loadingSelects} preset={isSending ? Preset.saving : Preset.save} />
                 </div>
@@ -220,9 +239,9 @@ export default function Page() {
             <div className="p-2">
               { loadingProducts ? <SkeletonTable rows={15} columns={8} /> : <ShowProductsNewTable records={lastProducts?.data} /> }
             </div>
-        </div> 
+        </div>
         <ProductsLinkedModal isShow={modals.productLinked} onClose={() => closeModal('productLinked')} product={lastProducts?.data[0]} />
-        <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} /> 
+        <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} />
         <ProductsCategoriesModal isShow={modals.productCategories} onClose={() => closeModal('productCategories')} />
         <AddContactModal isShow={modals.contactAdd} onClose={()=>{closeModal('contactAdd'); clearElement('isFromProducts');}} />
         <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />

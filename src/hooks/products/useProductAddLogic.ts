@@ -22,7 +22,7 @@ export function useProductAddLogic() {
 
     useEffect(() => {
         if (!providers) {
-            loadContacts('contacts?filterWhere[is_provider]==1');
+            loadContacts('contacts?filterWhere[is_provider]==1&perPage=100&page=1');
         }
     }, [loadContacts, providers]);
 

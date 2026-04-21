@@ -11,7 +11,7 @@ export function AddProductForm() {
     const { register, handleSubmit, reset } = useForm();
     const { product, loading, createProduct } = productAddStore();
     const { getElement, clearElement } = useTempStorage();
-    const isBill = getElement("isBill");
+    const isTaxesActive = getElement("isTaxesActive");
     const productSelected = getElement("product");
 
     if (loading || !product) return null;
@@ -26,7 +26,7 @@ export function AddProductForm() {
       data.document_type = product.document_type
       data.comment = product.comment
       data.product_register_principal = product.id
-      data.unit_cost = isBill ? data.unit_cost * 1.13 : data.unit_cost;
+      data.unit_cost = isTaxesActive ? data.unit_cost * 1.13 : data.unit_cost;
       data.sale_price = productSelected?.prices[0]?.price;
       await createProduct(data);
       reset();
@@ -53,7 +53,7 @@ export function AddProductForm() {
                     </div>
                     <div className="col-span-1">
                         <dt className="font-medium text-text-muted">Impuestos</dt>
-                        <dd className="text-text-base font-semibold mt-1">{isBill ? "Productos con impuestos incluidos" : "Productos sin impuestos"}</dd>
+                        <dd className="text-text-base font-semibold mt-1">{isTaxesActive ? "Productos con impuestos incluidos" : "Productos sin impuestos"}</dd>
                     </div>
                     {product.comment && (
                         <div className="md:col-span-2">

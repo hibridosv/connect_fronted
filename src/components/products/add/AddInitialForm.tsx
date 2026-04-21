@@ -6,19 +6,19 @@ import useContactStore from "@/stores/ContactStore";
 import productAddStore from "@/stores/products/productAddStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export function AddInitialForm() {
     const { expensesCategories: categories, accounts} = useProductAddLogic();
     const { register, handleSubmit, control, watch, reset } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
-    const { contacts: providers } = useContactStore();
-    const { setElement } = useTempStorage();
+    const { contacts: providersData } = useContactStore();
+    const providers = providersData?.data;
+    const { setElement, getElement } = useTempStorage();
 
-    const [isBillsActive, setIsBillsActive] = useState(false);
-    const [isAccountActive, setIsAccountActive] = useState(false);
-
+    const isBillsActive: boolean = getElement("isBillsActive");
+    const isAccountActive: boolean = getElement("isAccountActive");
+    const isTaxesActive: boolean = getElement("isTaxesActive");
     
     if (loading) return <SkeletonForm />;
     if (product && !loading) return null;
@@ -30,7 +30,7 @@ export function AddInitialForm() {
             useToastMessageStore.getState().setError({ message : "Faltan algunos datos importantes para continuar!"});
             return
             }
-            data.provider_id = data.provider_id ? data.provider_id : providers.data ? providers.data[0].id : 0;
+            data.provider_id = data.provider_id ? data.provider_id : providers?.[0]?.id ?? 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
             setElement("isBill", data.bills_active);
@@ -67,26 +67,19 @@ export function AddInitialForm() {
                             Proveedor
                         </label>
                         {providers ?
-                        <select id="provider_id" {...register("provider_id")} className="input-select" defaultValue={providers[0] ?? 0}>
-                            {providers?.map((value: any) => {
-                                return (<option key={value.id} value={value.id}>{value.name}</option>)
-                            })}                        
+                        <select id="provider_id" {...register("provider_id")} className="input-select" defaultValue={providers[0]?.id ?? 0}>
+                            {providers.map((value: any) => (
+                                <option key={value.id} value={value.id}>{value.name}</option>
+                            ))}
                         </select> :
                         <div className="input-disabled"></div>    }
                     </div>
 
                     <div className="flex items-end pb-1">
-                        <Controller
-                            name="bills_active"
-                            control={control}
-                            defaultValue={false}
-                            render={({ field }) => (
-                                <Switch
-                                    checked={field.value}
-                                    onChange={field.onChange}
-                                    label="Sumar Impuestos"
-                                />
-                            )}
+                        <Switch
+                            checked={isTaxesActive}
+                            onChange={() => setElement('isTaxesActive', !isTaxesActive)}
+                            label="Crear Cuenta por Pagar"
                         />
                     </div>
 
@@ -102,14 +95,14 @@ export function AddInitialForm() {
                     <div className="bg-bg-subtle/50 p-2 rounded-lg flex items-center">
                         <Switch
                             checked={isBillsActive}
-                            onChange={setIsBillsActive}
+                            onChange={() => setElement('isBillsActive', !isBillsActive)}
                             label="Registrar como Gasto"
                         />
                     </div>
                     <div className="bg-bg-subtle/50 p-2 rounded-lg flex items-center">
                         <Switch
                             checked={isAccountActive}
-                            onChange={setIsAccountActive}
+                            onChange={() => setElement('isAccountActive', !isAccountActive)}
                             label="Crear Cuenta por Pagar"
                         />
                     </div>
