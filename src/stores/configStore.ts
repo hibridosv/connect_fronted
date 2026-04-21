@@ -1,5 +1,6 @@
 import { CashDrawer } from '@/interfaces/cashdrawers';
 import { User } from '@/interfaces/user';
+import { extractActiveFeature } from '@/lib/config/config';
 import { encryptedStorage } from '@/lib/encryptedStorage';
 import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
@@ -28,7 +29,7 @@ interface ConfigStoreState {
   setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
   updateConfiguration: (id: number, active: number) => Promise<void>;
-  setActiveConfig: (activeConfig: any) => void;
+  // setActiveConfig: (activeConfig: any) => void;
   clearConfig: () => void;
 }
 
@@ -66,7 +67,9 @@ const useConfigStore = create(
         try {
           const response = await getServices('config/find');
           let data = response.data.data;
+          let extracted = extractActiveFeature(data.configurations)
           set({ configurations: data.configurations });
+          set({ activeConfig: extracted });
           set({ system: data.system });
           set({ payMethods: data.payMethods });
           set({ permission: data.permission });
@@ -92,15 +95,13 @@ const useConfigStore = create(
       updateConfiguration: async (id: number, active: number) => {
         try {
           const response = await updateService(`config/${id}`, { active });
+          let extracted = extractActiveFeature(response.data.data)
           set({ configurations: response.data.data });
+          set({ activeConfig: extracted });
           useToastMessageStore.getState().setMessage({ message: 'Configuración actualizada'});
         } catch (error) {
           useToastMessageStore.getState().setError(error);
         }
-      },
-
-      setActiveConfig: (activeConfig: any) => {
-        set({ activeConfig });
       },
 
       clearConfig: () => {

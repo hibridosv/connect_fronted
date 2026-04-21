@@ -16,7 +16,7 @@ import { useEffect, useRef } from 'react';
  */
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
-  const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
+  const { activeConfig, invoiceTypes, user, tenant, configurations } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
   const typeOfSearch = getElement('typeOfSearch'); // tipo de busqueda
   const { loadOrder, loadOrders, setOrders } = ordersProductsStore();
@@ -27,7 +27,8 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const orderLoaded = useRef(false);
   
   const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
-
+  console.log('isRealTime:', isRealTime);
+  console.log('Datos del evento de Pusher:', pusherEventData);
   // para sistema de productos
   useEffect(() => {
         if (initialLoad && activeConfig) {
