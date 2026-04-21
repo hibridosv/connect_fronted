@@ -33,7 +33,7 @@ export function AddInitialForm() {
             data.provider_id = data.provider_id ? data.provider_id : providers?.[0]?.id ?? 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
-            setElement("isBill", data.bills_active);
+            data.bills_active = isBillsActive;
             createPrincipal(data);
             reset();
     };
