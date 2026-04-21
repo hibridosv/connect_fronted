@@ -32,8 +32,14 @@ interface ConfigStoreState {
   clearConfig: () => void;
 }
 
+type PersistedConfigState = Pick<ConfigStoreState,
+  'configurations' | 'activeConfig' | 'system' | 'payMethods' | 'permission' |
+  'user' | 'invoiceExist' | 'isInvoiceExpires' | 'role' | 'cashdrawer' |
+  'client' | 'tenant' | 'invoiceTypes' | 'hasLinked'
+>;
+
 const useConfigStore = create(
-  persist<ConfigStoreState & { _hasHydrated: boolean; setHasHydrated: (v: boolean) => void }>(
+  persist<ConfigStoreState, [], [], PersistedConfigState>(
     (set) => ({
       _hasHydrated: false,
       setHasHydrated: (v: boolean) => set({ _hasHydrated: v }),
@@ -124,6 +130,22 @@ const useConfigStore = create(
     {
       name: 'config-storage',
       storage: createJSONStorage(() => encryptedStorage),
+      partialize: (state): PersistedConfigState => ({
+        configurations: state.configurations,
+        activeConfig: state.activeConfig,
+        system: state.system,
+        payMethods: state.payMethods,
+        permission: state.permission,
+        user: state.user,
+        invoiceExist: state.invoiceExist,
+        isInvoiceExpires: state.isInvoiceExpires,
+        role: state.role,
+        cashdrawer: state.cashdrawer,
+        client: state.client,
+        tenant: state.tenant,
+        invoiceTypes: state.invoiceTypes,
+        hasLinked: state.hasLinked,
+      }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
