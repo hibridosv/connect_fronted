@@ -7,6 +7,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
 
+export const MAX_CONFIG_RETRIES = 3
+
 interface ConfigStoreState {
   configurations: any;
   activeConfig: any;
@@ -25,11 +27,11 @@ interface ConfigStoreState {
   isLoaded: boolean;
   loading: boolean;
   error: boolean;
+  retryCount: number;
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
   updateConfiguration: (id: number, active: number) => Promise<void>;
-  // setActiveConfig: (activeConfig: any) => void;
   clearConfig: () => void;
 }
 
@@ -41,7 +43,7 @@ type PersistedConfigState = Pick<ConfigStoreState,
 
 const useConfigStore = create(
   persist<ConfigStoreState, [], [], PersistedConfigState>(
-    (set) => ({
+    (set, get) => ({
       _hasHydrated: false,
       setHasHydrated: (v: boolean) => set({ _hasHydrated: v }),
       configurations: null,
@@ -61,9 +63,12 @@ const useConfigStore = create(
       isLoaded: false,
       loading: false,
       error: false,
+      retryCount: 0,
 
       loadConfig: async () => {
-        set({ loading: true });
+        const { loading, configurations, retryCount } = get()
+        if (loading || configurations !== null || retryCount >= MAX_CONFIG_RETRIES) return
+        set({ loading: true, retryCount: retryCount + 1 });
         try {
           const response = await getServices('config/find');
           let data = response.data.data;
@@ -105,7 +110,7 @@ const useConfigStore = create(
       },
 
       clearConfig: () => {
-        set({ 
+        set({
           _hasHydrated: false,
           configurations: null,
           activeConfig: null,
@@ -124,6 +129,7 @@ const useConfigStore = create(
           isLoaded: false,
           loading: false,
           error: false,
+          retryCount: 0,
          });
       },
 

@@ -1,23 +1,19 @@
 'use client'
+import { MAX_CONFIG_RETRIES } from '@/stores/configStore'
 import useConfigStore from '@/stores/configStore'
 import { useThemeStore } from '@/stores/themeStore'
-import { useEffect, useRef } from 'react'
-
-const MAX_CONFIG_RETRIES = 3
+import { useEffect } from 'react'
 
 export function useConfigLogic() {
-  const { isLoaded, loadConfig, loading, _hasHydrated, tenant, error } = useConfigStore()
+  const { configurations, loadConfig, loading, _hasHydrated, tenant, error, retryCount } = useConfigStore()
   const { setTheme } = useThemeStore()
-  const retryCount = useRef(0)
 
   useEffect(() => {
-    if (_hasHydrated && !isLoaded && !loading && retryCount.current < MAX_CONFIG_RETRIES) {
-      retryCount.current++
+    if (_hasHydrated && configurations === null && !loading) {
       loadConfig()
     }
-  }, [_hasHydrated, isLoaded, loading, loadConfig])
+  }, [_hasHydrated, configurations, loading, loadConfig])
 
-  
   useEffect(() => {
     if (tenant) {
       if (tenant?.system === 1 || tenant?.system === 2) {
@@ -26,7 +22,7 @@ export function useConfigLogic() {
         setTheme('green')
       }
     }
-  }, [ setTheme, tenant ])
+  }, [setTheme, tenant])
 
-  return { configFailed: error && retryCount.current >= MAX_CONFIG_RETRIES }
+  return { configFailed: error && retryCount >= MAX_CONFIG_RETRIES }
 }
