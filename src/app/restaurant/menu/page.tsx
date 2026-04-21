@@ -31,7 +31,7 @@ export default function Page() {
   const { searchTerm, handleSearchTerm } = useSearchTerm(["description"], 500);
   useRestaurantMenuLogic(currentPage, searchTerm);
   useRestaurantAddProductLogic(true);
-  const { products, updateProduct } = manageRestaurantStore();
+  const { products, updateProduct, loadingProducts } = manageRestaurantStore();
   const { modals, closeModal, openModal } = useModalStore();
   const { getElement } = useTempStorage();
 
@@ -49,7 +49,7 @@ export default function Page() {
     </div>
     <div className="md:col-span-3">
       <div className="m-4">
-        <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar productos" />
+        <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar productos" animating={loadingProducts} />
       </div>
         <div  className="mx-4 flex items-center justify-between">
           <ViewTitle text="Modificadores" />

@@ -20,10 +20,10 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
     const { system } = useConfigStore()
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
-    const { products } = productSearchModalStore();
+    const { products, loading } = productSearchModalStore();
     useProductsSearchModalLogic(currentPage, searchTerm);
-    const { modals, closeModal, openModal } = useModalStore();
-    const { getElement, clearElement, setElement } = useTempStorage();
+    const { openModal } = useModalStore();
+    const {  setElement } = useTempStorage();
 
 
     const handleSelected = (product: any) => {
@@ -38,7 +38,7 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
             <Modal.Body>
             <div className="flex flex-col items-center justify-center p-4 text-center">
                 <div className="w-full">
-                    <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." />
+                    <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..."  animating={loading} />
                     { searchTerm && products && products.data && products.data.length > 0 && (
                         <div className='top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                             <ul className="divide-y divide-bg-subtle max-h-screen overflow-y-auto custom-scrollbar">

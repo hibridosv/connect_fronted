@@ -31,7 +31,7 @@ export default function Page() {
     <div className="md:col-span-3">
         <ViewTitle text="DETALLES" />
         <div className="mt-2 p-2">
-          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar cotización" />
+          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar cotización" animating={loading} />
         </div>
     </div> 
     <QuotesDetailsModal isShow={modals.quoteDetail} onClose={() => closeModal('quoteDetail')} />

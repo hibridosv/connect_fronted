@@ -27,7 +27,7 @@ export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
   const { onDelete, links } = useContactsLogic(currentPage, searchTerm, getParamString(pageParam));
-  const { contacts } = useContactStore();
+  const { contacts, loading } = useContactStore();
   const { getElement, clearElement } =  useTempStorage();
   const { modals, closeModal, openModal} = useModalStore();
  
@@ -48,7 +48,7 @@ export default function Page() {
     <div className="md:col-span-3">
         <ViewTitle text="Buscar Contacto" />
         <div className="p-4">
-          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Contacto" />
+          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Contacto" animating={loading} />
         </div>
         <div className="p-4">
           <ShowTotal quantity={contacts?.total} text="Cantidad de Contactos" number={true} />

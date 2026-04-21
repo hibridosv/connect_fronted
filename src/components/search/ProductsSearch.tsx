@@ -11,7 +11,7 @@ export function ProductsSearch() {
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
-    const { products } = useProductStore();
+    const { products, loading } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
 
 
@@ -22,7 +22,7 @@ export function ProductsSearch() {
 
     return (
         <div className="relative w-full">
-            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." />
+            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." animating={loading} />
             { searchTerm && products && products.data && products.data.length > 0 && (
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">

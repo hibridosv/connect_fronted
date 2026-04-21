@@ -36,7 +36,7 @@ export default function Page() {
     <div className="md:col-span-3">
         <ViewTitle text="BUSCAR DOCUMENTO" />
         <div className="p-4">
-          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar documento" />
+          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar documento" animating={loading} />
         </div>
         <div className="p-4">
           <ShowTotal quantity={quantity} text="Cantidad de documentos" number={true} />

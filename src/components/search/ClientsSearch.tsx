@@ -36,7 +36,7 @@ export function ClientsSearch(props: ClientsSearchI) {
 
     return (
         <div className="relative w-full">
-            <SearchInput handleSearchTerm={handleSearchTerm} placeholder={placeholder} />
+            <SearchInput handleSearchTerm={handleSearchTerm} placeholder={placeholder} animating={loading} />
             { searchTerm && contacts && contacts.data && contacts.data.length > 0 && (
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">

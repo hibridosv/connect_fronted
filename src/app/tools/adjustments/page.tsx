@@ -23,7 +23,7 @@ export default function Page() {
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "name"], 500);
     const { start, end } = useAjustmentLogic(currentPage, true);
     const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
-    const { adjustments, loading, adjustmentActive, sending } = adjustStore();
+    const { adjustments, loading, adjustmentActive, sending, searching } = adjustStore();
     const { modals, closeModal } = useModalStore();
     const data = adjustments?.data || [];
     const products = adjustmentActive?.data || [];
@@ -52,7 +52,7 @@ export default function Page() {
             { adjustmentActive ? 
             <div>
             <div className="mt-2 p-2 mb-4">
-              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" />
+              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" animating={searching} />
             </div>
             <Button onClick={end} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Finalizar ajuste de inventario" />
             </div> :

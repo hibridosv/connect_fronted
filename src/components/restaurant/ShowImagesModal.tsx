@@ -80,7 +80,7 @@ export function ShowImagesModal(props: ShowImagesModalI) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex items-center justify-between w-full">
-            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar imagenes" />
+            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar imagenes" animating={loading} />
             <Button onClick={onClose} preset={Preset.close} disabled={false} /> 
         </div>
       </Modal.Footer>

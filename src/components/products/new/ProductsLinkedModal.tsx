@@ -157,12 +157,9 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
             </div>
           ) : (
             <div className="p-3">
-              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar por código o descripción..." />
+              <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar por código o descripción..." animating={isLoading} />
               <ul className="mt-2 max-h-36 overflow-y-auto custom-scrollbar">
-                {isLoading
-                  ? <p className="text-center text-text-muted text-xs py-3">Buscando...</p>
-                  : searchResults
-                }
+                {!isLoading && searchResults }
               </ul>
             </div>
           )}

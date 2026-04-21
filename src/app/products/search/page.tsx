@@ -48,7 +48,7 @@ export default function Page() {
             <ViewTitle text="Buscar Producto" />
           </div>
           <div className="mt-2 p-2">
-            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto" />
+            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto" animating={loading} />
           </div>
       </div> 
     </div>

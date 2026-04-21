@@ -29,7 +29,7 @@ export function RemoveProductsSearch() {
 
     return (
         <div className="relative w-full px-4">
-            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." />
+            <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." animating={loadingSearch} />
             { searchTerm && products && products.data && products.data.length > 0 && (
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50 mx-4'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">

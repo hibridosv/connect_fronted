@@ -35,7 +35,7 @@ export default function Page() {
     <div className="md:col-span-3">
         <ViewTitle text="BUSCAR" />
         <div className="p-4">
-          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar nota de remisión" />
+          <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar nota de remisión" animating={loading} />
         </div>
         <div className="p-4">
           <ShowTotal quantity={quantity} text="Cantidad de documentos" number={true} />
