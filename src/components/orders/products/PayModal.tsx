@@ -67,7 +67,7 @@ export function PayModal(props: PayModalI) {
                         />
                       </div>
                         <div className="flex justify-center mt-2">
-                          <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={sending} preset={sending ? Preset.saving : Preset.save} isFull />
+                          <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
                         </div>
                     </div>
                   ) :

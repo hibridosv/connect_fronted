@@ -112,6 +112,7 @@ const addNew = async (producId: any, quantity = 1) => {
 
 /// pagar orden
 const pay = async (data: any) => {
+    if (ordersStore.getState().collecting) return;
     let values = {
       cash: data.cash || 0,
       payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
@@ -129,6 +130,7 @@ const pay = async (data: any) => {
 
 /// pagar orden separada
 const paySplit = async (data: any) => {
+    if (ordersStore.getState().collecting) return;
     let values = {
       cash: data.cash || 0,
       payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito

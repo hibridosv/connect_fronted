@@ -58,7 +58,7 @@ export function ImageMenu(props: ImageMenuI) {
           ? () => sendProduct(record.product_id)
           : () => { openModal('categoryMenu'); setElement("categoryMenu", record); }
         }
-        className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl hover:-translate-y-1 active:scale-95 active:shadow-md clickeable
+        className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl active:scale-95 active:shadow-md clickeable
           ${isSending ? 'scale-[0.97]' : ''}
         `}
       >

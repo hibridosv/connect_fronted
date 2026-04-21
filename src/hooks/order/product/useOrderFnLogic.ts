@@ -55,6 +55,7 @@ const addNew = async (data: any) => {
 
   /** Cobrar o terminar orden */
   const pay = async (data: any) => {
+        if (ordersStore.getState().collecting) return;
         let values = {
           payment_type: paymentType,
           cash: data.cash,
