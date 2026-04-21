@@ -88,7 +88,13 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
             </div>
             <div className="space-y-3">
               {order?.invoice_assigned?.type === 9 && <Alert text="Este Documento tiene una numeración temporal." />}
-              {order?.invoice_assigned?.is_electronic === 1 && <Alert text="Este Documento se envió electrónicamente." />}
+              {order?.invoice_assigned?.is_electronic === 1 && 
+              <div>
+                <Alert text="Este Documento se envió electrónicamente." />
+                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-2 my-2 text-sm ">
+                  <span className="text-text-muted"> Código de generación:</span> 
+                <span className="uppercase font-semibold"> {order.id}</span></div>
+              </div>}
               {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
             </div>
           </div>
