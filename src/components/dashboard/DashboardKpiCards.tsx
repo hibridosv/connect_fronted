@@ -7,15 +7,13 @@ export function DashboardKpiCards() {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-3.5 sm:p-5 h-[120px] animate-pulse">
-            <div className="flex items-center justify-between">
-              <div className="w-10 h-10 rounded-xl bg-bg-subtle"></div>
-            </div>
-            <div className="mt-4">
-              <div className="h-4 bg-bg-subtle rounded w-1/2 mb-2"></div>
-              <div className="h-6 bg-bg-subtle rounded w-2/3"></div>
+          <div key={i} className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle px-3.5 py-3 flex items-center gap-3 animate-pulse">
+            <div className="w-9 h-9 rounded-lg bg-bg-subtle shrink-0" />
+            <div className="flex-1 space-y-2">
+              <div className="h-2.5 bg-bg-subtle rounded w-3/5" />
+              <div className="h-4 bg-bg-subtle rounded w-4/5" />
             </div>
           </div>
         ))}
@@ -26,19 +24,22 @@ export function DashboardKpiCards() {
   if (!hasData) return null
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-      {formattedCards.map((card: any) => (
-        <div key={card.title}
-          className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-3.5 sm:p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+      {formattedCards.map((card: any, index: number) => (
+        <div
+          key={card.title}
+          className="relative bg-bg-content rounded-xl shadow-sm border border-bg-subtle px-3.5 py-3 flex items-center gap-3 overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group animate-slide-up cursor-default"
+          style={{ animationDelay: `${index * 55}ms` }}
         >
-          <div className="flex justify-start items-center">
-            <div className={`p-2.5 rounded-xl ${card.bg} transition-transform duration-300 hover:scale-110`}>
-              <card.icon className={`w-5 h-5 ${card.color}`} />
-            </div>
-            <p className="text-text-muted font-semibold ml-2 text-xl">{card.title}</p>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-bg-subtle/50 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none" />
+
+          <div className={`shrink-0 p-2 rounded-lg ${card.bg} group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-300`}>
+            <card.icon className={`w-4.5 h-4.5 ${card.color}`} style={{ width: '18px', height: '18px' }} />
           </div>
-          <div className="mt-2">
-            <p className="text-xl sm:text-2xl font-bold text-text-base mt-0.5">{card.value}</p>
+
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none mb-1">{card.title}</p>
+            <p className="text-lg sm:text-xl font-extrabold text-text-base tracking-tight leading-none tabular-nums truncate">{card.value}</p>
           </div>
         </div>
       ))}
