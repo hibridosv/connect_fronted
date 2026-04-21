@@ -24,8 +24,8 @@ const invoicesStore = create<InvoicesStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      if (response.data) {
-        set({ invoices: response.data, error: false });
+      if (response.data?.data) {
+        set({ invoices: response.data.data, error: false });
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
