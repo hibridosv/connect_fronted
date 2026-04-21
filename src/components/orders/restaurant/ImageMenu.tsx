@@ -58,9 +58,7 @@ export function ImageMenu(props: ImageMenuI) {
           ? () => sendProduct(record.product_id)
           : () => { openModal('categoryMenu'); setElement("categoryMenu", record); }
         }
-        className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl active:scale-95 active:shadow-md clickeable
-          ${isSending ? 'scale-[0.97]' : ''}
-        `}
+        className={`group relative w-[104px] overflow-hidden rounded-xl bg-bg-content shadow-md transition-all duration-100 ease-out hover:shadow-xl active:scale-95 active:shadow-md cursor-pointer`}
       >
         <div className="relative h-[104px] w-[104px] overflow-hidden">
           <Image
@@ -69,7 +67,7 @@ export function ImageMenu(props: ImageMenuI) {
             alt={label || 'Icono de imagen'}
             width={104}
             height={104}
-            className={`h-full w-full object-cover transition-all duration-100 group-hover:scale-110 ${isSending ? 'scale-105 brightness-90' : ''}`}
+            className={`h-full w-full object-cover transition-all duration-100 ${isSending ? 'brightness-90' : ''}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
         </div>

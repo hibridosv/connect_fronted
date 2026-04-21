@@ -33,7 +33,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
 
   return (
             <div className="bg-bg-content border border-bg-subtle rounded-lg p-4">
-              <div className="flex items-center justify-center gap-8">
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8">
 
                 { activeConfig && activeConfig.includes("print-link") ? (
                   <ButtonDownloadGet
