@@ -37,7 +37,7 @@ const useCashDrawerStore = create<CashDrawerState>((set) => ({
       set({ loading: true });
       const response = await updateService(url, data);
       await useCashDrawerStore.getState().loadCashDrawers();
-      await useConfigStore.getState().loadConfig();
+      await useConfigStore.getState().reloadConfig();
       await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
@@ -55,7 +55,7 @@ const useCashDrawerStore = create<CashDrawerState>((set) => ({
       set({ loading: true });
       const response = await updateService(url, data);
       await useCashDrawerStore.getState().loadCashDrawers();
-      await useConfigStore.getState().loadConfig();
+      await useConfigStore.getState().reloadConfig();
       await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       useToastMessageStore.getState().setMessage(response);
       useModalStore.getState().openModal('cashDrawerDetails');

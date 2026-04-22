@@ -31,6 +31,7 @@ interface ConfigStoreState {
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
+  reloadConfig: () => Promise<void>;
   updateConfiguration: (id: number, active: number) => Promise<void>;
   clearConfig: () => void;
 }
@@ -95,6 +96,11 @@ const useConfigStore = create(
         } finally {
           set({ loading: false });
         }
+      },
+
+      reloadConfig: async () => {
+        set({ configurations: null, retryCount: 0 });
+        await get().loadConfig();
       },
 
       updateConfiguration: async (id: number, active: number) => {
