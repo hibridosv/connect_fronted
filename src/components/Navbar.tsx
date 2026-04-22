@@ -15,7 +15,7 @@ import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
-  const { user, client, tenant } = useConfigStore();
+  const { user, client, tenant, invoiceExist } = useConfigStore();
   const { configFailed } = useConfigLogic();
   const { modals, closeModal, openModal } = useModalStore();
   const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
@@ -41,6 +41,20 @@ export const Navbar = () => {
           </div>
 
           <div className='flex'>
+            {
+              !invoiceExist && (
+                <div className="mr-2">
+                  <Link href="/settings/payments">
+                    <span className="relative clickeable text-white flex justify-center align-middle" title="Click para ver sus facturas">
+                      <span className="absolute flex h-3 w-3 mt-2 mr-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                      </span>
+                    </span>
+                  </Link>
+                </div>
+              )
+            }
             { configFailed ? (
               <button onClick={() => window.location.reload()} className="text-text-inverted hover:text-secondary clickeable">
                 <IoReloadOutline size={22} className="sm:w-7 sm:h-7" />
