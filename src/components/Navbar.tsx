@@ -7,6 +7,7 @@ import useModalStore from '@/stores/modalStorage';
 import Link from 'next/link';
 import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome, IoReloadOutline } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
@@ -44,11 +45,13 @@ export const Navbar = () => {
             {
               !invoiceExist && (
                 <div className="mr-2">
-                  <Link href="/settings/payments">
-                    <span className="relative clickeable text-white flex justify-center align-middle" title="Click para ver sus facturas">
-                      <span className="absolute flex h-3 w-3 mt-2 mr-3">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                  <Link href="/settings/payments" title="Factura pendiente de pago — click para ver">
+                    <span className="relative flex items-center justify-center clickeable">
+                      <FaFileInvoiceDollar size={22} className="text-white animate-pulse drop-shadow-[0_0_6px_rgba(255,255,255,0.6)]" />
+                      <span className="absolute top-0 right-0 flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-90"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-50 delay-300"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white shadow-[0_0_8px_4px_rgba(255,255,255,0.8)]"></span>
                       </span>
                     </span>
                   </Link>
