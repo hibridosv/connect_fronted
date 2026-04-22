@@ -111,7 +111,6 @@ const useConfigStore = create(
 
       clearConfig: () => {
         set({
-          _hasHydrated: false,
           configurations: null,
           activeConfig: null,
           system: null,

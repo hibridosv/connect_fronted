@@ -8,35 +8,18 @@ declare global {
   }
 }
 
-type ReverbConfig = {
-  host: string;
-  port: string;
-  scheme: string;
-  key: string;
-};
-
 let echoInstance: Echo<'reverb'> | null = null;
-let reverbConfig: ReverbConfig | null = null;
-
-async function getReverbConfig(): Promise<ReverbConfig> {
-  if (reverbConfig) return reverbConfig;
-  const res = await fetch('/api/reverb-config');
-  if (!res.ok) throw new Error('No se pudo obtener configuración de Reverb');
-  reverbConfig = await res.json();
-  return reverbConfig!;
-}
 
 async function getEchoInstance(): Promise<Echo<'reverb'>> {
   if (!echoInstance) {
-    const config = await getReverbConfig();
     window.Pusher = Pusher;
     echoInstance = new Echo({
       broadcaster: 'reverb',
-      key: config.key,
-      wsHost: config.host,
-      wsPort: Number(config.port),
-      wssPort: Number(config.port),
-      forceTLS: (config.scheme ?? 'https') === 'https',
+      key: process.env.NEXT_PUBLIC_REVERB_KEY!,
+      wsHost: process.env.NEXT_PUBLIC_REVERB_HOST!,
+      wsPort: Number(process.env.NEXT_PUBLIC_REVERB_PORT),
+      wssPort: Number(process.env.NEXT_PUBLIC_REVERB_PORT),
+      forceTLS: (process.env.NEXT_PUBLIC_REVERB_SCHEME ?? 'https') === 'https',
       enabledTransports: ['ws', 'wss'],
     });
   }
