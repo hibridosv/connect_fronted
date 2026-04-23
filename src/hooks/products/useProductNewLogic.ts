@@ -71,7 +71,7 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
     try {
       const response = await createService('products', data);
       useToastMessageStore.getState().setMessage(response);
-      await getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+      await getRequest("products?sort=-created_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
       if (reset) {
         reset();
         setElement('productNewType', 1);
