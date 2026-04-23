@@ -48,7 +48,7 @@ export default function Page() {
     <div className="md:col-span-3">
         <ViewTitle text="Resumen" />
             <div className="p-4">
-              <ClientsSearch param="customers" placeholder="Buscar Proveedor" />
+              <ClientsSearch param="suppliers" placeholder="Buscar Proveedor" />
               <ShowClientSearched />
             </div>
             <RadioButton options={optionsRadioButton} />
