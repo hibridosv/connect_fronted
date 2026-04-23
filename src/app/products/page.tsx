@@ -24,7 +24,7 @@ import { FaSpinner } from "react-icons/fa";
 export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
   const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
-  const [sortBy, setSortBy] = useState("-cod");
+  const [sortBy, setSortBy] = useState("description");
   const { products, loading } = useProductStore();
   useProductLogic(currentPage, searchTerm, sortBy);
   const { permission } = useConfigStore();
