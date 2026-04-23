@@ -13,7 +13,7 @@ import { useState } from "react";
 export function OrderProductsSearch() {
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
-    const sortBy = "-updated_at";
+    const sortBy = "description";
     const { products, loading } = useProductStore();
     const [searchKey, setSearchKey] = useState(Date.now()); // 1. Añadimos un estado para la key
     useOrderProductsSearchLogic(currentPage, searchTerm, sortBy);
