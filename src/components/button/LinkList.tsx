@@ -27,7 +27,7 @@ function LinkItem({ item }: { item: LinkUrls }) {
     try {
       const response = await get(`config/url?route=${item.route}`);
       const resolvedUrl = response.data?.url;
-      if (resolvedUrl) window.location.href = resolvedUrl;
+      if (resolvedUrl) window.open(resolvedUrl, '_blank');
     } finally {
       setLoading(false);
     }
