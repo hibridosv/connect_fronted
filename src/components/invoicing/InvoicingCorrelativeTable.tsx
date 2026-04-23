@@ -29,7 +29,7 @@ export function InvoicingCorrelativeTable(props: InvoicingCorrelativeTableI) {
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         <ButtonDownloadGet
-            href={`id=${invoiceId}&date=${record?.date}&route=download.pdf.invoices.correlative`}
+            href={`invoiceId=${invoiceId}&date=${record?.date}&route=download.pdf.invoices.correlative`}
             autoclass={false}>
             { formatDateAsDMY(record?.date) }
       </ButtonDownloadGet>
