@@ -1,5 +1,7 @@
 import { formatDocument, formatDuiWithAll } from '@/lib/utils';
+import useConfigStore from '@/stores/configStore';
 import useContactStore from '@/stores/ContactStore';
+import ordersProductsStore from '@/stores/orders/ordersProductsStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import useUserStore from '@/stores/UserStore';
 import useTempStorage from '@/stores/useTempStorage';
@@ -71,6 +73,10 @@ useEffect(() => {
     try {
         if (record) {
             await updateContact(`contacts/${record.id}`, data);
+            // si la actualizacion viene del modal de venta, se actualiza toda la venta
+            if (useTempStorage.getState().getElement("editContact")) {
+              await ordersProductsStore.getState().loadOrder(`orders/find?filterWhere[status]==1&filterWhere[opened_by_id]==${useConfigStore.getState().user?.id}&included=products,invoiceproducts,delivery,client,invoiceAssigned,employee,referred`, false);
+            }
         } else {
             await createContact(data);
         }
