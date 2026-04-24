@@ -35,48 +35,62 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
   return (
     <div className={`space-y-2 ${disabled ? 'pointer-events-none opacity-60' : ''}`}>
       {purchases.map((book) => {
-        const isOpen = book.status === 1;
+        const isClosed = book.status === 3;
         const isSelected = book.id === effectiveSelectedId;
 
-        if (isOpen) {
+        const isActive = book.status === 1;
+        const downloadButtonClass = isClosed
+          ? "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-bg-subtle text-text-muted hover:bg-bg-subtle/80"
+          : "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-primary/10 text-primary hover:bg-primary/20";
+
+        const downloadButtons = (
+          <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+            <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=1&route=download.excel.purchaseBook`}>
+              <button className={downloadButtonClass}>
+                <LuDownload size={13} />Descargar libro
+              </button>
+            </ButtonDownloadGet>
+            <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=3&route=download.excel.purchaseBook`}>
+              <button className={downloadButtonClass}>
+                <LuDownload size={13} />Descargar anexo
+              </button>
+            </ButtonDownloadGet>
+          </div>
+        );
+
+        if (!isClosed) {
           return (
             <div
               key={book.id}
               onClick={() => !disabled && onSelect?.(book.id)}
-              className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-2 border-primary' : 'border-2 border-primary/30 hover:border-primary/60'
-                }`}
+              className={`rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
+                isSelected
+                  ? 'bg-primary/10 shadow-md scale-[1.02] border-2 border-primary'
+                  : 'bg-bg-content border-2 border-primary/30 hover:border-primary/60 hover:scale-[1.01]'
+              }`}
             >
               <div className="px-4 py-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors duration-200 ${isSelected ? 'bg-primary/20' : 'bg-primary/10'}`}>
                     <LuBookOpen size={18} className="text-primary" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-bold text-text-base truncate">{book.name}</p>
-                    <p className="text-xs text-primary font-medium">Libro activo</p>
-                    <p className="text-xs text-text-muted pt-2">
-                      {invoicesCount} documento{invoicesCount !== 1 ? 's' : ''} registrado{invoicesCount !== 1 ? 's' : ''}
-                    </p>
+                    <p className="text-xs text-primary font-medium">{isActive ? 'Libro activo' : 'Cerrándose'}</p>
+                    {isSelected && (
+                      <p className="text-xs text-text-muted pt-1">
+                        {invoicesCount} documento{invoicesCount !== 1 ? 's' : ''} registrado{invoicesCount !== 1 ? 's' : ''}
+                      </p>
+                    )}
                   </div>
                 </div>
-                <span className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
-                  Activo
+                <span className="shrink-0 text-xs px-2 py-0.5 rounded-full font-semibold bg-primary/15 text-primary">
+                  {isActive ? 'Activo' : 'En cierre'}
                 </span>
               </div>
-              {isSelected && (
-                <div className="border-t border-primary/20 px-4 py-2 bg-primary/5 flex items-center justify-end">
-                  <div className="flex gap-2">
-                    <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=1&route=download.excel.purchaseBook`}>
-                      <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-primary/5 text-primary hover:bg-primary/15">
-                      <LuDownload size={13} />Descargar libro</button>
-                    </ButtonDownloadGet>
-                    <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=3&route=download.excel.purchaseBook`}>
-                      <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-primary/5 text-primary hover:bg-primary/15">
-                      <LuDownload size={13} />Descargar anexo</button>
-                    </ButtonDownloadGet>
-                  </div>
-                </div>
-              )}
+              <div className={`border-t px-4 py-2 flex items-center justify-end transition-colors duration-200 ${isSelected ? 'border-primary/20 bg-primary/10' : 'border-primary/20 bg-primary/5'}`}>
+                {downloadButtons}
+              </div>
             </div>
           );
         }
@@ -84,9 +98,11 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
         return (
           <div
             key={book.id}
-            onClick={() => !disabled && onSelect?.(book.id)}
-            className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-2 border-bg-subtle ring-1 ring-text-muted/30' : 'border border-bg-subtle hover:border-text-muted/40'
-              }`}
+            className={`bg-bg-content rounded-lg overflow-hidden transition-all duration-200 ${
+              isSelected
+                ? 'border-2 border-text-muted/50 shadow-md scale-[1.01]'
+                : 'border border-bg-subtle'
+            }`}
           >
             <div className="px-4 py-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
@@ -102,13 +118,9 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
                 Cerrado
               </span>
             </div>
-            {isSelected && (
-              <div className="border-t border-bg-subtle px-4 py-2 bg-bg-subtle/50">
-                <p className="text-xs text-text-muted">
-                  {invoicesCount} documento{invoicesCount !== 1 ? 's' : ''} registrado{invoicesCount !== 1 ? 's' : ''}
-                </p>
-              </div>
-            )}
+            <div className="border-t border-bg-subtle px-4 py-2 bg-bg-subtle/50 flex items-center justify-end">
+              {downloadButtons}
+            </div>
           </div>
         );
       })}
