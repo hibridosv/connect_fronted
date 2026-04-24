@@ -4,16 +4,17 @@ import { postFormData } from "@/services/OtherServices";
 import purchasesStore from "@/stores/reports/purchasesStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useRef, useState } from "react";
-import { LuFileJson, LuInfo, LuUpload, LuX } from "react-icons/lu";
+import { LuFileJson, LuInfo, LuUpload, LuX, LuArrowDown } from "react-icons/lu";
 
 interface Props {
   bookName?: string;
   bookId?: string;
   onUploadingChange: (v: boolean) => void;
   hasBooks: boolean;
+  isEmpty?: boolean;
 }
 
-export function PurchasesImportSection({ bookName, bookId, onUploadingChange, hasBooks }: Props) {
+export function PurchasesImportSection({ bookName, bookId, onUploadingChange, hasBooks, isEmpty = false }: Props) {
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -87,53 +88,73 @@ export function PurchasesImportSection({ bookName, bookId, onUploadingChange, ha
     );
   }
 
-  return (
-    <div>
-      <PurchasesImportResultModal show={!!result} onClose={() => setResult(null)} result={result} />
-      <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-3">
-        Importar facturas — {bookName ?? '—'}
-      </p>
+  const showCallToAction = isEmpty && !isUploading && files.length === 0 && !isDragging;
 
-      <div
-        onDragOver={(e) => { if (!isUploading) { e.preventDefault(); setIsDragging(true); } }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={handleDrop}
-        onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
-        className={`rounded-lg border-2 border-dashed transition-all p-6 flex flex-col items-center gap-2 text-center ${
-          isUploading
-            ? 'border-bg-subtle opacity-50 cursor-not-allowed'
-            : isDragging
-              ? 'border-primary bg-primary/8 scale-[1.01] cursor-pointer'
-              : 'border-bg-subtle hover:border-primary/40 hover:bg-primary/5 cursor-pointer'
-        }`}
-      >
-        <div className={`w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
-          isDragging ? 'bg-primary/20' : 'bg-bg-subtle'
-        }`}>
-          <LuUpload size={20} className={isDragging ? 'text-primary' : 'text-text-muted'} />
+  return (
+    <div className={`transition-all duration-500 ${showCallToAction ? 'rounded-xl ring-2 ring-primary/50 ring-offset-2 ring-offset-bg-base shadow-xl shadow-primary/20' : ''}`}>
+      <PurchasesImportResultModal show={!!result} onClose={() => setResult(null)} result={result} />
+
+      {showCallToAction && (
+        <div className="flex flex-col items-center gap-0.5 pt-2 pb-0.5">
+          <p className="text-xs font-bold text-primary uppercase tracking-wider">¡Comience aquí!</p>
+          <LuArrowDown size={14} className="text-primary animate-bounce" />
+          <LuArrowDown size={14} className="text-primary/50 animate-bounce [animation-delay:150ms] -mt-2" />
         </div>
-        <div>
-          <p className="text-sm font-semibold text-text-base">
-            {isDragging ? 'Suelte los archivos aquí' : 'Arrastre los archivos aquí'}
-          </p>
-          <p className="text-xs text-text-muted mt-0.5">o haga clic para seleccionar</p>
+      )}
+
+      <div className={showCallToAction ? 'px-3 pb-2' : ''}>
+        <p className="text-xs font-bold uppercase tracking-wider text-text-muted mb-2 mt-2">
+          Importar facturas — {bookName ?? '—'}
+        </p>
+
+        <div
+          onDragOver={(e) => { if (!isUploading) { e.preventDefault(); setIsDragging(true); } }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={handleDrop}
+          onClick={() => { if (!isUploading) fileInputRef.current?.click(); }}
+          className={`rounded-lg border-2 border-dashed transition-all p-4 flex flex-col items-center gap-1.5 text-center ${
+            isUploading
+              ? 'border-bg-subtle opacity-50 cursor-not-allowed'
+              : isDragging
+                ? 'border-primary bg-primary/8 scale-[1.01] cursor-pointer'
+                : showCallToAction
+                  ? 'border-primary bg-primary/8 cursor-pointer hover:bg-primary/12'
+                  : 'border-bg-subtle hover:border-primary/40 hover:bg-primary/5 cursor-pointer'
+          }`}
+        >
+          <div className="relative">
+            {showCallToAction && (
+              <span className="absolute inset-0 rounded-full bg-primary/30 animate-ping" />
+            )}
+            <div className={`relative w-11 h-11 rounded-full flex items-center justify-center transition-colors ${
+              isDragging ? 'bg-primary/20' : showCallToAction ? 'bg-primary/20' : 'bg-bg-subtle'
+            }`}>
+              <LuUpload size={20} className={isDragging || showCallToAction ? 'text-primary' : 'text-text-muted'} />
+            </div>
+          </div>
+          <div>
+            <p className={`text-sm font-semibold ${showCallToAction ? 'text-primary' : 'text-text-base'}`}>
+              {isDragging ? 'Suelte los archivos aquí' : 'Arrastre los archivos aquí'}
+            </p>
+            <p className="text-xs text-text-muted mt-0.5">o haga clic para seleccionar</p>
+          </div>
+          <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium transition-colors ${showCallToAction ? 'bg-primary/15 text-primary animate-pulse' : 'bg-bg-subtle text-text-muted'}`}>
+            Solo archivos .json
+          </span>
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept=".json"
+            className="hidden"
+            onChange={handleFileInput}
+            disabled={isUploading}
+          />
         </div>
-        <span className="text-xs text-text-muted bg-bg-subtle px-2.5 py-0.5 rounded-full font-medium">
-          Solo archivos .json
-        </span>
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept=".json"
-          className="hidden"
-          onChange={handleFileInput}
-          disabled={isUploading}
-        />
       </div>
 
       {files.length > 0 && (
-        <div className="mt-3 space-y-2">
+        <div className={`mt-3 space-y-2 ${showCallToAction ? 'px-3 pb-3' : ''}`}>
           <p className="text-xs text-text-muted">
             {files.length} archivo{files.length !== 1 ? 's' : ''} seleccionado{files.length !== 1 ? 's' : ''}
           </p>
