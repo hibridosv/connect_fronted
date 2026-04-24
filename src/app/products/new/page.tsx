@@ -12,6 +12,7 @@ import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationM
 import { SkeletonProductNewForm } from "@/components/skeleton/SkeletonProductNewForm";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
+import { ContactSearch } from "@/components/search/ContactSearch";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -30,14 +31,13 @@ const PRODUCT_TYPES = [
 export default function Page() {
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { onSubmit, productType, setElement, subCategories, brands, quantityUnits, providers: providersData, locations, products, loadingSelects } = useProductNewLogic(setValue, reset);
+  const { onSubmit, productType, setElement, subCategories, brands, quantityUnits, locations, products, loadingSelects } = useProductNewLogic(setValue, reset);
   const { loading: loadingProducts } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { modals, closeModal, openModal } = useModalStore();
   const lastProducts = products?.data;
   const { getElement, clearElement } = useTempStorage();
-  const providers = providersData?.data;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -141,16 +141,15 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="provider_id" className="input-label clickeable" onClick={() => {openModal('contactAdd'); setElement('isFromProducts', true)}}>Proveedor (Click para agregar)</label>
-                  <select id="provider_id" {...register("provider_id")} className="input-select">
-                    {providers && providers.map((value: any) => {
-                      return (
-                        <option key={value.id} value={value.id}>
-                          {value.name}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  <label className="input-label clickeable" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
+                  <input type="hidden" {...register("provider_id")} />
+                  <ContactSearch
+                    param="suppliers"
+                    placeholder="Buscar Proveedor"
+                    tempSelectedName="productNewProvider"
+                    onSelect={(contact) => setValue('provider_id', contact.id)}
+                    onClear={() => setValue('provider_id', '')}
+                  />
                 </div>
 
               { activeConfig && activeConfig.includes('product-locations') && (

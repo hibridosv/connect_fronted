@@ -2,6 +2,7 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
+import { ContactSearch } from "@/components/search/ContactSearch";
 import { NothingHere } from "@/components/NothingHere";
 import { ProductImageAddModal } from "@/components/products/images/ProductImageAddModal";
 import { ProductImagesSection } from "@/components/products/images/ProductImagesSection";
@@ -21,21 +22,29 @@ import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
-  const { subCategories, brands, quantityUnits, providers: providersData, locations, loadingSelects } = useProductNewLogic();
+  const { subCategories, brands, quantityUnits, locations, loadingSelects } = useProductNewLogic();
   const { loading: loadingProduct, product } = useProductStore();
   const { loading } = useStateStore();
   const isSending = loading["productForm"] ? true : false;
   const { onSubmit } = useProductEditLogic(id, setValue);
   const router = useRouter();
-  const providers = providersData?.data;
   const { modals, closeModal, openModal } = useModalStore();
   const { setElement, clearElement } = useTempStorage();
+
+  useEffect(() => {
+    if (product?.provider) {
+      setElement('productEditProvider', product.provider);
+    }
+    return () => clearElement('productEditProvider');
+  // eslint-disable-next-line
+  }, [product]);
   const isLoading = loadingProduct || loadingSelects;
 
   if (!product && !loadingProduct) {
@@ -112,16 +121,15 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
 
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="provider_id" className="input-label clickeable" onClick={() => {openModal('contactAdd'); setElement('isFromProducts', true)}}>Proveedor (Click para agregar)</label>
-                <select id="provider_id" {...register("provider_id")} className="input-select">
-                  {providers && providers.map((value: any) => {
-                    return (
-                      <option key={value.id} value={value.id}>
-                        {value.name}
-                      </option>
-                    );
-                  })}
-                </select>
+                <label className="input-label clickeable" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
+                <input type="hidden" {...register("provider_id")} />
+                <ContactSearch
+                  param="suppliers"
+                  placeholder="Buscar Proveedor"
+                  tempSelectedName="productEditProvider"
+                  onSelect={(contact) => setValue('provider_id', contact.id)}
+                  onClear={() => setValue('provider_id', '')}
+                />
               </div>
 
             { activeConfig && activeConfig.includes('product-locations') && (

@@ -2,7 +2,6 @@
 import { getCountryProperty } from '@/lib/utils'
 import { createService } from '@/services/services'
 import useConfigStore from '@/stores/configStore'
-import useContactStore from '@/stores/ContactStore'
 import useModalStore from '@/stores/modalStorage'
 import useBrandsStore from '@/stores/products/brandsStore'
 import useCategoriesStore from '@/stores/products/categoriesStore'
@@ -18,12 +17,11 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
   const { loadCategories, categories, loading: loadingCategories } = useCategoriesStore();
   const { loadBrands, brands, loading: loadingBrands } = useBrandsStore();
   const { loadQuantityUnits, quantityUnits, loading: loadingQuantityUnits } = useQuantityUnitStore();
-  const { loadContacts, contacts: providers, loading: loadingProviders } = useContactStore();
   const { loadLocations, locations, loading: loadingLocations } = useLocationStore();
   const { activeConfig, system } = useConfigStore();
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
-  const { getElement, setElement } = useTempStorage();
+  const { getElement, setElement, clearElement } = useTempStorage();
   const [subCategories, setSubCategories] = useState<any[]>([]);
   const { getRequest, responseData: products } = useGetRequest();
 
@@ -48,14 +46,11 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
     if (!quantityUnits) {
       loadQuantityUnits("quantityunits");
     }
-    if (!providers) {
-      loadContacts('contacts?sort=-created_at&filterWhere[is_provider]==1&perPage=100&page=1');
-    }
     if (!locations && (activeConfig && activeConfig.includes('product-locations'))) {
       loadLocations('locations');
     }
   // eslint-disable-next-line
-  }, [getRequest, loadCategories, loadBrands, loadQuantityUnits, loadContacts, loadLocations]);
+  }, [getRequest, loadCategories, loadBrands, loadQuantityUnits, loadLocations]);
 
   const onSubmit = async (data: any) => {
     openLoading("productForm");
@@ -75,10 +70,10 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
       if (reset) {
         reset();
         setElement('productNewType', 1);
+        clearElement('productNewProvider');
         if (setValue) {
           if (subCategories?.length > 0) setValue('category_id', subCategories[0].id);
           if (quantityUnits?.length > 0) setValue('quantity_unit_id', quantityUnits[0].id);
-          if (providers?.data?.length > 0) setValue('provider_id', providers.data[0].id);
           if (brands?.length > 0) setValue('brand_id', brands[0].id);
           if (locations?.length > 0) setValue('location_id', locations[0].id);
         }
@@ -113,12 +108,6 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
   }, [quantityUnits]);
 
   useEffect(() => {
-    const providersList = providers?.data;
-    if (setValue && providersList?.length > 0) setValue('provider_id', providersList[0].id);
-    // eslint-disable-next-line
-  }, [providers]);
-
-  useEffect(() => {
     if (setValue && brands?.length > 0) setValue('brand_id', brands[0].id);
     // eslint-disable-next-line
   }, [brands]);
@@ -128,8 +117,8 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
     // eslint-disable-next-line
   }, [locations]);
 
-  const loadingSelects = loadingCategories || loadingQuantityUnits || loadingProviders || loadingBrands || loadingLocations;
+  const loadingSelects = loadingCategories || loadingQuantityUnits || loadingBrands || loadingLocations;
 
-  return { onSubmit, productType, setElement, subCategories, products, brands, quantityUnits, providers, locations, loadingSelects }
+  return { onSubmit, productType, setElement, subCategories, products, brands, quantityUnits, locations, loadingSelects }
 
 }
