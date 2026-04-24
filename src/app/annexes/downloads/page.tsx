@@ -81,8 +81,6 @@ export default function Page() {
   const jsonTriggerRef = useRef<HTMLButtonElement>(null);
   const pdfTriggerRef = useRef<HTMLButtonElement>(null);
 
-  const showGeneratePdf = downloads?.length === 1 && downloads[0]?.status == 1;
-
   const currentStep = !downloads || downloads.length === 0
     ? 'generate'
     : downloads[0]?.status == 1
@@ -220,6 +218,9 @@ export default function Page() {
               <p className="text-xs text-text-muted">
                 Genera el archivo ZIP con los documentos electrónicos del período seleccionado.
               </p>
+              <p className="text-xs text-warning">
+                El archivo JSON activo será reemplazado por el nuevo al generarse.
+              </p>
               <MonthDropdown
                 label={creating ? "Generando..." : "Generar JSON"}
                 disabled={creating}
@@ -238,15 +239,15 @@ export default function Page() {
               <p className="text-xs text-text-muted">
                 Genera la representación visual en PDF de los documentos electrónicos ya procesados.
               </p>
+              <p className="text-xs text-warning">
+                El archivo PDF activo será reemplazado por el nuevo al generarse.
+              </p>
               <MonthDropdown
                 label={creating ? "Generando..." : "Generar PDF"}
-                disabled={creating || !showGeneratePdf}
+                disabled={creating}
                 onSelect={(value) => handleGenerateDocuments('pdf', value)}
                 buttonRef={pdfTriggerRef}
               />
-              {!showGeneratePdf && (
-                <p className="text-xs text-warning">Requiere tener un JSON generado y listo.</p>
-              )}
             </div>
           </div>
 
