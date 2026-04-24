@@ -2,6 +2,7 @@
 
 import { CashdrawerDetails } from "@/components/cashdrawer/CashDrawerDetails";
 import { CashdrawerModal } from "@/components/cashdrawer/CashDrawerModal";
+import { ExpiresInvoice } from "@/components/cashdrawer/ExpiresInvoice";
 import { Drawers } from "@/components/cuts/Drawers";
 import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
 import { Pagination } from "@/components/Pagination";
@@ -22,7 +23,7 @@ export default function Page() {
   const { currentPage, handlePageNumber } = usePagination("&page=1");
   useCashDrawersLogic();
   const { cuts, loading } = useCutStore();
-  const { user } = useConfigStore();
+  const { user, invoiceExist, isInvoiceExpires } = useConfigStore();
   const { modals, closeModal } = useModalStore();
   const [showAll, setShowAll] = useState(true);
   useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
@@ -34,6 +35,7 @@ export default function Page() {
 
       <div className="md:col-span-5 md:border-r md:border-primary">
         <ViewTitle text="Cajas disponibles" />
+        <ExpiresInvoice isShow={invoiceExist && isInvoiceExpires > 0} expiresDays={isInvoiceExpires} />
         <Drawers />
       </div>
 
