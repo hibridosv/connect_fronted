@@ -35,7 +35,6 @@ export function AddProductsSearch() {
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                    <ul className="divide-y divide-bg-subtle max-h-screen overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
-                        console.log("Producto en búsqueda:", item);
                         return (
                           <li 
                             key={item.id} onClick={() => handleSelectProduct(item)} >

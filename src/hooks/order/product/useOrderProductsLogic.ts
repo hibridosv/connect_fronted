@@ -27,8 +27,6 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
   const orderLoaded = useRef(false);
   
   const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-orders`, 'PusherOrderEvent', isRealTime);
-  console.log('isRealTime:', isRealTime);
-  console.log('Datos del evento de Pusher:', pusherEventData);
   // para sistema de productos
   useEffect(() => {
         if (initialLoad && activeConfig) {
