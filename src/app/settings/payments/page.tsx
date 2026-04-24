@@ -54,7 +54,7 @@ export default function Page() {
               <div className="mx-3 mt-2 mb-2 px-3 py-2 bg-info/10 border border-info/20 rounded text-info text-xs">
                 Transacción segura a través de Wompi del Banco Agrícola. No guardamos ningún dato de su tarjeta.
               </div>
-              <div className="flex justify-center pb-3">
+              <div className="flex justify-center pb-2">
                 <a
                   target="_blank"
                   href={payLink?.urlEnlace ?? '#'}
@@ -65,7 +65,7 @@ export default function Page() {
                 </a>
               </div>
               <div className="border-t border-bg-subtle" />
-              <div className="flex justify-center p-3">
+              <div className="flex justify-center p-2">
                 {payLink?.urlQrCodeEnlace && (
                   <Image
                     loader={imageLoader}
@@ -81,35 +81,34 @@ export default function Page() {
 
           {total > 0 ? (
             <div className="animate-slide-up-delay-2 bg-bg-content rounded-lg shadow-sm border border-bg-subtle overflow-hidden transition-shadow duration-200 hover:shadow-md">
-              <div className="text-center bg-bg-subtle/60 font-semibold py-2 text-xs uppercase tracking-wider text-text-base">
-                Pagar con Transferencia Electrónica
-              </div>
-              <div className="p-3">
+              <div className="flex flex-col items-center gap-1 bg-bg-subtle/60 py-2 px-3">
+                <span className="font-semibold text-xs uppercase tracking-wider text-text-muted">Pagar con Transferencia Electrónica</span>
                 <Image
                   loader={imageLoader}
                   src="https://digital.promerica.com.sv/promerica//assets/img/logo-promerica.png"
                   alt="Logo Promerica"
-                  width={180}
-                  height={27}
-                  className="mb-2"
+                  width={150}
+                  height={22}
                 />
+              </div>
+              <div className="px-3 py-2">
                 <div className="divide-y divide-bg-subtle text-sm">
-                  <div className="flex justify-between items-center py-1.5">
+                  <div className="flex justify-between items-center py-1">
                     <span className="text-text-muted">Número de cuenta</span>
                     <span className="font-semibold text-text-base">20000066001071</span>
                   </div>
-                  <div className="flex justify-between items-center py-1.5">
+                  <div className="flex justify-between items-center py-1">
                     <span className="text-text-muted">Nombre</span>
                     <span className="font-semibold text-text-base">Erick Adonai Nuñez Martinez</span>
                   </div>
-                  <div className="flex justify-between items-center py-1.5">
+                  <div className="flex justify-between items-center py-1">
                     <span className="text-text-muted">Concepto</span>
                     <span className="font-semibold text-text-base uppercase">
                       Factura {tenant?.id}-{lastInvoice?.id?.slice(-4)}
                     </span>
                   </div>
                 </div>
-                <p className="mt-2 text-xs text-danger">
+                <p className="mt-1.5 text-xs text-danger">
                   Incluya el concepto en la transferencia para identificar su factura.
                 </p>
               </div>
