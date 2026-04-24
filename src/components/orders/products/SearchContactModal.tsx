@@ -70,6 +70,7 @@ export function SearchContactModal(props: SearchContactModalI) {
   
   const handleClose = async() => {
     clearElement(tempSelectedName);
+    clearElement('editContact');
     onClose && onClose();
   }
   
@@ -81,7 +82,11 @@ export function SearchContactModal(props: SearchContactModalI) {
         <ShowClientSearched onClose={clearContact} tempSelectedName={tempSelectedName} />
       </div>
       <Modal.Footer>
-        <Button onClick={() => { openModal('contactAdd') }} text={`Registrar ${setNameContact(tempSelectedName)}`} preset={Preset.add}/>
+        {
+          getElement(tempSelectedName) &&
+          <Button onClick={() => { openModal('contactAdd'); setElement('editContact', getElement(tempSelectedName)) }} preset={Preset.smallEdit}/>
+        }
+        <Button onClick={() => { openModal('contactAdd'); clearElement('editContact') }} text={`Registrar ${setNameContact(tempSelectedName)}`} preset={Preset.add}/>
         <Button onClick={handleClose} preset={Preset.close} disabled={sending} /> 
       </Modal.Footer>
     </Modal>

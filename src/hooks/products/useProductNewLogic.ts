@@ -37,7 +37,7 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
   useEffect(() => {
 
     if (!products) {
-      getRequest("products?sort=-updated_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
+      getRequest("products?sort=-created_at&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1");
     }
     if (!categories) {
       loadCategories("categories?sort=-created_at&included=subcategories&filterWhere[category_type]==1&filterWhere[is_restaurant]==0");

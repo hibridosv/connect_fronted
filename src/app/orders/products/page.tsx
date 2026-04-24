@@ -26,13 +26,14 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { useOrderProductsLogic } from "@/hooks/order/product/useOrderProductsLogic";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
+import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   useOrderProductsLogic(true);
   const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
+  const { getElement } = useTempStorage();
 
-  
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
@@ -63,7 +64,7 @@ export default function Page() {
         <SetRemissionNoteModal isShow={modals.setRemissionNote} onClose={()=>{ closeModal('setRemissionNote')}} />
         <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
         <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />
-        <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={null} />
+        <AddContactModal isShow={modals.contactAdd} onClose={()=>closeModal('contactAdd')} record={getElement('editContact')} />
         <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
         <PayedModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
         <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />
