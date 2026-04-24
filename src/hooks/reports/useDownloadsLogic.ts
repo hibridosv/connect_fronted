@@ -27,11 +27,12 @@ export function useDownloadsLogic(url: string) {
 
 
 
-      const handleGenerateDocuments = async (type: 'pdf' | 'json') => {
+      const handleGenerateDocuments = async (type: 'pdf' | 'json', months?: number) => {
             openLoading("creating");
             const data = {
               client_id: system?.client_id,
               type,
+              ...(months !== undefined && { months }),
             }
             try {
               const response = await createService(`downloads/zip/generate`, data);

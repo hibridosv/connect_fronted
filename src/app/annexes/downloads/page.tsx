@@ -1,23 +1,51 @@
 'use client';
-import { Button, Preset } from "@/components/button/button";
-import { LiComponent } from "@/components/button/LiComponent";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useDownloadsLogic } from "@/hooks/reports/useDownloadsLogic";
+import { DateTime } from "luxon";
+import { useRef, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { LuDownload, LuFileJson, LuLoader } from "react-icons/lu";
+import { LuChevronDown, LuDownload, LuFileJson, LuLoader } from "react-icons/lu";
 import { TbPdf } from "react-icons/tb";
 
 const STEPS = [
-  { key: 'generate',   label: 'Generar JSON' },
-  { key: 'processing', label: 'Procesando'   },
-  { key: 'ready',      label: 'Descarga lista' },
+  { key: 'generate',   label: 'Generar JSON',       description: 'Inicie la generación del archivo ZIP con los documentos electrónicos del período', Icon: LuFileJson  },
+  { key: 'processing', label: 'Procesando',          description: 'El servidor está generando los documentos. Actualice el estado para verificar si terminó',   Icon: FaSpinner   },
+  { key: 'ready',      label: 'Listo para descargar', description: 'El archivo ZIP está disponible. Puede descargarlo o generar los PDFs correspondientes',     Icon: LuDownload  },
 ];
+
+const MONTHS_OPTIONS = Array.from({ length: 6 }, (_, i) => ({
+  label: DateTime.now().minus({ months: i + 1 }).setLocale('es').toFormat('MMMM yyyy'),
+  value: i + 1,
+}));
 
 export default function Page() {
   const { history: downloads, handleGet, loading, handleGenerateDocuments } = useDownloadsLogic('downloads');
   const loadingDownload = loading.downloads ?? false;
   const creating = loading.creating ?? false;
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
+  const [pdfDropdownOpen, setPdfDropdownOpen] = useState(false);
+  const [jsonDropdownOpen, setJsonDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const jsonTriggerRef = useRef<HTMLButtonElement>(null);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const [jsonDropdownPos, setJsonDropdownPos] = useState({ top: 0, left: 0 });
+
+  const handleOpenDropdown = () => {
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + 4, left: rect.left });
+    }
+    setPdfDropdownOpen(v => !v);
+  };
+
+  const handleOpenJsonDropdown = () => {
+    if (jsonTriggerRef.current) {
+      const rect = jsonTriggerRef.current.getBoundingClientRect();
+      setJsonDropdownPos({ top: rect.bottom + 4, left: rect.left });
+    }
+    setJsonDropdownOpen(v => !v);
+  };
   const showGeneratePdf = downloads?.length === 1 && downloads[0]?.status == 1;
 
   const currentStep = !downloads || downloads.length === 0
@@ -38,28 +66,43 @@ export default function Page() {
 
             <div className="px-4 pt-4 pb-3">
               <div className="flex items-center gap-0">
-                {STEPS.map((step, i) => (
-                  <div key={step.key} className="flex items-center flex-1">
-                    <div className="flex flex-col items-center flex-1">
-                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${
-                        i < stepIndex
-                          ? 'bg-success border-success text-text-inverted'
-                          : i === stepIndex && !loadingDownload
-                            ? 'bg-primary border-primary text-text-inverted'
-                            : 'bg-bg-subtle border-bg-subtle text-text-muted'
-                      }`}>
-                        {i < stepIndex ? '✓' : i + 1}
+                {STEPS.map((step, i) => {
+                  const isCompleted = i < stepIndex;
+                  const isCurrent = i === stepIndex && !loadingDownload;
+                  const StepIcon = step.Icon;
+                  return (
+                    <div key={step.key} className="flex items-center flex-1">
+                      <div className="flex flex-col items-center flex-1">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors ${
+                          isCompleted
+                            ? 'bg-success border-success text-text-inverted'
+                            : isCurrent
+                              ? 'bg-primary border-primary text-text-inverted'
+                              : 'bg-bg-subtle border-bg-subtle text-text-muted'
+                        }`}>
+                          {isCompleted
+                            ? <span className="text-xs font-bold">✓</span>
+                            : <StepIcon size={14} className={isCurrent && step.key === 'processing' ? 'animate-spin' : ''} />
+                          }
+                        </div>
+                        <span className={`text-xs mt-1 text-center leading-tight font-medium ${
+                          isCompleted ? 'text-success' : isCurrent ? 'text-primary' : 'text-text-muted'
+                        }`}>
+                          {step.label}
+                        </span>
                       </div>
-                      <span className={`text-xs mt-1 text-center leading-tight ${i === stepIndex && !loadingDownload ? 'text-primary font-semibold' : 'text-text-muted'}`}>
-                        {step.label}
-                      </span>
+                      {i < STEPS.length - 1 && (
+                        <div className={`h-0.5 flex-1 mx-1 mb-5 transition-colors ${isCompleted ? 'bg-success' : 'bg-bg-subtle'}`} />
+                      )}
                     </div>
-                    {i < STEPS.length - 1 && (
-                      <div className={`h-0.5 flex-1 mx-1 mb-4 transition-colors ${i < stepIndex ? 'bg-success' : 'bg-bg-subtle'}`} />
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
+              {!loadingDownload && (
+                <p className="text-xs text-text-muted text-center mt-2 leading-snug">
+                  {STEPS[stepIndex]?.description}
+                </p>
+              )}
             </div>
 
             <div className="border-t border-bg-subtle">
@@ -75,7 +118,29 @@ export default function Page() {
                   <ul className="divide-y divide-bg-subtle">
                     {downloads.map((download: any) =>
                       download.status == 1 ? (
-                        <LiComponent key={download.id} text={download.comments} href={`${API_URL}zip/download/${download.id}`} />
+                        <li key={download.id}>
+                          <a
+                            href={`${API_URL}zip/download/${download.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-bg-subtle/60 transition-colors clickeable group"
+                          >
+                            <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
+                              <LuFileJson size={18} className="text-primary/70" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-semibold text-text-base leading-snug truncate">
+                                {download.comments}
+                              </p>
+                              {download.filename && (
+                                <p className="text-xs text-text-muted mt-0.5 truncate font-mono">
+                                  {download.filename}
+                                </p>
+                              )}
+                            </div>
+                            <LuDownload size={16} className="shrink-0 text-text-muted group-hover:text-primary transition-colors" />
+                          </a>
+                        </li>
                       ) : (
                         <li key={download.id}>
                           <button
@@ -97,12 +162,43 @@ export default function Page() {
                         <p className="text-xs text-text-muted">
                           Genere los documentos en formato PDF si no se han generado previamente. Puede tardar unos minutos.
                         </p>
-                        <Button
-                          text={creating ? "Generando..." : "Generar PDF"}
-                          onClick={() => handleGenerateDocuments('pdf')}
-                          disabled={creating}
-                          preset={creating ? Preset.saving : Preset.save}
-                        />
+                        <div ref={dropdownRef} className="inline-block">
+                          <button
+                            ref={triggerRef}
+                            type="button"
+                            disabled={creating}
+                            onClick={handleOpenDropdown}
+                            className="button-green flex items-center gap-2 rounded px-3 py-1.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {creating ? "Generando..." : "Generar PDF"}
+                            <LuChevronDown size={14} className={`transition-transform duration-200 ${pdfDropdownOpen ? 'rotate-180' : ''}`} />
+                          </button>
+
+                          {pdfDropdownOpen && !creating && (
+                            <>
+                              <div className="fixed inset-0 z-40" onClick={() => setPdfDropdownOpen(false)} />
+                              <ul
+                                style={{ top: dropdownPos.top, left: dropdownPos.left }}
+                                className="fixed z-50 min-w-[160px] bg-bg-content border border-bg-subtle rounded-lg shadow-lg overflow-hidden animate-slide-up"
+                              >
+                                {MONTHS_OPTIONS.map(({ label, value }) => (
+                                  <li key={value}>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setPdfDropdownOpen(false);
+                                        handleGenerateDocuments('pdf', value);
+                                      }}
+                                      className="w-full text-left px-4 py-2 text-sm text-text-base hover:bg-bg-subtle capitalize transition-colors"
+                                    >
+                                      {label}
+                                    </button>
+                                  </li>
+                                ))}
+                              </ul>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -115,12 +211,43 @@ export default function Page() {
                     <p className="text-xs text-text-muted">
                       No hay documentos disponibles. Genere los documentos en formato JSON; esto puede tardar unos minutos dependiendo de la cantidad a procesar.
                     </p>
-                    <Button
-                      text={creating ? "Generando..." : "Generar JSON"}
-                      onClick={() => handleGenerateDocuments('json')}
-                      disabled={creating}
-                      preset={creating ? Preset.saving : Preset.save}
-                    />
+                    <div className="inline-block">
+                      <button
+                        ref={jsonTriggerRef}
+                        type="button"
+                        disabled={creating}
+                        onClick={handleOpenJsonDropdown}
+                        className="button-green flex items-center gap-2 rounded px-3 py-1.5 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {creating ? "Generando..." : "Generar JSON"}
+                        <LuChevronDown size={14} className={`transition-transform duration-200 ${jsonDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {jsonDropdownOpen && !creating && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setJsonDropdownOpen(false)} />
+                          <ul
+                            style={{ top: jsonDropdownPos.top, left: jsonDropdownPos.left }}
+                            className="fixed z-50 min-w-[160px] bg-bg-content border border-bg-subtle rounded-lg shadow-lg overflow-hidden animate-slide-up"
+                          >
+                            {MONTHS_OPTIONS.map(({ label, value }) => (
+                              <li key={value}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setJsonDropdownOpen(false);
+                                    handleGenerateDocuments('json', value);
+                                  }}
+                                  className="w-full text-left px-4 py-2 text-sm text-text-base hover:bg-bg-subtle capitalize transition-colors"
+                                >
+                                  {label}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
