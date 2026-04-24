@@ -65,7 +65,7 @@ export default function Page() {
                 </a>
               </div>
               <div className="border-t border-bg-subtle" />
-              <div className="flex justify-center p-2">
+              <div className="flex justify-center">
                 {payLink?.urlQrCodeEnlace && (
                   <Image
                     loader={imageLoader}
