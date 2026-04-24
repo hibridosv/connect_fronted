@@ -35,9 +35,9 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-1 sm:gap-4 font-semibold text-xs sm:text-sm">
-            <div className="hidden sm:block">{ user?.name }</div>
+            <div className="hidden sm:block uppercase">{ user?.name }</div>
             <div className="hidden sm:block">|</div>
-            <div className="truncate max-w-[160px] sm:max-w-none">{ client?.nombre_comercial }</div>
+            <div className="truncate max-w-[160px] sm:max-w-none uppercase">{ client?.ambiente == '01' ? client?.nombre_comercial : tenant?.description }</div>
           </div>
 
           <div className='flex'>
