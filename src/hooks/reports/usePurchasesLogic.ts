@@ -16,7 +16,7 @@ export function usePurchasesLogic(selectedBookId: string | null) {
 
     useEffect(() => {
         if (purchases) {
-            const id = selectedBookId ?? getFirstElement(purchases).id;
+            const id = selectedBookId ?? getFirstElement(purchases)?.id;
             loadInvoices(`purchases/${id}/invoices`);
         }
     }, [loadInvoices, purchases, selectedBookId]);

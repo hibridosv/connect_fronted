@@ -1,5 +1,7 @@
 'use client';
-import { LuBookOpen, LuLock } from "react-icons/lu";
+import { LuBookOpen, LuLock, LuDownload } from "react-icons/lu";
+import { useSession } from 'next-auth/react';
+import { ButtonDownloadGet } from "../button/button-download-get";
 
 interface Purchase {
   id: string;
@@ -21,6 +23,7 @@ interface Props {
 }
 
 export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, onSelect, disabled = false }: Props) {
+
   if (!purchases || purchases.length === 0) {
     return (
       <p className="text-xs text-text-muted italic">No hay libros disponibles.</p>
@@ -40,9 +43,8 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
             <div
               key={book.id}
               onClick={() => !disabled && onSelect?.(book.id)}
-              className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${
-                isSelected ? 'border-2 border-primary' : 'border-2 border-primary/30 hover:border-primary/60'
-              }`}
+              className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-2 border-primary' : 'border-2 border-primary/30 hover:border-primary/60'
+                }`}
             >
               <div className="px-4 py-3 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
@@ -52,6 +54,9 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
                   <div className="min-w-0">
                     <p className="text-sm font-bold text-text-base truncate">{book.name}</p>
                     <p className="text-xs text-primary font-medium">Libro activo</p>
+                    <p className="text-xs text-text-muted pt-2">
+                      {invoicesCount} documento{invoicesCount !== 1 ? 's' : ''} registrado{invoicesCount !== 1 ? 's' : ''}
+                    </p>
                   </div>
                 </div>
                 <span className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
@@ -59,10 +64,17 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
                 </span>
               </div>
               {isSelected && (
-                <div className="border-t border-primary/20 px-4 py-2 bg-primary/5 flex items-center justify-between">
-                  <p className="text-xs text-text-muted">
-                    {invoicesCount} documento{invoicesCount !== 1 ? 's' : ''} registrado{invoicesCount !== 1 ? 's' : ''}
-                  </p>
+                <div className="border-t border-primary/20 px-4 py-2 bg-primary/5 flex items-center justify-end">
+                  <div className="flex gap-2">
+                    <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=1&route=download.excel.purchaseBook`}>
+                      <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-primary/5 text-primary hover:bg-primary/15">
+                      <LuDownload size={13} />Descargar libro</button>
+                    </ButtonDownloadGet>
+                    <ButtonDownloadGet autoclass={false} href={`id=${book.id}&option=3&route=download.excel.purchaseBook`}>
+                      <button className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 bg-primary/5 text-primary hover:bg-primary/15">
+                      <LuDownload size={13} />Descargar anexo</button>
+                    </ButtonDownloadGet>
+                  </div>
                 </div>
               )}
             </div>
@@ -73,9 +85,8 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
           <div
             key={book.id}
             onClick={() => !disabled && onSelect?.(book.id)}
-            className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${
-              isSelected ? 'border-2 border-bg-subtle ring-1 ring-text-muted/30' : 'border border-bg-subtle hover:border-text-muted/40'
-            }`}
+            className={`bg-bg-content rounded-lg overflow-hidden cursor-pointer transition-all ${isSelected ? 'border-2 border-bg-subtle ring-1 ring-text-muted/30' : 'border border-bg-subtle hover:border-text-muted/40'
+              }`}
           >
             <div className="px-4 py-3 flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
