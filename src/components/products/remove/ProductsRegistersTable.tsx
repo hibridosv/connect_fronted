@@ -12,7 +12,6 @@ export function ProductsRegistersTable() {
     if (!product) return null;
     if (product?.failures && product.failures.length === 0) return (<NothingHere text="Ingrese los productos a descontar" />)
 
-
       const listItems = product?.failures && product?.failures.map((record: any) => (
         <tr 
          title={ record?.status === 2 ? `Eliminado por ${record?.deleted_by?.name}` : ``}

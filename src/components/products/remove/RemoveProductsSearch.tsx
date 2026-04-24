@@ -13,7 +13,7 @@ export function RemoveProductsSearch() {
     const { getElement, setElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
-    const sortBy = "-updated_at";
+    const sortBy = "description";
     const { products, loading: loadingSearch } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
     const elementSelected = getElement('product');

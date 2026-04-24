@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Preset } from "@/components/button/button";
+import { Pagination } from "@/components/Pagination";
 import { ChangeLotModal } from "@/components/products/remove/ChangeLotModal";
 import { LastRegistersTable } from "@/components/products/remove/LastRegistersTable";
 import { LotDetailsModal } from "@/components/products/remove/LotDetailsModal";
@@ -11,20 +12,20 @@ import { RemoveProductsSearch } from "@/components/products/remove/RemoveProduct
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductRemoveLogic } from "@/hooks/products/useProductRemoveLogic";
+import { usePagination } from "@/hooks/usePagination";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/products/productRemovedStore";
 import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-  useProductRemoveLogic();
-    const { loading, product, deleting, deletePrincipal, savePrincipal } = productRemovedStore();
+    const {currentPage, handlePageNumber} = usePagination("&page=1");
+    useProductRemoveLogic(currentPage);
+    const { loading, product, products, deleting, deletePrincipal, savePrincipal } = productRemovedStore();
     const { modals, closeModal } = useModalStore();
     const { getElement } = useTempStorage();
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
-
-
-
+    
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-4 md:border-r md:border-primary">
@@ -37,6 +38,7 @@ export default function Page() {
           <ViewTitle text="Ultimos Registros" />
           <div className="p-4">
             <LastRegistersTable />
+            <Pagination records={products} handlePageNumber={handlePageNumber } />
             <ProductsRegistersTable />
           </div>
 
