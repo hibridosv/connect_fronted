@@ -9,17 +9,13 @@ export function useDownloadLink() {
     const [links, setLinks] = useState<LinkUrls[]>([]);
 
     const addLink = useCallback((data: DateRangeValues, url: string, params?: any, maxLinks = 3, nameLink = "Descargar Documento") => {
-        const queryParams = [];
+        const queryParams = [] as string[];
 
-        if (data.option) {
-            queryParams.push(`option=${data.option}`);
-        }
-        if (data.initialDate) {
-            queryParams.push(`initialDate=${data.initialDate}`);
-        }
-        if (data.finalDate) {
-            queryParams.push(`finalDate=${data.finalDate}`);
-        }
+        Object.entries(data).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.push(`${key}=${value}`);
+            }
+        });
         if (params) {
             params.forEach((param: any) => {
                 if (param.value !== undefined && param.value !== null) {

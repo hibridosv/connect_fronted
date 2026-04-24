@@ -54,7 +54,7 @@ export function useInvoiceTypesElectronicLogic(url: string) {
                   label: 'Seleccione el estado del documento',
                   type: 'select',
                   options : [
-                    { value: '0', label: 'Todos' },
+                    { value: '', label: 'Todos' },
                     { value: '1', label: 'Enviados' },
                     { value: '2', label: 'Firmados' },
                     { value: '3', label: 'Rechazados' },

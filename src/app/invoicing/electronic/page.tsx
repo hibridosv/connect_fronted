@@ -30,6 +30,8 @@ export default function Page() {
         await handleGet(values, 'electronic/documents', 'download.excel.electronic');
     }
 
+    console.log(Additionalfields)
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
     <div className="md:col-span-7 md:border-r md:border-primary">
