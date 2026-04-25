@@ -5,8 +5,9 @@ import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { Contact } from "@/interfaces/contact";
 import useContactStore from "@/stores/ContactStore";
+import useDefaultContactStore from "@/stores/defaultContactStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { LiComponent } from "../button/LiComponent";
 import { getParamString } from "../contacs/utils";
 
@@ -17,6 +18,7 @@ export interface ContactSearchProps {
   tempSelectedName?: string;
   onSelect?: (contact: Contact) => void;
   onClear?: () => void;
+  useDefaultWhenEmpty?: boolean;
 }
 
 export function ContactSearch({
@@ -26,13 +28,40 @@ export function ContactSearch({
   tempSelectedName = "contactSelectedBySearch",
   onSelect,
   onClear,
+  useDefaultWhenEmpty = false,
 }: ContactSearchProps) {
   const { contacts, loading } = useContactStore();
   const { setElement, getElement, clearElement } = useTempStorage();
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name", "id_number", "code", "phone"], 500);
   const { currentPage } = usePagination("&page=1");
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { defaultContact, loadDefaultContact } = useDefaultContactStore();
   useContactSearchLogic(currentPage, searchTerm, "-updated_at", getParamString(param), pagination);
+
+  useEffect(() => {
+    if (useDefaultWhenEmpty) {
+      loadDefaultContact();
+    }
+  }, [useDefaultWhenEmpty, loadDefaultContact]);
+
+  useEffect(() => {
+    if (!useDefaultWhenEmpty) return;
+    const form = containerRef.current?.closest('form');
+    if (!form) return;
+
+    const handleFormSubmit = () => {
+      const currentSelected = getElement(tempSelectedName);
+      const currentDefault = useDefaultContactStore.getState().defaultContact;
+      if (!currentSelected && currentDefault) {
+        setElement(tempSelectedName, currentDefault);
+        onSelect?.(currentDefault);
+      }
+    };
+
+    form.addEventListener('submit', handleFormSubmit);
+    return () => form.removeEventListener('submit', handleFormSubmit);
+  }, [useDefaultWhenEmpty, tempSelectedName, getElement, setElement, onSelect]);
 
   const selectedContact = getElement(tempSelectedName);
 
@@ -58,7 +87,7 @@ export function ContactSearch({
 
   if (selectedContact) {
     return (
-      <div className="bg-bg-content border-2 border-bg-subtle rounded-md w-full py-2 px-4 text-text-base leading-tight shadow-sm flex items-center gap-2">
+      <div ref={containerRef} className="bg-bg-content border-2 border-bg-subtle rounded-md w-full py-2 px-4 text-text-base leading-tight shadow-sm flex items-center gap-2">
         <span className="truncate flex-1">{selectedContact.name}</span>
         <button
           type="button"
@@ -74,7 +103,7 @@ export function ContactSearch({
   }
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="relative w-full">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
           {loading ? (

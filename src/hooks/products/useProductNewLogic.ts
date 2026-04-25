@@ -2,6 +2,7 @@
 import { getCountryProperty } from '@/lib/utils'
 import { createService } from '@/services/services'
 import useConfigStore from '@/stores/configStore'
+import useDefaultContactStore from '@/stores/defaultContactStore'
 import useModalStore from '@/stores/modalStorage'
 import useBrandsStore from '@/stores/products/brandsStore'
 import useCategoriesStore from '@/stores/products/categoriesStore'
@@ -22,6 +23,7 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
   const { openLoading, closeLoading } = useStateStore();
   const { openModal } = useModalStore();
   const { getElement, setElement, clearElement } = useTempStorage();
+  const { defaultContact } = useDefaultContactStore();
   const [subCategories, setSubCategories] = useState<any[]>([]);
   const { getRequest, responseData: products } = useGetRequest();
 
@@ -63,6 +65,8 @@ export function useProductNewLogic(setValue?: (field: string, value: any) => voi
     if (!data.unit_cost) data.unit_cost = 0;
     if (!data.sale_price) data.sale_price = 0;
     data.taxes = getCountryProperty(parseInt(system?.country)).taxes;
+    const selectedProvider = getElement('productNewProvider');
+    data.provider_id = selectedProvider?.id ?? defaultContact?.id ?? 0;
     try {
       const response = await createService('products', data);
       useToastMessageStore.getState().setMessage(response);

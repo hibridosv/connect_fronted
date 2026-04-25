@@ -142,13 +142,11 @@ export default function Page() {
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
                   <label className="input-label clickeable" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
-                  <input type="hidden" {...register("provider_id")} />
                   <ContactSearch
                     param="suppliers"
                     placeholder="Buscar Proveedor"
                     tempSelectedName="productNewProvider"
-                    onSelect={(contact) => setValue('provider_id', contact.id)}
-                    onClear={() => setValue('provider_id', '')}
+                    useDefaultWhenEmpty
                   />
                 </div>
 

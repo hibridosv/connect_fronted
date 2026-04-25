@@ -3,6 +3,7 @@ import { Switch } from "@/components/button/Switch";
 import { ContactSearch } from "@/components/search/ContactSearch";
 import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
+import useDefaultContactStore from "@/stores/defaultContactStore";
 import productAddStore from "@/stores/products/productAddStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -10,9 +11,10 @@ import { useForm } from "react-hook-form";
 
 export function AddInitialForm() {
     const { expensesCategories: categories, accounts} = useProductAddLogic();
-    const { register, handleSubmit, control, watch, reset, setValue } = useForm();
+    const { register, handleSubmit, control, watch, reset } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
     const { setElement, getElement } = useTempStorage();
+    const { defaultContact } = useDefaultContactStore();
 
     const isBillsActive: boolean = getElement("isBillsActive");
     const isAccountActive: boolean = getElement("isAccountActive");
@@ -28,7 +30,8 @@ export function AddInitialForm() {
             useToastMessageStore.getState().setError({ message : "Faltan algunos datos importantes para continuar!"});
             return
             }
-            data.provider_id = data.provider_id ? data.provider_id : 0;
+            const selectedProvider = getElement('addInitialFormProvider');
+            data.provider_id = selectedProvider?.id ?? defaultContact?.id ?? 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
             data.bills_active = isBillsActive;
@@ -64,13 +67,11 @@ export function AddInitialForm() {
                         <label className="block text-sm font-bold text-text-muted mb-1">
                             Proveedor
                         </label>
-                        <input type="hidden" {...register("provider_id")} />
                         <ContactSearch
                             param="suppliers"
                             placeholder="Buscar Proveedor"
                             tempSelectedName="addInitialFormProvider"
-                            onSelect={(contact) => setValue('provider_id', contact.id)}
-                            onClear={() => setValue('provider_id', '')}
+                            useDefaultWhenEmpty
                         />
                     </div>
 

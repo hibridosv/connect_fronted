@@ -27,6 +27,7 @@ export default function Home() {
     setBrand(getBrand());
     localStorage.removeItem('config-storage');
     localStorage.removeItem('menu-storage');
+    localStorage.removeItem('default-contact-storage');
     useConfigStore.getState().clearConfig();
   }, []);
 
