@@ -28,7 +28,7 @@ export default function Page() {
       'download.excel.reports.by-lot',
       [{ name: "product_id", value: elementSelected.id }]
     );
-  }, [elementSelected]);
+  }, [elementSelected, handleGet]);
 
 
     const handleFormSubmit = async (values: DateRangeValues) => {
