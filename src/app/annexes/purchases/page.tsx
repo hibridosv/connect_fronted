@@ -1,4 +1,5 @@
 'use client';
+import { AutomationFlowIllustration } from "@/components/reports/AutomationFlowIllustration";
 import { PurchasesBooksList } from "@/components/reports/PurchasesBooksList";
 import { PurchasesDetailsModal } from "@/components/reports/PurchasesDetailsModal";
 import { PurchasesDuplicateReviewModal } from "@/components/reports/PurchasesDuplicateReviewModal";
@@ -44,22 +45,22 @@ export default function Page() {
               </div>
 
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-base border border-bg-subtle">
-                  <LuScanLine size={16} className="text-primary mt-0.5 shrink-0" />
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-info/5 border border-info/25">
+                  <LuScanLine size={16} className="text-info mt-0.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-text-base">Análisis completo</p>
                     <p className="text-xs text-text-muted mt-0.5">Verifica todos los campos y estructura del JSON al momento de la carga.</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-base border border-bg-subtle">
-                  <LuShieldCheck size={16} className="text-primary mt-0.5 shrink-0" />
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-danger/5 border border-danger/25">
+                  <LuShieldCheck size={16} className="text-danger mt-0.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-text-base">Detección de errores</p>
                     <p className="text-xs text-text-muted mt-0.5">Identifica duplicados, montos incorrectos y datos inconsistentes.</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3 rounded-lg bg-bg-base border border-bg-subtle">
-                  <LuSparkles size={16} className="text-primary mt-0.5 shrink-0" />
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-success/5 border border-success/25">
+                  <LuSparkles size={16} className="text-success mt-0.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-text-base">Generación de anexos</p>
                     <p className="text-xs text-text-muted mt-0.5">Produce el libro de compras listo para presentación fiscal.</p>
@@ -68,29 +69,33 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="bg-primary/5 rounded-xl border border-primary/20 p-5">
-              <div className="flex items-center gap-2 mb-3">
-                <LuZap size={16} className="text-primary" />
-                <span className="text-xs font-bold uppercase tracking-wider text-primary">Automatización inteligente</span>
+            <div className="relative rounded-xl border border-cyan-400/30 p-5 overflow-hidden bg-gradient-to-br from-cyan-500/8 via-blue-500/8 to-primary/8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="relative flex h-5 w-5 items-center justify-center">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-cyan-400/40 animate-ping opacity-75" />
+                  <LuZap size={14} className="relative text-cyan-500" />
+                </span>
+                <span className="text-xs font-bold uppercase tracking-widest text-cyan-600">Automatización inteligente</span>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                  <LuMail size={18} className="text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center shrink-0">
+                  <LuMail size={18} className="text-cyan-500" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-text-base mb-1">Procesamiento automático desde su correo</p>
                   <p className="text-sm text-text-muted leading-relaxed">
                     Olvídese de importar archivos manualmente. Nuestro sistema lee directamente el email que su proveedor le envía, extrae el JSON adjunto, lo procesa y lo registra en su libro de compras de forma automática — sin intervención de su parte.
                   </p>
-                  <div className="mt-3 relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary overflow-hidden group cursor-default select-none">
-                    <span className="absolute inset-0 rounded-full animate-pulse bg-primary/10" />
-                    <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-transparent via-primary/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-                    <LuZap size={11} className="relative z-10 animate-bounce" style={{ animationDuration: '1.4s' }} />
+                  <div className="mt-3 relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-xs font-semibold text-cyan-600 overflow-hidden cursor-default select-none">
+                    <span className="absolute inset-0 rounded-full animate-pulse bg-cyan-400/10" />
+                    <LuZap size={11} className="relative z-10 animate-bounce" style={{ animationDuration: '1s' }} />
                     <span className="relative z-10">Función premium — consulte con su asesor</span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <AutomationFlowIllustration />
           </div>
         ) : (
           <ReportPurchasesTable
