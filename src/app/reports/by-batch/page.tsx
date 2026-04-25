@@ -16,7 +16,7 @@ import { useEffect } from "react";
 export default function Page() {
   const { getElement } = useTempStorage();
   const elementSelected = getElement('productSearched');
-  const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'download.excel.reports.by-lot');
+  const { history, handleGet, loading, links } = useReportsLogic(`registers?perPage=20&page=1${elementSelected?.id ? `&filterWhere[product_id]==${elementSelected?.id}` : ''}&included=product&sort=-created_at`, 'download.excel.reports.by-lot');
   const isLoading = loading.history ?? false;
 
   useEffect(() => {
@@ -32,15 +32,8 @@ export default function Page() {
 
 
     const handleFormSubmit = async (values: DateRangeValues) => {
-        let urlFixed = '';
-        if (elementSelected) {
-          values.product_id = elementSelected?.id
-        } else {
-          urlFixed = '?perPage=20&page=1';
-        }
-        await handleGet(values, `reports/lot${urlFixed}`, 'download.excel.reports.by-lot', elementSelected ? [{name: "product_id", value: elementSelected?.id}] : []);
+        await handleGet(values, `registers?perPage=20&page=1${elementSelected?.id ? `&filterWhere[product_id]==${elementSelected?.id}` : ''}&included=product&sort=-created_at`, 'download.excel.reports.by-lot', elementSelected?.id ? [{ name: "product_id", value: elementSelected.id }] : null);
     }
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
