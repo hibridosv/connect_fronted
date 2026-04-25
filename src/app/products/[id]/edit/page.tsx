@@ -2,13 +2,13 @@
 
 import { Button, Preset } from "@/components/button/button";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
-import { ContactSearch } from "@/components/search/ContactSearch";
 import { NothingHere } from "@/components/NothingHere";
 import { ProductImageAddModal } from "@/components/products/images/ProductImageAddModal";
 import { ProductImagesSection } from "@/components/products/images/ProductImagesSection";
 import { MultiPriceEdit } from "@/components/products/multi-price/MultiPriceEdit";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
 import { ProductLinked } from "@/components/products/ProductLinked";
+import { ContactSearch } from "@/components/search/ContactSearch";
 import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import { SkeletonProductEditForm } from "@/components/skeleton/SkeletonProductEditForm";
