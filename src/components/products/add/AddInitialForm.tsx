@@ -1,8 +1,8 @@
 import { Button, Preset } from "@/components/button/button";
 import { Switch } from "@/components/button/Switch";
+import { ContactSearch } from "@/components/search/ContactSearch";
 import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
-import useContactStore from "@/stores/ContactStore";
 import productAddStore from "@/stores/products/productAddStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -10,10 +10,8 @@ import { useForm } from "react-hook-form";
 
 export function AddInitialForm() {
     const { expensesCategories: categories, accounts} = useProductAddLogic();
-    const { register, handleSubmit, control, watch, reset } = useForm();
+    const { register, handleSubmit, control, watch, reset, setValue } = useForm();
     const { product, loading, createPrincipal } = productAddStore();
-    const { contacts: providersData } = useContactStore();
-    const providers = providersData?.data;
     const { setElement, getElement } = useTempStorage();
 
     const isBillsActive: boolean = getElement("isBillsActive");
@@ -30,7 +28,7 @@ export function AddInitialForm() {
             useToastMessageStore.getState().setError({ message : "Faltan algunos datos importantes para continuar!"});
             return
             }
-            data.provider_id = data.provider_id ? data.provider_id : providers?.[0]?.id ?? 0;
+            data.provider_id = data.provider_id ? data.provider_id : 0;
             data.comment = data.comment ? data.comment : "Ingreso de productos";
             data.account_active = isAccountActive;
             data.bills_active = isBillsActive;
@@ -63,16 +61,17 @@ export function AddInitialForm() {
                     </div>
 
                     <div>
-                        <label htmlFor="provider_id" className="block text-sm font-bold text-text-muted mb-1">
+                        <label className="block text-sm font-bold text-text-muted mb-1">
                             Proveedor
                         </label>
-                        {providers ?
-                        <select id="provider_id" {...register("provider_id")} className="input-select" defaultValue={providers[0]?.id ?? 0}>
-                            {providers.map((value: any) => (
-                                <option key={value.id} value={value.id}>{value.name}</option>
-                            ))}
-                        </select> :
-                        <div className="input-disabled"></div>    }
+                        <input type="hidden" {...register("provider_id")} />
+                        <ContactSearch
+                            param="suppliers"
+                            placeholder="Buscar Proveedor"
+                            tempSelectedName="addInitialFormProvider"
+                            onSelect={(contact) => setValue('provider_id', contact.id)}
+                            onClear={() => setValue('provider_id', '')}
+                        />
                     </div>
 
                     <div className="flex items-end pb-1">

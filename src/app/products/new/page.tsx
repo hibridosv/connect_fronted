@@ -7,20 +7,20 @@ import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import { ShowProductsNewTable } from "@/components/products/ShowProductsNewTable";
 import { ProductsCategoriesModal } from "@/components/products/new/ProductsCategoriesModal";
 import { ProductsLinkedModal } from "@/components/products/new/ProductsLinkedModal";
+import { ContactSearch } from "@/components/search/ContactSearch";
 import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import { SkeletonProductNewForm } from "@/components/skeleton/SkeletonProductNewForm";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
-import { ContactSearch } from "@/components/search/ContactSearch";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
-import { LuBox, LuLink, LuWrench } from "react-icons/lu";
 import { useForm } from "react-hook-form";
+import { LuBox, LuLink, LuWrench } from "react-icons/lu";
 
 const PRODUCT_TYPES = [
   { value: 1, label: 'Producto', icon: LuBox },
