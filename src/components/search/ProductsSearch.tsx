@@ -23,21 +23,26 @@ export function ProductsSearch() {
     return (
         <div className="relative w-full">
             <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." animating={loading} />
+            { searchTerm && !loading && products && products.data && products.data.length === 0 && (
+                <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
+                  <p className="p-4 text-sm text-center text-text-muted">No se encontraron productos</p>
+                </div>
+            )}
             { searchTerm && products && products.data && products.data.length > 0 && (
                 <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
                         return (
-                          <LiComponent 
-                            key={item.id} 
-                            text={item.cod} 
-                            content={`${item.cod} - ${item.description}`} 
+                          <LiComponent
+                            key={item.id}
+                            text={item.cod}
+                            content={`${item.cod} - ${item.description}`}
                             onClick={() => handleSelectProduct(item)}
                           />
                         );
                     })}
                   </ul>
-                </div> 
+                </div>
             )}
         </div>
     );

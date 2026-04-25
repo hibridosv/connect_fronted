@@ -21,6 +21,7 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
             setHistory(response.data.data);
             addLink(data, linkUrl, params);
         } catch (error) {
+            setHistory(null);
             console.error(error);
         } finally {
             closeLoading("history");

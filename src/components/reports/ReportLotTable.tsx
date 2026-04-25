@@ -22,7 +22,8 @@ export function ReportLotTable(props: ReportLotTableI) {
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
   if (!data || data.length === 0) {
-    return <NothingHere text="Seleccione un producto" />;
+    const message = records === null ? "Seleccione un producto" : "No hay resultados";
+    return <NothingHere text={message} />;
   }
 
 

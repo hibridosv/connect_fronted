@@ -8,6 +8,8 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 import useTempStorage from "@/stores/useTempStorage";
+import { DateTime } from "luxon";
+import { useEffect } from "react";
 
 
 
@@ -15,10 +17,21 @@ export default function Page() {
   const { getElement } = useTempStorage();
   const elementSelected = getElement('productSearched');
   const { history, handleGet, loading, links } = useReportsLogic(`reports/lot?perPage=20&page=1`, 'download.excel.reports.by-lot');
-  const isLoading = loading.history ?? false; 
+  const isLoading = loading.history ?? false;
+
+  useEffect(() => {
+    if (!elementSelected) return;
+    const today = DateTime.now().toFormat('yyyy-MM-dd');
+    handleGet(
+      { option: "1", initialDate: `${today} 00:00:00`, product_id: elementSelected.id },
+      'reports/lot',
+      'download.excel.reports.by-lot',
+      [{ name: "product_id", value: elementSelected.id }]
+    );
+  }, [elementSelected]);
 
 
-    const handleFormSubmit = async (values: DateRangeValues) => { 
+    const handleFormSubmit = async (values: DateRangeValues) => {
         let urlFixed = '';
         if (elementSelected) {
           values.product_id = elementSelected?.id
