@@ -326,7 +326,7 @@ export default function Home() {
 
           {/* Pie sutil */}
           <p className="text-center text-xs text-text-muted/30 mt-8 tracking-widest uppercase animate-fade-in-delay">
-            {brand.footer} DEMO
+            {brand.footer}
           </p>
         </div>
       </div>
