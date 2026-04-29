@@ -4,6 +4,7 @@ import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import useConfigStore from "@/stores/configStore";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -116,36 +117,22 @@ export default function Home() {
 
         {/* Contenido de marca */}
         <div className="relative z-10 text-center px-12">
-          {/* Logo con glow */}
-          <div className="mb-12 animate-scale-in">
-            <div className="relative w-28 h-28 mx-auto">
-              <div
-                className={`absolute inset-0 rounded-3xl blur-xl animate-pulse-glow ${!custom ? 'bg-accent/20' : ''}`}
-                style={custom ? { backgroundColor: c.accentGlow } : undefined}
+          {/* Logo */}
+          <div className="mb-10 animate-scale-in flex justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-2xl blur-2xl bg-white/10 scale-110" />
+              <Image
+                src={brand.image}
+                alt={brand.name}
+                width={280}
+                height={280}
+                className="relative drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]"
               />
-              <div className="relative w-full h-full bg-white/[0.12] rounded-3xl backdrop-blur-md flex items-center justify-center border border-white/20 shadow-2xl">
-                <span className={`${brand.logoSize} font-black text-white tracking-tighter`} style={{ textShadow: '0 0 40px rgba(255,255,255,0.15)' }}>{brand.logo}</span>
-              </div>
             </div>
           </div>
 
-          <h1 className="text-6xl font-black text-white mb-4 tracking-tight animate-slide-up" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.2)' }}>
-            {brand.name}
-          </h1>
-          <div className="flex items-center justify-center gap-3 mb-6 animate-slide-up-delay">
-            <div className="h-px w-12 bg-gradient-to-r from-transparent to-white/30" />
-            <div
-              className={`w-2 h-2 rounded-full shadow-lg ${!custom ? 'bg-accent shadow-accent/50' : ''}`}
-              style={custom ? { backgroundColor: c.accent, boxShadow: `0 0 8px ${c.accentGlow}` } : undefined}
-            />
-            <div className="h-px w-12 bg-gradient-to-l from-transparent to-white/30" />
-          </div>
-          <p className="text-lg text-white/50 max-w-sm mx-auto leading-relaxed animate-slide-up-delay-2 font-light">
-            {brand.subtitle}
-          </p>
-
           {/* Feature pills */}
-          <div className="mt-14 flex flex-wrap justify-center gap-3 animate-fade-in-delay">
+          <div className="mt-4 flex flex-wrap justify-center gap-3 animate-fade-in-delay">
             <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm">
               Inventario
             </span>
@@ -190,23 +177,13 @@ export default function Home() {
 
         <div className="relative z-10 w-full max-w-md">
           {/* Logo para móvil */}
-          <div className="lg:hidden text-center mb-10 animate-scale-in">
-            <div className="relative w-18 h-18 mx-auto mb-4">
-              <div
-                className={`absolute inset-0 rounded-2xl blur-lg ${!custom ? 'bg-primary/30' : ''}`}
-                style={custom ? { backgroundColor: `${c.panel}4D` } : undefined}
-              />
-              <div
-                className={`relative w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-xl ${!custom ? 'bg-primary shadow-primary/30' : ''}`}
-                style={custom ? { backgroundColor: c.panel, boxShadow: `0 10px 15px ${c.panel}4D` } : undefined}
-              >
-                <span className="text-2xl font-black text-text-inverted">{brand.logo}</span>
-              </div>
-            </div>
-            <h1 className="text-xl font-bold text-text-base">{brand.name}</h1>
-            <div
-              className={`w-8 h-0.5 mx-auto rounded-full mt-2 ${!custom ? 'bg-accent' : ''}`}
-              style={custom ? { backgroundColor: c.accent } : undefined}
+          <div className="lg:hidden text-center mb-10 animate-scale-in flex justify-center">
+            <Image
+              src={brand.image}
+              alt={brand.name}
+              width={140}
+              height={140}
+              className="drop-shadow-[0_2px_8px_rgba(0,0,0,0.15)]"
             />
           </div>
 

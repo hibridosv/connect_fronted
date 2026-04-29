@@ -4,6 +4,7 @@ interface BrandConfig {
   logoSize: string;
   subtitle: string;
   footer: string;
+  image: string;
   colors: {
     panel: string;
     panelGradient: string;
@@ -19,6 +20,7 @@ const brands: Record<string, BrandConfig> = {
     logoSize: 'text-6xl',
     subtitle: 'Sistema integral de gestión empresarial',
     footer: 'Hibrido · Gestión Empresarial',
+    image: '/img/hibrido_sm.png',
     colors: {
       panel: '',
       panelGradient: '',
@@ -32,6 +34,7 @@ const brands: Record<string, BrandConfig> = {
     logoSize: 'text-6xl',
     subtitle: 'Plataforma de gestión comercial',
     footer: 'Latam POS · Gestión Comercial',
+    image: '/img/latam_sm.png',
     colors: {
       panel: '#0C381F',
       panelGradient: 'linear-gradient(to bottom right, #0C381F, #145A30, #0C381F)',
