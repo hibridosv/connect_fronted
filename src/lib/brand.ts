@@ -47,6 +47,7 @@ export function getBrand(): BrandConfig {
   if (typeof window === 'undefined') return brands.hibrido;
   const host = window.location.hostname;
   if (host.includes('latam-pos')) return brands.latampos;
+  if (host.includes('hibridosv')) return brands.hibrido;
   if (host.includes('localhost')) return brands.latampos;
   return brands.hibrido;
 }
