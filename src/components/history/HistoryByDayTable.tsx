@@ -35,7 +35,7 @@ export function HistoryByDayTable(props: HistoryByDayTableI) {
         { numberToMoney(record?.taxes ?? 0, system) }
       </td>
       <td className="px-3 py-2 whitespace-nowrap text-right">
-        { numberToMoney(record?.exempt ?? 0, system) }
+        { numberToMoney(record?.total_exempt ?? 0, system) }
       </td>
       <td className="px-3 py-2 whitespace-nowrap text-right">
         { numberToMoney(record?.total_recorded ?? 0, system) }
