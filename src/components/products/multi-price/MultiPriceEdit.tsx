@@ -51,7 +51,8 @@ export function MultiPriceEdit(props: MultiPrice) {
           <input
             id="quantity"
             type="number"
-            {...register("quantity", { required: "La cantidad es obligatoria.", valueAsNumber: true })}
+            step="any"
+            {...register("quantity", { required: "La cantidad es obligatoria.", valueAsNumber: true, })}
             className="input"
             placeholder="Ej: 10"
           />
