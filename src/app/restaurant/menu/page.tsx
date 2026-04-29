@@ -24,6 +24,8 @@ import useModalStore from "@/stores/modalStorage";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { BiPlusCircle } from "react-icons/bi";
+import { MdOutlineSwapVert } from "react-icons/md";
+import Link from "next/link";
 
 
 export default function Page() {
@@ -61,6 +63,12 @@ export default function Page() {
           <BiPlusCircle size={28} className="clickeable" onClick={() => { openModal("restaurantCategory") }} />
         </div>
         <ManageCategories />
+        <div className="mx-4 mt-3">
+          <Link href="/restaurant/menu/reorder" className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg border border-bg-subtle bg-bg-content text-sm font-semibold text-text-muted hover:bg-bg-subtle hover:text-text-base transition-colors">
+            <MdOutlineSwapVert size={18} />
+            <span>Ordenar iconos</span>
+          </Link>
+        </div>
     </div>
     <OptionsVariantsModal isShow={modals.optionSelected} onClose={() => closeModal("optionSelected")} />
     <RestaurantOptionsAddModal isShow={modals.restaurantOptionsAdd} onClose={() => closeModal("restaurantOptionsAdd")} />

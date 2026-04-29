@@ -1,10 +1,10 @@
 'use client';
+import { Button, Preset } from '@/components/button/button';
 import { NothingHere } from '@/components/NothingHere';
 import { RestaurantMenuSkeleton } from '@/components/skeleton/RestaurantMenuSkeleton';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
-import { Button, Preset } from '@/components/button/button';
 import { URL } from '@/constants';
 import { useMenuReorderLogic } from '@/hooks/restaurant/useMenuReorderLogic';
 import Image from 'next/image';
@@ -69,10 +69,7 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
-        <div className="flex items-center justify-between pr-4">
-          <ViewTitle text="Reordenar Iconos" />
-          <Button preset={Preset.save} onClick={() => saveReorder(orderedItems)} disabled={saving || loadingMenu} />
-        </div>
+        <ViewTitle text="Reordenar Iconos" />
 
         <div className="w-full px-2 py-3">
           {loadingMenu ? (
@@ -199,6 +196,9 @@ export default function Page() {
             </div>
           </div>
         )}
+        <div className="mx-4 mt-3">
+          <Button preset={saving || loadingMenu ? Preset.saving : Preset.save} onClick={() => saveReorder(orderedItems)} disabled={saving || loadingMenu} isFull />
+        </div>
       </div>
       <ToasterMessage />
     </div>
