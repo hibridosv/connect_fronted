@@ -13,5 +13,6 @@ export const urlConstructor = <T extends DateRangeValues>(
     }
   });
 
-  return `${baseUrl}?${params.toString()}`;
+  const separator = baseUrl.includes('?') ? '&' : '?';
+  return `${baseUrl}${separator}${params.toString()}`;
 };

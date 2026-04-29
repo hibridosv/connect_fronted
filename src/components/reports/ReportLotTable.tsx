@@ -19,7 +19,7 @@ export function ReportLotTable(props: ReportLotTableI) {
   let data = records?.per_page ? records.data : records;
 
 
-  if(isLoading) return <SkeletonTable rows={5} columns={8} />
+  if(isLoading) return <SkeletonTable rows={15} columns={9} />
 
   if (!data || data.length === 0) {
     const message = records === null ? "Seleccione un producto" : "No hay resultados";
