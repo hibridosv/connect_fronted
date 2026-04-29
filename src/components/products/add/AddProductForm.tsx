@@ -26,6 +26,7 @@ export function AddProductForm() {
       data.provider_id = product.provider_id
       data.employee_id = product.employee_id
       data.document_type = product.document_type
+      data.document_number = product.document_number
       data.comment = product.comment
       data.product_register_principal = product.id
       data.unit_cost = isTaxesActive ? data.unit_cost * 1.13 : data.unit_cost;
