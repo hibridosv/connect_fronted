@@ -8,6 +8,7 @@ import { ViewTitle } from '@/components/ViewTitle';
 import { URL } from '@/constants';
 import { useMenuReorderLogic } from '@/hooks/restaurant/useMenuReorderLogic';
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 const imageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) =>
@@ -16,7 +17,7 @@ const imageLoader = ({ src, width, quality }: { src: string; width: number; qual
 export default function Page() {
   const { restaurantMenu, loadingMenu, categories, loadingCategories, primaryCategoryId, saving, saveReorder } =
     useMenuReorderLogic();
-
+  const router = useRouter();
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [orderedItems, setOrderedItems] = useState<any[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -65,6 +66,11 @@ export default function Page() {
   };
 
   const isPrimarySelected = selectedCategoryId === null || selectedCategoryId === primaryCategoryId;
+
+  const hasChanges = useMemo(() => {
+    if (orderedItems.length !== filteredItems.length) return false;
+    return orderedItems.some((item, index) => item.id !== filteredItems[index]?.id);
+  }, [orderedItems, filteredItems]);
 
   
   return (
@@ -198,7 +204,11 @@ export default function Page() {
           </div>
         )}
         <div className="mx-4 mt-3">
-          <Button preset={saving || loadingMenu ? Preset.saving : Preset.save} onClick={() => saveReorder(orderedItems)} disabled={saving || loadingMenu} isFull />
+         { hasChanges ? (
+            <Button preset={saving ? Preset.saving : Preset.save} onClick={() => saveReorder(orderedItems)} disabled={saving || loadingMenu || !hasChanges} isFull />
+          ) : (
+          <Button text="Regresar" preset={Preset.back} onClick={() => router.back()} isFull />
+          )}
         </div>
       </div>
       <ToasterMessage />
