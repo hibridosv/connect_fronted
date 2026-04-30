@@ -20,7 +20,8 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
             let urlScoped = urlConstructor(data, url);
             setLastConstructedUrl(urlScoped);
             const response = await getServices(urlScoped);
-            setHistory(response.data);
+            const responseData = response.data;
+            setHistory(Array.isArray(responseData) ? responseData : (responseData?.data ?? []));
             addLink(data, linkUrl, params);
         } catch (error) {
             setHistory(null);
@@ -36,7 +37,10 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
         const newUrl = urlWithoutPage + currentPage;
         openLoading("history");
         getServices(newUrl)
-            .then(response => setHistory(response.data))
+            .then(response => {
+                const responseData = response.data;
+                setHistory(Array.isArray(responseData) ? responseData : (responseData?.data ?? []));
+            })
             .catch(() => setHistory(null))
             .finally(() => closeLoading("history"));
         // eslint-disable-next-line react-hooks/exhaustive-deps
