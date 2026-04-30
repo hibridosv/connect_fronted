@@ -5,20 +5,8 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
+import { enqueueProductRequest } from '@/lib/orderProductQueue';
 import Image from 'next/image';
-
-const productRequestQueue: Array<() => Promise<void>> = [];
-let isProcessingProductQueue = false;
-
-const processProductQueue = async () => {
-  if (isProcessingProductQueue) return;
-  isProcessingProductQueue = true;
-  while (productRequestQueue.length > 0) {
-    const task = productRequestQueue.shift()!;
-    await task();
-  }
-  isProcessingProductQueue = false;
-};
 
 
 export interface ImageMenuI {
@@ -48,11 +36,10 @@ export function ImageMenu(props: ImageMenuI) {
   };
 
   const sendProduct = (productId: number) => {
-    productRequestQueue.push(async () => {
+    enqueueProductRequest(async () => {
       await addNew(productId);
       dismiss();
     });
-    processProductQueue();
   };
 
   return (

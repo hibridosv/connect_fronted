@@ -2,6 +2,7 @@ import { iconSvg } from "@/components/button/LiComponent";
 import { SearchInput } from "@/components/Search";
 import { useOrderProductsSearchLogic } from "@/hooks/order/common/useOrderProductsSearchLogic";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { numberToMoney } from "@/lib/utils";
@@ -25,9 +26,9 @@ export function OrderProductsSearch() {
 
     const handleSelectProduct = (product: any) => {
       setElement('productSearched', product);
-      addNew(product);
+      enqueueProductRequest(() => addNew(product));
       handleSearchTerm('');
-      setSearchKey(Date.now()); // 2. Cambiamos la key para forzar el reseteo
+      setSearchKey(Date.now());
     };
 
     if (!typeOfSearch) return null;

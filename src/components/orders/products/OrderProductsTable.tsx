@@ -4,13 +4,13 @@ import { Button, Preset } from "@/components/button/button";
 import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { Order } from "@/interfaces/order";
 import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useRef } from "react";
 import { FaPen } from "react-icons/fa";
 import { MdBallot } from "react-icons/md";
 import { commissionTotal, sumarDiscount, sumarTotales } from "../utils";
@@ -27,7 +27,6 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   const { setElement } = useTempStorage();
   const { openModal} = useModalStore();
   const { sending } = ordersStore();
-  const rowQueuesRef = useRef<Map<string, { queue: number[]; processing: boolean }>>(new Map());
 
   let data = order?.invoiceproducts ?? [];
   
@@ -42,20 +41,8 @@ export function OrderProductsTable(props: OrderProductsTableI) {
     return <NothingHere width="150" height="150" text="Agregue un producto" />;
   }
   
-  const handleProductSend = async (product: any, type: number) => {
-    const key = String(product.id);
-    if (!rowQueuesRef.current.has(key)) {
-      rowQueuesRef.current.set(key, { queue: [], processing: false });
-    }
-    const entry = rowQueuesRef.current.get(key)!;
-    entry.queue.push(type);
-    if (entry.processing) return;
-    entry.processing = true;
-    while (entry.queue.length > 0) {
-      const nextType = entry.queue.shift()!;
-      await addNew({ ...product, addOrSubtract: nextType });
-    }
-    entry.processing = false;
+  const handleProductSend = (product: any, type: number) => {
+    enqueueProductRequest(() => addNew({ ...product, addOrSubtract: type }));
   };
   
   

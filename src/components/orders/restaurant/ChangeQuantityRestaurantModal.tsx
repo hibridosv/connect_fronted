@@ -2,6 +2,7 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import ordersStore from "@/stores/orders/ordersStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -34,15 +35,15 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
 
   if (!isShow || !order) return null;
 
- const onSubmit = async(data: any) => {
-    if (product.quantity == data.quantity || data.quantity == null) onClose();
-    const success = await addNew(product.product_id, data.quantity);
+ const onSubmit = async (data: any) => {
+    if (product.quantity == data.quantity || data.quantity == null) { onClose(); return; }
+    const success = await enqueueProductRequest(() => addNew(product.product_id, data.quantity));
     if (success) {
         resetField('quantity');
         onClose();
-    }else {
-      setError({ message: `Existe un error, No se actualizo correctamente la cantidad. Vuelva a intentarlo.`})
-     }
+    } else {
+      setError({ message: `Existe un error, No se actualizo correctamente la cantidad. Vuelva a intentarlo.` });
+    }
  }
 
   return (

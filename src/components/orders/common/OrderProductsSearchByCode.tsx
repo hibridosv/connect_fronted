@@ -1,5 +1,6 @@
 'use client'
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
+import { enqueueProductRequest } from '@/lib/orderProductQueue';
 import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -17,10 +18,6 @@ export function OrderProductsSearchByCode() {
     const { addNew } = useOrderFnLogic();
     const { getElement } = useTempStorage();
     const typeOfSearch = getElement('typeOfSearch');
-    const queueRef = useRef<{ cod: string }[]>([]);
-    const processingRef = useRef(false);
-
-
     useEffect(() => {
         if (inputRef.current && !typeOfSearch) {
             inputRef.current.focus();
@@ -30,27 +27,15 @@ export function OrderProductsSearchByCode() {
     if (typeOfSearch) return null;
 
 
-    const processQueue = async () => {
-        if (processingRef.current) return;
-        processingRef.current = true;
-        while (queueRef.current.length > 0) {
-            const data = queueRef.current.shift()!;
-            await addNew(data);
-        }
-        processingRef.current = false;
-    };
-
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (inputRef.current) {
           const cod = inputRef.current.value.trim();
           if (!cod) return;
-          queueRef.current.push({ cod });
           inputRef.current.value = "";
           inputRef.current.focus();
-          processQueue();
+          enqueueProductRequest(() => addNew({ cod }));
         }
-
     };
 
     return (
