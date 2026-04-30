@@ -2,7 +2,7 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { formatDateAsDMY } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { documentType, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
 
@@ -33,6 +33,9 @@ export function AddDetailsModal(props: AddDetailsModalProps) {
             <td className="px-3 py-2 text-center" >
                 { record.quantity }
             </td>
+            <td className="px-3 py-2 text-center" >
+                { record.document_type ? documentType(record.document_type) : "--"} { ": "} {product.document_number || "N/A"}
+            </td>
             <td className="px-3 py-2 text-center font-medium">
                 {  numberToMoney(record.unit_cost ? record.unit_cost : 0, system)  }
             </td>
@@ -51,7 +54,7 @@ export function AddDetailsModal(props: AddDetailsModalProps) {
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl4" headerTitle="Detalles de la entrada de productos" closeOnOverlayClick={false} hideCloseButton={true}>
+    <Modal show={isShow} onClose={onClose} size="xl5" headerTitle="Detalles de la entrada de productos" closeOnOverlayClick={false} hideCloseButton={true}>
       <Modal.Body>
 
             <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
@@ -60,6 +63,7 @@ export function AddDetailsModal(props: AddDetailsModalProps) {
                     <tr className="border-b-2 border-bg-subtle">
                     <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Producto</th>
                     <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Cant</th>
+                    <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Documento</th>
                     <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Precio Costo</th>
                     <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Total Costo</th>
                     <th scope="col" className="px-4 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Lote</th>
