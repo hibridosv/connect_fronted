@@ -6,7 +6,19 @@ import useModalStore from '@/stores/modalStorage';
 import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
-import { useRef } from 'react';
+
+const productRequestQueue: Array<() => Promise<void>> = [];
+let isProcessingProductQueue = false;
+
+const processProductQueue = async () => {
+  if (isProcessingProductQueue) return;
+  isProcessingProductQueue = true;
+  while (productRequestQueue.length > 0) {
+    const task = productRequestQueue.shift()!;
+    await task();
+  }
+  isProcessingProductQueue = false;
+};
 
 
 export interface ImageMenuI {
@@ -24,31 +36,23 @@ export function ImageMenu(props: ImageMenuI) {
   const { openModal, closeModal } = useModalStore();
   const { activeConfig } = useConfigStore();
 
-  const pendingRef = useRef(0);
-  const processingRef = useRef(false);
-
   const isProduct = record.icon_type == 1;
   const label = isProduct ? record?.product?.description : record?.category?.name;
   const imageSrc = isProduct ? record?.product?.restaurant?.image : record?.category?.img;
   const isSending = record.product_id !== null && sendingProductIds.includes(record.product_id);
 
-  const sendProduct = async (productId: number) => {
-    pendingRef.current += 1;
-    if (processingRef.current) return;
-
-    processingRef.current = true;
-    while (pendingRef.current > 0) {
-      pendingRef.current -= 1;
-      await addNew(productId);
-    }
-    processingRef.current = false;
-    dismiss();
-  };
-
   const dismiss = () => {
     if (activeConfig && activeConfig.includes("restaurant-sales-modal-dismis-category")) {
       closeModal('categoryMenu');
     }
+  };
+
+  const sendProduct = (productId: number) => {
+    productRequestQueue.push(async () => {
+      await addNew(productId);
+      dismiss();
+    });
+    processProductQueue();
   };
 
   return (
