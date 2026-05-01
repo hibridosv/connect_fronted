@@ -15,6 +15,7 @@ interface ProductAddStoreState {
   createPrincipal: (data: any) => Promise<void>;
   createProduct: (data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
+  deletePrincipal: (url: string) => Promise<void>;
   savePrincipal: (url: string) => Promise<void>;
 }
 
@@ -86,6 +87,21 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
             const response = await deleteService(url); 
             set({ product: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+        } catch (error) {
+            set({ error: true });
+            useToastMessageStore.getState().setError(error);
+        } finally {
+            set({ deleting: false });
+        }
+    },
+
+    deletePrincipal: async (url: string) => {
+        set({ deleting: true });
+        try {
+            const response = await deleteService(url);
+            set({ product: null, error: false });
+            useToastMessageStore.getState().setMessage(response);
+            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
         } catch (error) {
             set({ error: true });
             useToastMessageStore.getState().setError(error);

@@ -14,10 +14,11 @@ import useTempStorage from "@/stores/useTempStorage";
 
 
 export default function Page() {
-    const { saving, product, savePrincipal, deleting, loading } = productAddStore();
+    const { saving, product, savePrincipal, deletePrincipal, deleting, loading } = productAddStore();
     const { modals, closeModal } = useModalStore();
     const { getElement } = useTempStorage();
 
+    console.log(product);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -36,7 +37,12 @@ export default function Page() {
           </div>
           <div className="flex justify-end mt-4 gap-4 p-4">
             { product && (
-              <Button preset={saving ? Preset.saving : Preset.save} text="Guardar Todo" onClick={()=> savePrincipal(`registers/principal/${product.id}`)} disabled={deleting || saving || loading } />
+              <div className="flex gap-3">
+                { product?.registers.length > 0 ?
+                <Button preset={saving ? Preset.saving : Preset.save} text="Guardar Todo" onClick={()=> savePrincipal(`registers/principal/${product.id}`)} disabled={deleting || saving || loading } /> :
+                <Button preset={deleting ? Preset.saving : Preset.close} text="Cancelar" onClick={() => deletePrincipal(`registers/principal/${product.id}`)} disabled={deleting || saving || loading} />
+                }
+              </div>
             )}
             </div>
       </div> 
