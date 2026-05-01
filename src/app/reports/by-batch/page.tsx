@@ -31,7 +31,7 @@ export default function Page() {
         <ViewTitle text="Ingresos por lotes" />
         <div className="p-4">
           <ReportLotTable records={history?.data} isLoading={isLoading} />
-          <Pagination records={history?.data} handlePageNumber={handlePageNumber} />
+          <Pagination records={history} handlePageNumber={handlePageNumber} />
         </div>
       </div>
       <div className="md:col-span-3">
