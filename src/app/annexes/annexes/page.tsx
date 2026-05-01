@@ -19,7 +19,6 @@ export default function Page() {
           {SUCURSAL_OPTIONS.map((opt) => (
             <button
               key={opt.value}
-              disabled={true} // Deshabilitado por ahora, en el futuro se habilitará para cambiar de sucursal
               onClick={() => setSelectedSucursal(opt.value)}
               className={`px-3 py-1 text-xs font-medium transition-colors duration-150 ${
                 selectedSucursal === opt.value
