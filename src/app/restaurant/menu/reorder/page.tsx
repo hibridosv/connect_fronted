@@ -1,4 +1,5 @@
 'use client';
+import { Alert } from '@/components/Alert/Alert';
 import { Button, Preset } from '@/components/button/button';
 import { ReorderCategoriesList } from '@/components/restaurant/ReorderCategoriesList';
 import { ReorderIconsGrid } from '@/components/restaurant/ReorderIconsGrid';
@@ -20,6 +21,9 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Reordenar Iconos" />
+        <div className="px-4 pt-2 pb-1">
+          <Alert type="info" text="Arrastra los iconos para cambiar su orden en el menú. Los cambios se aplican al guardar." />
+        </div>
         <div className="w-full px-2 py-3">
           <ReorderIconsGrid
             items={orderedItems}
@@ -35,6 +39,9 @@ export default function Page() {
 
       <div className="md:col-span-3">
         <ViewTitle text="Categorias" />
+        <div className="px-4 pt-2 pb-1">
+          <Alert type="info" text="Selecciona una categoría para ordenar sus iconos." />
+        </div>
         <ReorderCategoriesList
           categories={categories}
           loading={loadingCategories}
