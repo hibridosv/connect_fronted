@@ -34,6 +34,8 @@ interface manageRestaurantStoreI {
   updateProductStatus: (id: string, status: number) => Promise<boolean>;
   deleteRestaurantProduct: (id: string) => Promise<boolean>;
   updateCategory: (id: string, data: any) => Promise<boolean>;
+  updateOption: (id: string, data: any) => Promise<boolean>;
+  addVariant: (optionId: string, data: any) => Promise<boolean>;
   addModifier: (productOptionsId: string, productId: string) => Promise<any>;
   removeModifier: (assigmentId: string) => Promise<boolean>;
 }
@@ -239,6 +241,39 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       restauranMenuStore.getState().clearConfig()
       manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
       useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+  updateOption: async (id, data) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`restaurant/options/${id}`, data);
+      useToastMessageStore.getState().setMessage(response);
+      restauranMenuStore.getState().clearConfig();
+      manageRestaurantStore.getState().loadOptions("restaurant/options?included=variants");
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+  addVariant: async (optionId, data) => {
+    set({ sending: true });
+    try {
+      const response = await createService(`restaurant/options/${optionId}/variants`, data);
+      useToastMessageStore.getState().setMessage(response);
+      restauranMenuStore.getState().clearConfig();
+      await manageRestaurantStore.getState().loadOptions("restaurant/options?included=variants");
+      const { options } = manageRestaurantStore.getState();
+      const updatedOption = options?.find((o: any) => o.id === optionId);
+      if (updatedOption) useTempStorage.getState().setElement('optionSelected', updatedOption);
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);

@@ -55,9 +55,68 @@ export function ManageCategories() {
     setImageModalCategoryId(null);
   };
 
+  const imageLoader = ({ src, width, quality }: { src: string; width: number; quality?: number }) =>
+    `${URL}/images/ico/${src}?w=${width}&q=${quality || 75}`;
+
   const listItems = categories.map((record: Category) => {
     const isPrincipal = record.principal == 1;
     const isEditingName = editingNameId === record.id;
+
+    if (isEditingName) {
+      return (
+        <div
+          key={record.id}
+          className="rounded-xl border border-primary/30 bg-primary/5 shadow-sm overflow-hidden transition-all duration-200"
+        >
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border-b border-primary/20">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <p className="text-xs font-bold text-primary uppercase tracking-wider">Editando categoría</p>
+          </div>
+
+          <div className="flex items-center gap-4 px-4 py-4">
+            <div className="shrink-0">
+              <Image
+                loader={imageLoader}
+                src={record?.img || "default.png"}
+                alt="Icono de categoría"
+                width={44}
+                height={44}
+                className="rounded-xl ring-2 ring-primary/40 shadow-sm"
+              />
+            </div>
+            <div className="flex-1 min-w-0 space-y-1">
+              <label className="input-label">Nombre de la categoría</label>
+              <input
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleAcceptName(record);
+                  if (e.key === 'Escape') { setEditingNameId(null); setEditedName(''); }
+                }}
+                disabled={sending}
+                autoFocus
+                className="input w-full"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-2 px-4 py-3 bg-primary/5 border-t border-primary/20">
+            {sending ? (
+              <div className="flex items-center gap-2 text-text-muted text-sm">
+                <AiOutlineLoading size={16} className="animate-spin" />
+                <span>Guardando...</span>
+              </div>
+            ) : (
+              <>
+                <Button preset={Preset.cancel} onClick={() => { setEditingNameId(null); setEditedName(''); }} disabled={sending} />
+                <Button preset={Preset.save} onClick={() => handleAcceptName(record)} disabled={sending || !editedName.trim()} />
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <li key={record.id} className="flex justify-between items-center px-4 py-2.5 hover:bg-bg-subtle text-text-base text-sm transition-colors">
@@ -90,19 +149,7 @@ export function ManageCategories() {
               />
             </button>
           )}
-
-          {isEditingName ? (
-            <input
-              type="text"
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
-              disabled={sending}
-              autoFocus
-              className="input py-1 text-sm w-full"
-            />
-          ) : (
-            <span className="truncate">{record.name}</span>
-          )}
+          <span className="truncate">{record.name}</span>
         </div>
 
         <span className="flex items-center gap-1 ml-2 shrink-0">
@@ -110,11 +157,10 @@ export function ManageCategories() {
             <AiOutlineLoading size={18} className="animate-spin text-text-muted" />
           ) : (
             <>
-              {isEditingName
-                ? <Button preset={Preset.accept} onClick={() => handleAcceptName(record)} disabled={sending || !editedName.trim()} />
-                : <Button preset={Preset.smallEdit} onClick={() => handleStartEditName(record)} disabled={isPrincipal || deleting} />
-              }
-              <DeleteButton id={record.id} url="categories" disabled={deleting || isPrincipal || sending} text="¿Estas seguro de eliminar esta categoría?" onDeleteConfirm={deleteCategory} />
+              <span className="flex gap-1">
+                <Button preset={Preset.smallEdit} onClick={() => handleStartEditName(record)} disabled={isPrincipal || deleting} />
+                <DeleteButton id={record.id} url="categories" disabled={deleting || isPrincipal || sending} text="¿Estas seguro de eliminar esta categoría?" onDeleteConfirm={deleteCategory} />
+              </span>
             </>
           )}
         </span>
