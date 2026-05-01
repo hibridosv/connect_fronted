@@ -4,7 +4,7 @@ import productRemovedStore from "@/stores/products/productRemovedStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useForm } from "react-hook-form";
-import { MdBallot } from "react-icons/md";
+import { MdBallot, MdInventory2 } from "react-icons/md";
 
 type Inputs = {
   quantity: number;
@@ -41,13 +41,30 @@ export function RemoveProductsForm() {
 
   return (
         <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 md:p-6">
-            <div className="mb-4 text-center">
-                  <h3 className="text-lg font-semibold text-text-base">Producto seleccionado</h3>
-                  <p className="text-xl font-semibold text-text-base">{ elementSelected?.description }</p>
-                  <div className="flex justify-between text-text-muted text-sm mt-2">
-                    <span>Código: { elementSelected?.cod } </span>
-                    <span>Existencia: { elementSelected?.quantity }</span>
-                  </div>
+            <div className="mb-6 rounded-lg border border-bg-subtle overflow-hidden">
+                <div className="bg-primary px-4 py-2.5 flex items-center gap-2">
+                    <MdInventory2 size={14} className="text-text-inverted/70 shrink-0" />
+                    <p className="text-xs font-semibold uppercase tracking-widest text-text-inverted/80">Producto seleccionado</p>
+                </div>
+                <div className="bg-bg-subtle/20 px-4 py-4 flex flex-col gap-3">
+                    <p className="text-sm font-bold text-text-base leading-snug">{ elementSelected?.description }</p>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-bg-content rounded-md px-3 py-2 border border-bg-subtle">
+                            <span className="text-[10px] uppercase tracking-wider font-semibold text-text-muted block mb-0.5">Código</span>
+                            <span className="text-sm font-semibold text-text-base">{ elementSelected?.cod }</span>
+                        </div>
+                        <div className="bg-bg-content rounded-md px-3 py-2 border border-bg-subtle">
+                            <span className="text-[10px] uppercase tracking-wider font-semibold text-text-muted block mb-0.5">Existencia</span>
+                            <span className="text-sm font-bold text-text-base">{ elementSelected?.quantity }</span>
+                        </div>
+                    </div>
+                    {lotSelected && (
+                        <div className="bg-bg-content rounded-md px-3 py-2 border border-bg-subtle">
+                            <span className="text-[10px] uppercase tracking-wider font-semibold text-text-muted block mb-0.5">Lote</span>
+                            <span className="text-sm font-semibold text-text-base">{ lotSelected?.name ?? lotSelected?.id }</span>
+                        </div>
+                    )}
+                </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                     <div className="flex flex-col mb-4">
