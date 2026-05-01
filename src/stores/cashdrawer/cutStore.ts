@@ -55,7 +55,7 @@ const useCutStore = create<CutStoreState>((set) => ({
       const response = await deleteService(url);
       await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
       await useCashDrawerStore.getState().loadCashDrawers();
-      await useConfigStore.getState().loadConfig();
+      await useConfigStore.getState().reloadConfig();
       useToastMessageStore.getState().setMessage(response);
     } catch (error) {
       useToastMessageStore.getState().setError(error);

@@ -23,10 +23,10 @@ export default function Page() {
   const { currentPage, handlePageNumber } = usePagination("&page=1");
   useCashDrawersLogic();
   const { cuts, loading } = useCutStore();
-  const { user, invoiceExist, isInvoiceExpires } = useConfigStore();
+  const { invoiceExist, isInvoiceExpires } = useConfigStore();
   const { modals, closeModal } = useModalStore();
   const [showAll, setShowAll] = useState(true);
-  useCutsLogic(`cuts?included=employee,cashdrawer${!showAll && `&filterWhere[employee_id]==${user?.id}`}&sort=-updated_at&perPage=10${currentPage}`, currentPage, showAll);
+  useCutsLogic(currentPage, showAll);
   const { getElement } = useTempStorage();
   const selectDrawer = getElement("selectDrawer");
 
