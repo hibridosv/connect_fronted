@@ -33,6 +33,7 @@ interface manageRestaurantStoreI {
   updateProduct: (id: string, data: any) => Promise<boolean>;
   updateProductStatus: (id: string, status: number) => Promise<boolean>;
   deleteRestaurantProduct: (id: string) => Promise<boolean>;
+  updateCategory: (id: string, data: any) => Promise<boolean>;
   addModifier: (productOptionsId: string, productId: string) => Promise<any>;
   removeModifier: (assigmentId: string) => Promise<boolean>;
 }
@@ -84,8 +85,8 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
     set({ deleting: true });
     try {
       const response = await deleteService(url); 
-      manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
       restauranMenuStore.getState().clearConfig()
+      manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
       useToastMessageStore.getState().setMessage(response);
       set({ error: false });
     } catch (error) {
@@ -156,6 +157,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             set({ error: false });
+            restauranMenuStore.getState().clearConfig()
             manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
             useToastMessageStore.getState().setMessage(response);
             return true;
@@ -172,6 +174,7 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
         try {
             const response = await createService(url, data);
             set({ error: false });
+            restauranMenuStore.getState().clearConfig()
             manageRestaurantStore.getState().loadOptions("restaurant/options?included=variants");
             useToastMessageStore.getState().setMessage(response);
             return true;
@@ -227,6 +230,21 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       return false;
     } finally {
       set({ deleting: false });
+    }
+  },
+  updateCategory: async (id, data) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`categories/${id}`, data);
+      restauranMenuStore.getState().clearConfig()
+      manageRestaurantStore.getState().loadCategories("categories?sort=created_at&filterWhere[category_type]==2&filterWhere[is_restaurant]==1");
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
     }
   },
   addModifier: async (productOptionsId, productId) => {
