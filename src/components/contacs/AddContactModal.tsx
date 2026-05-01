@@ -20,7 +20,7 @@ export function AddContactModal(props: AddContactModalProps) {
   const headerTitle = record ? 'Editar contacto' : 'Agregar nuevo contacto';
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl" headerTitle={headerTitle}>
+    <Modal show={isShow} onClose={onClose} size="xl" headerTitle={headerTitle} closeOnOverlayClick={false} >
       <Modal.Body>
         <div className="p-2">
           {system?.country == 1 &&
