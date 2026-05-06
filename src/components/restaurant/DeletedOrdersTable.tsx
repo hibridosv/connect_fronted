@@ -26,7 +26,7 @@ export function DeletedOrdersTable({ records, isLoading }: DeletedOrdersTablePro
         {formatDate(record?.updated_at)} {formatHourAsHM(record?.updated_at)}
       </td>
       <td className="px-3 py-2 text-center whitespace-nowrap font-bold">
-        {record?.order?.number}
+        {record?.order?.number ?? 'N/A'}
       </td>
       <td className="px-3 py-2 text-center whitespace-nowrap">
         {record?.quantity}
@@ -38,10 +38,10 @@ export function DeletedOrdersTable({ records, isLoading }: DeletedOrdersTablePro
         {numberToMoney(record?.total ?? 0, system)}
       </td>
       <td className="px-3 py-2 whitespace-nowrap">
-        {record?.order?.employee?.name}
+        {record?.order?.employee?.name ?? 'N/A'}
       </td>
       <td className="px-3 py-2 whitespace-nowrap text-danger font-medium">
-        {record?.attributes?.deleted_by?.name}
+        {record?.attributes?.deleted_by?.name ?? 'N/A'}
       </td>
     </tr>
   ));
