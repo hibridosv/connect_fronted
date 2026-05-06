@@ -27,7 +27,8 @@ export default function SettingsCategoryList() {
 
   const canDelete = (cat: any) => {
     if (cat.principal === 1) return false;
-    if (cat.subcategories && cat.subcategories.length > 0) return false;
+    const filteredSubs = (cat.subcategories ?? []).filter((sub: any) => sub.is_restaurant === 0);
+    if (filteredSubs.length > 0) return false;
     return true;
   };
 
@@ -53,7 +54,8 @@ export default function SettingsCategoryList() {
 
         <div className="divide-y divide-bg-subtle">
           {categories.map((cat: any) => {
-            const hasSubs = cat.subcategories && cat.subcategories.length > 0;
+            const filteredSubs = (cat.subcategories ?? []).filter((sub: any) => sub.is_restaurant === 0);
+            const hasSubs = filteredSubs.length > 0;
             const isExpanded = expandedIds.includes(cat.id);
 
             return (
@@ -65,7 +67,7 @@ export default function SettingsCategoryList() {
                     </div>
                     <span className="text-sm text-text-base font-medium">{cat.name}</span>
                     {hasSubs && (
-                      <span className="text-xs text-text-muted">({cat.subcategories.length})</span>
+                      <span className="text-xs text-text-muted">({filteredSubs.length})</span>
                     )}
                   </div>
                   {canDelete(cat) && (
@@ -75,7 +77,7 @@ export default function SettingsCategoryList() {
 
                 {isExpanded && hasSubs && (
                   <div className="ml-8 border-l border-bg-subtle">
-                    {cat.subcategories.map((sub: any) => (
+                    {filteredSubs.map((sub: any) => (
                       <div key={sub.id} className="flex items-center justify-between py-1.5 px-3 hover:bg-bg-subtle/20">
                         <span className="text-sm text-text-muted">{sub.name}</span>
                         {sub.principal !== 1 && (
