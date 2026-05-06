@@ -76,7 +76,7 @@ export function HistoryByDayTable(props: HistoryByDayTableI) {
         </div>
         <div className="flex-1 flex flex-col items-center py-3 px-4">
           <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Exento</span>
-          <span className="text-xl font-bold text-text-base mt-0.5">{ numberToMoney(getTotalOfItem(records, "exempt"), system) }</span>
+          <span className="text-xl font-bold text-text-base mt-0.5">{ numberToMoney(getTotalOfItem(records, "total_exempt"), system) }</span>
         </div>
         <div className="flex-1 flex flex-col items-center py-3 px-4">
           <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Gravado</span>
