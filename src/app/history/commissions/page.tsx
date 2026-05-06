@@ -7,7 +7,6 @@ import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
-import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
 
 
@@ -20,12 +19,12 @@ export default function Page() {
 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        if (!elementSelected) {
-          useToastMessageStore.getState().setError({ message: "Seleccione un contacto"});
-          return
-        }
         values.referredId = elementSelected?.id
-        await handleGet(values, 'histories/commissions', 'pdf/commissions/', [{name: "referredId", value: elementSelected?.id}]);
+        let data = {};
+        if (elementSelected?.id) {
+          data = {name: "referredId", value: elementSelected?.id};
+        }
+        await handleGet(values, 'histories/commissions', 'pdf/commissions/', [data]);
     }
 
 
