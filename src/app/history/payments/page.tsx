@@ -11,6 +11,7 @@ export default function Page() {
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
+        values.accountType = 1;
         await handleGet(values, 'histories/payments', 'download.excel.payments');
     }
 
