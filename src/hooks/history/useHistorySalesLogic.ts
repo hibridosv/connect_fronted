@@ -33,7 +33,7 @@ export function useHistorySalesLogic(url: string, linkUrl: string, loadAtStart: 
             (async () => { 
             const actualDate = DateTime.now();
             const formatedDate = actualDate.toFormat('yyyy-MM-dd');
-            await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`}, url, linkUrl)
+            await handleGet({option: "1", initialDate: `${formatedDate} 00:00:00`, accountType: 1}, url, linkUrl)
             })();
         }
             // eslint-disable-next-line react-hooks/exhaustive-deps
