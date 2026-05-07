@@ -14,7 +14,7 @@ import useTempStorage from "@/stores/useTempStorage";
 export default function Page() {
   const { getElement } = useTempStorage();
   const elementSelected = getElement('clientSelectedBySearch');
-  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/commissions', 'download/pdf/commissions/', false);
+  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/commissions', 'download/pdf/commissions', false);
   const isLoading = loading.history ?? false; 
 
 
@@ -24,7 +24,7 @@ export default function Page() {
         if (elementSelected?.id) {
           data = {name: "referredId", value: elementSelected?.id};
         }
-        await handleGet(values, 'histories/commissions', 'download/pdf/commissions/', [data]);
+        await handleGet(values, 'histories/commissions', 'download/pdf/commissions', [data]);
     }
 
 
