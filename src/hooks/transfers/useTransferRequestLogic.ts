@@ -33,6 +33,8 @@ export const useTransferRequestLogic = () => {
     const data = {
       from_tenant_id: record.to_tenant_id,
       to_tenant_id: record.from.id,
+      request_at: true,
+      // request_by: true,
       status: 6,
     };
     await createTransfer(data);
