@@ -35,6 +35,7 @@ export const useTransferSendLogic = () => {
     const data = {
       to_tenant_id: record.to_tenant_id,
       from_tenant_id: record.from.id,
+      request_at: false,
       status: 1,
     };
     await createTransfer(data);
