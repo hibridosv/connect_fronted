@@ -49,6 +49,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+      get().loadLinkedSystems();
     } finally {
       set({ loading: false });
     }
