@@ -19,10 +19,10 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
     const { activeConfig, client } = useConfigStore();
     const { setError } = useToastMessageStore();
-    const { printOrder, loading, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
+    const { printOrder, printing, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
     const { modals, closeModal, openModal} = useModalStore();
     const API_URL = process.env.NEXT_PUBLIC_URL_API;
-    const isSending = loading.printing ?? false;
+    const isSending = printing;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2);
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
