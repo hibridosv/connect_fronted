@@ -1,5 +1,9 @@
 'use client';
 
+import { formatDateAsDMY } from '@/lib/date-formats';
+import { numberToMoney } from '@/lib/utils';
+import useConfigStore from '@/stores/configStore';
+import invoicesStore from '@/stores/settings/invoicesStore';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
@@ -71,17 +75,24 @@ function ScanLine() {
   );
 }
 
-const pendingInvoices = [
-  { label: 'Factura #0042', amount: '$29.99', due: 'Vence hoy' },
-  { label: 'Factura #0038', amount: '$29.99', due: 'Vencida hace 15 días' },
-];
-
 export default function ExpiringPage() {
   const [mounted, setMounted] = useState(false);
   const parallax = useMouseParallax();
   const { data: sessionData, update } = useSession();
+  const { invoices, loading, loadInvoices } = invoicesStore();
+  const { system, tenant } = useConfigStore();
 
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (tenant?.id) {
+      loadInvoices(
+        `settings/invoices?filterWhere[tenant_id]==${tenant.id}&filterWhere[status]==1&sort=-created_at&perPage=10`
+      );
+    }
+  }, [tenant, loadInvoices]);
+
+  const pendingInvoices = invoices?.data ?? [];
 
   const handleContinue = async () => {
     await update({ tenantStatus: 'Active' });
@@ -208,9 +219,15 @@ export default function ExpiringPage() {
               <div className="h-px flex-1 bg-bg-subtle" />
             </div>
             <div className="space-y-2">
-              {pendingInvoices.map((inv, i) => (
+              {loading && (
+                <div className="py-3 text-center text-sm text-text-muted">Cargando facturas...</div>
+              )}
+              {!loading && pendingInvoices.length === 0 && (
+                <div className="py-3 text-center text-sm text-text-muted">No hay facturas pendientes</div>
+              )}
+              {!loading && pendingInvoices.map((inv: any, i: number) => (
                 <div
-                  key={i}
+                  key={inv.id}
                   className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-danger/5 border border-danger/15 text-left"
                   style={{ animation: mounted ? `slideIn 0.35s ease-out ${0.8 + i * 0.1}s both` : 'none' }}
                 >
@@ -221,11 +238,11 @@ export default function ExpiringPage() {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-text-base leading-tight">{inv.label}</div>
-                      <div className="text-[11px] text-text-muted leading-tight">{inv.due}</div>
+                      <div className="text-sm font-semibold text-text-base leading-tight uppercase">Factura #{inv.id?.slice(-4)}</div>
+                      <div className="text-[11px] text-text-muted leading-tight">Vence: {formatDateAsDMY(inv.expires_at)}</div>
                     </div>
                   </div>
-                  <span className="text-sm font-bold text-danger shrink-0">{inv.amount}</span>
+                  <span className="text-sm font-bold text-danger shrink-0">{numberToMoney(inv.total, system)}</span>
                 </div>
               ))}
             </div>
