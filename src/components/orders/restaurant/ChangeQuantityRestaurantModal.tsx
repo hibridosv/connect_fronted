@@ -36,7 +36,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   if (!isShow || !order) return null;
 
  const onSubmit = async (data: any) => {
-    if (product.quantity == data.quantity || data.quantity == null) { onClose(); return; }
+    if (data.quantity > 0 || data.quantity == null) { onClose(); return; }
     const success = await enqueueProductRequest(() => addNew(product.product_id, data.quantity));
     if (success) {
         resetField('quantity');
