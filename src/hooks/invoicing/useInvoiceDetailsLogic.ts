@@ -19,7 +19,7 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
             openLoading("getOrder");
             try {
                 const iden = invoiceId.toLowerCase();
-                const url = `orders/find?filter[id]==${iden}&included=products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
+                const url = `orders/find?filter[id]==${iden}&included=creditnotes,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
                 const response = await getServices(url);
                 setOrder(response.data.data);
             } catch (error) {
@@ -64,6 +64,21 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
         }
       };
 
+      const deleteCreditNote = async (creditNoteId: string) => {
+        openLoading("deletingCreditNote");
+        try {
+          const response = await createService(`documents/delete`, { invoice: creditNoteId, dte_type: "05" });
+          setMessage(response);
+          if (response.status === 200 || response.status === 204) {
+            fetchOrder(invoiceId);
+          }
+        } catch (error) {
+          setError(error);
+        } finally {
+          closeLoading("deletingCreditNote");
+        }
+      };
+
 
     useEffect(() => {
         if (isShow && invoiceId) {
@@ -72,5 +87,5 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [invoiceId, isShow, openLoading, closeLoading]);
 
-    return { order, loading, printOrder, deleteOrder };
+    return { order, loading, printOrder, deleteOrder, deleteCreditNote };
 }
