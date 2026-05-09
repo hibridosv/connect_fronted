@@ -12,8 +12,8 @@ export interface InvoiceDetailsModalI {
 }
 export function InvoiceDetailsModal(props: InvoiceDetailsModalI) {
     const { onClose, isShow, documentId, onElectronic = false } = props;
-    const { order, loading } = useInvoiceDetailsLogic(documentId, isShow);
-    const isLoading = loading.getOrder ?? false;
+    const { order, loadingOrder } = useInvoiceDetailsLogic(documentId, isShow);
+    const isLoading = loadingOrder;
 
   if (!isShow || !documentId) return null;
 

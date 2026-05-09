@@ -14,8 +14,9 @@ import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { order, loading } = useInvoiceDetailsLogic(id, true);
-  const isLoading = loading.getOrder ?? false;
+  const { order, loadingOrder, deletingCreditNote, deleteCreditNote } = useInvoiceDetailsLogic(id, true);
+  const isLoading = loadingOrder;
+  const isDeletingCreditNote = deletingCreditNote;
   const router = useRouter();
   const { modals, closeModal } = useModalStore();
 
@@ -23,7 +24,7 @@ export default function Page({ params }: { params: { id: string } }) {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
           <ViewTitle text="Detalles de la factura" />
-          <InvoiceDetails isLoading={isLoading} order={order} onElectronic={false} />
+          <InvoiceDetails isLoading={isLoading} order={order} onElectronic={false} onDeleteCreditNote={deleteCreditNote} isDeletingCreditNote={isDeletingCreditNote} />
       </div>
       <div className="md:col-span-3">
           <ViewTitle text="Detalles" />

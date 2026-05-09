@@ -5,13 +5,15 @@ import useConfigStore from "@/stores/configStore";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { InvoiceDetailsSkeleton } from "../skeleton/InvoiceDetailsSkeleton";
+import { CreditNotesTable } from "./CreditNotesTable";
 
 export interface InvoiceDetailsI {
   isLoading: boolean;
   order: any;
   onElectronic?: boolean;
+  onDeleteCreditNote?: (id: string) => void;
+  isDeletingCreditNote?: boolean;
 }
-
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
   <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 flex flex-col items-center justify-center text-center">
     <span className="text-sm text-text-muted font-semibold uppercase tracking-wider">{title}</span>
@@ -20,11 +22,10 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 );
 
 export function InvoiceDetails(props: InvoiceDetailsI) {
-    const { isLoading, order, onElectronic } = props;
-    const { system, activeConfig } = useConfigStore();
-    const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
-    const { getRequest, loading: loadingRequest } = useGetRequest();
-
+  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false } = props;
+  const { system, activeConfig } = useConfigStore();
+  const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
+  const { getRequest, loading: loadingRequest } = useGetRequest();
     
   if (!order) return <NothingHere text="No se encontro esta orden... " />;
 
@@ -78,25 +79,40 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
             </table>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 space-y-2 text-sm">
-              <h3 className="font-bold text-text-base mb-2">Información Adicional</h3>
-              {order?.client && <div><span className="text-text-muted">Cliente:</span> <span className="font-semibold">{order.client.name}</span></div>}
-              {order?.employee && <div><span className="text-text-muted">Atendido por:</span> <span className="font-semibold">{order.employee.name}</span></div>}
-              {order?.referred && <div><span className="text-text-muted">Referido:</span> <span className="font-semibold">{order.referred.name}</span></div>}
-              {order?.delivery && <div><span className="text-text-muted">Repartidor:</span> <span className="font-semibold">{order.delivery.name}</span></div>}
+          {order?.creditnotes?.length > 0 && (
+            <CreditNotesTable
+              creditnotes={order.creditnotes}
+              orderStatus={order.status}
+              onDeleteCreditNote={onDeleteCreditNote}
+              isDeletingCreditNote={isDeletingCreditNote}
+            />
+          )}
+
+          <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 text-xs">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-1">
+              {order?.client && <>
+                <div className="flex gap-1"><span className="text-text-muted shrink-0">Cliente:</span><span className="font-semibold truncate">{order.client.name}</span></div>
+                {order.client.document && <div className="flex gap-1"><span className="text-text-muted shrink-0">Documento:</span><span className="font-semibold">{order.client.document}</span></div>}
+                {order.client.phone && <div className="flex gap-1"><span className="text-text-muted shrink-0">Teléfono:</span><span className="font-semibold">{order.client.phone}</span></div>}
+                {order.client.email && <div className="flex gap-1"><span className="text-text-muted shrink-0">Email:</span><span className="font-semibold truncate">{order.client.email}</span></div>}
+              </>}
+              {order?.employee && <div className="flex gap-1"><span className="text-text-muted shrink-0">Atendido por:</span><span className="font-semibold">{order.employee.name}</span></div>}
+              {order?.referred && <div className="flex gap-1"><span className="text-text-muted shrink-0">Referido:</span><span className="font-semibold">{order.referred.name}</span></div>}
+              {order?.delivery && <div className="flex gap-1"><span className="text-text-muted shrink-0">Repartidor:</span><span className="font-semibold">{order.delivery.name}</span></div>}
+              {order?.comment && <div className="flex gap-1 md:col-span-3"><span className="text-text-muted shrink-0">Comentario:</span><span className="font-semibold">{order.comment}</span></div>}
             </div>
-            <div className="space-y-3">
-              {order?.invoice_assigned?.type === 9 && <Alert text="Este Documento tiene una numeración temporal." />}
-              {order?.invoice_assigned?.is_electronic === 1 && 
-              <div>
-                <Alert text="Este Documento se envió electrónicamente." />
-                <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-2 my-2 text-sm ">
-                  <span className="text-text-muted"> Código de generación:</span> 
-                <span className="uppercase font-semibold"> {order.id}</span></div>
-              </div>}
-              {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
-            </div>
+          </div>
+
+          <div className="space-y-2">
+            {order?.invoice_assigned?.type === 9 && <Alert text="Este Documento tiene una numeración temporal." />}
+            {order?.invoice_assigned?.is_electronic === 1 && <>
+              <Alert text="Este Documento se envió electrónicamente." />
+              <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle px-3 py-2 text-xs">
+                <span className="text-text-muted">Código de generación:</span>
+                <span className="uppercase font-semibold ml-1">{order.id}</span>
+              </div>
+            </>}
+            {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">

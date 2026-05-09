@@ -1,6 +1,7 @@
 import { getCountryProperty, numberToMoney } from "@/lib/utils";
 import { createService } from "@/services/services";
 import useConfigStore from "@/stores/configStore";
+import useInvoiceDetailsStore from "@/stores/invoicing/invoiceDetailsStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -23,6 +24,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   const [totalState, setTotalState] = useState(0);
   const { system } = useConfigStore();
   const { setError, setMessage } = useToastMessageStore();
+  const {loadingOrder, fetchOrder } = useInvoiceDetailsStore();
 
   const { control, handleSubmit, setValue, getValues } = useForm({
     shouldUnregister: false,
@@ -118,6 +120,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
       const response = await createService(`documents/credit-note`, newData);
       if (response.status === 200) {
         setMessage({ message: "Nota de crédito enviada correctamente"});
+        await fetchOrder(record.id);
         onClose();
       }
     } catch (error) {
@@ -255,9 +258,9 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
               <div className="mt-6 flex justify-end">
                 <Button
                   type="submit"
-                  preset={Preset.save}
+                  preset={isSending || loadingOrder ? Preset.saving : Preset.save}
                   text="Crear Nota de Crédito"
-                  disabled={isSending}
+                  disabled={isSending || loadingOrder}
                 />
               </div>
             )}

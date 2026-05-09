@@ -12,9 +12,9 @@ export function useSearchDocumentLogic(currentPage: any, searchTerm: string) {
 
         if (searchTerm != searchTermNew ) {
             setSearchTermNew(searchTerm);
-            getRequest(`orders?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15&page=1${searchTerm}`, false)
+            getRequest(`orders?filterwherein[status]==3,4&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15&page=1${searchTerm}`, false)
         } else {
-           getRequest(`orders?filterWhere[status]==3&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15${currentPage}${searchTerm}`, false)
+           getRequest(`orders?filterwherein[status]==3,4&included=invoiceAssigned,client,casheir&sort=-charged_at&perPage=15${currentPage}${searchTerm}`, false)
         }
   }, [currentPage, searchTerm, searchTermNew, getRequest])
 
