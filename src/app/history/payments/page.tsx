@@ -7,12 +7,11 @@ import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/payments', 'download.excel.payments');
+  const { history, handleGet, loading, links } = useHistorySalesLogic('histories/payments?accountType=1', 'download.excel.payments');
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
-        values.accountType = 1;
-        await handleGet(values, 'histories/payments', 'download.excel.payments');
+        await handleGet(values, 'histories/payments?accountType=1', 'download.excel.payments');
     }
 
 

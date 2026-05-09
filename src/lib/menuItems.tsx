@@ -2,8 +2,8 @@ import { ReactElement } from "react";
 import { BiDownload, BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
 import { FaCashRegister, FaFileInvoice, FaTools } from "react-icons/fa";
 import { GrConfigure } from "react-icons/gr";
-import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
 import { LuUtensilsCrossed } from "react-icons/lu";
+import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
 
 export interface MenuItem {
   label: string;
@@ -26,7 +26,7 @@ export const menuItems: MenuItem[] = [
       { label: "Pantalla", href: "/restaurant/screen", permission: "restaurant-screen" },
       { label: "Pantalla Despacho", href: "/restaurant/counter", permission: "restaurant-counter" },
       { label: "Listado de Ordenes", href: "/restaurant/orders", permission: "restaurant-orders" },
-      { label: "Ordenes Eliminadas", href: "/restaurant/deleted", permission: "restaurant-orders" },
+      { label: "Productos Eliminados", href: "/restaurant/deleted", permission: "restaurant-orders" },
     ],
   },
   {
