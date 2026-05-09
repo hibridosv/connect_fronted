@@ -76,7 +76,7 @@ export function ContactAddGT(props: ContactAddGTProps) {
               id="phone"
               {...register('phone')}
               placeholder="1234-5678"
-              pattern="(^[a-zA-Z0-9\+\(\)]{8,30}$|^$)"
+              // pattern="(^[a-zA-Z0-9\+\(\)]{8,30}$|^$)"
               className="input"
             />
           </div>
