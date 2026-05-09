@@ -28,7 +28,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
   useEffect(() => {
     if (product && isShow) {
-      setValue("quantity", product?.quantity)
+      setValue("quantity", 1)
       setFocus('quantity', {shouldSelect: true})      
     }
   }, [setFocus, isShow, product, setValue])
@@ -36,7 +36,7 @@ export function ChangeQuantityRestaurantModal(props: ChangeQuantityRestaurantMod
   if (!isShow || !order) return null;
 
  const onSubmit = async (data: any) => {
-    if (data.quantity > 0 || data.quantity == null) { onClose(); return; }
+    if (data.quantity <= 0 || data.quantity == null) { onClose(); return; }
     const success = await enqueueProductRequest(() => addNew(product.product_id, data.quantity));
     if (success) {
         resetField('quantity');
