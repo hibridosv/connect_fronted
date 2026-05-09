@@ -93,6 +93,7 @@ export default function ExpiringPage() {
   }, [tenant, loadInvoices]);
 
   const pendingInvoices = invoices?.data ?? [];
+  const suspensionDate = pendingInvoices[0]?.expires_at ? formatDateAsDMY(pendingInvoices[0].expires_at) : null;
 
   const handleContinue = async () => {
     await update({ tenantStatus: 'Active' });
@@ -209,7 +210,9 @@ export default function ExpiringPage() {
             Tu sistema está en proceso de suspensión
           </h1>
           <p className={`text-text-muted text-sm mb-4 transition-all duration-700 delay-600 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-            Tienes facturas pendientes de pago. <span className="font-semibold text-danger">Hoy es el último día</span> para regularizar tu cuenta antes de que el acceso sea suspendido.
+            Tienes facturas pendientes de pago. Tu cuenta será suspendida el{' '}
+            <span className="font-semibold text-danger">{suspensionDate ?? '—'}</span>{' '}
+            si no regularizas el pago.
           </p>
 
           <div className={`mb-4 transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
@@ -239,7 +242,7 @@ export default function ExpiringPage() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-text-base leading-tight uppercase">Factura #{inv.id?.slice(-4)}</div>
-                      <div className="text-[11px] text-text-muted leading-tight">Vence: {formatDateAsDMY(inv.expires_at)}</div>
+                      <div className="text-[11px] text-text-muted leading-tight">{new Date(inv.expires_at) < new Date() ? 'Venció' : 'Vence'}: {formatDateAsDMY(inv.expires_at)}</div>
                     </div>
                   </div>
                   <span className="text-sm font-bold text-danger shrink-0">{numberToMoney(inv.total, system)}</span>
