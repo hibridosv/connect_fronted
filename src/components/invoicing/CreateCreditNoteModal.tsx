@@ -258,7 +258,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
               <div className="mt-6 flex justify-end">
                 <Button
                   type="submit"
-                  preset={Preset.save}
+                  preset={isSending || loadingOrder ? Preset.saving : Preset.save}
                   text="Crear Nota de Crédito"
                   disabled={isSending || loadingOrder}
                 />

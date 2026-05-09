@@ -31,7 +31,7 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
     set({ loadingOrder: true });
     try {
       const iden = invoiceId.toLowerCase();
-      const url = `orders/find?filter[id]==${iden}&included=creditnotes,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
+      const url = `orders/find?filter[id]==${iden}&included=creditnotes,creditnotes.emitedBy,creditnotes.deletedBy,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
       const response = await getServices(url);
       set({ order: response.data.data, error: false });
     } catch (error) {
@@ -78,7 +78,7 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
   deleteCreditNote: async (creditNoteId: string, invoiceId: string) => {
     set({ deletingCreditNote: true });
     try {
-      const response = await createService(`documents/delete`, { invoice: creditNoteId, dte_type: "05" });
+      const response = await createService(`documents/delete-credit-note`, { invoice: creditNoteId, dte_type: "05" });
       useToastMessageStore.getState().setMessage(response);
       if (response.status === 200 || response.status === 204) {
         await get().fetchOrder(invoiceId);

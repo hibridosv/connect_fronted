@@ -24,10 +24,12 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const API_URL = process.env.NEXT_PUBLIC_URL_API;
     const isSending = printing;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2);
+    const creditNotesTotal = order?.creditnotes?.filter((note: any) => note.status === 1).reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0) ?? 0;
+    const hasCreditNote = creditNotesTotal >= Number(order?.total ?? 0);
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
     const isElectronic = order?.invoice_assigned?.is_electronic === 1;
-    
+
   if (!order) return null;
 
 
@@ -84,7 +86,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                         openModal('createCreditNote');
                       }
                     }}
-                    disabled={isDeleted || isSending}
+                    disabled={isDeleted || isSending || hasCreditNote}
                     className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-sky-600 disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
@@ -103,7 +105,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                       openModal('deleteOrder'); // Placeholder for modal logic
                     }
                   }}
-                  disabled={isDeleted || isSending}
+                  disabled={isDeleted || isSending || hasCreditNote}
                   className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-danger disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                 >
                   <div className="p-3 bg-bg-subtle rounded-full">
