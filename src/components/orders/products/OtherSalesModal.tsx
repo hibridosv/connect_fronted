@@ -100,7 +100,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
                 required: "La descripción es requerida",
                 minLength: { value: 3, message: "La descripción debe tener mínimo 3 caracteres" },
                 maxLength: { value: 250, message: "La descripción debe tener máximo 250 caracteres" },
-                pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()-]+$/, message: "La descripción no puede contener caracteres especiales" },
+                pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()\-\/#$%@+"&'*=_\[\]°]+$/, message: "La descripción contiene caracteres no permitidos"},
               })} className="input" />
             </div>
             <div className="w-full">

@@ -82,7 +82,7 @@ export function AddCommentModal(props: AddCommentModalI) {
                     required: "El comentario es requerido",
                     minLength: { value: 5, message: "Mínimo 5 caracteres" },
                     maxLength: { value: 250, message: "Máximo 250 caracteres" },
-                    pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()-]+$/, message: "No se permiten caracteres especiales" },
+                    pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()\-\/#$%@+"&'*=_\[\]°]+$/, message: "La descripción contiene caracteres no permitidos"},
                   })} className="input" />
                   {errors.value && <span className="text-xs text-danger mt-1">{errors.value.message as string}</span>}
               </div>
