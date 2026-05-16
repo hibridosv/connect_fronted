@@ -41,7 +41,7 @@ export function HistoryCommisionsTable(props: HistoryCommisionsTableI) {
 
 
   const listItems = records.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-200'}`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && '!!bg-red-200'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { formatDate(record?.updated_at) } { formatHourAsHM(record?.updated_at)}
       </td>

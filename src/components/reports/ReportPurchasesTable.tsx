@@ -56,7 +56,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           isDeleting
             ? 'opacity-50'
             : needReview
-            ? 'bg-red-200 hover:bg-red-400'
+            ? '!bg-red-200 hover:bg-red-400'
             : 'odd:bg-bg-subtle/40 hover:bg-bg-subtle'
         }`}
       >
