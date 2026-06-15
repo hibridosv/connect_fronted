@@ -1,10 +1,21 @@
 import { Switch } from '@/components/button/Switch';
+import { Indicator, IndicatorType } from '@/components/Indicators';
 import { getServices, updateService } from '@/services/services';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useState } from 'react';
 
 interface SettingsDocumentListProps {
   changes: boolean;
+}
+
+function getDocumentStatus(status: number): { label: string; type: IndicatorType } {
+  const map: Record<number, { label: string; type: IndicatorType }> = {
+    0: { label: 'Inactivo',      type: 'inactive' },
+    1: { label: 'Activo',        type: 'success' },
+    2: { label: 'Terminado',     type: 'warning' },
+    3: { label: 'Deshabilitado', type: 'danger' },
+  };
+  return map[status] ?? { label: 'Desconocido', type: 'inactive' };
 }
 
 export default function SettingsDocumentList({ changes }: SettingsDocumentListProps) {
@@ -93,9 +104,7 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
                   )}
                 </td>
                 <td className="px-3 py-2 whitespace-nowrap">
-                  <span className={`text-xs font-medium ${item.status !== 0 ? 'text-success' : 'text-danger'}`}>
-                    {item.status !== 0 ? 'Activo' : 'Inactivo'}
-                  </span>
+                  <Indicator type={getDocumentStatus(item.status).type} text={getDocumentStatus(item.status).label} coloredText />
                 </td>
               </tr>
             ))}
