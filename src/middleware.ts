@@ -75,13 +75,26 @@ const protectedRoutes = [
 // This config ensures the middleware runs on all necessary routes
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/",
+    "/login",
+    "/sales/:path*",
+    "/accounts/:path*",
+    "/annexes/:path*",
+    "/cash/:path*",
+    "/cashdrawers/:path*",
+    "/contacts/:path*",
+    "/dashboard/:path*",
+    "/history/:path*",
+    "/invoicing/:path*",
+    "/orders/:path*",
+    "/products/:path*",
+    "/reports/:path*",
+    "/restaurant/:path*",
+    "/settings/:path*",
+    "/tools/:path*",
+    "/transfers/:path*",
+    "/protected/:path*",
+    "/protected-ssr/:path*",
+    "/help/:path*",
   ],
 };

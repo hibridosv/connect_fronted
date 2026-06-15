@@ -1,4 +1,5 @@
 'use client';
+import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import { getLastElement, numberToMoney } from "@/lib/utils";
@@ -13,7 +14,6 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { CgSpinner } from "react-icons/cg";
 import { MdDelete } from "react-icons/md";
 import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
-import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 
 
 
@@ -73,14 +73,14 @@ export function RestaurantProductsAdded({ order } : any) {
             { numberToMoney(record.total, system) }
             </td>
             <td className={`px-2 py-1 text-center whitespace-nowrap`}>
-                            {
-                              isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? (
-                                <CodeRequestGuard permission="code-request-delete-product" onAuthorized={() => del(order.id, record.cod)}>
-                                  <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-grey-800 clickeable"/>
-                                </CodeRequestGuard>) : (
-                                <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-red-800 clickeable"/>
-                              )
-                           }
+                {
+                  isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? (
+                    <CodeRequestGuard permission="code-request-delete-product" onAuthorized={() => del(order.id, record.cod)}>
+                      <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-grey-800 clickeable"/>
+                    </CodeRequestGuard>) : (
+                    <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-red-800 clickeable"/>
+                  )
+                }
             </td>
         </tr>
         )

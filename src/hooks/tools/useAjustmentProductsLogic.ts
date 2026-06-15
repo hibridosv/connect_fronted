@@ -26,11 +26,11 @@ export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, i
 
     const sendAdjustment = async(product: any) =>{
       if (!product.id) {
-        let stablished: number = product.stablished;
+        let stablished: number = Number(product.stablished);
         product = record;
         product.stablished = stablished;
       } else {
-        product.stablished = product.quantity
+        product.stablished = Number(product.quantity)
       }
       try {
         const success = await send('tools/adjust/update', product);

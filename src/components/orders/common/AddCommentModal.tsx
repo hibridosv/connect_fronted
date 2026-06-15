@@ -26,7 +26,7 @@ export function AddCommentModal(props: AddCommentModalI) {
 
 
 
-  const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { register, handleSubmit, resetField, setFocus, setValue, formState: { errors } } = useForm();
 
   useEffect(() => {
     if (order && isShow) {
@@ -78,7 +78,13 @@ export function AddCommentModal(props: AddCommentModalI) {
             <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} >
               <div>
                 <label htmlFor="value" className="input-label" >Comentario</label>
-                  <textarea rows={8} {...register("value", { required: true, max:250, min:5 })} className="input" />
+                  <textarea rows={8} {...register("value", {
+                    required: "El comentario es requerido",
+                    minLength: { value: 5, message: "Mínimo 5 caracteres" },
+                    maxLength: { value: 250, message: "Máximo 250 caracteres" },
+                    pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()\-\/#$%@+"&'*=_\[\]°]+$/, message: "El comentario contiene caracteres no permitidos"},
+                  })} className="input" />
+                  {errors.value && <span className="text-xs text-danger mt-1">{errors.value.message as string}</span>}
               </div>
               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
             </form>

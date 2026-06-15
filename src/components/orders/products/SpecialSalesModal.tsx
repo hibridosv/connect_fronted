@@ -23,8 +23,8 @@ export function SpecialSalesModal(props: SpecialSalesModalI) {
   const { onClose, isShow } = props;
   const { order, sending, error } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getElement, clearElement, setElement } = useTempStorage();
-  const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { getElement, clearElement } = useTempStorage();
+  const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched' });
   let special = order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order);
   let optionsRadioButton: Option[] = [
       { id: 1, name: "Gravado" },
@@ -76,16 +76,31 @@ const handleClose = ()=>{
                           <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >
                               <div className="w-full md:w-full px-3 mb-4">
                                   <label htmlFor="description" className="input-label" >Descripción</label>
-                                  <input type="text" {...register("description", { required: true })} className="input" />
+                                  <input type="text" {...register("description", {
+                                    required: "La descripción es requerida",
+                                    minLength: { value: 3, message: "La descripción debe tener mínimo 3 caracteres" },
+                                    maxLength: { value: 250, message: "La descripción debe tener máximo 250 caracteres" },
+                                  pattern: { value: /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s.,;:¿?¡!()\-\/#$%@+"&'*=_\[\]°]+$/, message: "La descripción contiene caracteres no permitidos" },
+                                  })} className="input" />
                               </div>
                               <div className="w-full md:w-full px-3 mb-4">
                                   <label htmlFor="total" className="input-label" >Precio</label>
-                                  <input type="number" step="any" {...register("total", { required: true })} className="input" />
+                                  <input type="number" step="any" {...register("total", {
+                                    required: "El precio es requerido",
+                                    min: { value: 0, message: "El precio debe ser mayor o igual a 0" },
+                                  })} className="input" />
                               </div>
                               <div className="w-full">
                                 <label className="block text-sm font-medium text-text-muted mb-1">Tipo de Operación</label>
                                 <RadioButton options={optionsRadioButton} />
                               </div>
+                              {Object.values(errors).length > 0 && (
+                                <div className="flex flex-col gap-1 mx-3 mb-2 p-2 rounded-md bg-danger/10 border border-danger/30">
+                                  {Object.values(errors).map((error, index) => (
+                                    <span key={index} className="text-xs text-danger">{error?.message as string}</span>
+                                  ))}
+                                </div>
+                              )}
                               <div className="flex justify-center pb-4">
                               <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
                               </div>

@@ -23,6 +23,7 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
   const { sending, collecting } = ordersStore();
   const tips =  orderPayed?.attributes?.tips ?? 0;
   const total = (paymentType === 1) ? (orderPayed?.total - orderPayed?.retention + tips) : 0;
+  const change = (paymentType === 1) ? orderPayed?.change === 0 ? 0 : (orderPayed?.change - tips): 0;
 
   if (!isShow) return null;
 
@@ -89,7 +90,7 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
           <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(total, system)}</div>
           { paymentType === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
           <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
-          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(orderPayed?.change - tips, system)}
+          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(change, system)}
           </div></> : 
           <div className='flex justify-center text-xl font-semibold uppercase text-info'>
             { paymentType === 5 ? 
