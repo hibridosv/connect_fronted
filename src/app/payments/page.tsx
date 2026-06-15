@@ -1,12 +1,14 @@
 'use client';
 
 import { ViewTitle } from '@/components/ViewTitle';
+import { Button, Preset } from '@/components/button/button';
 import { InvoicePayDetailsModal } from '@/components/settings/InvoicePayDetailsModal';
 import { InvoiceSystemTable } from '@/components/settings/InvoiceSystemTable';
 import { ToasterMessage } from '@/components/toaster-message';
 import { useInvoicesLogic } from '@/hooks/settings/useInvoicesLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { LuLoaderCircle } from 'react-icons/lu';
 
@@ -79,7 +81,7 @@ export default function Page() {
             </div>
           )}
 
-          {total > 0 ? (
+          {!loading && total > 0 ? (
             <div className="animate-slide-up-delay-2 bg-bg-content rounded-lg shadow-sm border border-bg-subtle overflow-hidden transition-shadow duration-200 hover:shadow-md">
               <div className="flex flex-col items-center gap-1 bg-bg-subtle/60 py-2 px-3">
                 <span className="font-semibold text-xs uppercase tracking-wider text-text-muted">Pagar con Transferencia Electrónica</span>
@@ -113,13 +115,24 @@ export default function Page() {
                 </p>
               </div>
             </div>
-          ) : (
-            <div className="animate-slide-up-delay-2 bg-bg-content rounded-lg shadow-sm border border-bg-subtle overflow-hidden transition-shadow duration-200 hover:shadow-md">
-              <div className="text-center bg-bg-subtle/60 font-semibold py-2 text-xs uppercase tracking-wider text-text-base">
-                Al día con sus facturas
+          ) : !loading && (
+            <div className="animate-slide-up-delay-2 bg-bg-content rounded-lg shadow-sm border border-bg-subtle border-l-4 border-l-success overflow-hidden transition-shadow duration-200 hover:shadow-md">
+              <div className="text-center bg-success/10 font-semibold py-2 text-xs uppercase tracking-wider text-success">
+                Todo al día
               </div>
-              <div className="py-3 px-4 text-center text-sm text-text-muted">
-                Si tiene alguna duda no dude en contactarnos
+              <div className="py-4 px-4 text-center space-y-3">
+                <p className="text-sm text-text-base font-medium">
+                  No tiene facturas pendientes de pago.
+                </p>
+                <p className="text-xs text-text-muted">
+                  Puede cerrar sesión y volver a ingresar para comenzar a usar el sistema con normalidad.
+                </p>
+                <Button
+                  preset={Preset.secondary}
+                  text="Cerrar sesión"
+                  isFull
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                />
               </div>
             </div>
           )}
