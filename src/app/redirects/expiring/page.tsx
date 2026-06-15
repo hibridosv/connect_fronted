@@ -80,9 +80,15 @@ export default function ExpiringPage() {
   const parallax = useMouseParallax();
   const { data: sessionData, update } = useSession();
   const { invoices, loading, loadInvoices } = invoicesStore();
-  const { system, tenant } = useConfigStore();
+  const { system, tenant, configurations, loadConfig, _hasHydrated } = useConfigStore();
 
   useEffect(() => { setMounted(true); }, []);
+
+  useEffect(() => {
+    if (_hasHydrated && configurations === null) {
+      loadConfig();
+    }
+  }, [_hasHydrated, configurations, loadConfig]);
 
   useEffect(() => {
     if (tenant?.id) {

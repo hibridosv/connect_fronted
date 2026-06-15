@@ -6,7 +6,7 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Define protected and public-only routes
-const protectedRoutes = [
+  const protectedRoutes = [
     "/accounts", 
     "/annexes", 
     "/cash", 
