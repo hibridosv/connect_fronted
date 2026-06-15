@@ -70,7 +70,7 @@ export function PayedModal(props: PayedModal) {
       </Modal.Body>
       <Modal.Footer>
        { activeConfig && activeConfig.includes("print-link") && 
-       <ButtonDownloadGet href={`id=${orderPayed.id}&route=download.pdf.invoice`}><Button text="Imprimir" preset={Preset.primary} isFull disabled={sending} /></ButtonDownloadGet>  }
+       <ButtonDownloadGet href={`id=${orderPayed.id}&route=download.pdf.invoice`} autoclass={false} ><Button text="Imprimir" preset={Preset.primary} isFull disabled={sending} /></ButtonDownloadGet>  }
         <Button onClick={handleClose} preset={Preset.close} isFull disabled={sending} /> 
       </Modal.Footer>
     </Modal>

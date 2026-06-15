@@ -2,11 +2,12 @@ import { iconSvg } from "@/components/button/LiComponent";
 import { SearchInput } from "@/components/Search";
 import { useOrderProductsSearchLogic } from "@/hooks/order/common/useOrderProductsSearchLogic";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import ordersStore from "@/stores/orders/ordersStore";
 import useProductStore from "@/stores/products/productStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
@@ -22,6 +23,7 @@ export function OrderProductsSearch() {
     const typeOfSearch = getElement('typeOfSearch');
     const { addNew } = useOrderFnLogic();
     const { system } = useConfigStore()
+    const { sending } = ordersStore();
 
 
     const handleSelectProduct = (product: any) => {
@@ -43,8 +45,8 @@ export function OrderProductsSearch() {
                   <ul className="divide-y divide-bg-subtle max-h-screen overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
                         return (
-                           <li key={item.id} onClick={() => handleSelectProduct(item)}>
-                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
+                           <li key={item.id} onClick={sending ? undefined : () => handleSelectProduct(item)}>
+                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 ${ !sending ? 'clickeable' : '' }`}>
                               <span className="text-text-base">
                                 {item.cod} | 
                                 {item.description} 
