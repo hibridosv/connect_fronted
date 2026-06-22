@@ -4,15 +4,23 @@ import useConfigStore from '@/stores/configStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { useEffect } from 'react'
 
+const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000
+
 export function useConfigLogic() {
-  const { configurations, loadConfig, loading, _hasHydrated, tenant, error, retryCount } = useConfigStore()
+  const { configurations, loadConfig, reloadConfig, loading, _hasHydrated, tenant, error, retryCount, lastLoadedAt } = useConfigStore()
   const { setTheme } = useThemeStore()
 
   useEffect(() => {
-    if (_hasHydrated && configurations === null && !loading) {
+    if (!_hasHydrated || loading) return
+
+    const isExpired = !lastLoadedAt || Date.now() - lastLoadedAt >= TWENTY_FOUR_HOURS_MS
+
+    if (isExpired) {
+      reloadConfig()
+    } else if (configurations === null) {
       loadConfig()
     }
-  }, [_hasHydrated, configurations, loading, loadConfig])
+  }, [_hasHydrated, configurations, loading, lastLoadedAt, loadConfig, reloadConfig])
 
   useEffect(() => {
     if (tenant) {
