@@ -39,9 +39,7 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
   loadCommissionDetail: async (id: string) => {
     try {
       const response = await getServices(`tools/commissions/gold/${id}`);
-      if (!response.data?.message) {
         set({ commissionDetail: response.data });
-      }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     }
