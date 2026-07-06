@@ -41,7 +41,7 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS" />
           </div>
     </div> 
-    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
+    <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} onElectronic={true} />
 </div>
   );
 }
