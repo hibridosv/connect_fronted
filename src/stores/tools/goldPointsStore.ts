@@ -27,7 +27,7 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      set({ commissions: response.data.data, error: false });
+      set({ commissions: response.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
@@ -39,8 +39,8 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
   loadCommissionDetail: async (id: string) => {
     try {
       const response = await getServices(`tools/commissions/gold/${id}`);
-      if (!response.data.data?.message) {
-        set({ commissionDetail: response.data.data });
+      if (!response.data?.message) {
+        set({ commissionDetail: response.data });
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -51,11 +51,11 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
     set({ saving: true });
     try {
       const response = await createService('tools/commissions/create/gold', payload);
-      if (response.data.data?.type === 'error') {
+      if (response.data?.type === 'error') {
         useToastMessageStore.getState().setError('Faltan algunos datos importantes');
         return false;
       }
-      set({ commissions: response.data.data, error: false });
+      set({ commissions: response.data, error: false });
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -69,7 +69,7 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
     set({ saving: true });
     try {
       const response = await updateService(`tools/commissions/pay/${id}`, {});
-      if (response.data.data?.type === 'successful') {
+      if (response.data?.type === 'successful') {
         useToastMessageStore.getState().setMessage(response);
         return true;
       }
@@ -87,7 +87,7 @@ const goldPointsStore = create<GoldPointsStoreI>((set) => ({
     set({ saving: true });
     try {
       const response = await deleteService(`tools/commissions/cancel/gold/${id}`);
-      if (response.data.data?.type === 'successful') {
+      if (response.data?.type === 'successful') {
         useToastMessageStore.getState().setMessage(response);
         return true;
       }
