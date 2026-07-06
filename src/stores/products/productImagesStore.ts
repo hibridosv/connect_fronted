@@ -25,6 +25,7 @@ const productImagesStore = create<ProductImagesStoreI>((set, get) => ({
       const response = await getServices(`images/${productId}`);
       set({ images: response.data.data ?? response.data ?? [] });
     } catch (error) {
+      set({ images:  [] });
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
