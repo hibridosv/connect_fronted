@@ -1971,6 +1971,22 @@
 					"distrito": "La Unión Sur"
 				}
 			]
+		},
+		{
+			"id": "00",
+			"nombre": "Otro",
+			"cabecera": "Otro",
+			"extension": 0.00,
+			"ISO3166-2": "SV-OTRO",
+			"municipios": [
+				{
+					"id_mun": "0000",
+					"nombre": "Otro",
+					"codigo_postal": "00000",
+					"cantones": 0,
+					"distrito": "Otro"
+				}
+			]
 		}
 	]
 }
