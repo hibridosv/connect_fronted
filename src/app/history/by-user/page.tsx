@@ -10,7 +10,7 @@ import { useLoadUsersByFormLogic } from "@/hooks/useLoadUsersByFormLogic";
 
 export default function Page() {
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-user', 'download.excel.by-user', false);
-  const { fieldUsers } = useLoadUsersByFormLogic(true);
+  const { fieldUsers } = useLoadUsersByFormLogic(true, true);
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
