@@ -1,6 +1,7 @@
 'use client';
 import { Button, Preset } from '@/components/button/button';
 import { ButtonDownloadGet } from '@/components/button/button-download-get';
+import { Pagination } from '@/components/Pagination';
 import { ProductsSearch } from '@/components/search/ProductsSearch';
 import { ShowProductSearched } from '@/components/search/ShowProductSearched';
 import { ToasterMessage } from '@/components/toaster-message';
@@ -9,12 +10,13 @@ import { TransferProductsTable } from '@/components/transfers/TransferProductsTa
 import { TransfersHistoryTable } from '@/components/transfers/TransfersHistoryTable';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useTransferSendLogic } from '@/hooks/transfers/useTransferSendLogic';
+import { usePagination } from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
 import { FaDownload } from 'react-icons/fa';
 
 export default function Page() {
   const { register, handleSubmit, setValue } = useForm();
-
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
   const {
     transfers,
     activeTransfer,
@@ -32,7 +34,7 @@ export default function Page() {
     cancelTransfer,
     sendTransfer,
     getProductsOnline,
-  } = useTransferSendLogic();
+  } = useTransferSendLogic(currentPage);
 
   const onSubmit = async (data: any) => {
     const success = await handleAddProduct(data.quantity);
@@ -141,13 +143,16 @@ export default function Page() {
             </div>
           </div>
         ) : (
-          <TransfersHistoryTable
-            records={transfers}
-            onRowClick={handleRowClick}
-            onGetProductsOnline={getProductsOnline}
-            sending={sending}
-            loading={loading}
-          />
+          <div className="p-4">
+            <TransfersHistoryTable
+              records={transfers}
+              onRowClick={handleRowClick}
+              onGetProductsOnline={getProductsOnline}
+              sending={sending}
+              loading={loading}
+            />
+            <Pagination records={transfers} handlePageNumber={handlePageNumber } />
+          </div>
         )}
       </div>
       <ToasterMessage />

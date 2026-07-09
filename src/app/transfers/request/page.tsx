@@ -1,5 +1,6 @@
 'use client';
 import { Button, Preset } from '@/components/button/button';
+import { Pagination } from '@/components/Pagination';
 import { ProductsSearch } from '@/components/search/ProductsSearch';
 import { ShowProductSearched } from '@/components/search/ShowProductSearched';
 import { ToasterMessage } from '@/components/toaster-message';
@@ -8,10 +9,12 @@ import { TransferProductsTable } from '@/components/transfers/TransferProductsTa
 import { TransfersHistoryTable } from '@/components/transfers/TransfersHistoryTable';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useTransferRequestLogic } from '@/hooks/transfers/useTransferRequestLogic';
+import { usePagination } from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
 
 export default function Page() {
   const { register, handleSubmit, setValue } = useForm();
+  const {currentPage, handlePageNumber} = usePagination("&page=1");
 
   const {
     transfers,
@@ -28,7 +31,7 @@ export default function Page() {
     cancelTransfer,
     sendRequest,
     getProductsOnline,
-  } = useTransferRequestLogic();
+  } = useTransferRequestLogic(currentPage);
 
   const onSubmit = async (data: any) => {
     const success = await handleAddProduct(data.quantity);
@@ -120,6 +123,7 @@ export default function Page() {
             </div>
           </div>
         ) : (
+          <div className="p-4">
           <TransfersHistoryTable
             records={transfers}
             onRowClick={handleRowClick}
@@ -127,6 +131,8 @@ export default function Page() {
             sending={sending}
             loading={loading}
           />
+          <Pagination records={transfers} handlePageNumber={handlePageNumber } />
+          </div>
         )}
       </div>
       <ToasterMessage />

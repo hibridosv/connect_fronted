@@ -1,8 +1,9 @@
+import useConfigStore from '@/stores/configStore';
 import transferSendStore from '@/stores/transfers/transferSendStore';
 import useTempStorage from '@/stores/useTempStorage';
 import { useEffect } from 'react';
 
-export const useTransferSendLogic = () => {
+export const useTransferSendLogic = (currentPage?: any) => {
   const {
     transfers,
     activeTransfer,
@@ -25,11 +26,12 @@ export const useTransferSendLogic = () => {
 
   const { getElement, clearElement } = useTempStorage();
   const productSearched = getElement('productSearched');
+  const tenant = useConfigStore.getState().tenant;
 
   useEffect(() => {
-    loadTransfers();
+    loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15${currentPage}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPage]);
 
   const handleSelectBranch = async (record: any) => {
     const data = {

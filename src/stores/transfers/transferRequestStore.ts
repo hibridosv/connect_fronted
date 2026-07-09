@@ -10,7 +10,7 @@ interface TransferRequestStoreI {
   productsAdded: any[];
   loading: boolean;
   sending: boolean;
-  loadTransfers: () => Promise<void>;
+  loadTransfers: (url: string) => Promise<void>;
   loadLinkedSystems: () => Promise<void>;
   createTransfer: (data: any) => Promise<void>;
   addProduct: (data: any) => Promise<boolean>;
@@ -25,6 +25,7 @@ interface TransferRequestStoreI {
 const getFirstWithStatus6 = (items: any[]) => {
   return items?.find((el: any) => el.status === 6) || null;
 };
+const tenant = useConfigStore.getState().tenant;
 
 const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
   transfers: null,
@@ -34,11 +35,10 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
   loading: false,
   sending: false,
 
-  loadTransfers: async () => {
-    const tenant = useConfigStore.getState().tenant;
+  loadTransfers: async (url: string) => {
     set({ loading: true });
     try {
-      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
+      const response = await getServices(url);
       const data = response.data;
       const first = getFirstWithStatus6(data?.data);
       if (first) {
@@ -113,7 +113,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
       await deleteService(`transfers/${activeTransfer.id}`);
       set({ activeTransfer: null, productsAdded: [] });
       useToastMessageStore.getState().setMessage({ data: { message: 'Solicitud cancelada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -129,7 +129,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
       await updateService(`transfers/request/${activeTransfer.id}`, { status: 7 });
       set({ activeTransfer: null, productsAdded: [] });
       useToastMessageStore.getState().setMessage({ data: { message: 'Solicitud enviada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -142,7 +142,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
     try {
       await updateService(`transfers/update/${transferId}`, { status });
       useToastMessageStore.getState().setMessage({ data: { message: 'Cambios efectuados' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -155,7 +155,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
     try {
       await updateService(`transfers/online/${transfer.id}`, { is_online: 0 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Productos devueltos correctamente' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -168,7 +168,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
     try {
       await updateService(`transfers/request/${transferId}`, { status: 6 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Solicitud aceptada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
