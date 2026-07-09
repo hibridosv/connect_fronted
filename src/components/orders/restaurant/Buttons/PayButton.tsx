@@ -1,4 +1,5 @@
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
+import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -13,12 +14,19 @@ export function PayButton({ isSplit = false }: any) {
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
 
+    const invoice = order;
+    const validateFields = ()=>{
+      if (invoice?.client_id && invoice?.invoice_assigned?.type == 3) {
+        return validateInvoiceFields(invoice?.client, requiredFieldsCCF)
+      }
+    }
   
-  
+    let fieldsRequired = validateFields();
+    
   let isSuspended = tenant?.status == 2 ? true : false;
   const total = sumarTotales(order?.invoiceproducts);
   const blockMaxQuantityWithOutNit = system?.country == 3 && total >= 2500 && !order?.client_id;
-  const disabledButonPay = collecting || sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4)) || isSuspended;
+  const disabledButonPay = collecting || sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4)) || isSuspended || (fieldsRequired && fieldsRequired.length > 0);
   
   if (!order) return <></>
 
