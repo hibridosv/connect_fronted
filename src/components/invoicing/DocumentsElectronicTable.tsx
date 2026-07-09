@@ -6,6 +6,7 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
+import { DateTime } from "luxon";
 import { FaEdit, FaSpinner } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
@@ -41,6 +42,8 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
     const isDocumentVisible = visibleTypes.includes(record?.tipo_dte ?? "");
     const isRejected = record?.status == 3 ? true : false;
     const isDownloader =  (record?.status == 4 || record?.status == 5) ? true : false;
+    const createdAt = record?.created_at ? DateTime.fromISO(record.created_at) : null;
+    const isWithinTwoMonths = createdAt ? createdAt >= DateTime.now().minus({ months: 2 }) : false;
 
 
     return (
@@ -79,7 +82,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
             <DropdownItem disabled={!isDownloader} onClick={() => { setElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
-            <DropdownItem disabled={!isRejected} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento</DropdownItem>
+            <DropdownItem disabled={!isRejected || !isWithinTwoMonths} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento</DropdownItem>
           </Dropdown> }
       </td>
     </tr>

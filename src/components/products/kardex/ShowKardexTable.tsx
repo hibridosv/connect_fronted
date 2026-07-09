@@ -3,7 +3,7 @@
 import { NothingHere } from "@/components/NothingHere";
 import { Product } from "@/interfaces/products";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { numberToMoney4Digits } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
@@ -31,11 +31,11 @@ export function ShowKardexTable(props: ShowKardexTableProps) {
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium hover:underline clickeable" onClick={() => { setElement("kardexDetails", record); openModal('kardexDetails'); }}>{ record.description }</td>
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{ record.unit_cost }</td>
       <td className={`px-3 py-2 text-center whitespace-nowrap  ${record.qty_in ? 'text-text-muted' : 'text-success font-semibold'}`}>{ record.qty_in ? record.qty_in : 0 }</td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap  ${record.total_in ? 'text-text-muted' : 'text-success font-semibold'}`}>{ numberToMoney(record.total_in ? record.total_in : 0, system) }</td>
+      <td className={`px-3 py-2 text-center whitespace-nowrap  ${record.total_in ? 'text-text-muted' : 'text-success font-semibold'}`}>{ numberToMoney4Digits(record.total_in ? record.total_in : 0, system) }</td>
       <td className={`px-3 py-2 text-center whitespace-nowrap ${record.qty_out ? 'text-text-muted' : 'text-danger font-semibold'}`}>{ record.qty_out ? record.qty_out : 0 }</td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap ${record.total_out ? 'text-text-muted' : 'text-danger font-semibold'}`}>{ numberToMoney(record.total_out ? record.total_out : 0, system) }</td>
+      <td className={`px-3 py-2 text-center whitespace-nowrap ${record.total_out ? 'text-text-muted' : 'text-danger font-semibold'}`}>{ numberToMoney4Digits(record.total_out ? record.total_out : 0, system) }</td>
       <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{ record.qty_balance ? record.qty_balance : 0 }</td>
-      <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{ numberToMoney(record.total_balance ? record.total_balance : 0, system) }</td>
+      <td className="px-3 py-2 text-center whitespace-nowrap text-text-muted">{ numberToMoney4Digits(record.total_balance ? record.total_balance : 0, system) }</td>
     </tr>
   ));
 

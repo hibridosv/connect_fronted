@@ -22,7 +22,7 @@ export interface OrderButtonsI {
 
 export function OrderButtons(props: OrderButtonsI) {
   const { order } = props
-  const { cashdrawer } = useConfigStore();
+  const { cashdrawer, tenant } = useConfigStore();
   const { save, pay, cancel } = useOrderFnLogic();
   const { saving, sending } = ordersStore();
   const { modals, closeModal, openModal} = useModalStore();
@@ -38,7 +38,8 @@ export function OrderButtons(props: OrderButtonsI) {
   }
 
   let fieldsRequired = validateFields();
-  let payDisabled = sending || !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0;
+  let isSuspended = tenant?.status == 2 ? true : false;
+  let payDisabled = sending || !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0 || isSuspended;
 
   return (<div>
         { !cashdrawer && 
@@ -53,6 +54,9 @@ export function OrderButtons(props: OrderButtonsI) {
             <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
           </div>
         }
+
+        { isSuspended && 
+        <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> }
 
         <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
           <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >

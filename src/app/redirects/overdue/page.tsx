@@ -191,7 +191,7 @@ export default function OverduePage() {
           {/* Mensaje */}
           <div className={`transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <p className="text-text-muted text-sm md:text-base max-w-md leading-relaxed mx-auto">
-              Tienes pagos pendientes en tu servicio de facturación electrónica. Tu sistema seguirá funcionando y todos los documentos se emitirán con normalidad, sin embargo algunas funciones como historiales y reportes estarán limitadas hasta regularizar tu cuenta.
+              Tienes pagos pendientes en tu servicio de facturación electrónica. Tu sistema seguirá funcionando, sin embargo algunas funciones como emisión de documentos, historiales y reportes estarán limitadas hasta regularizar tu cuenta.
             </p>
           </div>
 

@@ -28,6 +28,7 @@ interface ConfigStoreState {
   loading: boolean;
   error: boolean;
   retryCount: number;
+  lastLoadedAt: number | null;
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   loadConfig: () => Promise<void>;
@@ -39,7 +40,7 @@ interface ConfigStoreState {
 type PersistedConfigState = Pick<ConfigStoreState,
   'configurations' | 'activeConfig' | 'system' | 'payMethods' | 'permission' |
   'user' | 'invoiceExist' | 'isInvoiceExpires' | 'role' | 'cashdrawer' |
-  'client' | 'tenant' | 'invoiceTypes' | 'hasLinked'
+  'client' | 'tenant' | 'invoiceTypes' | 'hasLinked' | 'lastLoadedAt'
 >;
 
 const useConfigStore = create(
@@ -65,6 +66,7 @@ const useConfigStore = create(
       loading: false,
       error: false,
       retryCount: 0,
+      lastLoadedAt: null,
 
       loadConfig: async () => {
         const { loading, configurations, retryCount } = get()
@@ -90,6 +92,7 @@ const useConfigStore = create(
           set({ hasLinked: data.hasLinked });
           set({ isLoaded: true });
           set({ error: false });
+          set({ lastLoadedAt: Date.now() });
         } catch (error) {
           useToastMessageStore.getState().setError(error);
           set({ error: true, isLoaded: false });
@@ -135,6 +138,7 @@ const useConfigStore = create(
           loading: false,
           error: false,
           retryCount: 0,
+          lastLoadedAt: null,
          });
       },
 
@@ -157,6 +161,7 @@ const useConfigStore = create(
         tenant: state.tenant,
         invoiceTypes: state.invoiceTypes,
         hasLinked: state.hasLinked,
+        lastLoadedAt: state.lastLoadedAt,
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);

@@ -10,7 +10,7 @@ interface TransferSendStoreI {
   productsAdded: any[];
   loading: boolean;
   sending: boolean;
-  loadTransfers: () => Promise<void>;
+  loadTransfers: (url: string) => Promise<void>;
   loadLinkedSystems: () => Promise<void>;
   createTransfer: (data: any) => Promise<void>;
   addProduct: (data: any) => Promise<boolean>;
@@ -26,6 +26,8 @@ interface TransferSendStoreI {
   clearActiveTransfer: () => void;
 }
 
+const tenant = useConfigStore.getState().tenant;
+
 const transferSendStore = create<TransferSendStoreI>((set, get) => ({
   transfers: null,
   activeTransfer: null,
@@ -34,11 +36,10 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
   loading: false,
   sending: false,
 
-  loadTransfers: async () => {
-    const tenant = useConfigStore.getState().tenant;
+  loadTransfers: async (url) => {
     set({ loading: true });
     try {
-      const response = await getServices(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from`);
+      const response = await getServices(url);
       const data = response.data;
       const activeTransfer = data?.data?.find((transfer: any) => transfer.status === 1) ?? null;
       if (activeTransfer) {
@@ -110,7 +111,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     try {
       const response = await updateService(`transfers/products/quantity/${id}`, { quantity });
       useToastMessageStore.getState().setMessage(response);
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -126,7 +127,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
       await deleteService(`transfers/${activeTransfer.id}`);
       set({ activeTransfer: null, productsAdded: [] });
       useToastMessageStore.getState().setMessage({ data: { message: 'Transferencia cancelada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -142,7 +143,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
       await updateService(`transfers/update/${activeTransfer.id}`, { status });
       set({ activeTransfer: null, productsAdded: [] });
       useToastMessageStore.getState().setMessage({ data: { message: 'Transferencia guardada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -158,7 +159,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
       await updateService(`transfers/${activeTransfer.id}`, { status: 2 });
       set({ activeTransfer: null, productsAdded: [] });
       useToastMessageStore.getState().setMessage({ data: { message: 'Transferencia enviada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -171,7 +172,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     try {
       await updateService(`transfers/update/${transferId}`, { status });
       useToastMessageStore.getState().setMessage({ data: { message: 'Cambios efectuados' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -184,7 +185,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     try {
       await updateService(`transfers/online/${transfer.id}`, { is_online: 0 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Productos devueltos correctamente' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -197,7 +198,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     try {
       await updateService(`transfers/request/${transferId}`, { status: 1 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Solicitud aceptada' } });
-      get().loadTransfers();
+      get().loadTransfers(`transfers?sort=-created_at&filter[from_tenant_id]==${tenant.id}&included=products,to,from&perPage=15&page=1`);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {

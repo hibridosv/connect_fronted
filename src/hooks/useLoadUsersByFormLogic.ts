@@ -4,15 +4,15 @@ import { User } from 'next-auth';
 import { useEffect, useState } from 'react';
 
 
-export function useLoadUsersByFormLogic(isShow: boolean) {
+export function useLoadUsersByFormLogic(isShow: boolean, showAllUsers: boolean = false) {
     const { loadUsers, users } = useUserStore();
     const [ fieldUsers, setFieldUsers ] = useState<AdditionalField[]>()
 
   useEffect(() => {
     if (isShow) {
-        loadUsers(`users?included=roles&filterWhere[is_visible]==1&filterWhere[status]==1&sort=-created_at`);
+        loadUsers(`users?included=roles&filterWhere[is_visible]==1${showAllUsers ? '' : '&filterWhere[status]==1'}&sort=-created_at`);
     }
-  }, [isShow, loadUsers]);
+  }, [isShow, loadUsers, showAllUsers]);
 
 
     useEffect(() => {

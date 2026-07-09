@@ -25,7 +25,7 @@ interface Props {
 export function RestaurantButtons({ order, isSplit = false}: Props) {
   const { collecting, sending } = ordersStore();
   const { pay, paySplit } = useOrderRestaurantFnLogic();
-  const { cashdrawer, activeConfig } =useConfigStore();
+  const { cashdrawer, activeConfig, tenant } =useConfigStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
@@ -48,7 +48,9 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
   }
 
   let fieldsRequired = validateFields();
-  
+  let isSuspended = tenant?.status == 2 ? true : false;
+  const isCreditActive = payMethod == 5 && !order?.client_id;
+
   const handlePay = async (data: any) => {
     if(isSplit){
       await paySplit(data);
@@ -99,6 +101,12 @@ const handleKeyboardChange = (inputValue: string) => {
 
         { (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) &&
         <Alert type="danger" title="Error" text={`Seleccione un cliente para el ${invoice?.invoice_assigned?.type == 3 ? "CCF" : "Sujeto Excluido"}`} isDismissible={false} /> }
+
+        { isSuspended && 
+        <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> }
+
+        { isCreditActive && 
+        <Alert type="danger" title="Error" text="Seleccione un cliente para otorgar crédito" isDismissible={false} className='my-1' /> }
 
         { fieldsRequired && fieldsRequired.length > 0 &&
           <div className="rounded-lg border border-danger/20 bg-danger/10 p-2.5 text-sm text-text-base">
