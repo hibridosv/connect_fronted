@@ -40,7 +40,7 @@ const transferSendStore = create<TransferSendStoreI>((set, get) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      const data = response.data;
+      const data = response.data.data;
       const activeTransfer = data?.data?.find((transfer: any) => transfer.status === 1) ?? null;
       if (activeTransfer) {
         set({ activeTransfer, productsAdded: activeTransfer.products || [], transfers: data });

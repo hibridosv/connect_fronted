@@ -39,7 +39,7 @@ const transferRequestStore = create<TransferRequestStoreI>((set, get) => ({
     set({ loading: true });
     try {
       const response = await getServices(url);
-      const data = response.data;
+      const data = response.data.data;
       const first = getFirstWithStatus6(data?.data);
       if (first) {
         set({ activeTransfer: first, productsAdded: first.products || [], transfers: data });
