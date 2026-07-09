@@ -26,7 +26,8 @@ export function PayButton({ isSplit = false }: any) {
   let isSuspended = tenant?.status == 2 ? true : false;
   const total = sumarTotales(order?.invoiceproducts);
   const blockMaxQuantityWithOutNit = system?.country == 3 && total >= 2500 && !order?.client_id;
-  const disabledButonPay = collecting || sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4)) || isSuspended || (fieldsRequired && fieldsRequired.length > 0);
+  const isCreditActive = payMethod == 5 && !order?.client_id;
+  const disabledButonPay = collecting || sending || !cashdrawer || blockMaxQuantityWithOutNit || (!order?.client_id && (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 4)) || isSuspended || (fieldsRequired && fieldsRequired.length > 0) || isCreditActive;
   
   if (!order) return <></>
 

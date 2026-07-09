@@ -49,6 +49,7 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
 
   let fieldsRequired = validateFields();
   let isSuspended = tenant?.status == 2 ? true : false;
+  const isCreditActive = payMethod == 5 && !order?.client_id;
 
   const handlePay = async (data: any) => {
     if(isSplit){
@@ -103,6 +104,9 @@ const handleKeyboardChange = (inputValue: string) => {
 
         { isSuspended && 
         <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> }
+
+        { isCreditActive && 
+        <Alert type="danger" title="Error" text="Seleccione un cliente para otorgar crédito" isDismissible={false} className='my-1' /> }
 
         { fieldsRequired && fieldsRequired.length > 0 &&
           <div className="rounded-lg border border-danger/20 bg-danger/10 p-2.5 text-sm text-text-base">
