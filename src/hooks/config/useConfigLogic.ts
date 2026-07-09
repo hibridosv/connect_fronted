@@ -1,6 +1,5 @@
 'use client'
-import { MAX_CONFIG_RETRIES } from '@/stores/configStore'
-import useConfigStore from '@/stores/configStore'
+import useConfigStore, { MAX_CONFIG_RETRIES } from '@/stores/configStore'
 import { useThemeStore } from '@/stores/themeStore'
 import { useEffect } from 'react'
 
