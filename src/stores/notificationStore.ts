@@ -9,16 +9,13 @@ interface NotificationStoreState {
   unreadCount: number;
   loading: boolean;
   saving: boolean;
-  lastCountLoadedAt: number | null;
-  _hasHydrated: boolean;
-  setHasHydrated: (v: boolean) => void;
   loadUnreadCount: () => Promise<void>;
   loadNotifications: () => Promise<void>;
   markRead: (id: string) => Promise<void>;
   markAllRead: () => Promise<void>;
 }
 
-type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount' | 'lastCountLoadedAt'>;
+type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount'>;
 
 const useNotificationStore = create(
   persist<NotificationStoreState, [], [], PersistedNotificationState>(
@@ -27,14 +24,11 @@ const useNotificationStore = create(
       unreadCount: 0,
       loading: false,
       saving: false,
-      lastCountLoadedAt: null,
-      _hasHydrated: false,
-      setHasHydrated: (v: boolean) => set({ _hasHydrated: v }),
 
       loadUnreadCount: async () => {
         try {
           const response = await getServices('notifications/unread-count');
-          set({ unreadCount: response.data.data.count, lastCountLoadedAt: Date.now() });
+          set({ unreadCount: response.data.data.count });
         } catch {
           // el badge no es crítico, falla silenciosamente
         }
@@ -86,11 +80,7 @@ const useNotificationStore = create(
       storage: createJSONStorage(() => localStorage),
       partialize: (state): PersistedNotificationState => ({
         unreadCount: state.unreadCount,
-        lastCountLoadedAt: state.lastCountLoadedAt,
       }),
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
-      },
     }
   )
 );

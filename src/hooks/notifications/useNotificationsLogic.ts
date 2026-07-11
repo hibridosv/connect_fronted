@@ -16,8 +16,6 @@ export const useNotificationsLogic = () => {
     unreadCount,
     loading,
     saving,
-    lastCountLoadedAt,
-    _hasHydrated,
     loadUnreadCount,
     loadNotifications,
     markRead,
@@ -25,11 +23,9 @@ export const useNotificationsLogic = () => {
   } = useNotificationStore();
 
   useEffect(() => {
-    if (!_hasHydrated) return;
-    if (lastCountLoadedAt !== null) return;
     loadUnreadCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_hasHydrated, lastCountLoadedAt]);
+  }, []);
 
 
   useEffect(() => {
