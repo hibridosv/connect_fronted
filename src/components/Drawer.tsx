@@ -2,6 +2,7 @@
 import { MenuItem, menuItems } from "@/lib/menuItems";
 import { isRestaurant, permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useNotificationStore from "@/stores/notificationStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -135,6 +136,7 @@ interface DrawerProps {
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const { setTheme } = useThemeStore();
   const { tenant, permission } = useConfigStore();
+  const { resetInitialized } = useNotificationStore();
   const pathname = usePathname();
 
   if (!isOpen) return null;
@@ -270,7 +272,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
             style={{ animation: 'footerIn 0.35s cubic-bezier(0.22,1,0.36,1) 0.28s both' }}
           >
             <button
-              onClick={() => signOut()}
+              onClick={() => { resetInitialized(); signOut(); }}
               className="w-full flex items-center justify-center gap-2.5 px-3 py-2 rounded-xl text-sm text-text-inverted/55 hover:bg-white/10 hover:text-text-inverted transition-all duration-200 group"
             >
               <FaSignOutAlt size={13} className="transition-transform duration-200 group-hover:-translate-x-0.5" />

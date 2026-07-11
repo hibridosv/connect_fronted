@@ -9,13 +9,16 @@ interface NotificationStoreState {
   unreadCount: number;
   loading: boolean;
   saving: boolean;
+  isInitialized: boolean;
+  setInitialized: () => void;
+  resetInitialized: () => void;
   loadUnreadCount: () => Promise<void>;
   loadNotifications: () => Promise<void>;
   markRead: (id: string) => Promise<void>;
   markAllRead: () => Promise<void>;
 }
 
-type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount'>;
+type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount' | 'isInitialized'>;
 
 const useNotificationStore = create(
   persist<NotificationStoreState, [], [], PersistedNotificationState>(
@@ -24,6 +27,10 @@ const useNotificationStore = create(
       unreadCount: 0,
       loading: false,
       saving: false,
+      isInitialized: false,
+
+      setInitialized: () => set({ isInitialized: true }),
+      resetInitialized: () => set({ isInitialized: false, unreadCount: 0, notifications: [] }),
 
       loadUnreadCount: async () => {
         try {
@@ -80,6 +87,7 @@ const useNotificationStore = create(
       storage: createJSONStorage(() => localStorage),
       partialize: (state): PersistedNotificationState => ({
         unreadCount: state.unreadCount,
+        isInitialized: state.isInitialized,
       }),
     }
   )
