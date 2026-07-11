@@ -1,11 +1,13 @@
 'use client';
 
+import useConfigStore from '@/stores/configStore';
 import useNotificationStore from '@/stores/notificationStore';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import useReverb from '../useReverb';
 
 export const useNotificationsLogic = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { tenant } = useConfigStore();
 
   const {
     notifications,
@@ -20,16 +22,16 @@ export const useNotificationsLogic = () => {
 
   useEffect(() => {
     loadUnreadCount();
-
-    intervalRef.current = setInterval(() => {
-      loadUnreadCount();
-    }, 60000);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-notify`, 'ReverbNotify', true);
+
+  useEffect(() => {
+    if (!pusherEventData) return;
+    loadUnreadCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pusherEventData, pusherRandom]);
 
   const openPanel = () => {
     setIsPanelOpen(true);
