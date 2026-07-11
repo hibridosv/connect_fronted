@@ -16,6 +16,8 @@ export const useNotificationsLogic = () => {
     unreadCount,
     loading,
     saving,
+    isInitialized,
+    setInitialized,
     loadUnreadCount,
     loadNotifications,
     markRead,
@@ -23,16 +25,18 @@ export const useNotificationsLogic = () => {
   } = useNotificationStore();
 
   useEffect(() => {
+    if (isInitialized || !isPushNotifications) return;
+    setInitialized();
     loadUnreadCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isPushNotifications]);
 
 
   useEffect(() => {
-    if (!pusherEventData) return;
+    if (!pusherEventData || !isPushNotifications) return;
     loadUnreadCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pusherEventData, pusherRandom]);
+  }, [pusherEventData, pusherRandom, isPushNotifications]);
 
   const openPanel = () => {
     setIsPanelOpen(true);
@@ -53,5 +57,6 @@ export const useNotificationsLogic = () => {
     closePanel,
     markRead,
     markAllRead,
+    isPushNotifications
   };
 };

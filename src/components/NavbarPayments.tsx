@@ -2,6 +2,7 @@
 
 import { useConfigLogic } from '@/hooks/config/useConfigLogic';
 import useConfigStore from '@/stores/configStore';
+import useNotificationStore from '@/stores/notificationStore';
 import { signOut } from 'next-auth/react';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { IoReloadOutline } from 'react-icons/io5';
@@ -9,6 +10,7 @@ import { IoReloadOutline } from 'react-icons/io5';
 export const NavbarPayments = () => {
   const { user, client, invoiceExist } = useConfigStore();
   const { configFailed } = useConfigLogic();
+  const { resetInitialized } = useNotificationStore();
 
   return (
     <nav className="bg-primary px-2 py-1.5 sm:p-2 text-text-inverted shadow-md sticky top-0 z-50">
@@ -42,7 +44,7 @@ export const NavbarPayments = () => {
               <IoReloadOutline size={22} className="sm:w-7 sm:h-7" />
             </button>
           )}
-          <button onClick={() => signOut({ callbackUrl: '/' })} className="text-text-inverted hover:text-secondary clickeable ml-2 group flex items-center gap-1.5">
+          <button onClick={() => { resetInitialized(); signOut({ callbackUrl: '/' }); }} className="text-text-inverted hover:text-secondary clickeable ml-2 group flex items-center gap-1.5">
             <FaSignOutAlt size={22} className="sm:w-[26px] sm:h-[26px] transition-transform duration-200 group-hover:-translate-x-0.5" />
           </button>
         </div>

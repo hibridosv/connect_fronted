@@ -21,9 +21,12 @@ const NotificationRelativeTime = ({ timestamp }: { timestamp: string }) => {
 };
 
 export const NotificationBell = () => {
-  const { notifications, unreadCount, loading, saving, isPanelOpen, openPanel, closePanel, markRead, markAllRead } = useNotificationsLogic();
+  const { notifications, unreadCount, loading, saving, isPanelOpen, openPanel, closePanel, markRead, markAllRead, isPushNotifications } = useNotificationsLogic();
   const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
 
+  if (!isPushNotifications) return null; // No mostrar el ícono si las notificaciones push no están habilitadas
+
+  
   const handleNotificationClick = async (notification: Notification) => {
     closePanel();
     setSelectedNotification(notification);
@@ -38,7 +41,8 @@ export const NotificationBell = () => {
     <div className="relative">
       <button
         onClick={isPanelOpen ? closePanel : openPanel}
-        className="relative text-text-inverted hover:text-secondary clickeable"
+        disabled={!hasUnread}
+        className="relative text-text-inverted hover:text-secondary clickeable disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
         title="Notificaciones"
       >
         {hasUnread
