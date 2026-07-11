@@ -64,12 +64,12 @@ export const Navbar = () => {
               </button>
             ) : (
               <>
-                { isProducts(tenant?.system) &&
-                  <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={() => openModal('searchProductOnBar')} />
-                }
                 <div className="mx-2 sm:mx-3">
                   <NotificationBell />
                 </div>
+                { isProducts(tenant?.system) &&
+                  <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={() => openModal('searchProductOnBar')} />
+                }
                 <Link href={redirect} className="text-text-inverted hover:text-secondary">
                   <IoHome size={22} className="sm:w-7 sm:h-7" />
                 </Link>
