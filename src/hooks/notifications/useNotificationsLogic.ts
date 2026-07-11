@@ -14,6 +14,8 @@ export const useNotificationsLogic = () => {
     unreadCount,
     loading,
     saving,
+    lastCountLoadedAt,
+    _hasHydrated,
     loadUnreadCount,
     loadNotifications,
     markRead,
@@ -21,9 +23,11 @@ export const useNotificationsLogic = () => {
   } = useNotificationStore();
 
   useEffect(() => {
+    if (!_hasHydrated) return;
+    if (lastCountLoadedAt !== null) return;
     loadUnreadCount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [_hasHydrated, lastCountLoadedAt]);
 
   const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-notify`, 'ReverbNotify', true);
 

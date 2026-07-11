@@ -1,6 +1,7 @@
 import { Notification } from '@/interfaces/notification';
 import { createService, getServices } from '@/services/services';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
 
 interface NotificationStoreState {
@@ -8,26 +9,36 @@ interface NotificationStoreState {
   unreadCount: number;
   loading: boolean;
   saving: boolean;
+  lastCountLoadedAt: number | null;
+  _hasHydrated: boolean;
+  setHasHydrated: (v: boolean) => void;
   loadUnreadCount: () => Promise<void>;
   loadNotifications: () => Promise<void>;
   markRead: (id: string) => Promise<void>;
   markAllRead: () => Promise<void>;
 }
 
-const useNotificationStore = create<NotificationStoreState>((set, get) => ({
-  notifications: [],
-  unreadCount: 0,
-  loading: false,
-  saving: false,
+type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount' | 'lastCountLoadedAt'>;
 
-  loadUnreadCount: async () => {
-    try {
-      const response = await getServices('notifications/unread-count');
-      set({ unreadCount: response.data.data.count });
-    } catch {
-      // el badge no es crítico, falla silenciosamente
-    }
-  },
+const useNotificationStore = create(
+  persist<NotificationStoreState, [], [], PersistedNotificationState>(
+    (set, get) => ({
+      notifications: [],
+      unreadCount: 0,
+      loading: false,
+      saving: false,
+      lastCountLoadedAt: null,
+      _hasHydrated: false,
+      setHasHydrated: (v: boolean) => set({ _hasHydrated: v }),
+
+      loadUnreadCount: async () => {
+        try {
+          const response = await getServices('notifications/unread-count');
+          set({ unreadCount: response.data.data.count, lastCountLoadedAt: Date.now() });
+        } catch {
+          // el badge no es crítico, falla silenciosamente
+        }
+      },
 
   loadNotifications: async () => {
     set({ loading: true });
@@ -69,6 +80,19 @@ const useNotificationStore = create<NotificationStoreState>((set, get) => ({
       set({ saving: false });
     }
   },
-}));
+    }),
+    {
+      name: 'notification-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state): PersistedNotificationState => ({
+        unreadCount: state.unreadCount,
+        lastCountLoadedAt: state.lastCountLoadedAt,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
+    }
+  )
+);
 
 export default useNotificationStore;
