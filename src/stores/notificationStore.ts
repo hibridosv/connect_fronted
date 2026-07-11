@@ -1,6 +1,7 @@
 import { Notification } from '@/interfaces/notification';
 import { createService, getServices } from '@/services/services';
 import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import useToastMessageStore from './toastMessageStore';
 
 interface NotificationStoreState {
@@ -14,20 +15,24 @@ interface NotificationStoreState {
   markAllRead: () => Promise<void>;
 }
 
-const useNotificationStore = create<NotificationStoreState>((set, get) => ({
-  notifications: [],
-  unreadCount: 0,
-  loading: false,
-  saving: false,
+type PersistedNotificationState = Pick<NotificationStoreState, 'unreadCount'>;
 
-  loadUnreadCount: async () => {
-    try {
-      const response = await getServices('notifications/unread-count');
-      set({ unreadCount: response.data.data.count });
-    } catch {
-      // el badge no es crítico, falla silenciosamente
-    }
-  },
+const useNotificationStore = create(
+  persist<NotificationStoreState, [], [], PersistedNotificationState>(
+    (set, get) => ({
+      notifications: [],
+      unreadCount: 0,
+      loading: false,
+      saving: false,
+
+      loadUnreadCount: async () => {
+        try {
+          const response = await getServices('notifications/unread-count');
+          set({ unreadCount: response.data.data.count });
+        } catch {
+          // el badge no es crítico, falla silenciosamente
+        }
+      },
 
   loadNotifications: async () => {
     set({ loading: true });
@@ -69,6 +74,15 @@ const useNotificationStore = create<NotificationStoreState>((set, get) => ({
       set({ saving: false });
     }
   },
-}));
+    }),
+    {
+      name: 'notification-storage',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state): PersistedNotificationState => ({
+        unreadCount: state.unreadCount,
+      }),
+    }
+  )
+);
 
 export default useNotificationStore;

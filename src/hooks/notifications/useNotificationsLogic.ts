@@ -7,7 +7,9 @@ import useReverb from '../useReverb';
 
 export const useNotificationsLogic = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const { tenant } = useConfigStore();
+  const { tenant, activeConfig } = useConfigStore();
+  const isPushNotifications = activeConfig && activeConfig.includes('notifications');
+  const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-notify`, 'ReverbNotify', isPushNotifications);
 
   const {
     notifications,
@@ -25,7 +27,6 @@ export const useNotificationsLogic = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { data: pusherEventData, random: pusherRandom } = useReverb(`${tenant?.id}-channel-notify`, 'ReverbNotify', true);
 
   useEffect(() => {
     if (!pusherEventData) return;
