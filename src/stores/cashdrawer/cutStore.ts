@@ -53,7 +53,7 @@ const useCutStore = create<CutStoreState>((set) => ({
     set({ deleting: true });
     try {
       const response = await deleteService(url);
-      await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-updated_at&perPage=10');
+      await useCutStore.getState().loadCuts('cuts?included=employee,cashdrawer&sort=-created_at&perPage=10');
       await useCashDrawerStore.getState().loadCashDrawers();
       await useConfigStore.getState().reloadConfig();
       useToastMessageStore.getState().setMessage(response);

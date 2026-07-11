@@ -25,7 +25,7 @@ export default function Page() {
   const { cuts, loading } = useCutStore();
   const { invoiceExist, isInvoiceExpires } = useConfigStore();
   const { modals, closeModal } = useModalStore();
-  const [showAll, setShowAll] = useState(true);
+  const [showAll, setShowAll] = useState(false);
   useCutsLogic(currentPage, showAll);
   const { getElement } = useTempStorage();
   const selectDrawer = getElement("selectDrawer");

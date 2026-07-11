@@ -30,7 +30,7 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
       }
     }
 
-
+const cashDifference = Math.round((record.cash_diference ?? 0) * 100) / 100;
   return (
     <Modal show={isShow} onClose={onClose} size="lg" headerTitle="Detalles del corte" closeOnOverlayClick={false} hideCloseButton={false}>
       <Modal.Body>
@@ -132,8 +132,8 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
             </div>
             <div className="bg-gray-50 rounded-lg shadow-sm p-4 text-center">
               <div className="text-gray-600 text-sm mb-1">Diferencia</div>
-              <div className={`font-bold text-2xl ${record && record.cash_diference < 0 ? 'text-red-600' : 'text-blue-600'}`}>
-                { numberToMoney(record?.cash_diference ? record?.cash_diference : 0, system) }
+              <div className={`font-bold text-2xl ${cashDifference > 0 ? 'text-info' : cashDifference < 0 ? 'text-danger' : 'text-text-base'}`}>
+                { numberToMoney(cashDifference, system) }
               </div>
             </div>
           </div>

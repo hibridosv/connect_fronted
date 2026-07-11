@@ -9,7 +9,7 @@ export function useCutsLogic(currentPage: any, showAll: boolean) {
 
   
   useEffect(() => {
-      const url = `cuts?included=employee,cashdrawer${!showAll && user?.id && `&filterWhere[employee_id]==${user.id}`}&sort=-updated_at&perPage=10${currentPage}`
+      const url = `cuts?included=employee,cashdrawer${!showAll && user?.id && `&filterWhere[employee_id]==${user.id}`}&sort=-created_at&perPage=10${currentPage}`
       loadCuts(url)
   }, [loadCuts, currentPage, showAll, user])
 
