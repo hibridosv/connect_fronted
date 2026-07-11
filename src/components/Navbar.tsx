@@ -11,6 +11,7 @@ import { HiMenu } from 'react-icons/hi';
 import { IoHome, IoReloadOutline } from 'react-icons/io5';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
 import { SearchProductModal } from './modal/SearchProductModal';
+import { NotificationBell } from './notifications/NotificationBell';
 import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
 
 export const Navbar = () => {
@@ -63,6 +64,9 @@ export const Navbar = () => {
               </button>
             ) : (
               <>
+                <div className="mx-2 sm:mx-3">
+                  <NotificationBell />
+                </div>
                 { isProducts(tenant?.system) &&
                   <BiSearch size={22} className="sm:w-7 sm:h-7 mx-4 clickeable" onClick={() => openModal('searchProductOnBar')} />
                 }

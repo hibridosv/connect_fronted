@@ -9,6 +9,7 @@ export function useConfigLogic() {
   const { configurations, loadConfig, reloadConfig, loading, _hasHydrated, tenant, error, retryCount, lastLoadedAt } = useConfigStore()
   const { setTheme } = useThemeStore()
 
+
   useEffect(() => {
     if (!_hasHydrated || loading) return
 
