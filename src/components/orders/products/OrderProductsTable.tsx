@@ -4,8 +4,8 @@ import { Button, Preset } from "@/components/button/button";
 import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { Order } from "@/interfaces/order";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { getTotalPercentage, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -81,16 +81,22 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             </CodeRequestGuard>  
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className={ isDiscount ? 'clickeable' : '' } onClick={ isDiscount ? 
-              ()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1)} : 
-              ()=> {} }>
-              { numberToMoney(record.discount ?? 0, system) }
-            </span>
+             { isDiscount ? 
+             <CodeRequestGuard permission="code-request-discounts" onAuthorized={()=>{ openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1); }} >
+                <span className="clickeable">
+                  { numberToMoney(record.unit_price ?? 0, system) }
+                </span>
+            </CodeRequestGuard>
+             : 
+             <span>{ numberToMoney(record.discount ?? 0, system) }</span>
+             } 
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
-            <span className="clickeable" onClick={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }}>
-              { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
-            </span>
+              <CodeRequestGuard permission="code-request-show-commissions" onAuthorized={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }} >
+                <span className="clickeable">
+                  { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
+                </span>
+            </CodeRequestGuard>
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap tabular-nums`}>
             { numberToMoney(record.total ?? 0, system) }
