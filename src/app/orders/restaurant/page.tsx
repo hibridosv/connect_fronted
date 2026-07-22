@@ -15,6 +15,7 @@ import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
 import { DeliveryContactSearch } from "@/components/orders/restaurant/DeliveryContactSearch";
 import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
+import { GroupedOptionsProductsModal } from "@/components/orders/restaurant/GroupedOptionsProductsModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
@@ -42,7 +43,7 @@ export default function Page() {
   const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
 
-
+  console.log('order', order);
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
           <div className="md:col-span-6 md:border-r md:border-primary">
@@ -72,6 +73,7 @@ export default function Page() {
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
           <SpecialSaleProductsModal isShow={modals.specialSaleProducts} onClose={()=>{ closeModal('specialSaleProducts')}} />
+          <GroupedOptionsProductsModal isShow={modals.productOptionsGroup} onClose={()=>{ closeModal('productOptionsGroup')}} />
           <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
           <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
           <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />

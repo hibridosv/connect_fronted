@@ -52,17 +52,22 @@ export function RestaurantProductsAdded({ order } : any) {
         return (
         <tr key={index}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-            <td className={`px-2 py-1 whitespace-nowrap text-primary text-center ${hasOptions ? 'font-normal' : 'clickeable font-bold'}`}
-             onClick={ hasOptions ?
+            <td className={`px-2 py-1 whitespace-nowrap text-primary text-center ${hasOptions || isSpecialSale ? 'font-normal' : 'clickeable font-bold'}`}
+             onClick={ hasOptions || isSpecialSale ?
                 ()=> setError({ message: 'Opción no disponible en este producto'}) :
                 ()=>{ setElement('productSelected', record); openModal('changeQuantity')
              }}>
               { record.quantity }
             </td>
-            <td className={`px-2 py-1 text-left whitespace-nowrap font-medium ${isSpecialSale ? 'clickeable' : ''}`}
-             onClick={ isSpecialSale ? ()=>{ setElement('specialSaleSelected', record); openModal('specialSaleProducts') } : undefined }>
+            <td className={`px-2 py-1 text-left whitespace-nowrap font-medium ${isSpecialSale || hasOptions ? 'clickeable' : ''}`}
+             onClick={ isSpecialSale ?
+                ()=>{ setElement('specialSaleSelected', record); openModal('specialSaleProducts') } :
+                hasOptions ?
+                ()=>{ setElement('productOptionsGroupSelected', record); openModal('productOptionsGroup') } :
+                undefined }>
             { record.product }
             { isSpecialSale && <MdInfo className="inline-block ml-1 text-red-500 text-center" size={12} title="Venta Especial" /> }
+            { hasOptions && <MdInfo className="inline-block ml-1 text-cyan-500 text-center" size={12} title="Venta con Opciones" /> }
             </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums clickeable`} 
               onClick={()=> { 
