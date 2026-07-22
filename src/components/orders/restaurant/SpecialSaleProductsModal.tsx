@@ -30,8 +30,13 @@ export function SpecialSaleProductsModal(props: SpecialSaleProductsModalI) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary text-center">
         { record.quantity }
       </td>
-      <td className="px-3 py-2 whitespace-nowrap font-semibold">
+      <td className="px-3 py-2 font-semibold">
         { record.product }
+        { record.options?.length > 0 && (
+          <span className="block text-[10px] font-normal normal-case text-text-muted">
+            { record.options.map((option: any) => option.option?.name).join(', ') }
+          </span>
+        )}
       </td>
       <td className="px-3 py-2 text-right whitespace-nowrap tabular-nums">
         { numberToMoney(record.unit_price, system) }

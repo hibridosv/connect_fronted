@@ -10,10 +10,11 @@ import { groupInvoiceProductsByCodSpecial } from "../utils";
 export interface OrderSpecialSalesTableI {
   records: any;
   isLoading?: boolean;
+  onQuantityClick?: (record: any) => void;
 }
 
 export function OrderSpecialSalesTable(props: OrderSpecialSalesTableI) {
-  const { records, isLoading } = props;
+  const { records, isLoading, onQuantityClick } = props;
   const { del } = useOrderFnLogic();
   let special = records && records?.invoiceproducts && groupInvoiceProductsByCodSpecial(records);
 
@@ -22,7 +23,8 @@ export function OrderSpecialSalesTable(props: OrderSpecialSalesTableI) {
   }
   const listItems = special && special.map((record: any) => (
     <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-red-200'}`}>
-      <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">
+      <td className={`px-3 py-2 whitespace-nowrap font-medium text-primary ${onQuantityClick ? 'clickeable' : ''}`}
+        onClick={ onQuantityClick ? () => onQuantityClick(record) : undefined }>
         { record.quantity }
       </td>
       <td className="px-3 py-2 whitespace-nowrap font-semibold">

@@ -3,6 +3,7 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { Option, RadioButton } from "@/components/button/RadioButton";
 import Modal from "@/components/modal/Modal";
+import useModalStore from "@/stores/modalStorage";
 import ordersProductsStore from "@/stores/orders/ordersProductsStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -23,7 +24,8 @@ export function SpecialSalesRestaurantModal(props: SpecialSalesRestaurantModalI)
   const { onClose, isShow } = props;
   const { order, sending } = ordersStore();
   const { updateOrder } = ordersProductsStore();
-  const { getElement, clearElement, } = useTempStorage();
+  const { getElement, clearElement, setElement } = useTempStorage();
+  const { openModal } = useModalStore();
   const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onTouched' });
   let special = order && order?.invoiceproducts && groupInvoiceProductsByCodSpecial(order);
   let optionsRadioButton: Option[] = [
@@ -70,7 +72,8 @@ const handleClose = ()=>{
                 <RestaurantMenu />
               </div>
               <div className="col-span-5 border-l md:border-sky-600">
-                <OrderSpecialSalesTable records={order} isLoading={sending} />
+                <OrderSpecialSalesTable records={order} isLoading={sending}
+                  onQuantityClick={(record) => { setElement('productSelected', record); openModal('changeQuantity'); }} />
                   {special && special.length > 0 &&
                     <div className="mx-4 rounded-sm shadow-md ">
                           <form className="max-w-lg mt-4" onSubmit={handleSubmit(onSubmit)} >

@@ -70,8 +70,8 @@ export default function Page() {
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
-          <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
+          <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSaleProductsModal isShow={modals.specialSaleProducts} onClose={()=>{ closeModal('specialSaleProducts')}} />
           <GroupedOptionsProductsModal isShow={modals.productOptionsGroup} onClose={()=>{ closeModal('productOptionsGroup')}} />
           <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
