@@ -34,7 +34,7 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
 
 
   useEffect(() => {
-    if (payMethod == 1 && activeConfig && activeConfig.includes("input-sales-focus")) {
+    if ((payMethod == 1 || payMethod == 7) && activeConfig && activeConfig.includes("input-sales-focus")) {
         setFocus('cash')
     }
   }, [setFocus, order, payMethod, activeConfig])
@@ -79,16 +79,15 @@ const handleKeyboardChange = (inputValue: string) => {
     }
   };
 //////// termina keyboard
-
   if (!order) return null;
 
     return (
         <div className="w-full space-y-3 px-3 pt-3 pb-4">
         
         <SalesMessages />
-        
+
         <form id="restaurant-pay-form" onSubmit={handleSubmit(handlePay)}>
-        { payMethod == 1 && cashdrawer && <>
+        { (payMethod == 1 || payMethod == 7) && cashdrawer && <>
           { activeConfig && activeConfig.includes("input-sales-keyboard") ? <div>
           { showInput &&
             <Keyboard inputName='cash' display={{'{bksp}': '<'}} layout={{ default: ["1 2 3", "4 5 6", "7 8 9", ". 0 {bksp}"] }}  onKeyPress={handleKeyPress} keyboardRef={r => setKeyboard(r)}/> }

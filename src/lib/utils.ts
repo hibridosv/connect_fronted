@@ -1,5 +1,6 @@
 import { DocumentTypes, DocumentTypesNames, PaymentType, PaymentTypeNames } from "@/services/enums";
 import { formatDateAsNumber } from "./date-formats";
+import { sumarSalesTotal, sumarSubtotal, sumarTotalRetentionRenta } from "@/components/orders/utils";
 
 export const getCountryProperty = (country: number): { name: string, subname: string, currency: string, currencyName: string, document: string , taxes: number, taxesName: string} => {
   switch (country) {
@@ -214,6 +215,17 @@ export const isRestaurant = (tenant: number): boolean => {
 
 export const isProducts = (tenant: number): boolean => {
     return tenant === 1 || tenant === 3;
+}
+
+export const calculateOrderTotal = (order: any): number => {
+  const isExcludedClient = order?.client?.excluded == 1;
+  const retencionRenta = order?.retention_rent ?? 0;
+
+  if (isExcludedClient) return sumarSubtotal(order.invoiceproducts);
+
+  if (retencionRenta > 0) return sumarSalesTotal(order) - sumarTotalRetentionRenta(order);
+
+  return sumarSalesTotal(order);
 }
 
 export const getCashDrawerStatusLabel = (status: number): { text: string; color: string } => {

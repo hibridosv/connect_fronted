@@ -1,7 +1,7 @@
-import { formatDuiWithAll, numberToMoney } from "@/lib/utils";
+import { calculateOrderTotal, formatDuiWithAll, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta } from "../utils";
+import { sumarDiscount, sumarTotalesWithoutDiscount } from "../utils";
 
 
 export function RestaurantShowTotal({ order}: any) {
@@ -10,24 +10,12 @@ export function RestaurantShowTotal({ order}: any) {
 
 
   if (!order) return <></>
-  const retentionRenta: number = sumarTotalRetentionRenta(order);
 
-
-//   const total = sumarCantidad(order?.invoiceproducts);
   const subtotal: number = sumarTotalesWithoutDiscount(order?.invoiceproducts);
   const discount: number = sumarDiscount(order?.invoiceproducts);
   const tips_percentage: number = order?.attributes?.tips_percentage ?? 0;
 
-
-    const isExcludedClient = order?.client?.excluded == 1;
-    const retencionRentas = order?.retention_rent ?? 0 ;
-
-  
-    const total: number = isExcludedClient
-      ? sumarSubtotal(order.invoiceproducts)
-      : (retencionRentas > 0
-          ? (sumarSalesTotal(order) - retentionRenta)
-          : sumarSalesTotal(order));
+  const total: number = calculateOrderTotal(order);
 
     return (
         <div className="px-3 pt-2 pb-2 w-full animate-slide-up">

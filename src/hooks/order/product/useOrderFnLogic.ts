@@ -1,4 +1,5 @@
 'use client'
+import { calculateOrderTotal } from '@/lib/utils';
 import { UpdateServiceInterface } from '@/services/Interfaces';
 import { postForPrint } from '@/services/OtherServices';
 import useConfigStore from '@/stores/configStore';
@@ -11,9 +12,9 @@ import useTempStorage from '@/stores/useTempStorage';
 export function useOrderFnLogic() {
   const { saveOrder, loadOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const {  order } = ordersStore();
-  const { getElement, clearElement } = useTempStorage();
+  const { getElement, clearElement, setElement } = useTempStorage();
   const {modals} = useModalStore();
-  const paymentType = getElement('paymentType') ?? 1;
+  const payMethod = getElement('payMethod') ?? 1;
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
   const specialSales = modals.specialSales ?? false;
   const { setError } = useToastMessageStore();
@@ -56,8 +57,13 @@ const addNew = async (data: any) => {
   /** Cobrar o terminar orden */
   const pay = async (data: any) => {
         if (ordersStore.getState().collecting) return;
+        let payMethodNew = payMethod;
+        if (payMethod == 7 && data.cash >= calculateOrderTotal(order)) {
+          setElement('payMethod', 1);
+          payMethodNew = 1;
+        }
         let values = {
-          payment_type: paymentType,
+          payment_type: payMethodNew,
           cash: data.cash,
           invoice_type_id: order?.invoice_type_id,
         };

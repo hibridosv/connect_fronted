@@ -5,6 +5,7 @@ export enum PaymentType {
   cheque = 4,
   credito = 5,
   btc = 6,
+  mixto = 7,
   otro = 0,
 }
 
@@ -16,6 +17,7 @@ export enum PaymentTypeNames {
   cheque = "Cheque",
   credito = "Credito",
   btc = "BTC",
+  mixto = "Mixto",
   otro = "Otro",
 }
 

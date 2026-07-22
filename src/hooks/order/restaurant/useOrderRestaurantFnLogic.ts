@@ -1,4 +1,5 @@
 'use client'
+import { calculateOrderTotal } from '@/lib/utils';
 import { UpdateServiceInterface } from '@/services/Interfaces';
 import { postForPrint } from '@/services/OtherServices';
 import useConfigStore from '@/stores/configStore';
@@ -12,7 +13,7 @@ export function useOrderRestaurantFnLogic() {
   const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
-  const { getElement, clearElement } = useTempStorage();
+  const { getElement, setElement } = useTempStorage();
   const {modals} = useModalStore();
   const payMethod = getElement('payMethod') ?? 1;
   const typeOfPrice = getElement('typeOfPrice') ?? 1;
@@ -113,9 +114,14 @@ const addNew = async (producId: any, quantity = 1) => {
 /// pagar orden
 const pay = async (data: any) => {
     if (ordersStore.getState().collecting) return;
+    let payMethodNew = payMethod;
+            if (payMethod == 7 && data.cash >= calculateOrderTotal(order)) {
+              setElement('payMethod', 1);
+              payMethodNew = 1;
+            }
     let values = {
       cash: data.cash || 0,
-      payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
+      payment_type: payMethodNew, // efectivo, tarjeta, transferencia, cheque, credito
       invoice_type_id: order?.invoice_type_id,
       client_active: clientActive, // Cliente activo para asignar producto
       client_number: null
@@ -131,6 +137,11 @@ const pay = async (data: any) => {
 /// pagar orden separada
 const paySplit = async (data: any) => {
     if (ordersStore.getState().collecting) return;
+    let payMethodNew = payMethod;
+            if (payMethod == 7 && data.cash >= calculateOrderTotal(order)) {
+              setElement('payMethod', 1);
+              payMethodNew = 1;
+            }
     let values = {
       cash: data.cash || 0,
       payment_type: payMethod, // efectivo, tarjeta, transferencia, cheque, credito
