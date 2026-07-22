@@ -27,6 +27,7 @@ import { RestaurantProductsAdded } from "@/components/orders/restaurant/Restaura
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
+import { SpecialSaleProductsModal } from "@/components/orders/restaurant/SpecialSaleProductsModal";
 import { SpecialSalesRestaurantModal } from "@/components/orders/restaurant/SpecialSalesRestaurantModal";
 import { TipsModal } from "@/components/orders/restaurant/TipsModal";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -70,6 +71,7 @@ export default function Page() {
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
+          <SpecialSaleProductsModal isShow={modals.specialSaleProducts} onClose={()=>{ closeModal('specialSaleProducts')}} />
           <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
           <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
           <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />

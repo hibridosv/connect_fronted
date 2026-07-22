@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react';
 import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { CgSpinner } from "react-icons/cg";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdInfo } from "react-icons/md";
 import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
 
 
@@ -48,18 +48,21 @@ export function RestaurantProductsAdded({ order } : any) {
     order?.invoiceproducts && groupInvoiceProductsByCodAll(order);
         const listItems = order?.invoiceproductsGroup.map((record: any, index: number) => {
            const hasOptions = record.options.length > 0;
+           const isSpecialSale = !record.product_id;
         return (
         <tr key={index}
             className={`${sending ? 'opacity-50 pointer-events-none' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
             <td className={`px-2 py-1 whitespace-nowrap text-primary text-center ${hasOptions ? 'font-normal' : 'clickeable font-bold'}`}
-             onClick={ hasOptions ? 
-                ()=> setError({ message: 'Opción no disponible en este producto'}) : 
-                ()=>{ setElement('productSelected', record); openModal('changeQuantity') 
+             onClick={ hasOptions ?
+                ()=> setError({ message: 'Opción no disponible en este producto'}) :
+                ()=>{ setElement('productSelected', record); openModal('changeQuantity')
              }}>
               { record.quantity }
             </td>
-            <td className="px-2 py-1 text-left whitespace-nowrap font-medium " >
+            <td className={`px-2 py-1 text-left whitespace-nowrap font-medium ${isSpecialSale ? 'clickeable' : ''}`}
+             onClick={ isSpecialSale ? ()=>{ setElement('specialSaleSelected', record); openModal('specialSaleProducts') } : undefined }>
             { record.product }
+            { isSpecialSale && <MdInfo className="inline-block ml-1 text-red-500 text-center" size={12} title="Venta Especial" /> }
             </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums clickeable`} 
               onClick={()=> { 
