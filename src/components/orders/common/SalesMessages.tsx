@@ -1,6 +1,6 @@
 
 import { Alert } from "@/components/Alert/Alert";
-import { getCountryProperty } from "@/lib/utils";
+import { getCountryProperty, isRestaurant } from "@/lib/utils";
 import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
@@ -28,6 +28,7 @@ export function SalesMessages() {
 
   const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta = sumarTotalRetentionRenta(order);
+ console.log('payMethod', isRestaurant(tenant?.system))
 
   return (
     <div className="">
@@ -45,7 +46,10 @@ export function SalesMessages() {
                 </div>
               )}
             </div>
-
+        
+        { (payMethod == 7 && isRestaurant(tenant?.system)) && 
+          <Alert type="danger" text="Ingrese el monto en efectivo el resto se cobrara con tarjeta" isDismissible={false} className='my-1' />
+        }
 
         { (order?.client?.taxpayer_type == 2 && sumarSubtotal(order?.invoiceproducts) >= 100) && 
           <Alert type="info" title="Atención" text="Factura con retención del 1%" isDismissible={false} className='my-1' />
@@ -67,7 +71,7 @@ export function SalesMessages() {
         <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> 
         }
 
-        { isCreditActive && 
+        { isCreditActive && isRestaurant(tenant?.system) &&
         <Alert type="danger" title="Error" text="Seleccione un cliente para otorgar crédito" isDismissible={false} className='my-1' /> 
         }
 

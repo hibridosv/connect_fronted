@@ -18,7 +18,7 @@ export function PayedModal(props: PayedModal) {
   const { system, activeConfig } = useConfigStore();
   const { getElement, clearElement  } = useTempStorage();
   const orderPayed = getElement('paymentSuccess') ?? null;
-  const paymentType = getElement('paymentType') ?? 1;
+  const payMethod = getElement('payMethod') ?? 1;
   const { sending } = ordersStore();
 
   if (!isShow || !orderPayed) return null;
@@ -54,14 +54,14 @@ export function PayedModal(props: PayedModal) {
 
           <div className="flex justify-center mt-6 text-text-muted text-lg">TOTAL</div>
           <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(orderPayed?.total - orderPayed?.retention, system)}</div>
-          { paymentType === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
+          { payMethod === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
           <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
           <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(orderPayed?.change, system)}
           </div></> : 
           <div className='flex justify-center text-xl font-semibold uppercase text-info'>
-            { paymentType === 5 ? 
+            { payMethod === 5 ? 
             <span>Crédito Otorgado Correctamente</span> : orderPayed?.invoice_assigned?.type == 8 ? <span>Nota de Envío Realizada</span> :
-            <span>Pago Realizado con {nameOfPaymentType(paymentType)}</span> }
+            <span>Pago Realizado con { payMethod == 7 && 'pago '} {nameOfPaymentType(payMethod)}</span> }
           </div>}
         
         </div>

@@ -19,11 +19,11 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
   const { system, activeConfig } = useConfigStore();
   const { getElement, clearElement  } = useTempStorage();
   const orderPayed = getElement('paymentSuccess') ?? null;
-  const paymentType = getElement('paymentType') ?? 1;
+  const payMethod = getElement('payMethod') ?? 1;
   const { sending, collecting } = ordersStore();
   const tips =  orderPayed?.attributes?.tips ?? 0;
-  const total = (paymentType === 1) ? (orderPayed?.total - orderPayed?.retention + tips) : 0;
-  const change = (paymentType === 1) ? orderPayed?.change === 0 ? 0 : (orderPayed?.change - tips): 0;
+  const total = (orderPayed?.total) ? (orderPayed?.total - orderPayed?.retention + tips) : 0;
+  const change = (orderPayed?.total) ? orderPayed?.change === 0 ? 0 : (orderPayed?.change - tips): 0;
 
   if (!isShow) return null;
 
@@ -31,7 +31,6 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
     clearElement('paymentSuccess');
     onClose();
   }
-
 
   return (
     <Modal show={isShow} onClose={handleClose} size="md" headerTitle="" closeOnOverlayClick={false} removeTitle={true}>
@@ -88,14 +87,17 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
 
           <div className="flex justify-center mt-6 text-text-muted text-lg">TOTAL</div>
           <div className="flex justify-center text-7xl mb-6 font-bold text-primary">{numberToMoney(total, system)}</div>
-          { paymentType === 1 && orderPayed?.invoice_assigned?.type != 8 ? <>
-          <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
-          <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(change, system)}
-          </div></> : 
+          
+          { payMethod === 1 && orderPayed?.invoice_assigned?.type != 8 ? 
+          <>
+            <div className="flex justify-center text-text-muted text-lg">CAMBIO</div>
+              <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(change, system)}
+            </div>
+          </> : 
           <div className='flex justify-center text-xl font-semibold uppercase text-info'>
-            { paymentType === 5 ? 
+            { payMethod === 5 ? 
             <span>Crédito Otorgado Correctamente</span> : orderPayed?.invoice_assigned?.type == 8 ? <span>Nota de Envío Realizada</span> :
-            <span>Pago Realizado con {nameOfPaymentType(paymentType)}</span> }
+            <span>Pago Realizado con {nameOfPaymentType(payMethod)}</span> }
           </div>}
         
       </div> )}

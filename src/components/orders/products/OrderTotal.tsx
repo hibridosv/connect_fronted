@@ -1,26 +1,19 @@
 
-import { getCountryProperty } from "@/lib/utils";
+import { calculateOrderTotal, getCountryProperty } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import { sumarSalesTotal, sumarSubtotal, sumarTotalRetentionRenta } from "../utils";
 
 
 
 export function OrderTotal() {
   const { order, sending } = ordersStore();
   const { system } = useConfigStore();
-  const isExcludedClient = order?.client?.excluded == 1;
-  const retencionRenta = order?.retention_rent ?? 0 ;
 
   if (!order?.invoiceproducts || order.invoiceproducts.length === 0) {
     return null;
   }
 
-  const total = isExcludedClient
-    ? sumarSubtotal(order.invoiceproducts).toFixed(2)
-    : (retencionRenta > 0
-        ? (sumarSalesTotal(order) - sumarTotalRetentionRenta(order)).toFixed(2)
-        : sumarSalesTotal(order).toFixed(2));
+  const total = calculateOrderTotal(order).toFixed(2);
 
   return (
     <div className="relative w-full overflow-hidden rounded-lg bg-bg-subtle/30 py-4">

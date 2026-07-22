@@ -23,6 +23,7 @@ export const nameOfPaymentType = (type: number) => {
     case 3: return "Transferencia"
     case 4: return "Cheque"
     case 5: return "Credito"
+    case 7: return "Mixto"
     default: return "N/A"
   }
 }
@@ -33,7 +34,7 @@ export function PayModal(props: PayModalI) {
   const { order, collecting, sending } = ordersStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { setElement, getElement} = useTempStorage();
-  const paymentType = getElement('paymentType') ?? 1;
+  const payMethod = getElement('payMethod') ?? 1;
   const { pay } = useOrderFnLogic();
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export function PayModal(props: PayModalI) {
       setFocus('cash');
       setValue('cash', '');
     }
-  }, [setFocus, isShow, paymentType, setValue])
+  }, [setFocus, isShow, payMethod, setValue])
 
   if (!isShow || !order) return null;
 
@@ -53,7 +54,7 @@ export function PayModal(props: PayModalI) {
             <OrderTotal />
               <div>
                 <form onSubmit={handleSubmit(pay)} className="w-full">
-                {paymentType === 1 ? (
+                { (payMethod === 1 || payMethod === 7 ) ? (
                   <div>
                       <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white" >Search</label>
                       <div className="relative">
@@ -69,16 +70,19 @@ export function PayModal(props: PayModalI) {
                         <div className="flex justify-center mt-2">
                           <Button type="submit" text={`${order?.invoice_assigned?.type == 8 ? "Crear nota de Envío" : "Cobrar"}`} disabled={collecting} preset={collecting ? Preset.saving : Preset.save} isFull />
                         </div>
+                        { (payMethod == 7) && 
+                          <Alert type="danger" text="Ingrese el monto en efectivo el resto se cobrara con tarjeta" isDismissible={false} className='my-1' />
+                        }
                     </div>
                   ) :
                   (
                     <div className="flex justify-center">
-                      { paymentType === 5 && !order?.client_id ?
+                      { payMethod === 5 && !order?.client_id ?
                        <Alert text="Debe agregar un cliente para continuar con el credito" type="danger" isDismissible={false} /> :
-                       paymentType === 5 && order?.client_id && order?.client?.is_credit_block == 1 ?
+                       payMethod === 5 && order?.client_id && order?.client?.is_credit_block == 1 ?
                         <Alert text="Cliente bloqueado para otrorgar credito" type="danger" isDismissible={false} /> :
                         <Button type="submit" preset={collecting ? Preset.saving : Preset.primary}
-                        text={ paymentType === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(paymentType)}`} disabled={collecting} />
+                        text={ payMethod === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(payMethod)}`} disabled={collecting} />
                       }
                     </div>
                   )}
@@ -121,8 +125,8 @@ export function PayModal(props: PayModalI) {
             {
               payMethods && payMethods.length > 0 && payMethods.map((method: any) => {
                 if (method.status == 0) return null;
-                return (<span key={method.id} className={`mx-1 text-sm clickeable transition-colors duration-150 ${paymentType === method.iden ? 'font-bold text-primary' : 'text-text-muted'}`}
-                  onClick={()=>setElement('paymentType', method.iden)}>{method.name}</span>);
+                return (<span key={method.id} className={`mx-1 text-sm clickeable transition-colors duration-150 ${payMethod === method.iden ? 'font-bold text-primary' : 'text-text-muted'}`}
+                  onClick={()=>setElement('payMethod', method.iden)}>{method.name}</span>);
               })
             }
           </div> }
