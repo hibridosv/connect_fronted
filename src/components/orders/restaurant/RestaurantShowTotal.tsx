@@ -1,7 +1,7 @@
-import { formatDuiWithAll, getCountryProperty, numberToMoney } from "@/lib/utils";
+import { formatDuiWithAll, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
+import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta } from "../utils";
 
 
 export function RestaurantShowTotal({ order}: any) {
@@ -10,7 +10,6 @@ export function RestaurantShowTotal({ order}: any) {
 
 
   if (!order) return <></>
-  const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta: number = sumarTotalRetentionRenta(order);
 
 
@@ -88,20 +87,6 @@ export function RestaurantShowTotal({ order}: any) {
                 </p>
                 </div>
             )}
-
-            <div className="space-y-2 text-sm">
-                {order?.invoice_assigned?.type === 4 && retentionSujetoExcluido > 0 && (
-                <div className="rounded-md bg-danger/10 p-2 text-center font-semibold text-danger">
-                    Retención Sujeto Excluido: {getCountryProperty(parseInt(system?.country)).currency} {retentionSujetoExcluido.toFixed(2)}
-                </div>
-                )}
-                
-                {(order?.retention_rent ?? 0) > 0 && retentionRenta > 0 && (
-                <div className="rounded-md bg-danger/10 p-2 text-center font-semibold text-danger">
-                    Retención Renta: {getCountryProperty(parseInt(system?.country)).currency} {retentionRenta.toFixed(2)}
-                </div>
-                )}
-            </div>
         </div>
     );
 
