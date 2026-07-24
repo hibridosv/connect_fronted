@@ -48,6 +48,7 @@ export function ExpenseImageModal({ isShow, onClose }: ExpenseImageModalProps) {
   const handleClose = () => {
     reset();
     setPreview(null);
+    if (inputRef.current) inputRef.current.value = '';
     clearElement('expenseImageId');
     onClose();
   };
