@@ -77,7 +77,7 @@ export default function MaintenancePage() {
   useEffect(() => { setMounted(true); }, []);
 
   const handleRetry = () => {
-    window.location.reload();
+    window.location.href = '/';
   };
 
   return (
