@@ -2,8 +2,14 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = req.nextUrl;
+
+  // --- Maintenance mode ---
+  if (process.env.MAINTENANCE_MODE === "true" && !pathname.startsWith("/mantenimiento")) {
+    return NextResponse.redirect(new URL("/mantenimiento", req.url));
+  }
+
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   // Define protected and public-only routes
   const protectedRoutes = [
@@ -96,5 +102,6 @@ export const config = {
     "/protected/:path*",
     "/protected-ssr/:path*",
     "/help/:path*",
+    "/mantenimiento",
   ],
 };
