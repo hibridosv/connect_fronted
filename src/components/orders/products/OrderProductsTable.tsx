@@ -88,7 +88,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
                 </span>
             </CodeRequestGuard>
              : 
-             <span>{ numberToMoney(record.discount ?? 0, system) }</span>
+             <span>{ numberToMoney(0, system) }</span>
              } 
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
