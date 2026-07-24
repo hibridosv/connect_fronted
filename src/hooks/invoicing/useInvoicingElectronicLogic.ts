@@ -10,7 +10,7 @@ import { useDownloadLink } from '../useDownloadLink';
 
 
 export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAtStart: boolean = true) {
-    const [ history, setHistory ] = useState(null) as any;
+    const [ history, setHistory ] = useState([]) as any;
     const [ lastUrl, setLastUrl ] = useState("");
     const { openLoading, closeLoading } = useStateStore();
     const { links, addLink} = useDownloadLink();
@@ -29,7 +29,7 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
             setLastUrl(urlScoped);
         } catch (error) {
             console.error(error);
-            setHistory(null);
+            setHistory([]);
         } finally {
             closeLoading("history");
         }
@@ -55,9 +55,8 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
         if (response.status === 200) {
             setMessage({ message: "Actualizando documentos..."});
            let data =  await getServices(lastUrl);
-           if (data.status === 200) {
-               setHistory(data.data.data);
-           }
+           let responseData = data.data.data ? data.data.data : [];
+           setHistory(responseData);
         }
       } catch (error) {
         console.error(error);
