@@ -29,6 +29,11 @@ export function UsersTable({ showAll }: UsersTableProps) {
     openModal(modal);
   };
 
+  const getDisplayEmail = (email: string) => {
+    const asteriskIndex = email?.lastIndexOf('*') ?? -1;
+    return asteriskIndex === -1 ? email : email.slice(asteriskIndex + 1);
+  };
+
   return (
     <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
       <table className="w-full text-sm text-left table-fixed">
@@ -58,7 +63,7 @@ export function UsersTable({ showAll }: UsersTableProps) {
                 onClick={() => handleAction(user, 'editUserPassword')}
                 title="Cambiar password"
               >
-                {user.email}
+                {getDisplayEmail(user.email)}
               </td>
               <td
                 className="px-2 py-1 uppercase text-center clickeable"
