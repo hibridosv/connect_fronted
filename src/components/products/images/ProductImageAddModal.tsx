@@ -96,7 +96,7 @@ export function ProductImageAddModal({ isShow, onClose, productId }: ProductImag
             )}
 
             <div>
-              <label className="input-label">Descripción <span className="text-text-muted font-normal normal-case">(opcional)</span></label>
+              <label className="input-label">Descripción</label>
               <textarea {...register('description')} rows={2} className="input w-full resize-none" placeholder="Ej: Vista frontal del producto" />
             </div>
 

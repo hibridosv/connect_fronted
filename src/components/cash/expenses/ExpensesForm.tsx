@@ -9,9 +9,14 @@ import useModalStore from "@/stores/modalStorage";
 import { useForm } from "react-hook-form";
 import { FaPlus } from "react-icons/fa";
 
-export function ExpensesForm() {
+interface ExpensesFormProps {
+  showAll: boolean;
+  currentPage: string;
+}
+
+export function ExpensesForm({ showAll, currentPage }: ExpensesFormProps) {
   const { register, handleSubmit, setValue, watch, reset } = useForm();
-  const {  onSubmit } = useCashExpensesLogic(reset, setValue); 
+  const {  onSubmit } = useCashExpensesLogic(reset, setValue, showAll, currentPage);
   const { expensesCategories: categories, } = cashExpensesStore();
   const { accounts } = cashAccountStore();
   const { cashdrawer } = useConfigStore();

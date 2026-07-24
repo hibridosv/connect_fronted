@@ -1,7 +1,5 @@
-import { Alert } from "@/components/Alert/Alert";
 import { Popper } from "@/components/popper/Popper";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
-import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functions";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -11,6 +9,7 @@ import { IoMdOptions } from "react-icons/io";
 import Keyboard from 'react-simple-keyboard';
 // @ts-ignore
 import 'react-simple-keyboard/build/css/index.css';
+import { SalesMessages } from "../common/SalesMessages";
 import { Buttons } from "./Buttons";
 import { PayButton } from "./Buttons/PayButton";
 import { PrintOrderButton } from "./Buttons/PrintOrderButton";
@@ -32,24 +31,14 @@ export function RestaurantButtons({ order, isSplit = false}: Props) {
   const [input, setInput] = useState('');
   const [showInput, setShowInput] = useState<boolean>(false);
   const [keyboard, setKeyboard] = useState<any>(null);
-  const invoice = order;
+
 
   useEffect(() => {
-    if (payMethod == 1 && activeConfig && activeConfig.includes("input-sales-focus")) {
+    if ((payMethod == 1 || payMethod == 7) && activeConfig && activeConfig.includes("input-sales-focus")) {
         setFocus('cash')
     }
   }, [setFocus, order, payMethod, activeConfig])
 
-
-  const validateFields = ()=>{
-    if (invoice?.client_id && invoice?.invoice_assigned?.type == 3) {
-      return validateInvoiceFields(invoice?.client, requiredFieldsCCF)
-    }
-  }
-
-  let fieldsRequired = validateFields();
-  let isSuspended = tenant?.status == 2 ? true : false;
-  const isCreditActive = payMethod == 5 && !order?.client_id;
 
   const handlePay = async (data: any) => {
     if(isSplit){
@@ -90,32 +79,15 @@ const handleKeyboardChange = (inputValue: string) => {
     }
   };
 //////// termina keyboard
-
   if (!order) return null;
 
     return (
         <div className="w-full space-y-3 px-3 pt-3 pb-4">
+        
+        <SalesMessages />
 
-        { !cashdrawer &&
-        <Alert type="danger" title="Error" text="Debe seleccionar una caja para poder cobrar" isDismissible={false} /> }
-
-        { (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) &&
-        <Alert type="danger" title="Error" text={`Seleccione un cliente para el ${invoice?.invoice_assigned?.type == 3 ? "CCF" : "Sujeto Excluido"}`} isDismissible={false} /> }
-
-        { isSuspended && 
-        <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> }
-
-        { isCreditActive && 
-        <Alert type="danger" title="Error" text="Seleccione un cliente para otorgar crédito" isDismissible={false} className='my-1' /> }
-
-        { fieldsRequired && fieldsRequired.length > 0 &&
-          <div className="rounded-lg border border-danger/20 bg-danger/10 p-2.5 text-sm text-text-base">
-            Faltan los siguientes campos del cliente para facturar:
-            <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
-          </div>
-        }
         <form id="restaurant-pay-form" onSubmit={handleSubmit(handlePay)}>
-        { payMethod == 1 && cashdrawer && <>
+        { (payMethod == 1 || payMethod == 7) && cashdrawer && <>
           { activeConfig && activeConfig.includes("input-sales-keyboard") ? <div>
           { showInput &&
             <Keyboard inputName='cash' display={{'{bksp}': '<'}} layout={{ default: ["1 2 3", "4 5 6", "7 8 9", ". 0 {bksp}"] }}  onKeyPress={handleKeyPress} keyboardRef={r => setKeyboard(r)}/> }

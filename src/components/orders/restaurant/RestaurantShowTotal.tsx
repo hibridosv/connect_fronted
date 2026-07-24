@@ -1,7 +1,7 @@
-import { formatDuiWithAll, getCountryProperty, numberToMoney } from "@/lib/utils";
+import { calculateOrderTotal, formatDuiWithAll, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
-import { sumarDiscount, sumarSalesTotal, sumarSubtotal, sumarTotalesWithoutDiscount, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
+import { sumarDiscount, sumarTotalesWithoutDiscount } from "../utils";
 
 
 export function RestaurantShowTotal({ order}: any) {
@@ -10,25 +10,12 @@ export function RestaurantShowTotal({ order}: any) {
 
 
   if (!order) return <></>
-  const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
-  const retentionRenta: number = sumarTotalRetentionRenta(order);
 
-
-//   const total = sumarCantidad(order?.invoiceproducts);
   const subtotal: number = sumarTotalesWithoutDiscount(order?.invoiceproducts);
   const discount: number = sumarDiscount(order?.invoiceproducts);
   const tips_percentage: number = order?.attributes?.tips_percentage ?? 0;
 
-
-    const isExcludedClient = order?.client?.excluded == 1;
-    const retencionRentas = order?.retention_rent ?? 0 ;
-
-  
-    const total: number = isExcludedClient
-      ? sumarSubtotal(order.invoiceproducts)
-      : (retencionRentas > 0
-          ? (sumarSalesTotal(order) - retentionRenta)
-          : sumarSalesTotal(order));
+  const total: number = calculateOrderTotal(order);
 
     return (
         <div className="px-3 pt-2 pb-2 w-full animate-slide-up">
@@ -88,20 +75,6 @@ export function RestaurantShowTotal({ order}: any) {
                 </p>
                 </div>
             )}
-
-            <div className="space-y-2 text-sm">
-                {order?.invoice_assigned?.type === 4 && retentionSujetoExcluido > 0 && (
-                <div className="rounded-md bg-danger/10 p-2 text-center font-semibold text-danger">
-                    Retención Sujeto Excluido: {getCountryProperty(parseInt(system?.country)).currency} {retentionSujetoExcluido.toFixed(2)}
-                </div>
-                )}
-                
-                {(order?.retention_rent ?? 0) > 0 && retentionRenta > 0 && (
-                <div className="rounded-md bg-danger/10 p-2 text-center font-semibold text-danger">
-                    Retención Renta: {getCountryProperty(parseInt(system?.country)).currency} {retentionRenta.toFixed(2)}
-                </div>
-                )}
-            </div>
         </div>
     );
 

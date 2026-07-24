@@ -1,6 +1,5 @@
 'use client';
 
-import { Alert } from '@/components/Alert/Alert';
 import { DeleteModal } from '@/components/DeleteModal';
 import { Popper } from '@/components/popper/Popper';
 import { useOrderFnLogic } from '@/hooks/order/product/useOrderFnLogic';
@@ -14,6 +13,7 @@ import { AiFillSave } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 import { IoMdOptions } from 'react-icons/io';
+import { SalesMessages } from '../common/SalesMessages';
 import { Buttons } from './Buttons';
 
 export interface OrderButtonsI {
@@ -42,22 +42,9 @@ export function OrderButtons(props: OrderButtonsI) {
   let payDisabled = sending || !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0 || isSuspended;
 
   return (<div>
-        { !cashdrawer && 
-        <Alert type="danger" title="Error" text="Debe seleccionar una caja para poder cobrar" isDismissible={false} className='my-1' /> }
 
-        { (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) && 
-        <Alert type="danger" title="Error" text={`Seleccione un cliente para el ${invoice?.invoice_assigned?.type == 3 ? "CCF" : "Sujeto Excluido"}`} isDismissible={false} className='my-1' /> }
-
-        { fieldsRequired && fieldsRequired.length > 0 &&
-          <div className="rounded-lg border border-danger/20 bg-danger/10 p-2 m-3 text-sm text-text-base ">
-            Faltan los siguientes campos del cliente para facturar:
-            <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
-          </div>
-        }
-
-        { isSuspended && 
-        <Alert type="danger" title="Error" text="Su cuenta está suspendida por falta de pago" isDismissible={false} className='my-1' /> }
-
+        <SalesMessages />
+        
         <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
           <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />

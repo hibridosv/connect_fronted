@@ -110,15 +110,16 @@ function groupInvoiceProducts(products: any[], filterFn: (product: any) => boole
   const grouped = {} as any;
 
   products.forEach((product: any) => {
-    const { cod, quantity, subtotal, total } = product;
+    const { id, product_id, cod, quantity, subtotal, total } = product;
+    const groupKey = product_id ?? `${cod}-${id}`;
 
     if (filterFn(product)) {
-      if (!grouped[cod]) {
-        grouped[cod] = { ...product };
+      if (!grouped[groupKey]) {
+        grouped[groupKey] = { ...product };
       } else {
-        grouped[cod].quantity += quantity;
-        grouped[cod].subtotal += subtotal;
-        grouped[cod].total += total;
+        grouped[groupKey].quantity += quantity;
+        grouped[groupKey].subtotal += subtotal;
+        grouped[groupKey].total += total;
       }
     }
   });
@@ -138,10 +139,19 @@ export function groupInvoiceProductsByCodSpecial(order: any) {
 }
 
 export function groupInvoiceProductsByCodAll(order: any) {
-  order.invoiceproductsGroup = groupInvoiceProducts(
+  const groupedProducts = groupInvoiceProducts(
     order.invoiceproducts,
     (product: any) => product.special == 0
   );
+
+  const specialProducts = order.invoiceproducts.filter(
+    (product: any) => product.special == 1 && product.group_by == null
+  );
+
+  order.invoiceproductsGroup = [...groupedProducts, ...specialProducts].sort(
+    (a: any, b: any) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+  );
+
   return order;
 }
 

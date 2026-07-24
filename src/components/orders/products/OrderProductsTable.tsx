@@ -4,9 +4,9 @@ import { Button, Preset } from "@/components/button/button";
 import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import { NothingHere } from "@/components/NothingHere";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { enqueueProductRequest } from "@/lib/orderProductQueue";
 import { Order } from "@/interfaces/order";
-import { getTotalPercentage, numberToMoney } from "@/lib/utils";
+import { enqueueProductRequest } from "@/lib/orderProductQueue";
+import { getTotalPercentage, numberToMoney, permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
@@ -22,7 +22,7 @@ export interface OrderProductsTableI {
 
 export function OrderProductsTable(props: OrderProductsTableI) {
   const { order } = props;
-  const { system, activeConfig } = useConfigStore();
+  const { system, activeConfig, permission } = useConfigStore();
   const { addNew, del} = useOrderFnLogic();
   const { setElement } = useTempStorage();
   const { openModal} = useModalStore();
@@ -31,7 +31,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
   let data = order?.invoiceproducts ?? [];
   
   const isShowCode = activeConfig && activeConfig.includes("sales-show-code");
-  const isDefaultCommission = activeConfig && activeConfig.includes("product-default-commission");
+  const isDefaultCommission = activeConfig && activeConfig.includes("product-default-commission") && permissionExists(permission, "code-request-show-commissions");
   const isChangeName = activeConfig && activeConfig.includes("sales-change-name");
   const isChangeComment = activeConfig && activeConfig.includes("sales-change-comment");
   const isChangeLot = activeConfig && activeConfig.includes("sales-change-lot");
@@ -81,11 +81,15 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             </CodeRequestGuard>  
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
-            <span className={ isDiscount ? 'clickeable' : '' } onClick={ isDiscount ? 
-              ()=> { openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1)} : 
-              ()=> {} }>
-              { numberToMoney(record.discount ?? 0, system) }
-            </span>
+             { isDiscount ? 
+             <CodeRequestGuard permission="code-request-discounts" onAuthorized={()=>{ openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1); }} >
+                <span className="clickeable">
+                  { numberToMoney(record.unit_price ?? 0, system) }
+                </span>
+            </CodeRequestGuard>
+             : 
+             <span>{ numberToMoney(record.discount ?? 0, system) }</span>
+             } 
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
             <span className="clickeable" onClick={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }}>

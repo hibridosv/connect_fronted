@@ -15,6 +15,7 @@ import { DeliveryClient } from "@/components/orders/restaurant/DeliveryClient";
 import { DeliveryContactSearch } from "@/components/orders/restaurant/DeliveryContactSearch";
 import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
+import { GroupedOptionsProductsModal } from "@/components/orders/restaurant/GroupedOptionsProductsModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
@@ -27,6 +28,7 @@ import { RestaurantProductsAdded } from "@/components/orders/restaurant/Restaura
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
+import { SpecialSaleProductsModal } from "@/components/orders/restaurant/SpecialSaleProductsModal";
 import { SpecialSalesRestaurantModal } from "@/components/orders/restaurant/SpecialSalesRestaurantModal";
 import { TipsModal } from "@/components/orders/restaurant/TipsModal";
 import { ToasterMessage } from "@/components/toaster-message";
@@ -40,7 +42,6 @@ export default function Page() {
   useOrderRestaurantLogic(true);
   const { order } = ordersStore();
   const { modals, closeModal } = useModalStore();
-
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -68,8 +69,10 @@ export default function Page() {
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
-          <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
+          <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
+          <SpecialSaleProductsModal isShow={modals.specialSaleProducts} onClose={()=>{ closeModal('specialSaleProducts')}} />
+          <GroupedOptionsProductsModal isShow={modals.productOptionsGroup} onClose={()=>{ closeModal('productOptionsGroup')}} />
           <OtherSalesModal isShow={modals.otherSales} onClose={()=>{ closeModal('otherSales')}} />
           <SelectUserModal isShow={modals.setUser} onClose={()=>{ closeModal('setUser')}} />
           <SearchContactModal isShow={modals.searchContact} onClose={()=>{ closeModal('searchContact')}} />
