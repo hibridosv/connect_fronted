@@ -22,9 +22,9 @@ export default function Page() {
     const {currentPage: currentPageProducts, handlePageNumber: handlePageNumberProducts} = usePagination("&page=1");
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "name"], 500);
     const { start, end } = useAjustmentLogic(currentPage, true);
-    const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
     const { adjustments, loading, adjustmentActive, sending, searching } = adjustStore();
     const { modals, closeModal } = useModalStore();
+    const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
     const data = adjustments?.data || [];
     const products = adjustmentActive?.data || [];
 

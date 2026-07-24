@@ -38,7 +38,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
       set({ adjustments: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
-      set({ error: true });
+      set({ error: true, adjustments: null });
     } finally {
       set({ loading: false });
     }
@@ -56,7 +56,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
-      set({ error: true });
+      set({ error: true, adjustment: null });
     } finally {
       set({ loadingAdjustment: false });
     }
@@ -82,7 +82,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
       const response = await getServices(url);
       set({ adjustmentActive: response.data.data, error: false });
     } catch (error) {
-      useToastMessageStore.getState().setError(error);
+      // useToastMessageStore.getState().setError(error);
       set({ error: true });
     } finally {
       set({ searching: false });
