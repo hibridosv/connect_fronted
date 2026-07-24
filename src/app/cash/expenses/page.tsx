@@ -1,4 +1,7 @@
 'use client';
+import { ExpenseImageDeleteModal } from "@/components/cash/expenses/ExpenseImageDeleteModal";
+import { ExpenseImageModal } from "@/components/cash/expenses/ExpenseImageModal";
+import { ExpenseImagePreviewModal } from "@/components/cash/expenses/ExpenseImagePreviewModal";
 import { ExpensesForm } from "@/components/cash/expenses/ExpensesForm";
 import { ExpensesTable } from "@/components/cash/expenses/ExpensesTable";
 import { NewCategoryModal } from "@/components/cash/NewCategoryModal";
@@ -27,6 +30,9 @@ export default function Page() {
         </div>
     </div> 
     <NewCategoryModal isShow={modals.NewCategory} onClose={() => closeModal("NewCategory")} />
+    <ExpenseImageModal isShow={modals.expenseImage} onClose={() => closeModal("expenseImage")} />
+    <ExpenseImageDeleteModal isShow={modals.expenseImageDelete} onClose={() => closeModal("expenseImageDelete")} />
+    <ExpenseImagePreviewModal isShow={modals.expenseImagePreview} onClose={() => closeModal("expenseImagePreview")} />
     <ToasterMessage />
   </div>
   )}

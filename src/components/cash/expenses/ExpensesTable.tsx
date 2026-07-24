@@ -5,12 +5,17 @@ import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
+import useTempStorage from "@/stores/useTempStorage";
 import { FaSpinner } from "react-icons/fa";
+import { MdImage } from "react-icons/md";
 
 
 export function ExpensesTable() {
     const { system } = useConfigStore();
     const { expenses, loading, deleting, deleteExpense } = cashExpensesStore();
+    const { openModal } = useModalStore();
+    const { setElement } = useTempStorage();
 
     if (expenses && loading) return <SkeletonTable rows={4} columns={7} />;
     if (!expenses) return null;
@@ -39,7 +44,15 @@ export function ExpensesTable() {
             <td className={`px-3 py-2 text-center font-semibold`}>
                 { getPaymentTypeName(record?.payment_type) }
             </td>
-            <td className="px-3 py-2  flex justify-center">
+            <td className="px-3 py-2 flex justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => { setElement('expenseImageId', record.id); openModal('expenseImage'); }}
+                className="transition ease-in duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 clickeable"
+                title="Imagen del gasto"
+              >
+                <MdImage size={23} className={record.image ? "text-info" : "text-text-muted"} />
+              </button>
               { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
                 <DeleteButton id={record.id} url="cash/expenses" onDeleteConfirm={deleteExpense} disabled={record.status === 0 || deleting} />
               }
