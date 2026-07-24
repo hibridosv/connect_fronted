@@ -146,7 +146,7 @@ export function AddProductForm() {
                         {isProductAlreadyAdded && (
                             <Alert
                                 type="warning"
-                                title="Atención:"
+                                title="Importante:"
                                 text="Este producto ya fue agregado anteriormente en este ingreso. Revise los lotes antes de continuar."
                                 className="mt-4"
                             />

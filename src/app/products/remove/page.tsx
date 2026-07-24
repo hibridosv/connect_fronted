@@ -30,9 +30,11 @@ export default function Page() {
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-4 md:border-r md:border-primary">
           <ViewTitle text="Descontar Producto" />
-          <RemoveInitialForm  />
-          <RemoveProductsForm />
-          <RemoveProductsSearch />
+          <div className="p-4 space-y-6">
+            <RemoveInitialForm  />
+            <RemoveProductsForm />
+            <RemoveProductsSearch />
+          </div>
       </div>
       <div className="md:col-span-6">
           <ViewTitle text="Ultimos Registros" />

@@ -17,11 +17,11 @@ export function RemoveInitialForm(props: RemoveInitialFormProps) {
 
 
   return (
-        <div className="w-full px-4">
-            <form onSubmit={handleSubmit(createPrincipal)} className="w-full">
-                <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className="w-full px-3 mb-2">
-                        <label htmlFor="type" className={"input-label"}>Tipo de Salida</label>
+        <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-4 w-full max-w-4xl mx-auto">
+            <form onSubmit={handleSubmit(createPrincipal)} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <label htmlFor="type" className="block text-sm font-bold text-text-muted mb-1">Tipo de Salida</label>
                         <select id="type" {...register("type")} className="input-select" >
                             <option value={1}> Averia </option>
                             <option  value={2}> Traslado </option>
@@ -31,13 +31,13 @@ export function RemoveInitialForm(props: RemoveInitialFormProps) {
                         </select>
                     </div>
 
-                    <div className="w-full md:w-full px-3 mb-2">
-                        <label htmlFor="reason" className="input-label" >Comentario </label>
-                        <textarea {...register("reason")} rows={2} className="input w-full" />
+                    <div className="md:col-span-2">
+                        <label htmlFor="reason" className="block text-sm font-bold text-text-muted mb-1">Comentario</label>
+                        <textarea {...register("reason")} rows={2} id="reason" className="input" />
                     </div>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center pt-6 border-t border-bg-subtle">
                     <Button type="submit" disabled={loading} preset={loading ? Preset.saving : Preset.save} />
                 </div>
             </form>
