@@ -122,7 +122,6 @@ body {
 }
 
 
-
 .clickeable {
   @apply cursor-pointer active:scale-75 active:opacity-50 transition-all duration-75
 }
