@@ -60,14 +60,14 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
         <div title={record?.observaciones}>{ tipoDTE(record?.tipo_dte) }</div>
         }
       </td>
-      <td className={`px-3 py-2 text-left ${isDocumentVisible && 'clickeable'}`} 
+      <td className={`px-3 py-2 text-left ${isDocumentVisible && 'clickeable-table'}`} 
         onClick={ isDocumentVisible ? ()=> { setElement('documentSelected', record); openModal('documentDetail')  } : ()=>{}} >
         { record?.numero_control ?? "--" }
       </td>
       <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable'}`} title={record?.descripcion_msg} 
+      <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable-table'}`} title={record?.descripcion_msg} 
         onClick={ isRejected ? ()=>{ setElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
         { status(record?.status) }
       </td>

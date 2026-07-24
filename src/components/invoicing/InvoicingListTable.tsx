@@ -34,7 +34,7 @@ export function InvoicingListTable(props: InvoicingListTableI) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { formatDateAsDMY(record?.charged_at) } | { formatHourAsHM(record?.charged_at)}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={()=>{ setElement('documentSelected', record); openModal('documentDetail')  }}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable-table" onClick={()=>{ setElement('documentSelected', record); openModal('documentDetail')  }}>
         { record?.invoice_assigned?.name ?? "--" }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium" >

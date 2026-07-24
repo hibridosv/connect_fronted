@@ -34,17 +34,17 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
     <tr 
       key={record.id} 
       className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
-        <td className="px-3 py-2 whitespace-nowrap clickeable hover:underline" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
+        <td className="px-3 py-2 whitespace-nowrap clickeable-table hover:underline" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
         { record.opening && formatDateAsDMY(record.opening)} { record.opening ? formatTime(record.opening) : "Sin Apertura"}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable hover:underline" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable-table hover:underline" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
         { record.close && formatDateAsDMY(record.close)} { record.close ? formatTime(record.close) : "Sin Corte"}
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable-table" onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}>
         {record?.employee?.name}
       </td>
       <td 
-        className={`px-3 py-2 whitespace-nowrap font-bold text-right clickeable ${cashDifference > 0 ? 'text-info' : cashDifference < 0 ? 'text-danger' : 'text-text-base'}`}
+        className={`px-3 py-2 whitespace-nowrap font-bold text-right clickeable-table ${cashDifference > 0 ? 'text-info' : cashDifference < 0 ? 'text-danger' : 'text-text-base'}`}
         onClick={() =>{ setElement("cutDetails", record); openModal('cutDetails')}}
       >
         {numberToMoney(cashDifference, system)}

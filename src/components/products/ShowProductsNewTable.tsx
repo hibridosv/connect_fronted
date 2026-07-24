@@ -32,7 +32,7 @@ export function ShowProductsNewTable(props: ShowProductsNewTableProps) {
       <td className="px-3 py-2 font-medium text-primary hover:underline">
         {product.cod}
       </td>
-      <td className="px-3 py-2 clickeable" onClick={() => { setElement("productDetails", product); openModal('productDetails')}}>
+      <td className="px-3 py-2 clickeable-table" onClick={() => { setElement("productDetails", product); openModal('productDetails')}}>
         <div className="flex items-center space-x-2">
           {productTypeIcon(product.product_type)}
           <span>{product.description}</span>

@@ -56,7 +56,7 @@ export function InvoiceSystemTable({ records, isLoading }: InvoiceSystemTablePro
                 <td className="px-4 py-2">{formatDateAsDMY(record?.expires_at)}</td>
                 <td className="px-4 py-2">{record?.payed_at ? formatDateAsDMY(record.payed_at) : 'N/A'}</td>
                 <td className="px-4 py-2">{numberToMoney(record?.total, system)}</td>
-                <td className="px-4 py-2 clickeable" onClick={() => handleShowDetails(record)}>
+                <td className="px-4 py-2 clickeable-table" onClick={() => handleShowDetails(record)}>
                   <span className={status.className}>{status.label}</span>
                 </td>
               </tr>

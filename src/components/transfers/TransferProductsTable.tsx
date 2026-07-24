@@ -72,7 +72,7 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
         <td className="px-3 py-2 whitespace-nowrap">{record?.description}</td>
         <td className="px-3 py-2 whitespace-nowrap text-right">{numberToMoney(unitCost, system)}</td>
         <td
-          className={`px-3 py-2 text-center ${record.requested_exists === 1 ? 'clickeable text-primary font-semibold' : ''}`}
+          className={`px-3 py-2 text-center ${record.requested_exists === 1 ? 'clickeable-table text-primary font-semibold' : ''}`}
           onClick={() => handleQuantityClick(record)}
         >
           {record?.quantity}

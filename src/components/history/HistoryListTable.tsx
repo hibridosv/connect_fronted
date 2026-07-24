@@ -35,7 +35,7 @@ export function HistoryListTable(props: HistoryListTableI) {
       <td className="px-3 py-2 whitespace-nowrap">
         { record?.casheir?.name ?? "--" }
       </td>
-      <td className="px-3 py-2 text-left whitespace-nowrap font-medium clickeable" onClick={()=> { setElement('documentSelected', record); openModal('documentDetail')  }}>
+      <td className="px-3 py-2 text-left whitespace-nowrap font-medium clickeable-table" onClick={()=> { setElement('documentSelected', record); openModal('documentDetail')  }}>
         <span>{ record?.invoice_assigned?.name ?? "--" }:</span>
         <span className="ml-3">{ record?.invoice ?? "--" }</span>
       </td>

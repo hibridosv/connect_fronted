@@ -67,7 +67,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           {json?.emisor?.nit ?? 'N/A'}
         </td>
         <td
-          className="px-3 py-2 text-left whitespace-nowrap clickeable"
+          className="px-3 py-2 text-left whitespace-nowrap clickeable-table"
           onClick={() => {
             if (needReview) {
               setElement('purchaseReviewRecord', record);

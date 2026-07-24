@@ -121,7 +121,9 @@ body {
   scrollbar-color: rgb(var(--color-bg-subtle)) transparent; /* thumb color track color */
 }
 
-
+.clickeable-table {
+  @apply cursor-pointer active:scale-95 active:opacity-50 transition-all duration-75
+}
 
 .clickeable {
   @apply cursor-pointer active:scale-75 active:opacity-50 transition-all duration-75

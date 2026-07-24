@@ -40,7 +40,7 @@ export function ShowProductsExpiredTable(props: ShowProductsExpiredTableProps) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { record.product.cod }
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable" onClick={() => { setElement('productDetails', record.product); openModal('productDetails')  }}>
+      <td className="px-3 py-2 whitespace-nowrap clickeable-table" onClick={() => { setElement('productDetails', record.product); openModal('productDetails')  }}>
         { record.product.description }
       </td>
       <td className="px-3 py-2 text-right whitespace-nowrap font-medium" >

@@ -53,7 +53,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
     return (
         <tr key={record.id}
             className={`${sending ? 'opacity-50' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
+          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable-table'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
             onClick={isOtherSales ? ()=>{} : ()=>{ setElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>

@@ -26,7 +26,7 @@ export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
 
   const listItems = records.map((product: Product) => (
     <tr key={product.id} onClick={link ? () => router.push(`/products/${product.id}/${link}`) : ()=>{}}
-      className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'} ${ link && 'clickeable'}`}>
+      className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'} ${ link && 'clickeable-table'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         {product.cod}
       </td>
@@ -53,12 +53,12 @@ export function ShowProductsTableLink(props: ShowProductsTableLinkProps) {
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
             <tr>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Cod</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Producto</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable-table border-r border-bg-subtle whitespace-nowrap">Cod</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable-table border-r border-bg-subtle whitespace-nowrap">Producto</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider text-right border-r border-bg-subtle whitespace-nowrap">Precio</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Categoria</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable-table border-r border-bg-subtle whitespace-nowrap">Categoria</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Min</th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable border-r border-bg-subtle whitespace-nowrap">Cant</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider clickeable-table border-r border-bg-subtle whitespace-nowrap">Cant</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
