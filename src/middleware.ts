@@ -5,8 +5,8 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // --- Maintenance mode ---
-  if (process.env.MAINTENANCE_MODE === "true" && !pathname.startsWith("/mantenimiento")) {
-    return NextResponse.redirect(new URL("/mantenimiento", req.url));
+  if (process.env.MAINTENANCE_MODE === "true" && !pathname.startsWith("/redirects/maintenance")) {
+    return NextResponse.redirect(new URL("/redirects/maintenance", req.url));
   }
 
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -102,6 +102,5 @@ export const config = {
     "/protected/:path*",
     "/protected-ssr/:path*",
     "/help/:path*",
-    "/mantenimiento",
   ],
 };
