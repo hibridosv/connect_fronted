@@ -17,14 +17,14 @@ export function AddProductsSearch() {
     const sortBy = "-updated_at";
     const { products, loading: loadingProducts} = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getElement('product');
+    const elementSelected = getElement('productAddedSelected');
     const { system } = useConfigStore()
 
     if (!product || loading) return null;
     if (elementSelected) return null;
 
     const handleSelectProduct = (product: any) => {
-        setElement('product', product);
+        setElement('productAddedSelected', product);
         handleSearchTerm('');
     };
 
