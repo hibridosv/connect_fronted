@@ -27,7 +27,7 @@ export function HistorySalesTable(props: HistorySalesTableI) {
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { record?.cod }
       </td>
-      <td className="px-3 py-2 whitespace-nowrap clickeable">
+      <td className="px-3 py-2 whitespace-nowrap clickeable-table">
         { record?.product }
       </td>
       <td className="px-3 py-2 text-right whitespace-nowrap font-medium" >

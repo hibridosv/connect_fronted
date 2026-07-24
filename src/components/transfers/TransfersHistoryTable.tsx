@@ -29,10 +29,10 @@ export function TransfersHistoryTable({ records, onRowClick, onGetProductsOnline
   const getRowClass = (record: any) => {
     if ((record.status === 6 && record.to_tenant_id === tenant) ||
         (record.status === 7 && record.from_tenant_id === tenant)) {
-      return 'bg-danger/10 clickeable';
+      return 'bg-danger/10 clickeable-table';
     }
     if (record.status === 8 && record.from_tenant_id === tenant) {
-      return 'bg-info/10 clickeable';
+      return 'bg-info/10 clickeable-table';
     }
     return '';
   };

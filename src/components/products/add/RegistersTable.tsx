@@ -24,7 +24,7 @@ export function RegistersTable() {
             title={ record?.status === 2 ? `Eliminado por ${record?.deleted_by?.name}` : ``}
             key={record.id} 
             onClick={() => { openModal("viewDetails"); setElement("viewDetails", record);  }}
-            className={`clickeable whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 2 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+            className={`clickeable-table whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${record.status === 2 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
             <td className="px-3 py-2 font-medium text-primary hover:underline">
                 <div className="flex justify-between">
                     <span>{ documentType(record.document_type) }</span>  <span className="text-right">{ record.document_number ?? "--"}</span>

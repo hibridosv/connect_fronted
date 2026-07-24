@@ -29,7 +29,7 @@ export function ProductsRegistersTable() {
           <td className={`px-3 py-2 text-left`}>
             { record?.employee?.name }
           </td>
-          <td className="px-3 py-2 text-center">
+          <td className="px-3 py-2  flex justify-center items-center">
             {
             deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
             (formatDateAsDMY(record?.created_at) == formatDateAsDMY(new Date().toISOString()) && record?.status === 1) ? 

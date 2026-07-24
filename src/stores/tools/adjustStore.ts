@@ -13,6 +13,7 @@ interface adjustStoreI {
   sending: boolean;
   loadingAdjustment: boolean;
   deleting?: boolean;
+  isAdjustmentActive?: boolean;
   loadAdjustments: (url: string) => Promise<void>;
   loadAdjustment: (url: string) => Promise<void>;
   manageAdjustment: (url: string, data: any) => Promise<void>;
@@ -30,6 +31,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
   searching: false,
   loadingAdjustment: false,
   deleting: false,
+  isAdjustmentActive: false,
 
   loadAdjustments: async (url: string) => {
     set({ loading: true });
@@ -38,7 +40,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
       set({ adjustments: response.data.data, error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
-      set({ error: true });
+      set({ error: true, adjustments: null });
     } finally {
       set({ loading: false });
     }
@@ -56,7 +58,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
-      set({ error: true });
+      set({ error: true, adjustment: null });
     } finally {
       set({ loadingAdjustment: false });
     }
@@ -68,6 +70,13 @@ const adjustStore = create<adjustStoreI>((set) => ({
             const response = await createService(url, data);
             set({ adjustmentActive: response.data.data, error: false });
             useToastMessageStore.getState().setMessage(response);
+            if (data.status === 1) {
+                set({ isAdjustmentActive: true });
+            }
+            if (data.status === 2) {
+                set({ adjustmentActive: null, isAdjustmentActive: false });
+            }
+          
         } catch (error) {
             useToastMessageStore.getState().setError(error);
             set({ error: true });
@@ -81,9 +90,10 @@ const adjustStore = create<adjustStoreI>((set) => ({
     try {
       const response = await getServices(url);
       set({ adjustmentActive: response.data.data, error: false });
+      console.log('Adjustment Details:', response.data.data);
     } catch (error) {
-      useToastMessageStore.getState().setError(error);
-      set({ error: true });
+      // useToastMessageStore.getState().setError(error);
+      set({ error: true, adjustmentActive: null });
     } finally {
       set({ searching: false });
     }

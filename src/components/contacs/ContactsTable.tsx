@@ -27,7 +27,7 @@ export function ContactsTable() {
             key={record.id} 
             className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
             
-            <td className="px-1 py-1 text-left  font-medium clickeable" onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>
+            <td className="px-1 py-1 text-left  font-medium clickeable-table" onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>
                 { record?.name }
             </td>
             {/* <td className="px-1 py-1 text-left text-sm whitespace-normal">

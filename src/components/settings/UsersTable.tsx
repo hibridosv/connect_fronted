@@ -52,21 +52,21 @@ export function UsersTable({ showAll }: UsersTableProps) {
               className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${user.status === 0 ? 'opacity-50 bg-danger/10' : ''}`}
             >
               <td
-                className="px-2 py-1 font-medium clickeable truncate"
+                className="px-2 py-1 font-medium clickeable-table truncate"
                 onClick={() => handleAction(user, 'editUserName')}
                 title="Cambiar nombre"
               >
                 {user.name}
               </td>
               <td
-                className="px-2 py-1 clickeable truncate"
+                className="px-2 py-1 clickeable-table truncate"
                 onClick={() => handleAction(user, 'editUserPassword')}
                 title="Cambiar password"
               >
                 {getDisplayEmail(user.email)}
               </td>
               <td
-                className="px-2 py-1 uppercase text-center clickeable"
+                className="px-2 py-1 uppercase text-center clickeable-table"
                 onClick={() => handleAction(user, 'editUserRole')}
                 title="Cambiar rol"
               >

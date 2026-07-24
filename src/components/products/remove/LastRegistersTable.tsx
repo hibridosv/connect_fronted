@@ -17,7 +17,7 @@ export function LastRegistersTable() {
       const listItems = products?.data && products?.data.map((product: any) => (
         <tr 
           key={product.id} 
-          className={`clickeable whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}
+          className={`clickeable-table whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}
           onClick={() => { openModal("viewDetails"); setElement("viewDetails", product);  }}
           >
           <td className="px-3 py-2 font-medium text-primary hover:underline">

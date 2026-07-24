@@ -49,7 +49,7 @@ export function TransfersReceiveTable({ records, onShowTransfer, loading }: Tran
               <td className="py-3 px-4 truncate">
                 {record?.received_at ? formatDate(record.received_at) : 'N/A'}
               </td>
-              <td className="py-3 px-4 truncate clickeable" onClick={() => onShowTransfer(record)}>
+              <td className="py-3 px-4 truncate clickeable-table" onClick={() => onShowTransfer(record)}>
                 {statusOfTransfer(record?.status)}
               </td>
               <td className="py-3 px-4">

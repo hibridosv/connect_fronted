@@ -16,22 +16,22 @@ export function RemoveProductsSearch() {
     const sortBy = "description";
     const { products, loading: loadingSearch } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getElement('product');
+    const elementSelected = getElement('productRemoveSelected');
 
     if (!product || loading) return null;
     if (elementSelected) return null;
 
 
     const handleSelectProduct = (product: any) => {
-        setElement('product', product);
+        setElement('productRemoveSelected', product);
         handleSearchTerm('');
     };
 
     return (
-        <div className="relative w-full px-4">
+        <div className="relative w-full">
             <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar Producto por código o descripción..." animating={loadingSearch} />
             { searchTerm && products && products.data && products.data.length > 0 && (
-                <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50 mx-4'>
+                <div className='absolute top-full left-0 right-0 z-20 mt-2 bg-bg-content rounded-lg shadow-lg border border-bg-subtle/50'>
                   <ul className="divide-y divide-bg-subtle max-h-80 overflow-y-auto custom-scrollbar">
                     {products.data.map((item: any) => {
                         return (
