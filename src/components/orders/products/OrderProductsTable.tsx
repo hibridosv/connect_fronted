@@ -84,7 +84,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
              { isDiscount ? 
              <CodeRequestGuard permission="code-request-discounts" onAuthorized={()=>{ openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1); }} >
                 <span className="clickeable">
-                  { numberToMoney(record.unit_price ?? 0, system) }
+                  { numberToMoney(record.discount ?? 0, system) }
                 </span>
             </CodeRequestGuard>
              : 
