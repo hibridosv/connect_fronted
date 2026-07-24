@@ -40,7 +40,7 @@ export function AdjustmentsTable(props: AdjustmentsTableI) {
        { record?.checked_products }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        <span className="clickeable" onClick={()=>{ openModal('adjustmentDetails'); setElement('adjustmentDetails', record)}}>
+        <span className="clickeable-table" onClick={()=>{ openModal('adjustmentDetails'); setElement('adjustmentDetails', record)}}>
         <Indicator type="success" text="Finalizado" />
         </span>
       </td>
