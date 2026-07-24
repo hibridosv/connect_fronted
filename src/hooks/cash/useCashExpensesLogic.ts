@@ -4,16 +4,22 @@ import cashExpensesStore from '@/stores/cash/cashExpensesStore';
 import { useEffect } from 'react';
 
 
-export function useCashExpensesLogic(reset: any, setValue: any) {
- const { loadExpenses, loadExpensesCategories, expenses, expensesCategories, createExpense, createExpenseCategory, error } = cashExpensesStore();
- const { loadAccount, accounts } = cashAccountStore();
+export function useCashExpensesLogic(reset: any, setValue: any, showAll: boolean = false, currentPage: string = '') {
+ const { loadExpenses, loadExpensesCategories, createExpense, createExpenseCategory } = cashExpensesStore();
+ const { loadAccount } = cashAccountStore();
 
 
     useEffect(() => {
-        loadExpenses(`cash/expenses/find`);
+        const url = showAll
+            ? `cash/expenses?included=category,account&sort=-created_at&perPage=10${currentPage}`
+            : `cash/expenses/find`;
+        loadExpenses(url);
+    }, [loadExpenses, showAll, currentPage]);
+
+    useEffect(() => {
         loadExpensesCategories(`cash/categories`);
         loadAccount(`cash/accounts?sort=-created_at&filterWhere[status]==1`);
-    }, [loadExpenses, loadExpensesCategories, loadAccount]);
+    }, [loadExpensesCategories, loadAccount]);
 
 
     const onSubmit = async (data: any) => {

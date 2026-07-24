@@ -11,7 +11,11 @@ import { FaSpinner } from "react-icons/fa";
 import { MdImage } from "react-icons/md";
 
 
-export function ExpensesTable() {
+interface ExpensesTableProps {
+    showAll: boolean;
+}
+
+export function ExpensesTable({ showAll }: ExpensesTableProps) {
     const { system } = useConfigStore();
     const { expenses, loading, deleting, deleteExpense } = cashExpensesStore();
     const { openModal } = useModalStore();
@@ -19,10 +23,12 @@ export function ExpensesTable() {
 
     if (expenses && loading) return <SkeletonTable rows={4} columns={7} />;
     if (!expenses) return null;
-    if (expenses && expenses.length === 0) return (<NothingHere text="No se encuentran gastos" />)
+
+    const data = Array.isArray(expenses) ? expenses : expenses.data;
+    if (!data || data.length === 0) return (<NothingHere text="No se encuentran gastos" />)
 
     let total = 0;
-    const listItems = expenses && expenses.map((record: any) => {
+    const listItems = data.map((record: any) => {
         if (record.status === 1) {
             total += record.quantity;
         }
@@ -80,12 +86,14 @@ export function ExpensesTable() {
           </tbody>
         </table>
       </div>
-      <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle flex">
-        <div className="flex-1 flex flex-col items-center py-3 px-4">
-          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total gastos</span>
-          <span className="text-xl font-bold text-danger mt-0.5">{numberToMoney(total, system)}</span>
+      {!showAll && (
+        <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle flex">
+          <div className="flex-1 flex flex-col items-center py-3 px-4">
+            <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total gastos</span>
+            <span className="text-xl font-bold text-danger mt-0.5">{numberToMoney(total, system)}</span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

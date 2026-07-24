@@ -6,7 +6,9 @@
       "Bash(npx next:*)",
       "Bash(sort:*)",
       "Bash(git -C C:/laragon/www/pulse check-ignore -v .env .env.local)",
-      "Bash(git -C C:/laragon/www/pulse log --all --oneline -- .env)"
+      "Bash(git -C C:/laragon/www/pulse log --all --oneline -- .env)",
+      "Read(//c/laragon/www//**)",
+      "Bash(powershell -Command \"Get-ChildItem C:\\\\laragon\\\\www\")"
     ]
   }
 }

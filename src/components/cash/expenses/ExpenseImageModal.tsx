@@ -27,7 +27,8 @@ export function ExpenseImageModal({ isShow, onClose }: ExpenseImageModalProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const expenseId = getElement('expenseImageId');
-  const expense = expenses?.find((record: any) => record.id === expenseId);
+  const expensesList = Array.isArray(expenses) ? expenses : expenses?.data;
+  const expense = expensesList?.find((record: any) => record.id === expenseId);
 
   const { ref: registerRef, ...registerRest } = register('image', { required: true });
 

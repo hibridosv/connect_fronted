@@ -16,7 +16,8 @@ export function ExpenseImageDeleteModal({ isShow, onClose }: ExpenseImageDeleteM
   const { getElement, clearElement } = useTempStorage();
 
   const expenseId = getElement('expenseImageId');
-  const expense = expenses?.find((record: any) => record.id === expenseId);
+  const expensesList = Array.isArray(expenses) ? expenses : expenses?.data;
+  const expense = expensesList?.find((record: any) => record.id === expenseId);
 
   const handleDelete = async () => {
     if (!expenseId) return;

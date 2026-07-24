@@ -19,7 +19,8 @@ export function ExpenseImagePreviewModal({ isShow, onClose }: ExpenseImagePrevie
   const { getElement } = useTempStorage();
 
   const expenseId = getElement('expenseImageId');
-  const expense = expenses?.find((record: any) => record.id === expenseId);
+  const expensesList = Array.isArray(expenses) ? expenses : expenses?.data;
+  const expense = expensesList?.find((record: any) => record.id === expenseId);
 
   const imageLoader = ({ src }: { src: string }) =>
     `${session?.url}/storage/public/${tenant?.id}/expenses/${src}`;
