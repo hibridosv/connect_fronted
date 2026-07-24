@@ -43,7 +43,7 @@ export function GoldPointsTable({ records, isLoading }: GoldPointsTableProps) {
         <td className="px-3 py-2 text-right font-medium">{numberToMoney(record?.commissions ?? 0, system)}</td>
         <td className="px-3 py-2 text-right font-bold">{numberToMoney(goldPoints, system)}</td>
         <td className="px-3 py-2 text-center">
-          <span className={`${status.className} clickeable`} onClick={() => handleViewDetail(record)}>
+          <span className={`${status.className} clickeable-table`} onClick={() => handleViewDetail(record)}>
             {status.label}
           </span>
         </td>

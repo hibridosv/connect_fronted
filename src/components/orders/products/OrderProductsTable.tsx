@@ -62,20 +62,20 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           </td>
           <td className="px-2 py-1 text-left whitespace-nowrap flex" >
             {/* { record.product.slice(0, 50) } */}
-            <span className={`${!isOtherSales && 'clickeable ' } w-full`} 
+            <span className={`${!isOtherSales && 'clickeable-table ' } w-full`} 
             onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetailsList'); setElement('productDetailsOnNavbar', record.cod); }}>
             { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
             </span>
-            { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable" 
+            { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable-table" 
             onClick={()=> { setElement('rowToUpdate', 'product'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color="black" /></span> }
-            { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable" 
+            { isChangeComment && <span title={record?.comment ?? "Sin comentarios"} className="ml-2 clickeable-table" 
             onClick={()=> { setElement('rowToUpdate', 'comment'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color={record.comment ? 'green' : 'black'} /></span> }
-            { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable" 
+            { isChangeLot && <span title="Cambiar lote predeterminado" className="ml-2 clickeable-table" 
             onClick={()=> { openModal('changeLot'); setElement('productSelected', record); }}><MdBallot color={record.lot_id ? 'red' : 'gray'} /></span> }
           </td>
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
             <CodeRequestGuard permission="code-request-change-price" onAuthorized={()=>{ openModal('changePriceProduct'); setElement('productSelected', record); }} >
-                <span className="clickeable">
+                <span className="clickeable-table">
                   { numberToMoney(record.unit_price ?? 0, system) }
                 </span>
             </CodeRequestGuard>  
@@ -83,7 +83,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
           <td className={`px-2 py-1 text-center whitespace-nowrap font-bold tabular-nums`}>
              { isDiscount ? 
              <CodeRequestGuard permission="code-request-discounts" onAuthorized={()=>{ openModal('discountModal'); setElement('productSelected', record); setElement('discountType', 1); }} >
-                <span className="clickeable">
+                <span className="clickeable-table">
                   { numberToMoney(record.discount ?? 0, system) }
                 </span>
             </CodeRequestGuard>
@@ -92,7 +92,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
              } 
           </td>
           <td className={`px-2 py-1 whitespace-nowrap font-medium tabular-nums ${ !isDefaultCommission && 'hidden'}`}>
-            <span className="clickeable" onClick={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }}>
+            <span className="clickeable-table" onClick={()=>{ setElement('rowToUpdate', 'commission'); openModal('changeRow'); setElement('productSelected', record); }}>
               { record.commission ?? 0 } % -  { numberToMoney(getTotalPercentage(record?.subtotal, record?.commission), system) }
             </span>
           </td>
