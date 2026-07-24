@@ -1,3 +1,4 @@
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { useProductAddLogic } from "@/hooks/products/useProductAddLogic";
 import { documentType, numberToMoney } from "@/lib/utils";
@@ -19,6 +20,11 @@ export function AddProductForm() {
     if (loading || !product) return null;
 
     const isSending = false;
+
+    const existingRegisters = product?.registers?.filter((register: any) => register.status !== 2 && register.product?.id === productSelected?.id) ?? [];
+    const alreadyAddedQuantity = existingRegisters.reduce((accumulatedQuantity: number, register: any) => accumulatedQuantity + Number(register.quantity), 0);
+    const isProductAlreadyAdded = existingRegisters.length > 0;
+    const totalStock = Number(productSelected?.quantity ?? 0) + alreadyAddedQuantity;
 
     const onSubmit = async (data: any) => {
       data.product_id = productSelected.id
@@ -81,7 +87,13 @@ export function AddProductForm() {
                         <div className="flex flex-col items-end gap-1 shrink-0">
                             <span className="inline-flex items-center gap-1.5 bg-bg-subtle rounded-full px-3 py-1 text-xs font-medium text-text-muted">
                                 <span className="text-text-muted/60">Stock</span>
-                                <span className="font-bold text-text-base">{productSelected?.quantity}</span>
+                                {alreadyAddedQuantity > 0 ? (
+                                    <span className="font-bold text-text-base">
+                                        {productSelected?.quantity} <span className="text-text-muted/60 font-normal">+</span> {alreadyAddedQuantity} <span className="text-text-muted/60 font-normal">=</span> {totalStock}
+                                    </span>
+                                ) : (
+                                    <span className="font-bold text-text-base">{totalStock}</span>
+                                )}
                             </span>
                             <span className="inline-flex items-center gap-1.5 bg-primary/10 rounded-full px-3 py-1 text-xs font-medium text-primary">
                                 <span className="text-primary/70">Precio</span>
@@ -131,6 +143,14 @@ export function AddProductForm() {
                                   />
                               </div>
                         </div>
+                        {isProductAlreadyAdded && (
+                            <Alert
+                                type="warning"
+                                title="Atención:"
+                                text="Este producto ya fue agregado anteriormente en este ingreso. Revise los lotes antes de continuar."
+                                className="mt-4"
+                            />
+                        )}
                         <div className="flex justify-center mt-6 pt-4 border-t border-bg-subtle gap-4">
                             <Button type="submit" disabled={isSending} preset={isSending ? Preset.saving : Preset.save} />
                             <Button disabled={isSending} preset={Preset.close} text="Cancelar" onClick={()=>clearElement("product")} />

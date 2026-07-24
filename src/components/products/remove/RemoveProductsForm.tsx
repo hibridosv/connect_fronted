@@ -1,3 +1,4 @@
+import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import useModalStore from "@/stores/modalStorage";
 import productRemovedStore from "@/stores/products/productRemovedStore";
@@ -20,6 +21,11 @@ export function RemoveProductsForm() {
     const elementSelected = getElement('product');
 
     if (!product || !elementSelected) return null;
+
+    const existingFailures = product?.failures?.filter((failure: any) => failure.status !== 2 && failure.product?.id === elementSelected?.id) ?? [];
+    const alreadyRemovedQuantity = existingFailures.reduce((accumulatedQuantity: number, failure: any) => accumulatedQuantity + Number(failure.quantity), 0);
+    const isProductAlreadyRemoved = existingFailures.length > 0;
+    const remainingStock = Number(elementSelected?.quantity ?? 0) - alreadyRemovedQuantity;
 
     const onSubmit = async (data: Inputs) => {
         if (!data.quantity || !product?.reason) {
@@ -55,7 +61,13 @@ export function RemoveProductsForm() {
                         </div>
                         <div className="bg-bg-content rounded-md px-3 py-2 border border-bg-subtle">
                             <span className="text-[10px] uppercase tracking-wider font-semibold text-text-muted block mb-0.5">Existencia</span>
-                            <span className="text-sm font-bold text-text-base">{ elementSelected?.quantity }</span>
+                            {alreadyRemovedQuantity > 0 ? (
+                                <span className="text-sm font-bold text-text-base">
+                                    { elementSelected?.quantity } <span className="text-text-muted/60 font-normal">-</span> { alreadyRemovedQuantity } <span className="text-text-muted/60 font-normal">=</span> { remainingStock }
+                                </span>
+                            ) : (
+                                <span className="text-sm font-bold text-text-base">{ elementSelected?.quantity }</span>
+                            )}
                         </div>
                     </div>
                     {lotSelected && (
@@ -77,6 +89,15 @@ export function RemoveProductsForm() {
               </div>
               {errors.quantity && <p className="text-danger text-xs mt-1">{errors.quantity.message}</p>}
             </div>
+
+            {isProductAlreadyRemoved && (
+                <Alert
+                    type="warning"
+                    title="Producto repetido:"
+                    text="Este producto ya fue descontado anteriormente en este ingreso. Revise los lotes antes de continuar."
+                    className="mb-4"
+                />
+            )}
 
             <div className="flex justify-end gap-4">
               <Button text="Cancelar" disabled={loading} preset={Preset.cancel} onClick={()=>clearElement()} />
