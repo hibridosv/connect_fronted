@@ -2,7 +2,16 @@ import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
-
+const replaceExpenseInList = (expenses: any, id: string, updatedExpense: any) => {
+    if (!expenses) return expenses;
+    if (Array.isArray(expenses)) {
+        return expenses.map((expense: any) => expense.id === id ? updatedExpense : expense);
+    }
+    return {
+        ...expenses,
+        data: expenses.data?.map((expense: any) => expense.id === id ? updatedExpense : expense) ?? expenses.data,
+    };
+};
 
 interface cashExpensesStoreProps {
   expenses: any | null;
@@ -110,7 +119,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set, get) => ({
             const response = await createService(`cash/expenses/${id}/image`, data);
             const updatedExpense = response.data.data;
             set({
-                expenses: get().expenses?.map((expense: any) => expense.id === id ? updatedExpense : expense) ?? get().expenses,
+                expenses: replaceExpenseInList(get().expenses, id, updatedExpense),
                 error: false,
             });
             useToastMessageStore.getState().setMessage(response);
@@ -130,7 +139,7 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set, get) => ({
             const response = await deleteService(`cash/expenses/${id}/image`);
             const updatedExpense = response.data.data;
             set({
-                expenses: get().expenses?.map((expense: any) => expense.id === id ? updatedExpense : expense) ?? get().expenses,
+                expenses: replaceExpenseInList(get().expenses, id, updatedExpense),
                 error: false,
             });
             useToastMessageStore.getState().setMessage(response);
