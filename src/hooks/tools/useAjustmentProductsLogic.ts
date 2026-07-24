@@ -35,7 +35,7 @@ export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, i
       try {
         const success = await send('tools/adjust/update', product);
           if (success) {
-            loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25${currentPage}${searchTerm}`)
+            loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25&page=1${searchTerm}`)
             closeModal('setAdjustment');
           }
       } catch (error) {

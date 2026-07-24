@@ -22,7 +22,7 @@ export default function Page() {
     const {currentPage: currentPageProducts, handlePageNumber: handlePageNumberProducts} = usePagination("&page=1");
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "name"], 500);
     const { start, end } = useAjustmentLogic(currentPage, true);
-    const { adjustments, loading, adjustmentActive, sending, searching } = adjustStore();
+    const { adjustments, loading, adjustmentActive, sending, searching, isAdjustmentActive } = adjustStore();
     const { modals, closeModal } = useModalStore();
     const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
     const data = adjustments?.data || [];
@@ -31,9 +31,9 @@ export default function Page() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
-    <div className={`${adjustmentActive ? 'md:col-span-7' : 'md:col-span-6'} md:border-r md:border-primary`}>
+    <div className={`${isAdjustmentActive ? 'md:col-span-7' : 'md:col-span-6'} md:border-r md:border-primary`}>
         <ViewTitle text="Ajustar Inventario" />
-        { adjustmentActive ? 
+        { isAdjustmentActive ? 
         (<div className="p-4">
           <AdjustmentsProductsToChangeTable records={products} isLoading={loading} isSending={sending} sendAdjustment={sendAdjustment} />
           { !loading && <Pagination records={adjustmentActive} handlePageNumber={handlePageNumberProducts } /> }
@@ -45,11 +45,11 @@ export default function Page() {
         </div>) 
         }
     </div>
-    <div className={`${adjustmentActive ? 'md:col-span-3' : 'md:col-span-4'}`}>
+    <div className={`${isAdjustmentActive ? 'md:col-span-3' : 'md:col-span-4'}`}>
         <ViewTitle text="Iniciar Ajuste" />
 
           <div className="m-4">
-            { adjustmentActive ? 
+            { isAdjustmentActive ? 
             <div>
             <div className="mt-2 p-2 mb-4">
               <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" animating={searching} />
