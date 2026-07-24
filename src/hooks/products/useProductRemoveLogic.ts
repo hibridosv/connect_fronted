@@ -11,7 +11,7 @@ export function useProductRemoveLogic(currentPage: string = "") {
 
 
       useEffect(() => {
-        loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=15${currentPage}`);
+        loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=12${currentPage}`);
     }, [loadProducts, currentPage]);
 
 }

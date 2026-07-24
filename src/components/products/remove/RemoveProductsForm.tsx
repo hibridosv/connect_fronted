@@ -18,7 +18,7 @@ export function RemoveProductsForm() {
     const { openModal } = useModalStore();
     const { setElement } = useTempStorage();
     const lotSelected = getElement("lotSelected");
-    const elementSelected = getElement('product');
+    const elementSelected = getElement('productRemoveSelected');
 
     if (!product || !elementSelected) return null;
 
@@ -70,7 +70,7 @@ export function RemoveProductsForm() {
                     {lotSelected && (
                         <span className="inline-flex items-center gap-1.5 bg-primary/10 rounded-full px-3 py-1 text-xs font-medium text-primary">
                             <span className="text-primary/70">Lote</span>
-                            <span className="font-bold">{ lotSelected?.name ?? lotSelected?.id }</span>
+                            <span className="font-bold">{ lotSelected?.lot }</span>
                         </span>
                     )}
                 </div>
@@ -79,8 +79,8 @@ export function RemoveProductsForm() {
                 <div className="mb-4">
                     <label htmlFor="quantity" className="block text-sm font-bold text-text-muted mb-1">Cantidad</label>
                     <div className="flex items-center gap-2">
-                        <input type="number" id="quantity" {...register("quantity", { required: "La cantidad es obligatorio.", valueAsNumber: true, max: elementSelected?.quantity })} className="input" step="any" min={0} />
-                        <MdBallot size={30} color={lotSelected ? "red" : "gray"} className="text-text-muted clickeable" onClick={()=>{ openModal('ChangeLot'); setElement('product', elementSelected) }} />
+                        <input type="number" id="quantity" {...register("quantity", { required: "La cantidad es obligatorio.", valueAsNumber: true, max: { value: remainingStock, message: "La cantidad no puede ser mayor a la existencia disponible." } })} className="input" step="any" min={0} />
+                        <MdBallot size={30} color={lotSelected ? "red" : "gray"} className="text-text-muted clickeable" onClick={()=>{ openModal('ChangeLot'); setElement('productRemoveSelected', elementSelected) }} />
                     </div>
                     {errors.quantity && <p className="text-danger text-xs mt-1">{errors.quantity.message}</p>}
                 </div>

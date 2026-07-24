@@ -1,6 +1,5 @@
 
 import { Button, Preset } from "@/components/button/button";
-import { Loader } from "@/components/Loader";
 import Modal from "@/components/modal/Modal";
 import { useLotAssignLogic } from "@/hooks/products/useLotAssignLogic";
 import { Product } from "@/interfaces/products";
@@ -26,10 +25,7 @@ export function ChangeLotModal(props: ChangeLotModalProps) {
     const lotSelected = getElement("lotSelected");
     const isSending = loading["lotAssign"] ? true : false;
 
-
-    if (isSending) return <Loader size="60" />;
     if (!isShow || !product) return null;
-
 
   const listItems = lots && lots.map((record: any) => (
         <tr key={product.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
@@ -93,7 +89,7 @@ export function ChangeLotModal(props: ChangeLotModalProps) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} disabled={false} />
+        <Button onClick={onClose} preset={Preset.close} disabled={isSending} />
       </Modal.Footer>
     </Modal>
   );

@@ -3,13 +3,9 @@ import { SkeletonForm } from "@/components/skeleton/SkeletonForm";
 import productRemovedStore from "@/stores/products/productRemovedStore";
 import { useForm } from "react-hook-form";
 
-export interface RemoveInitialFormProps {
-  text?: string;
-}
 
-export function RemoveInitialForm(props: RemoveInitialFormProps) {
-    const { text } = props;
-    const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
+export function RemoveInitialForm() {
+    const { register, handleSubmit } = useForm();
     const { product, loading, createPrincipal } = productRemovedStore();
 
     if (loading) return <SkeletonForm />;

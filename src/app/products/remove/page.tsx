@@ -25,6 +25,7 @@ export default function Page() {
     const { modals, closeModal } = useModalStore();
     const { getElement } = useTempStorage();
     const isActive = product?.failures && product.failures.filter((fai: any) => fai.status == 1).length > 0;
+    const elementSelected = getElement('productRemoveSelected');
     
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
@@ -40,7 +41,7 @@ export default function Page() {
           <ViewTitle text="Ultimos Registros" />
           <div className="p-4">
             <LastRegistersTable />
-            <Pagination records={products} handlePageNumber={handlePageNumber } />
+            { !product &&  <Pagination records={products} handlePageNumber={handlePageNumber } /> }
             <ProductsRegistersTable />
           </div>
 
@@ -54,7 +55,7 @@ export default function Page() {
             </div>
 
       </div> 
-      <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getElement("product")}/>
+      <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getElement("productRemoveSelected")}/>
       <LotDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getElement("viewDetails")}/>
       <ToasterMessage />
     </div>

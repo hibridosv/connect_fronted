@@ -16,14 +16,14 @@ export function RemoveProductsSearch() {
     const sortBy = "description";
     const { products, loading: loadingSearch } = useProductStore();
     useProductsSearchLogic(currentPage, searchTerm, sortBy);
-    const elementSelected = getElement('product');
+    const elementSelected = getElement('productRemoveSelected');
 
     if (!product || loading) return null;
     if (elementSelected) return null;
 
 
     const handleSelectProduct = (product: any) => {
-        setElement('product', product);
+        setElement('productRemoveSelected', product);
         handleSearchTerm('');
     };
 
