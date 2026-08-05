@@ -1,6 +1,6 @@
 'use client';
 
-import { SessionProvider, useSession } from 'next-auth/react';
+import { SessionProvider, signOut, useSession } from 'next-auth/react';
 import { useThemeStore } from '@/stores/themeStore';
 import { useEffect } from 'react';
 import sessionStore from '@/stores/sessionStore';
@@ -25,6 +25,13 @@ function SessionSyncer() {
   useEffect(() => {
     if (status === 'loading') return;
     const { setSession, clearSession } = sessionStore.getState();
+
+    if (session?.error === 'RefreshAccessTokenError') {
+      clearSession();
+      signOut({ callbackUrl: '/' });
+      return;
+    }
+
     if (session?.accessToken && session?.url) {
       setSession(session.accessToken, session.url);
     } else {
