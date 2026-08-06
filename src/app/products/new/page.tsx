@@ -115,7 +115,7 @@ export default function Page() {
                 </div>
                 { productType === 1 && (<>
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
+                  <label htmlFor="category_id" className="input-label " onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
                   <select id="category_id" {...register("category_id")} className="input-select">
                     {subCategories && subCategories.map((value: any) => {
                       return (

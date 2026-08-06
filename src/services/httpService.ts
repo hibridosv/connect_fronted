@@ -7,6 +7,7 @@ interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 let unauthorizedCount = 0;
+let lastUnauthorizedToken: string | null = null;
 const MAX_UNAUTHORIZED = 3;
 
 const httpService = axios.create({
@@ -45,10 +46,7 @@ httpService.interceptors.request.use(
 );
 
 httpService.interceptors.response.use(
-  (response) => {
-    unauthorizedCount = 0;
-    return response;
-  },
+  (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomInternalAxiosRequestConfig;
 
@@ -57,10 +55,18 @@ httpService.interceptors.response.use(
     }
 
     if (error.response?.status === 401) {
-      unauthorizedCount++;
+      const failedToken = originalRequest.headers?.Authorization as string | undefined;
+
+      if (failedToken !== lastUnauthorizedToken) {
+        lastUnauthorizedToken = failedToken ?? null;
+        unauthorizedCount = 1;
+      } else {
+        unauthorizedCount++;
+      }
 
       if (unauthorizedCount >= MAX_UNAUTHORIZED) {
         unauthorizedCount = 0;
+        lastUnauthorizedToken = null;
         await signOut({ callbackUrl: '/' });
         return Promise.reject(error);
       }

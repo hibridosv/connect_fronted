@@ -18,7 +18,7 @@ async function refreshAccessToken(token: any) {
   const refreshed = await res.json()
 
   if (!res.ok) {
-    return { ...token, error: 'RefreshAccessTokenError' }
+    return { ...token, accessToken: undefined, refreshToken: undefined, error: 'RefreshAccessTokenError' }
   }
 
   return {
