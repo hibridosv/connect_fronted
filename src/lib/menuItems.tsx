@@ -158,6 +158,7 @@ export const menuItems: MenuItem[] = [
       { label: "Permisos de Usuario", href: "/settings/permissions", permission: "config-permissions" },
       { label: "Sucursales", href: "/settings/branches", permission: "config-transfers" },
       { label: "Pagos", href: "/settings/payments" },
+      { label: "Chatbot", href: "/settings/chatbot", permission: "config-chatbot" },
     ],
   },
   { label: "Ayuda", href: "/help", icon: <BiHelpCircle size={15} /> },
