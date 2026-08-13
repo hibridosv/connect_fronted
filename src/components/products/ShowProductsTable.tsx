@@ -6,7 +6,7 @@ import { DropdownItem } from "@/components/dropDown/DropdownItem";
 import { NothingHere } from "@/components/NothingHere";
 import { useGetRequest } from "@/hooks/request/useGetRequest";
 import { Product } from "@/interfaces/products";
-import { numberToMoney } from "@/lib/utils";
+import { numberToMoney, permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
@@ -26,7 +26,7 @@ export interface ShowProductsTableProps {
 
 export function ShowProductsTable(props: ShowProductsTableProps) {
   const { records, setSortBy, sortBy, loading } = props;
-  const { system, activeConfig } = useConfigStore();
+  const { system, activeConfig, permission } = useConfigStore();
   const { openModal, closeModal, modals } = useModalStore();
   const isLocation = activeConfig?.includes("product-brand");
   const isBrand = activeConfig?.includes("product-locations");
@@ -34,7 +34,8 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const { getRequest, loading: loadingRequest } = useGetRequest();
   const { setElement, getElement } = useTempStorage();
   const elementSelected = getElement('productDetails');
-
+  const canDelete = permissionExists(permission, "product-delete");
+  const canEdit = permissionExists(permission, "product-edit");
 
 
   if(loading) return <SkeletonTable rows={15} columns={8} />
@@ -69,13 +70,14 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
       <td className="px-2 py-2 text-center">{product?.brand?.name ?? "--"}</td> }
       <td className="px-2 py-2 text-center text-text-muted">{product.minimum_stock}</td>
       <td className="px-2 py-2 text-center">
-        { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : <Dropdown label={<FiSettings size={18} /> }>
+        { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : 
+        <Dropdown label={<FiSettings size={18} /> }>
           <DropdownItem onClick={() => { setElement('productDetails', product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
           <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
-          <DropdownItem as={`/products/${product.id}/edit`}>Editar</DropdownItem>
+          <DropdownItem disabled={!canEdit} as={`/products/${product.id}/edit`}>Editar</DropdownItem>
           <DropdownItem as={`/products/${product.id}/kardex`}>Kardex</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => { setElement('productDetails', product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
+          <DropdownItem disabled={!canDelete} onClick={() => { setElement('productDetails', product); openModal('deleteProduct'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
         </Dropdown> }
       </td>
     </tr>
