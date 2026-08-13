@@ -4,25 +4,50 @@ import { useForm } from 'react-hook-form';
 import { ViewTitle } from '@/components/ViewTitle';
 import { Button, Preset } from '@/components/button/button';
 import { UsersTable } from '@/components/settings/UsersTable';
-import { EditUserNameModal } from '@/components/settings/EditUserNameModal';
+import { EditUserModal } from '@/components/settings/EditUserModal';
 import { EditUserPasswordModal } from '@/components/settings/EditUserPasswordModal';
 import { EditUserRoleModal } from '@/components/settings/EditUserRoleModal';
 import { DeleteModal } from '@/components/DeleteModal';
 import { ToasterMessage } from '@/components/toaster-message';
 import { useUsersLogic } from '@/hooks/settings/useUsersLogic';
+import { buildPhoneNumber, PHONE_COUNTRY_CODES } from '@/lib/phone';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
-import { FaUser, FaUsers } from 'react-icons/fa';
+import { FaUser, FaUsers, FaWhatsapp } from 'react-icons/fa';
+
+const PHONE_ELIGIBLE_TYPES = ['Gerencia', 'Administracion'];
+
+interface NewUserFormValues {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  type: string;
+  country_code: string;
+  phone_local: string;
+}
 
 export default function Page() {
-  const { register, handleSubmit, reset } = useForm();
-  const { onCreateUser, onDeleteUser, onUpdateName, onUpdatePassword, onUpdateRole, userType, saving } = useUsersLogic();
+  const { register, handleSubmit, reset, watch } = useForm<NewUserFormValues>({
+    defaultValues: { type: 'Gerencia', country_code: PHONE_COUNTRY_CODES[0].code },
+  });
+  const { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, userType, saving } = useUsersLogic();
   const { modals, closeModal } = useModalStore();
   const { getElement } = useTempStorage();
   const [showAll, setShowAll] = useState(false);
 
+  const selectedType = watch('type');
+  const isPhoneEligible = PHONE_ELIGIBLE_TYPES.includes(selectedType);
+
   const onSubmit = async (data: any) => {
-    const success = await onCreateUser(data);
+    const success = await onCreateUser({
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      password_confirmation: data.password_confirmation,
+      type: data.type,
+      phone_number: isPhoneEligible ? buildPhoneNumber(data.country_code, data.phone_local) : '',
+    });
     if (success) reset();
   };
 
@@ -33,27 +58,27 @@ export default function Page() {
         <div className="mx-4">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3 mb-2">
+              <div className="w-full px-3 mb-3">
                 <label htmlFor="name" className="input-label">Nombre *</label>
-                <input type="text" id="name" {...register('name')} className="input" />
+                <input type="text" id="name" placeholder="Nombre completo" {...register('name')} className="input" />
               </div>
 
-              <div className="w-full px-3 mb-2">
+              <div className="w-full px-3 mb-3">
                 <label htmlFor="email" className="input-label">Email *</label>
-                <input type="email" id="email" {...register('email')} className="input" />
+                <input type="email" id="email" placeholder="usuario@hibridosv.com" {...register('email')} className="input" />
               </div>
 
-              <div className="w-full px-3 mb-2">
+              <div className="w-full md:w-1/2 px-3 mb-3">
                 <label htmlFor="password" className="input-label">Password *</label>
                 <input type="password" id="password" {...register('password')} className="input" />
               </div>
 
-              <div className="w-full px-3 mb-2">
+              <div className="w-full md:w-1/2 px-3 mb-3">
                 <label htmlFor="password_confirmation" className="input-label">Repetir Password *</label>
                 <input type="password" id="password_confirmation" {...register('password_confirmation')} className="input" />
               </div>
 
-              <div className="w-full px-3 mb-2">
+              <div className="w-full px-3 mb-3">
                 <label htmlFor="type" className="input-label">Tipo de usuario *</label>
                 <select id="type" {...register('type')} className="input-select">
                   <option value="Gerencia">Gerencia</option>
@@ -63,6 +88,36 @@ export default function Page() {
                   <option value="Contador">Contador</option>
                 </select>
               </div>
+
+              {isPhoneEligible && (
+                <div className="w-full px-3 mb-3">
+                  <label htmlFor="phone_local" className="input-label">
+                    Número de WhatsApp
+                  </label>
+                  <div className="flex gap-2">
+                    <div className="w-40 shrink-0">
+                      <select id="country_code" {...register('country_code')} className="input-select">
+                        {PHONE_COUNTRY_CODES.map((country) => (
+                          <option key={country.code} value={country.code}>
+                            {country.flag} +{country.code}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <input
+                      type="tel"
+                      id="phone_local"
+                      placeholder="Ej. 60625689"
+                      {...register('phone_local')}
+                      className="input flex-1 min-w-0"
+                    />
+                  </div>
+                  <p className="flex items-center gap-1 text-xs text-text-muted mt-1">
+                    <FaWhatsapp className="text-success shrink-0" size={12} />
+                    Solo para Gerencia y Administración — habilita al usuario en el chatbot.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex justify-center">
@@ -97,11 +152,11 @@ export default function Page() {
         </div>
       </div>
 
-      <EditUserNameModal
-        isShow={!!modals.editUserName}
-        onClose={() => closeModal('editUserName')}
-        user={getElement('editUserName')}
-        onSubmit={onUpdateName}
+      <EditUserModal
+        isShow={!!modals.editUser}
+        onClose={() => closeModal('editUser')}
+        user={getElement('editUser')}
+        onSubmit={onUpdateUser}
       />
 
       <EditUserPasswordModal

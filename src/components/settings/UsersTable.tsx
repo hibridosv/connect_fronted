@@ -1,17 +1,21 @@
 'use client';
+import { Dropdown } from '@/components/dropDown/Dropdown';
+import { DropdownDivider } from '@/components/dropDown/DropdownDivider';
+import { DropdownItem } from '@/components/dropDown/DropdownItem';
 import { NothingHere } from '@/components/NothingHere';
-import { Button, Preset } from '@/components/button/button';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import useUserStore from '@/stores/UserStore';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
+import { BiLoader } from 'react-icons/bi';
+import { FiSettings } from 'react-icons/fi';
 
 interface UsersTableProps {
   showAll: boolean;
 }
 
 export function UsersTable({ showAll }: UsersTableProps) {
-  const { users, loading } = useUserStore();
+  const { users, loading, deleting } = useUserStore();
   const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
 
@@ -51,34 +55,23 @@ export function UsersTable({ showAll }: UsersTableProps) {
               key={user.id}
               className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${user.status === 0 ? 'opacity-50 bg-danger/10' : ''}`}
             >
-              <td
-                className="px-2 py-1 font-medium clickeable-table truncate"
-                onClick={() => handleAction(user, 'editUserName')}
-                title="Cambiar nombre"
-              >
-                {user.name}
-              </td>
-              <td
-                className="px-2 py-1 clickeable-table truncate"
-                onClick={() => handleAction(user, 'editUserPassword')}
-                title="Cambiar password"
-              >
-                {getDisplayEmail(user.email)}
-              </td>
-              <td
-                className="px-2 py-1 uppercase text-center clickeable-table"
-                onClick={() => handleAction(user, 'editUserRole')}
-                title="Cambiar rol"
-              >
-                {user.roles?.[0]?.name}
-              </td>
-              <td className="px-2 py-1 flex justify-center items-center text-center">
-                <Button
-                  preset={user.status === 1 ? Preset.smallClose : Preset.smallCloseDisable}
-                  disabled={user.status === 0}
-                  noText
-                  onClick={() => handleAction(user, 'deleteUser')}
-                />
+              <td className="px-2 py-1 font-medium truncate">{user.name}</td>
+              <td className="px-2 py-1 truncate">{getDisplayEmail(user.email)}</td>
+              <td className="px-2 py-1 uppercase text-center">{user.roles?.[0]?.name}</td>
+              <td className="px-2 py-1 text-center">
+                {deleting ? (
+                  <BiLoader className="animate-spin mx-auto" />
+                ) : (
+                  <Dropdown label={<FiSettings size={16} />}>
+                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUser')}>Editar</DropdownItem>
+                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUserPassword')}>Cambiar password</DropdownItem>
+                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUserRole')}>Cambiar rol</DropdownItem>
+                    <DropdownDivider />
+                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'deleteUser')}>
+                      <span className="text-danger font-semibold">Eliminar</span>
+                    </DropdownItem>
+                  </Dropdown>
+                )}
               </td>
             </tr>
           ))}

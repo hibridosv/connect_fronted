@@ -22,7 +22,10 @@
       "Bash(perl -pi -e 's/clickeable-table/clickeable/ if $. == 63 || $. == 65' src/components/orders/products/changeLotModal.tsx)",
       "Bash(perl -pi -e 's/clickeable-table/clickeable/ if $. == 65 || $. == 69 || $. == 71 || $. == 73 || $. == 78 || $. == 86 || $. == 95' src/components/orders/products/OrderProductsTable.tsx)",
       "Bash(perl -pi -e 's/clickeable-table/clickeable/ if $. == 87 || $. == 89 || $. == 119' src/components/orders/restaurant/RestaurantProductsAdded.tsx)",
-      "Bash(find app *)"
+      "Bash(find app *)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }
