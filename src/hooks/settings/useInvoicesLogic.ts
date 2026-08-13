@@ -13,12 +13,11 @@ export function useInvoicesLogic() {
 
   useEffect(() => {
     if (tenant?.id) {
-      console.log('Loading invoices for tenant:', tenant.id);
       loadInvoices(
         `settings/invoices?filterWhere[tenant_id]==${tenant.id}&included=items.payment,tenant&sort=-created_at&perPage=10`
       );
     }
-  }, [tenant, pusherEvent, loadInvoices]);
+  }, [tenant?.id, pusherEvent, loadInvoices]);
 
   const total = useMemo(() => {
     return getTotalOfItemWithStatus(invoices?.data, 'total', 'status', 1);
