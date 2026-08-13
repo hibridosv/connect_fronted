@@ -44,8 +44,8 @@ const useNotificationStore = create(
   loadNotifications: async () => {
     set({ loading: true });
     try {
-      const response = await getServices('notifications');
-      const data = response.data.data;
+      const response = await getServices('notifications/all?perPage=5');
+      const data = response.data.data?.data;
       set({ notifications: Array.isArray(data) ? data : [] });
     } catch {
       set({ notifications: [] });
@@ -59,9 +59,12 @@ const useNotificationStore = create(
     try {
       await createService(`notifications/${id}/read`, {});
       const { notifications, unreadCount } = get();
+      const target = notifications.find((notification) => notification.id === id);
       set({
-        notifications: notifications.filter((notification) => notification.id !== id),
-        unreadCount: Math.max(0, unreadCount - 1),
+        notifications: notifications.map((notification) =>
+          notification.id === id ? { ...notification, is_read: true } : notification
+        ),
+        unreadCount: target && !target.is_read ? Math.max(0, unreadCount - 1) : unreadCount,
       });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
@@ -74,7 +77,11 @@ const useNotificationStore = create(
     set({ saving: true });
     try {
       await createService('notifications/read-all', {});
-      set({ notifications: [], unreadCount: 0 });
+      const { notifications } = get();
+      set({
+        notifications: notifications.map((notification) => ({ ...notification, is_read: true })),
+        unreadCount: 0,
+      });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {

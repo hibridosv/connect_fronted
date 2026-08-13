@@ -19,7 +19,6 @@ export function useConfigLogic() {
       return
     }
     if (tenant?.id) {
-      console.log('PusherPayInvoiceEvent received, reloading config...')
       reloadConfig()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -41,8 +41,7 @@ export const NotificationBell = () => {
     <div className="relative">
       <button
         onClick={isPanelOpen ? closePanel : openPanel}
-        disabled={!hasUnread}
-        className="relative text-text-inverted hover:text-secondary clickeable disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
+        className="relative text-text-inverted hover:text-secondary clickeable"
         title="Notificaciones"
       >
         {hasUnread
@@ -65,7 +64,7 @@ export const NotificationBell = () => {
               <span className="font-semibold text-text-base text-sm uppercase tracking-wide">
                 Notificaciones
               </span>
-              {notifications.length > 0 && (
+              {hasUnread && (
                 <button
                   onClick={markAllRead}
                   disabled={saving}
@@ -82,20 +81,27 @@ export const NotificationBell = () => {
               )}
               {!loading && notifications.length === 0 && (
                 <div className="p-8 text-center text-text-muted text-sm">
-                  Sin notificaciones pendientes
+                  Sin notificaciones recientes
                 </div>
               )}
               {!loading && notifications.map((notification) => {
                 const style = importanceStyles[notification.importance] ?? importanceStyles.info;
+                const isUnread = !notification.is_read;
                 return (
                   <button
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
-                    className={`w-full text-left px-4 py-3 flex flex-col gap-1 hover:bg-bg-subtle/60 transition-colors duration-150 border-b border-bg-subtle/50 ${style.panelClasses}`}
+                    className={`w-full text-left px-4 py-3 flex flex-col gap-1 hover:bg-bg-subtle/60 transition-colors duration-150 border-b border-bg-subtle/50 ${
+                      isUnread ? style.panelClasses : 'opacity-60'
+                    }`}
                   >
                     <div className="flex items-start gap-2">
-                      <span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${style.dotClass}`} />
-                      <span className="font-semibold text-sm text-text-base leading-snug flex-1">
+                      <span
+                        className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${
+                          isUnread ? style.dotClass : 'bg-transparent border border-text-muted'
+                        }`}
+                      />
+                      <span className={`text-sm text-text-base leading-snug flex-1 ${isUnread ? 'font-semibold' : 'font-normal'}`}>
                         {notification.title}
                       </span>
                     </div>
@@ -123,7 +129,7 @@ export const NotificationBell = () => {
         <Modal.Body>
           {selectedNotification && (
             <div
-              className="text-text-base [&_h1]:text-xl [&_h1]:font-bold [&_h1]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:font-semibold [&_h3]:mb-1 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_strong]:font-semibold [&_a]:text-info [&_a]:underline [&_a]:hover:opacity-80"
+              className="text-text-base [&_h1]:text-xl [&_h1]:font-bold [&_h1]:mb-2 [&_h2]:text-lg [&_h2]:font-semibold [&_h2]:mb-2 [&_h3]:font-semibold [&_h3]:mb-1 [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-2 [&_li]:mb-1 [&_strong]:font-semibold [&_a]:text-info [&_a]:underline [&_a]:hover:opacity-80 [&_iframe]:w-full [&_iframe]:aspect-video [&_iframe]:rounded-md [&_iframe]:mb-3 [&_video]:w-full [&_video]:aspect-video [&_video]:rounded-md [&_video]:mb-3"
               dangerouslySetInnerHTML={{ __html: selectedNotification.content }}
             />
           )}
