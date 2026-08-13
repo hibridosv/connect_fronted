@@ -9,14 +9,11 @@ export function useInvoicesLogic() {
   const { invoices, payLink, loading, sendingLink, loadInvoices, loadPayLink } = invoicesStore();
   const { system, tenant } = useConfigStore();
 
-  const { random: pusherEvent } = useReverb(
-    `${tenant?.id}-channel-pay`,
-    'PusherPayInvoiceEvent',
-    true
-  );
+  const { random: pusherEvent } = useReverb(`${tenant?.id}-channel-pay`,'PusherPayInvoiceEvent',true);
 
   useEffect(() => {
     if (tenant?.id) {
+      console.log('Loading invoices for tenant:', tenant.id);
       loadInvoices(
         `settings/invoices?filterWhere[tenant_id]==${tenant.id}&included=items.payment,tenant&sort=-created_at&perPage=10`
       );
