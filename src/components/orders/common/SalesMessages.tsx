@@ -28,7 +28,6 @@ export function SalesMessages() {
 
   const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta = sumarTotalRetentionRenta(order);
- console.log('payMethod', isRestaurant(tenant?.system))
 
   return (
     <div className="">
