@@ -9,11 +9,7 @@ export function useInvoicesLogic() {
   const { invoices, payLink, loading, sendingLink, loadInvoices, loadPayLink } = invoicesStore();
   const { system, tenant } = useConfigStore();
 
-  const { random: pusherEvent } = useReverb(
-    `${tenant?.id}-channel-pay`,
-    'PusherPayInvoiceEvent',
-    true
-  );
+  const { random: pusherEvent } = useReverb(`${tenant?.id}-channel-pay`,'PusherPayInvoiceEvent',true);
 
   useEffect(() => {
     if (tenant?.id) {

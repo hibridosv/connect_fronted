@@ -1,13 +1,28 @@
 'use client'
+import useReverb from '@/hooks/useReverb'
 import useConfigStore, { MAX_CONFIG_RETRIES } from '@/stores/configStore'
 import { useThemeStore } from '@/stores/themeStore'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000
 
 export function useConfigLogic() {
   const { configurations, loadConfig, reloadConfig, loading, _hasHydrated, tenant, error, retryCount, lastLoadedAt } = useConfigStore()
   const { setTheme } = useThemeStore()
+
+  const { random: pusherEvent } = useReverb(`${tenant?.id}-channel-pay`, 'PusherPayInvoiceEvent', true)
+  const isFirstPusherEvent = useRef(true)
+
+  useEffect(() => {
+    if (isFirstPusherEvent.current) {
+      isFirstPusherEvent.current = false
+      return
+    }
+    if (tenant?.id) {
+      reloadConfig()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pusherEvent])
 
 
   useEffect(() => {
