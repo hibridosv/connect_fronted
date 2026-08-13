@@ -75,11 +75,11 @@ export function ChatbotPhoneCard({ phoneNumber, loadingPhone, saving, canManageP
             className="input flex-1 min-w-0"
           />
         </div>
-        <div className="flex items-center gap-3 mt-3">
-          <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
+        <div className="flex justify-end gap-3 mt-3">
           {!!phoneNumber && (
-            <Button type="button" onClick={() => setShowForm(false)} preset={Preset.cancel} disabled={saving} />
+            <Button type="button" onClick={() => setShowForm(false)} preset={Preset.danger} text="Cancelar" disabled={saving} />
           )}
+          <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
         </div>
       </form>
     );
