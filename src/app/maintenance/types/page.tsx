@@ -1,6 +1,5 @@
 'use client';
 
-import { Button, Preset } from "@/components/button/button";
 import { MaintenanceTypeFormModal } from "@/components/maintenance/types/MaintenanceTypeFormModal";
 import { MaintenanceTypesList } from "@/components/maintenance/types/MaintenanceTypesList";
 import { SearchInput } from "@/components/Search";
@@ -11,6 +10,7 @@ import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
 import Link from "next/link";
+import { BiPlusCircle } from "react-icons/bi";
 
 export default function Page() {
   const { searchTerm, handleSearchTerm } = useSearchTerm(["name"], 400, 2);
@@ -21,7 +21,14 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
-        <ViewTitle text="Tipos de Mantenimiento" />
+        <div className="flex justify-between">
+          <ViewTitle text="Tipos de Mantenimiento" />
+          <BiPlusCircle
+            size={28}
+            className="clickeable text-primary mt-3 mr-4"
+            onClick={() => { clearElement('maintenanceTypeForm'); openModal('maintenanceTypeForm'); }}
+          />
+        </div>
         <div className="p-4">
           <MaintenanceTypesList types={types} loading={loading} />
         </div>
@@ -32,15 +39,7 @@ export default function Page() {
           <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar tipo de mantenimiento" animating={loading} />
         </div>
 
-        <div className="p-4 flex justify-center">
-          <Button
-            preset={Preset.add}
-            text="Nuevo Tipo"
-            onClick={() => { clearElement('maintenanceTypeForm'); openModal('maintenanceTypeForm'); }}
-          />
-        </div>
-
-        <div className="px-4 text-center">
+        <div className="px-4 pt-3 text-center">
           <Link href="/maintenance" className="text-xs text-primary hover:underline">
             Volver a órdenes de mantenimiento
           </Link>

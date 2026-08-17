@@ -57,22 +57,22 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
   if (!isShow) return null;
 
   return (
-    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl3" closeOnOverlayClick={false}>
+    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl4" closeOnOverlayClick={false}>
       <Modal.Body>
         <div className="space-y-5">
 
           <div>
             <h3 className="text-sm font-bold text-text-base uppercase tracking-wider mb-3">Información general</h3>
-            <div className="flex flex-wrap -mx-3">
-              <div className="w-full md:w-1/2 px-3 mb-3">
+            <div className="space-y-3">
+              <div>
                 <label className="input-label">
                   Nombre <span className="text-danger">*</span>
                 </label>
-                <input className="input" placeholder="Ej. Cambio de aceite" {...register('name', { required: true })} />
+                <input className="input w-full" placeholder="Ej. Cambio de aceite" {...register('name', { required: true })} />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-3">
+              <div>
                 <label className="input-label">Descripción</label>
-                <input className="input" placeholder="Descripción breve" {...register('description')} />
+                <textarea rows={2} className="input w-full resize-none" placeholder="Descripción breve" {...register('description')} />
               </div>
             </div>
           </div>

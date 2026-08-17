@@ -22,10 +22,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="input-label mb-0">Campos del formulario</span>
-        <Button preset={Preset.add} text="Agregar campo" onClick={addField} />
-      </div>
+      <span className="input-label mb-0">Campos del formulario</span>
 
       {fields.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-6 text-text-muted border border-dashed border-bg-subtle rounded-lg">
@@ -61,11 +58,11 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                 </div>
 
                 <div className="p-3 space-y-3">
-                  <div className="flex flex-wrap -mx-1.5">
-                    <div className="px-1.5 w-full mb-2">
+                  <div className="space-y-2">
+                    <div>
                       <label className="input-label">Etiqueta</label>
                       <input
-                        className="input"
+                        className="input w-full"
                         placeholder="Ej. Kilometraje actual"
                         {...register(`fields_schema.${index}.label`, {
                           required: true,
@@ -77,10 +74,10 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                         })}
                       />
                     </div>
-                    <div className="px-1.5 w-full md:w-1/2 mb-2">
+                    <div>
                       <label className="input-label">Nombre interno</label>
                       <input
-                        className="input"
+                        className="input w-full"
                         placeholder="kilometraje_actual"
                         {...register(`fields_schema.${index}.name`, {
                           required: true,
@@ -88,7 +85,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                         })}
                       />
                     </div>
-                    <div className="px-1.5 w-full md:w-1/2 mb-2">
+                    <div>
                       <label className="input-label">Tipo</label>
                       <select className="input-select" {...register(`fields_schema.${index}.type`)}>
                         {MAINTENANCE_FIELD_TYPES.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
@@ -106,7 +103,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between gap-3 pt-2 border-t border-bg-subtle">
+                  <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-2 border-t border-bg-subtle">
                     <Switch
                       checked={!!required}
                       onChange={(checked) => setValue(`fields_schema.${index}.required`, checked)}
@@ -115,7 +112,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                     />
                     {fieldName && (
                       <span
-                        className="text-[11px] text-text-muted font-mono truncate max-w-[45%]"
+                        className="text-[11px] text-text-muted font-mono truncate max-w-full"
                         title={`custom_fields.${fieldName}`}
                       >
                         custom_fields.{fieldName}
@@ -128,6 +125,10 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
           })}
         </div>
       )}
+
+      <div className="flex justify-center pt-1">
+        <Button preset={Preset.add} text="Agregar campo" onClick={addField} />
+      </div>
     </div>
   );
 }

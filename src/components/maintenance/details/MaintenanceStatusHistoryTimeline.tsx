@@ -30,7 +30,7 @@ export function MaintenanceStatusHistoryTimeline({ history }: MaintenanceStatusH
             <p className="text-sm font-semibold text-text-base">{label}</p>
             <p className="text-xs text-text-muted">
               {formatDateAsDMY(entry.created_at)} · {formatHourAsHM(entry.created_at)}
-              {entry.changedBy?.name && <> · {entry.changedBy.name}</>}
+              {entry.changed_by?.name && <> · {entry.changed_by.name}</>}
             </p>
             {entry.comment && <p className="text-sm text-text-base mt-0.5">{entry.comment}</p>}
           </li>
