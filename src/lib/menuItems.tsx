@@ -56,14 +56,6 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
-    label: "Mantenimientos", icon: <FaWrench size={15} />,
-    children: [
-      { label: "Órdenes de Mantenimiento", href: "/maintenance" },
-      { label: "Nueva Orden", href: "/maintenance/new" },
-      { label: "Tipos de Mantenimiento", href: "/maintenance/types" },
-    ],
-  },
-  {
     label: "Cuentas", icon: <BiMoneyWithdraw size={15} />,
     permissions: ["credits-receivable", "credits-payable"],
     children: [
@@ -154,6 +146,15 @@ export const menuItems: MenuItem[] = [
       { label: "Libros de compras", href: "/annexes/purchases", permission: "reports-attaches" },
       { label: "Descargas de Documentos", href: "/annexes/downloads", permission: "reports-attaches" },
       { label: "Lector de JSON", href: "/annexes/json-reader" },
+    ],
+  },
+  {
+    label: "Mantenimientos", icon: <FaWrench size={15} />,
+    permissions: ["maintenance", "maintenance-show", "maintenance-new", "maintenance-types"],
+    children: [
+      { label: "Órdenes de Mantenimiento", href: "/maintenance", permission: "maintenance-show" },
+      { label: "Nueva Orden", href: "/maintenance/new", permission: "maintenance-new" },
+      { label: "Tipos de Mantenimiento", href: "/maintenance/types", permission: "maintenance-types" },
     ],
   },
   {
