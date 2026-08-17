@@ -6,13 +6,13 @@ import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
-import { Button, Preset } from "@/components/button/button";
 import { useMaintenanceTypesLogic } from "@/hooks/maintenance/useMaintenanceTypesLogic";
 import { useMaintenancesLogic } from "@/hooks/maintenance/useMaintenancesLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import Link from "next/link";
 import { useState } from "react";
+import { BiPlusCircle } from "react-icons/bi";
 
 export default function Page() {
   const { currentPage, handlePageNumber } = usePagination("&page=1");
@@ -25,7 +25,12 @@ export default function Page() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-10 pb-4 md:pb-10">
       <div className="md:col-span-7 md:border-r md:border-primary">
-        <ViewTitle text="Órdenes de Mantenimiento" />
+        <div className="flex justify-between">
+          <ViewTitle text="Órdenes de Mantenimiento" />
+          <Link href="/maintenance/new">
+            <BiPlusCircle size={28} className="clickeable text-primary mt-3 mr-4" />
+          </Link>
+        </div>
         <div className="p-2">
           <div className="px-2 mb-3">
             <MaintenanceStatusTabs status={status} setStatus={setStatus} />
@@ -50,13 +55,7 @@ export default function Page() {
           </select>
         </div>
 
-        <div className="p-4 flex justify-center">
-          <Link href="/maintenance/new">
-            <Button preset={Preset.add} text="Nueva Orden" />
-          </Link>
-        </div>
-
-        <div className="px-4 text-center">
+        <div className="px-4 pt-3 text-center">
           <Link href="/maintenance/types" className="text-xs text-primary hover:underline">
             Administrar tipos de mantenimiento
           </Link>
