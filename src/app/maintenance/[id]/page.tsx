@@ -31,7 +31,10 @@ export default function Page() {
   };
 
   const handleAssociateInvoice = async (ticketOrderId: string) => {
-    const success = await updateMaintenance(id, { ticket_order_id: ticketOrderId });
+    const success = await updateMaintenance(id, {
+      ticket_order_id: ticketOrderId,
+      custom_fields: maintenance?.custom_fields ?? {},
+    });
     if (success) reload();
     return success;
   };

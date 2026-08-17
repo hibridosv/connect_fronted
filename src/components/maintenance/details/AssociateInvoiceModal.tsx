@@ -26,7 +26,7 @@ export function AssociateInvoiceModal({ isShow, onClose, contactId, onAssociate,
     if (!term.trim()) return;
     setSearching(true);
     try {
-      const response = await getServices(`orders?filterwherein[status]==3,4&filterWhere[client_id]==${contactId}&filter[invoice]=${term.trim()}&sort=-charged_at&perPage=10`);
+      const response = await getServices(`orders?filterwherein[status]==3,4&filterWhere[client_id]==${contactId}&filter[invoice]=${term.trim()}&included=invoiceAssigned&sort=-charged_at&perPage=10`);
       setResults(response.data.data?.data ?? []);
     } catch {
       setResults([]);
@@ -78,13 +78,16 @@ export function AssociateInvoiceModal({ isShow, onClose, contactId, onAssociate,
                   type="button"
                   key={order.id}
                   onClick={() => setSelected(order)}
-                  className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between transition-colors ${selected?.id === order.id ? 'bg-primary/10' : 'hover:bg-bg-subtle/40'}`}
+                  className={`w-full text-left px-3 py-2 text-sm flex items-center justify-between gap-2 transition-colors ${selected?.id === order.id ? 'bg-primary/10' : 'hover:bg-bg-subtle/40'}`}
                 >
-                  <span>
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-medium text-text-muted uppercase tracking-wide truncate">
+                      {order.invoice_assigned?.name ?? 'Documento'}
+                    </span>
                     <span className="font-semibold text-text-base">#{order.invoice}</span>
-                    <span className="text-text-muted ml-2">{formatDateAsDMY(order.charged_at)}</span>
+                    <span className="text-text-muted ml-2 text-xs">{formatDateAsDMY(order.charged_at)}</span>
                   </span>
-                  <span className="font-semibold text-text-base">{numberToMoney(order.total ?? 0, system)}</span>
+                  <span className="font-semibold text-text-base shrink-0">{numberToMoney(order.total ?? 0, system)}</span>
                 </button>
               ))}
             </div>
