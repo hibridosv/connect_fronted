@@ -1,6 +1,6 @@
 'use client';
 import { MenuItem, menuItems } from "@/lib/menuItems";
-import { isRestaurant, permissionExists } from "@/lib/utils";
+import { permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useNotificationStore from "@/stores/notificationStore";
 import { useThemeStore } from "@/stores/themeStore";
@@ -144,8 +144,6 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const hasAnyPermission = (perms: string[]): boolean =>
     perms.some((p) => permissionExists(permission, p));
 
-  const isRest = isRestaurant(tenant?.system);
-
   let itemIndex = 0;
 
   return (
@@ -201,7 +199,6 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
           <div className="relative flex-grow overflow-y-auto custom-scrollbar">
             <ul className="px-2.5 py-3 space-y-1.5">
               {menuItems
-                .filter((item) => !(item.label === 'Restaurante' && !isRest))
                 .map((item) => {
                   const currentIndex = itemIndex++;
 

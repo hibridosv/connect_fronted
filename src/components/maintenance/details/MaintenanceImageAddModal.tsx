@@ -50,63 +50,61 @@ export function MaintenanceImageAddModal({ isShow, onClose, maintenanceId }: Mai
 
   return (
     <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Agregar imagen" closeOnOverlayClick={false}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Modal.Body>
-          <div className="p-4 space-y-4">
+      <Modal.Body>
+        <div className="p-4 space-y-4">
 
-            <div
-              className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed transition-colors cursor-pointer overflow-hidden
-                ${errors.image ? 'border-danger bg-danger/5' : 'border-bg-subtle hover:border-primary/50 bg-bg-subtle/30 hover:bg-primary/5'}`}
-              style={{ minHeight: 160 }}
-              onClick={() => !preview && inputRef.current?.click()}
-            >
-              {preview ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preview} alt="Vista previa" className="w-full h-full object-contain max-h-40" />
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); handleClearFile(); }}
-                    className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-                  >
-                    <MdClose size={14} />
-                  </button>
-                </>
-              ) : (
-                <div className="flex flex-col items-center gap-2 py-6 px-4 text-center pointer-events-none">
-                  <MdAddPhotoAlternate size={36} className={errors.image ? 'text-danger' : 'text-text-muted opacity-40'} />
-                  <p className={`text-sm font-medium ${errors.image ? 'text-danger' : 'text-text-muted'}`}>
-                    Haz click para seleccionar una imagen
-                  </p>
-                  <p className="text-xs text-text-muted opacity-60">JPG, PNG, WEBP — máx. 3 MB</p>
-                </div>
-              )}
-
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                {...registerRest}
-                ref={(el) => { registerRef(el); inputRef.current = el; }}
-                onChange={(e) => { registerRest.onChange(e); handleFileChange(e); }}
-              />
-            </div>
-            {errors.image && (
-              <p className="text-xs text-danger -mt-2">Selecciona una imagen.</p>
+          <div
+            className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed transition-colors cursor-pointer overflow-hidden
+              ${errors.image ? 'border-danger bg-danger/5' : 'border-bg-subtle hover:border-primary/50 bg-bg-subtle/30 hover:bg-primary/5'}`}
+            style={{ minHeight: 160 }}
+            onClick={() => !preview && inputRef.current?.click()}
+          >
+            {preview ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={preview} alt="Vista previa" className="w-full h-full object-contain max-h-40" />
+                <button
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); handleClearFile(); }}
+                  className="absolute top-2 right-2 p-1 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+                >
+                  <MdClose size={14} />
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-2 py-6 px-4 text-center pointer-events-none">
+                <MdAddPhotoAlternate size={36} className={errors.image ? 'text-danger' : 'text-text-muted opacity-40'} />
+                <p className={`text-sm font-medium ${errors.image ? 'text-danger' : 'text-text-muted'}`}>
+                  Haz click para seleccionar una imagen
+                </p>
+                <p className="text-xs text-text-muted opacity-60">JPG, PNG, WEBP — máx. 3 MB</p>
+              </div>
             )}
 
-            <div>
-              <label className="input-label">Descripción</label>
-              <textarea {...register('description')} rows={2} className="input w-full resize-none" placeholder="Ej: Ingreso - rayón lateral" />
-            </div>
-
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              {...registerRest}
+              ref={(el) => { registerRef(el); inputRef.current = el; }}
+              onChange={(e) => { registerRest.onChange(e); handleFileChange(e); }}
+            />
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={onClose} preset={Preset.close} disabled={saving} />
-          <Button type="submit" preset={saving ? Preset.saving : Preset.save} disabled={saving} />
-        </Modal.Footer>
-      </form>
+          {errors.image && (
+            <p className="text-xs text-danger -mt-2">Selecciona una imagen.</p>
+          )}
+
+          <div>
+            <label className="input-label">Descripción</label>
+            <textarea {...register('description')} rows={2} className="input w-full resize-none" placeholder="Ej: Ingreso - rayón lateral" />
+          </div>
+
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onClose} preset={Preset.close} disabled={saving} />
+        <Button onClick={handleSubmit(onSubmit)} preset={saving ? Preset.saving : Preset.save} disabled={saving} />
+      </Modal.Footer>
     </Modal>
   );
 }

@@ -12,22 +12,34 @@ import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { ToasterMessage } from "@/components/toaster-message";
 import { useMaintenanceDetailsLogic } from "@/hooks/maintenance/useMaintenanceDetailsLogic";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
+import useModalStore from "@/stores/modalStorage";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { LuLoader } from "react-icons/lu";
 
 export default function Page() {
   const params = useParams();
   const id = params?.id as string;
   const { maintenance, loading, saving, updateMaintenance, reload } = useMaintenanceDetailsLogic(id);
-  const [showStatusModal, setShowStatusModal] = useState(false);
-  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const { modals, openModal, closeModal } = useModalStore();
 
-  const handleSave = async (data: any) => updateMaintenance(id, data);
-  const handleAssociateInvoice = async (ticketOrderId: string) => updateMaintenance(id, { ticket_order_id: ticketOrderId });
+  const handleSave = async (data: any) => {
+    const success = await updateMaintenance(id, data);
+    if (success) reload();
+    return success;
+  };
 
-  if (loading || !maintenance) {
+  const handleAssociateInvoice = async (ticketOrderId: string) => {
+    const success = await updateMaintenance(id, {
+      ticket_order_id: ticketOrderId,
+      custom_fields: maintenance?.custom_fields ?? {},
+    });
+    if (success) reload();
+    return success;
+  };
+
+  if (!maintenance) {
     return (
       <div className="p-4">
         <SkeletonTable rows={8} columns={3} />
@@ -42,6 +54,7 @@ export default function Page() {
           <FaArrowLeft size={16} />
         </Link>
         <ViewTitle text={maintenance.asset_label || maintenance.type?.name || 'Orden de mantenimiento'} />
+        {loading && <LuLoader className="animate-spin text-text-muted shrink-0" size={16} />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-10 gap-4 px-2 sm:px-4 mt-2">
@@ -55,7 +68,7 @@ export default function Page() {
                   Recibido {formatDateAsDMY(maintenance.received_at)} · {formatHourAsHM(maintenance.received_at)}
                 </span>
               </div>
-              <Button text="Cambiar estado" preset={Preset.info} onClick={() => setShowStatusModal(true)} />
+              <Button text="Cambiar estado" preset={Preset.info} onClick={() => openModal('maintenanceStatus')} />
             </div>
             {maintenance.delivered_at && (
               <p className="text-xs text-text-muted mt-2">
@@ -89,7 +102,9 @@ export default function Page() {
             ) : (
               <>
                 <p className="text-sm text-text-muted mb-2">Sin factura asociada.</p>
-                <Button text="Asociar factura" preset={Preset.secondary} isFull onClick={() => setShowInvoiceModal(true)} />
+                <div className="flex justify-center">
+                  <Button text="Asociar factura" preset={Preset.secondary} onClick={() => openModal('maintenanceAssociateInvoice')} />
+                </div>
               </>
             )}
           </div>
@@ -102,16 +117,16 @@ export default function Page() {
       </div>
 
       <MaintenanceQuickStatusModal
-        isShow={showStatusModal}
-        onClose={() => setShowStatusModal(false)}
+        isShow={!!modals.maintenanceStatus}
+        onClose={() => closeModal('maintenanceStatus')}
         maintenanceId={maintenance.id}
         currentStatus={maintenance.status}
         onUpdated={reload}
       />
 
       <AssociateInvoiceModal
-        isShow={showInvoiceModal}
-        onClose={() => setShowInvoiceModal(false)}
+        isShow={!!modals.maintenanceAssociateInvoice}
+        onClose={() => closeModal('maintenanceAssociateInvoice')}
         contactId={maintenance.contact_id}
         onAssociate={handleAssociateInvoice}
         saving={saving}

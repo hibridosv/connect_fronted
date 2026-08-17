@@ -57,13 +57,17 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
   if (!isShow) return null;
 
   return (
-    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl2" closeOnOverlayClick={false}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Modal.Body>
-          <div className="space-y-4 p-1">
+    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl3" closeOnOverlayClick={false}>
+      <Modal.Body>
+        <div className="space-y-5">
+
+          <div>
+            <h3 className="text-sm font-bold text-text-base uppercase tracking-wider mb-3">Información general</h3>
             <div className="flex flex-wrap -mx-3">
               <div className="w-full md:w-1/2 px-3 mb-3">
-                <label className="input-label">Nombre *</label>
+                <label className="input-label">
+                  Nombre <span className="text-danger">*</span>
+                </label>
                 <input className="input" placeholder="Ej. Cambio de aceite" {...register('name', { required: true })} />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-3">
@@ -71,15 +75,21 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
                 <input className="input" placeholder="Descripción breve" {...register('description')} />
               </div>
             </div>
+          </div>
 
+          <div className="border-t border-bg-subtle pt-5">
+            <p className="text-xs text-text-muted -mt-1 mb-3">
+              Estos campos se mostrarán en el formulario dinámico al crear una orden con este tipo de mantenimiento.
+            </p>
             <FieldsSchemaEditor control={control} register={register} watch={watch} setValue={setValue} />
           </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={handleClose} preset={Preset.close} disabled={saving} />
-          <Button type="submit" disabled={saving} preset={saving ? Preset.saving : Preset.save} />
-        </Modal.Footer>
-      </form>
+
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={handleClose} preset={Preset.close} disabled={saving} />
+        <Button onClick={handleSubmit(onSubmit)} disabled={saving} preset={saving ? Preset.saving : Preset.save} />
+      </Modal.Footer>
     </Modal>
   );
 }

@@ -35,25 +35,29 @@ export default function Page() {
         </div>
       </div>
       <div className="md:col-span-3">
-        <ViewTitle text="Filtros" />
-        <div className="p-4 space-y-3">
-          <Link href="/maintenance/new">
-            <Button preset={Preset.add} text="Nueva Orden" isFull />
-          </Link>
-
+        <ViewTitle text="Buscar Orden" />
+        <div className="p-4">
           <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar por bien / activo" animating={loading} />
+        </div>
 
-          <div>
-            <label className="input-label">Tipo de mantenimiento</label>
-            <select className="input-select" value={typeId} onChange={(e) => setTypeId(e.target.value)}>
-              <option value="">Todos los tipos</option>
-              {types?.map((type: any) => (
-                <option key={type.id} value={type.id}>{type.name}</option>
-              ))}
-            </select>
-          </div>
+        <div className="px-4">
+          <label className="input-label">Tipo de mantenimiento</label>
+          <select className="input-select" value={typeId} onChange={(e) => setTypeId(e.target.value)}>
+            <option value="">Todos los tipos</option>
+            {types?.map((type: any) => (
+              <option key={type.id} value={type.id}>{type.name}</option>
+            ))}
+          </select>
+        </div>
 
-          <Link href="/maintenance/types" className="block text-xs text-primary hover:underline text-center pt-2">
+        <div className="p-4 flex justify-center">
+          <Link href="/maintenance/new">
+            <Button preset={Preset.add} text="Nueva Orden" />
+          </Link>
+        </div>
+
+        <div className="px-4 text-center">
+          <Link href="/maintenance/types" className="text-xs text-primary hover:underline">
             Administrar tipos de mantenimiento
           </Link>
         </div>
