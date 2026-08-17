@@ -108,11 +108,15 @@ const useConfigStore = create(
 
       updateConfiguration: async (id: number, active: number) => {
         try {
+          const changedConfig = get().configurations?.find((conf: any) => conf.id === id);
           const response = await updateService(`config/${id}`, { active });
           let extracted = extractActiveFeature(response.data.data)
           set({ configurations: response.data.data });
           set({ activeConfig: extracted });
           useToastMessageStore.getState().setMessage({ message: 'Configuración actualizada'});
+          if (changedConfig?.feature === 'maintenance') {
+            await get().reloadConfig();
+          }
         } catch (error) {
           useToastMessageStore.getState().setError(error);
         }
