@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { BiDownload, BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
-import { FaCashRegister, FaFileInvoice, FaTools } from "react-icons/fa";
+import { FaCashRegister, FaFileInvoice, FaTools, FaWrench } from "react-icons/fa";
 import { GrConfigure } from "react-icons/gr";
 import { LuUtensilsCrossed } from "react-icons/lu";
 import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
@@ -53,6 +53,14 @@ export const menuItems: MenuItem[] = [
       { label: "Cuentas Bancarias", href: "/cash/bank-accounts", permission: "cash-accounts" },
       { label: "Flujo de Efectivo", href: "/cash/transfers", permission: "cash-inout" },
       { label: "Historial de Transferencias", href: "/cash/history", permission: "cash-history" },
+    ],
+  },
+  {
+    label: "Mantenimientos", icon: <FaWrench size={15} />,
+    children: [
+      { label: "Órdenes de Mantenimiento", href: "/maintenance" },
+      { label: "Nueva Orden", href: "/maintenance/new" },
+      { label: "Tipos de Mantenimiento", href: "/maintenance/types" },
     ],
   },
   {
