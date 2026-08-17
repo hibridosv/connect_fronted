@@ -57,7 +57,7 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
   if (!isShow) return null;
 
   return (
-    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl3" closeOnOverlayClick={false}>
+    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl4" closeOnOverlayClick={false}>
       <Modal.Body>
         <div className="space-y-5">
 
@@ -72,7 +72,7 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
               </div>
               <div className="w-full md:w-1/2 px-3 mb-3">
                 <label className="input-label">Descripción</label>
-                <input className="input" placeholder="Descripción breve" {...register('description')} />
+                <textarea rows={2} className="input w-full resize-none" placeholder="Descripción breve" {...register('description')} />
               </div>
             </div>
           </div>

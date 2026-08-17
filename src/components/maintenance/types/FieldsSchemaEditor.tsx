@@ -22,10 +22,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="input-label mb-0">Campos del formulario</span>
-        <Button preset={Preset.add} text="Agregar campo" onClick={addField} />
-      </div>
+      <span className="input-label mb-0">Campos del formulario</span>
 
       {fields.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-2 py-6 text-text-muted border border-dashed border-bg-subtle rounded-lg">
@@ -128,6 +125,10 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
           })}
         </div>
       )}
+
+      <div className="flex justify-center pt-1">
+        <Button preset={Preset.add} text="Agregar campo" onClick={addField} />
+      </div>
     </div>
   );
 }
