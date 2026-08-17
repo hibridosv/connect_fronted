@@ -16,6 +16,7 @@ import useModalStore from "@/stores/modalStorage";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
+import { LuLoader } from "react-icons/lu";
 
 export default function Page() {
   const params = useParams();
@@ -23,10 +24,19 @@ export default function Page() {
   const { maintenance, loading, saving, updateMaintenance, reload } = useMaintenanceDetailsLogic(id);
   const { modals, openModal, closeModal } = useModalStore();
 
-  const handleSave = async (data: any) => updateMaintenance(id, data);
-  const handleAssociateInvoice = async (ticketOrderId: string) => updateMaintenance(id, { ticket_order_id: ticketOrderId });
+  const handleSave = async (data: any) => {
+    const success = await updateMaintenance(id, data);
+    if (success) reload();
+    return success;
+  };
 
-  if (loading || !maintenance) {
+  const handleAssociateInvoice = async (ticketOrderId: string) => {
+    const success = await updateMaintenance(id, { ticket_order_id: ticketOrderId });
+    if (success) reload();
+    return success;
+  };
+
+  if (!maintenance) {
     return (
       <div className="p-4">
         <SkeletonTable rows={8} columns={3} />
@@ -41,6 +51,7 @@ export default function Page() {
           <FaArrowLeft size={16} />
         </Link>
         <ViewTitle text={maintenance.asset_label || maintenance.type?.name || 'Orden de mantenimiento'} />
+        {loading && <LuLoader className="animate-spin text-text-muted shrink-0" size={16} />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-10 gap-4 px-2 sm:px-4 mt-2">
