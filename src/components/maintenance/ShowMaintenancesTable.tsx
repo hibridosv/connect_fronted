@@ -9,9 +9,10 @@ import { Maintenance } from "@/interfaces/maintenance";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import useModalStore from "@/stores/modalStorage";
 import useMaintenanceStore from "@/stores/maintenance/maintenanceStore";
+import useTempStorage from "@/stores/useTempStorage";
 import Link from "next/link";
-import { useState } from "react";
 import { FiSettings } from "react-icons/fi";
 import { MaintenanceStatusBadge } from "./MaintenanceStatusBadge";
 
@@ -23,7 +24,9 @@ export interface ShowMaintenancesTableProps {
 export function ShowMaintenancesTable({ records, loading }: ShowMaintenancesTableProps) {
   const { system } = useConfigStore();
   const { deleteMaintenance, deleting } = useMaintenanceStore();
-  const [deleteTarget, setDeleteTarget] = useState<Maintenance | null>(null);
+  const { modals, openModal, closeModal } = useModalStore();
+  const { setElement, getElement } = useTempStorage();
+  const deleteTarget = getElement('maintenanceDelete');
 
   if (loading) return <SkeletonTable rows={15} columns={8} />;
   if (!records || records.length === 0) return <NothingHere />;
@@ -31,7 +34,7 @@ export function ShowMaintenancesTable({ records, loading }: ShowMaintenancesTabl
   const handleDelete = async () => {
     if (!deleteTarget) return;
     const success = await deleteMaintenance(deleteTarget.id);
-    if (success) setDeleteTarget(null);
+    if (success) closeModal('deleteMaintenance');
   };
 
   const listItems = records.map((record) => (
@@ -49,7 +52,7 @@ export function ShowMaintenancesTable({ records, loading }: ShowMaintenancesTabl
         <Dropdown label={<FiSettings size={18} />}>
           <DropdownItem as={`/maintenance/${record.id}`}>Ver Orden</DropdownItem>
           <DropdownDivider />
-          <DropdownItem onClick={() => setDeleteTarget(record)}><span className="text-danger font-semibold">Eliminar</span></DropdownItem>
+          <DropdownItem onClick={() => { setElement('maintenanceDelete', record); openModal('deleteMaintenance'); }}><span className="text-danger font-semibold">Eliminar</span></DropdownItem>
         </Dropdown>
       </td>
     </tr>
@@ -77,11 +80,11 @@ export function ShowMaintenancesTable({ records, loading }: ShowMaintenancesTabl
         </table>
       </div>
       <DeleteModal
-        isShow={!!deleteTarget}
+        isShow={deleteTarget?.id && modals.deleteMaintenance}
         header="Eliminar orden de mantenimiento"
         text="¿Estás seguro de eliminar esta orden? Se eliminarán también sus imágenes y bitácora de estados."
         onDelete={handleDelete}
-        onClose={() => setDeleteTarget(null)}
+        onClose={() => closeModal('deleteMaintenance')}
         isSending={deleting}
       />
     </div>

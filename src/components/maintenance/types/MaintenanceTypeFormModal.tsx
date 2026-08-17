@@ -57,22 +57,34 @@ export function MaintenanceTypeFormModal({ isShow, onClose, record }: Maintenanc
   if (!isShow) return null;
 
   return (
-    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl2" closeOnOverlayClick={false}>
+    <Modal show={isShow} onClose={handleClose} headerTitle={isEdit ? 'Editar tipo de mantenimiento' : 'Nuevo tipo de mantenimiento'} size="xl3" closeOnOverlayClick={false}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>
-          <div className="space-y-4 p-1">
-            <div className="flex flex-wrap -mx-3">
-              <div className="w-full md:w-1/2 px-3 mb-3">
-                <label className="input-label">Nombre *</label>
-                <input className="input" placeholder="Ej. Cambio de aceite" {...register('name', { required: true })} />
-              </div>
-              <div className="w-full md:w-1/2 px-3 mb-3">
-                <label className="input-label">Descripción</label>
-                <input className="input" placeholder="Descripción breve" {...register('description')} />
+          <div className="space-y-5">
+
+            <div>
+              <h3 className="text-sm font-bold text-text-base uppercase tracking-wider mb-3">Información general</h3>
+              <div className="flex flex-wrap -mx-3">
+                <div className="w-full md:w-1/2 px-3 mb-3">
+                  <label className="input-label">
+                    Nombre <span className="text-danger">*</span>
+                  </label>
+                  <input className="input" placeholder="Ej. Cambio de aceite" {...register('name', { required: true })} />
+                </div>
+                <div className="w-full md:w-1/2 px-3 mb-3">
+                  <label className="input-label">Descripción</label>
+                  <input className="input" placeholder="Descripción breve" {...register('description')} />
+                </div>
               </div>
             </div>
 
-            <FieldsSchemaEditor control={control} register={register} watch={watch} setValue={setValue} />
+            <div className="border-t border-bg-subtle pt-5">
+              <p className="text-xs text-text-muted -mt-1 mb-3">
+                Estos campos se mostrarán en el formulario dinámico al crear una orden con este tipo de mantenimiento.
+              </p>
+              <FieldsSchemaEditor control={control} register={register} watch={watch} setValue={setValue} />
+            </div>
+
           </div>
         </Modal.Body>
         <Modal.Footer>

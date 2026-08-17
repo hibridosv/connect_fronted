@@ -3,6 +3,7 @@ import { DeleteModal } from '@/components/DeleteModal';
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
 import useConfigStore from '@/stores/configStore';
+import useModalStore from '@/stores/modalStorage';
 import useMaintenanceImagesStore from '@/stores/maintenance/maintenanceImagesStore';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -19,7 +20,7 @@ export function MaintenanceImagesSection({ maintenanceId }: MaintenanceImagesSec
   const { images, loading, deleting, loadImages, deleteImage } = useMaintenanceImagesStore();
   const { tenant } = useConfigStore();
   const { data: session } = useSession();
-  const [showAdd, setShowAdd] = useState(false);
+  const { modals, openModal, closeModal } = useModalStore();
   const [imageToDelete, setImageToDelete] = useState<string | null>(null);
   const [imageToPreview, setImageToPreview] = useState<any | null>(null);
 
@@ -47,7 +48,7 @@ export function MaintenanceImagesSection({ maintenanceId }: MaintenanceImagesSec
         </h3>
         <button
           type="button"
-          onClick={() => setShowAdd(true)}
+          onClick={() => openModal('maintenanceImageAdd')}
           className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-primary text-text-inverted hover:bg-primary/90 transition-colors"
         >
           <MdAddPhotoAlternate size={16} />
@@ -107,7 +108,7 @@ export function MaintenanceImagesSection({ maintenanceId }: MaintenanceImagesSec
         </div>
       )}
 
-      <MaintenanceImageAddModal isShow={showAdd} onClose={() => setShowAdd(false)} maintenanceId={maintenanceId} />
+      <MaintenanceImageAddModal isShow={!!modals.maintenanceImageAdd} onClose={() => closeModal('maintenanceImageAdd')} maintenanceId={maintenanceId} />
 
       <DeleteModal
         isShow={!!imageToDelete}
