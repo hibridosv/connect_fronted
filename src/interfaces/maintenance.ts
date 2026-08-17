@@ -36,8 +36,10 @@ export interface MaintenanceStatusHistory {
     maintenance_id: string;
     status:         number;
     comment?:       string;
-    changed_by:     string;
-    changedBy?:     User;
+    // The backend eager-loads the `changedBy` relation, and Laravel snake-cases
+    // it to `changed_by` on serialization — overwriting the raw FK column, so
+    // this key always resolves to the User object (or null), not a uuid string.
+    changed_by:     User | null;
     created_at:     string;
 }
 
@@ -61,7 +63,8 @@ export interface Maintenance {
     employee?:             User;
     order?:                Order | null;
     images?:               MaintenanceImage[];
-    statusHistory?:        MaintenanceStatusHistory[];
+    // Serialized by Laravel as `status_history` (relation names are snake-cased).
+    status_history?:       MaintenanceStatusHistory[];
     created_at:            string;
     updated_at:            string;
 }

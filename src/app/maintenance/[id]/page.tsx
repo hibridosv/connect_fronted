@@ -111,7 +111,7 @@ export default function Page() {
 
           <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4">
             <h3 className="text-sm font-bold text-text-base uppercase tracking-wider mb-3">Historial de Estados</h3>
-            <MaintenanceStatusHistoryTimeline history={maintenance.statusHistory} />
+            <MaintenanceStatusHistoryTimeline history={maintenance.status_history} />
           </div>
         </div>
       </div>
