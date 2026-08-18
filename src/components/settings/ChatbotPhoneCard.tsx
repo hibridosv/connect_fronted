@@ -1,5 +1,6 @@
 'use client';
 import { CHATBOT_PHONE, WHATSAPP_MESSAGE } from '@/app/settings/chatbot/chatbotConfig';
+import { Alert } from '@/components/Alert/Alert';
 import { Button, Preset } from '@/components/button/button';
 import { buildPhoneNumber, formatPhoneDisplay, PHONE_COUNTRY_CODES } from '@/lib/phone';
 import QRCode from 'qrcode';
@@ -57,6 +58,11 @@ export function ChatbotPhoneCard({ phoneNumber, loadingPhone, saving, canManageP
         <p className="text-sm text-text-muted mb-2">
           Registra tu número de WhatsApp para poder escribirle al chatbot.
         </p>
+        <Alert
+          type="info"
+          text="Este registro vincula tu número con tu cuenta del sistema, permitiéndonos identificarte de forma segura. Por tu seguridad, el chatbot únicamente responde a números que se encuentren correctamente vinculados."
+          className="mb-3"
+        />
         <div className="flex gap-2">
           <div className="w-40 shrink-0">
             <select id="country_code" {...register('country_code')} className="input-select" defaultValue={PHONE_COUNTRY_CODES[0].code}>
