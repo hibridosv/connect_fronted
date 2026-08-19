@@ -84,6 +84,11 @@ export default function Page({ params }: { params: { id: string } }) {
                 <input type="number" id="minimum_stock" {...register("minimum_stock", { required: true, min: 0 })} className="input" />
               </div> </>)}
 
+              { product && product.product_type == 2 && (
+              <div className="w-full md:w-1/3 px-3 mb-2">
+                <label htmlFor="unit_cost" className="input-label">Precio Costo</label>
+                <input type="number" step={"any"} id="unit_cost" {...register("unit_cost")} className="input" />
+              </div> )}
 
               <div className="w-full md:w-1/3 px-3 mb-2">
                 <label htmlFor="saved" className={"input-label"}>Gavado</label>
