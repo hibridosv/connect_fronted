@@ -6,7 +6,7 @@ export function useMaintenanceEmployeesLogic() {
   const { loadUsers, users, loading } = useUserStore();
 
   useEffect(() => {
-    loadUsers('users?sort=name&filterWhere[status]==1&perPage=200');
+    loadUsers('users?filterWhere[is_visible]==1&filterWhere[status]==1&perPage=200');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
