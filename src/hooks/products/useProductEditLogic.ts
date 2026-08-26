@@ -36,6 +36,7 @@ const { loadProduct, product } = useProductStore();
       setValue("default_commission", product?.default_commission)
       setValue("prescription", product?.prescription)
       setValue("saved", product?.saved)
+      setValue("unit_cost", product?.unit_cost)
 
       // eslint-disable-next-line
     }, [product, setValue])

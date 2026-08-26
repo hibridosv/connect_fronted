@@ -185,6 +185,15 @@ export function ProductDetailsGetModal(props: ProductDetailsGetModalI) {
           </div>
           </>)}
 
+          { record.product_type == 2 && (
+          <div className="space-y-2">
+            <h4 className="text-md font-semibold text-text-base border-b border-bg-subtle pb-1">Detalles Adicionales</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <DetailRow label="Costo Unitario" value={numberToMoney(record.unit_cost, system)} icon={<MdOutlineAttachMoney />} isHiden={role ? excludedRoles.includes(role) : false} />
+            </div>
+          </div>
+          )}
+
           <ProductLinked record={record} isShow={isShow} />
 
           <ProductImagesViewer productId={String(record.id)} />
