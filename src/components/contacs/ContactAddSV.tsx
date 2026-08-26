@@ -28,7 +28,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const { countries } = useCountries();
   let selectDepartament =  (watch("departament_doc")) ? watch("departament_doc") : departaments && departaments.departamentos[0].id;
   const { townsExtracted } = useTownByDepartament(departaments, selectDepartament);
-  let regex =  (watch("country") == "9300") ? "^([0-9]{8}-[0-9]{1}|[0-9]{4}-[0-9]{6}-[0-9]{3}-[0-9]{1})?$" : "^[a-zA-Z0-9-]+$";
+  let regex =  (watch("country") == "SV") ? "^([0-9]{8}-[0-9]{1}|[0-9]{4}-[0-9]{6}-[0-9]{3}-[0-9]{1})?$" : "^[a-zA-Z0-9-]+$";
   const { onSubmit } = useContactsAddLogic(isShow, record, setValue, departaments, countries, townsExtracted,  getParamString(pageParam));
   const { saving } = useContactStore();
   const { users, loading: loadingUsers} = useUserStore();
@@ -177,7 +177,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                   { isCountryActive && countries &&
                     <div className="w-full md:w-full px-3 mb-2">
                       <label htmlFor="country" className="input-label"> Seleccione un pais </label>
-                      <select defaultValue={"9300"} id="country" {...register("country")} className="input-select">
+                      <select defaultValue={"SV"} id="country" {...register("country")} className="input-select">
                         {countries?.map((value: any) => {
                             return (<option key={value.code} value={value.code}> {value.country}</option>)
                         })}
