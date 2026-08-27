@@ -4,14 +4,19 @@ import { screenSound } from '@/lib/config/config';
 import useConfigStore from '@/stores/configStore';
 import screenOrdersStore from '@/stores/restaurant/screenOrdersStore';
 import manageRestaurantStore from '@/stores/restaurant/manageRestaurantStore';
-import { useCallback, useEffect, useState } from 'react';
+import useTempStorage from '@/stores/useTempStorage';
+import { useEffect } from 'react';
+
+const ACTIVE_STATION_KEY = 'restaurantScreenActiveStation';
 
 export function useScreenOrdersLogic() {
   const { orders, loading, loadOrders, processOrder } = screenOrdersStore();
   const { activeConfig, tenant } = useConfigStore();
   const { workStations, loadWorkStations } = manageRestaurantStore();
+  const { getElement, setElement } = useTempStorage();
 
-  const [activeStation, setActiveStation] = useState<number>(1);
+  const activeStation = getElement(ACTIVE_STATION_KEY) ?? null;
+  const setActiveStation = (stationId: number) => setElement(ACTIVE_STATION_KEY, stationId);
 
   const isScreenPush = activeConfig && activeConfig.includes('screen-push-active');
   const { random: pusherEvent } = useReverb(
@@ -26,15 +31,17 @@ export function useScreenOrdersLogic() {
     }
   }, [workStations, loadWorkStations]);
 
-  const fetchOrders = useCallback(() => {
-    loadOrders(
-      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filterwherein[status]=1,3&filterWhere[active_station]==${activeStation}`
-    );
-  }, [loadOrders, activeStation]);
+  useEffect(() => {
+    if (activeStation == null && workStations && workStations.length > 0) {
+      setElement(ACTIVE_STATION_KEY, workStations[0].id);
+    }
+  }, [activeStation, workStations, setElement]);
 
   useEffect(() => {
-    fetchOrders();
-  }, [pusherEvent, fetchOrders]);
+    loadOrders(
+      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filterwherein[status]=1,3&filterWhere[active_station]==1`
+    );
+  }, [pusherEvent, loadOrders]);
 
   useEffect(() => {
     if (orders && orders.length > 0) {
@@ -42,12 +49,16 @@ export function useScreenOrdersLogic() {
     }
   }, [orders]);
 
+  const visibleOrders = (orders ?? []).filter(
+    (order: any) => activeStation != null && filterProductsOrInvoiceProducts(order, activeStation).length > 0
+  );
+
   const processData = (values: { order: number; product?: number; status: number; url: string }) => {
     processOrder(values.url, values);
   };
 
   return {
-    orders,
+    orders: visibleOrders,
     loading,
     processData,
     activeStation,
@@ -56,10 +67,10 @@ export function useScreenOrdersLogic() {
   };
 }
 
-export function filterProductsOrInvoiceProducts(data: any) {
+export function filterProductsOrInvoiceProducts(data: any, stationId: number) {
   const items = data.products?.length > 0 ? data.products : data.invoiceproducts || [];
   return items.filter((item: any) =>
-    item.attributes?.work_station_id !== null &&
+    item.attributes?.work_station_id === stationId &&
     item.attributes?.show_station == 1
   );
 }

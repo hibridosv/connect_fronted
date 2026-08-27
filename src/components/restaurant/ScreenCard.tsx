@@ -10,11 +10,12 @@ import { deliveryTypeMap } from './utils';
 
 interface ScreenCardProps {
   order: any;
+  activeStation: number;
   processData: (values: { order: number; product?: number; status: number; url: string }) => void;
 }
 
-export function ScreenCard({ order, processData }: ScreenCardProps) {
-  const filteredResult = filterProductsOrInvoiceProducts(order);
+export function ScreenCard({ order, activeStation, processData }: ScreenCardProps) {
+  const filteredResult = filterProductsOrInvoiceProducts(order, activeStation);
   const groupedProducts = groupProducts(filteredResult);
   const time = useRelativeTime(order.created_at);
 
