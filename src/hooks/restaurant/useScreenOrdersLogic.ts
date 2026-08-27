@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 const ACTIVE_STATION_KEY = 'restaurantScreenActiveStation';
 
 export function useScreenOrdersLogic() {
-  const { orders, loading, loadOrders, processOrder } = screenOrdersStore();
+  const { orders, loading, loadOrders, processOrder, removeOrder, removeOrderProduct } = screenOrdersStore();
   const { activeConfig, tenant } = useConfigStore();
   const { workStations, loadWorkStations } = manageRestaurantStore();
   const { getElement, setElement } = useTempStorage();
@@ -54,6 +54,11 @@ export function useScreenOrdersLogic() {
   );
 
   const processData = (values: { order: number; product?: number; status: number; url: string }) => {
+    if (values.product) {
+      removeOrderProduct(values.order, values.product);
+    } else {
+      removeOrder(values.order);
+    }
     processOrder(values.url, values);
   };
 
