@@ -9,6 +9,8 @@ interface ScreenOrdersStoreI {
 
   loadOrders: (url: string) => Promise<void>;
   processOrder: (url: string, data: any) => Promise<void>;
+  removeOrder: (orderId: number) => void;
+  removeOrderProduct: (orderId: number, productId: number) => void;
 }
 
 const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
@@ -31,11 +33,29 @@ const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
 
   processOrder: async (url: string, data: any) => {
     try {
-      const response = await updateService(url, data);
-      set({ orders: response.data.data });
+      await updateService(url, data);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     }
+  },
+
+  removeOrder: (orderId: number) => {
+    set((state) => ({
+      orders: state.orders.filter((order: any) => order.id !== orderId),
+    }));
+  },
+
+  removeOrderProduct: (orderId: number, productId: number) => {
+    set((state) => ({
+      orders: state.orders.map((order: any) => {
+        if (order.id !== orderId) return order;
+        return {
+          ...order,
+          products: order.products?.filter((product: any) => product.id !== productId),
+          invoiceproducts: order.invoiceproducts?.filter((product: any) => product.id !== productId),
+        };
+      }),
+    }));
   },
 }));
 
