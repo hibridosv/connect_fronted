@@ -31,8 +31,7 @@ const screenOrdersStore = create<ScreenOrdersStoreI>((set) => ({
 
   processOrder: async (url: string, data: any) => {
     try {
-      const response = await updateService(url, data);
-      set({ orders: response.data.data });
+      await updateService(url, data);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     }
