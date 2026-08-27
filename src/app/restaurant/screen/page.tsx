@@ -3,19 +3,16 @@
 import { NothingHere } from '@/components/NothingHere';
 import { ScreenCard } from '@/components/restaurant/ScreenCard';
 import { useScreenOrdersLogic } from '@/hooks/restaurant/useScreenOrdersLogic';
-import SkeletonTable from '@/components/skeleton/skeleton-table';
 
 export default function Page() {
-  const { orders, loading, processData, activeStation, setActiveStation, workStations } = useScreenOrdersLogic();
+  const { orders, processData, activeStation, setActiveStation, workStations } = useScreenOrdersLogic();
 
   const stations: any[] = workStations ?? [];
   const hasOrders = orders && orders.length > 0;
 
   return (
     <div className="pb-24">
-      {loading ? (
-        <SkeletonTable rows={6} columns={4} />
-      ) : hasOrders ? (
+      {hasOrders ? (
         <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 m-4">
           {orders.map((order: any) => (
             <div key={order.id} className="mb-4 break-inside-avoid-column">
