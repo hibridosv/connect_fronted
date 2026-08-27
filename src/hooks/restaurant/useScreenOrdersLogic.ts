@@ -3,11 +3,15 @@ import useReverb from '@/hooks/useReverb';
 import { screenSound } from '@/lib/config/config';
 import useConfigStore from '@/stores/configStore';
 import screenOrdersStore from '@/stores/restaurant/screenOrdersStore';
-import { useEffect } from 'react';
+import manageRestaurantStore from '@/stores/restaurant/manageRestaurantStore';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useScreenOrdersLogic() {
   const { orders, loading, loadOrders, processOrder } = screenOrdersStore();
   const { activeConfig, tenant } = useConfigStore();
+  const { workStations, loadWorkStations } = manageRestaurantStore();
+
+  const [activeStation, setActiveStation] = useState<number>(1);
 
   const isScreenPush = activeConfig && activeConfig.includes('screen-push-active');
   const { random: pusherEvent } = useReverb(
@@ -17,10 +21,20 @@ export function useScreenOrdersLogic() {
   );
 
   useEffect(() => {
+    if (!workStations) {
+      loadWorkStations('restaurant/workstations?filterWhere[status]==1');
+    }
+  }, [workStations, loadWorkStations]);
+
+  const fetchOrders = useCallback(() => {
     loadOrders(
-      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filterwherein[status]=1,3&filterWhere[active_station]==1`
+      `orders?included=employee,client,table,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&filterwherein[status]=1,3&filterWhere[active_station]==${activeStation}`
     );
-  }, [pusherEvent, loadOrders]);
+  }, [loadOrders, activeStation]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [pusherEvent, fetchOrders]);
 
   useEffect(() => {
     if (orders && orders.length > 0) {
@@ -36,6 +50,9 @@ export function useScreenOrdersLogic() {
     orders,
     loading,
     processData,
+    activeStation,
+    setActiveStation,
+    workStations,
   };
 }
 
