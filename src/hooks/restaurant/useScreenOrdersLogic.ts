@@ -75,6 +75,15 @@ export function filterProductsOrInvoiceProducts(data: any, stationId: number) {
   );
 }
 
+export function getOrderStationIds(data: any): number[] {
+  const items = data.products?.length > 0 ? data.products : data.invoiceproducts || [];
+  const stationIds = items
+    .filter((item: any) => item.attributes?.work_station_id != null && item.attributes?.show_station == 1)
+    .map((item: any) => item.attributes.work_station_id);
+
+  return Array.from(new Set(stationIds));
+}
+
 export function groupProducts(products: any[]) {
   const counter: Record<string, { id: string; cod: string; product: string; quantity: number; options: any[] }> = {};
   const groupedProducts: { id: string; cod: string; product: string; quantity: number; options: any[] }[] = [];

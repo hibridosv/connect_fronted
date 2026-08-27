@@ -1,10 +1,10 @@
 'use client';
 
-import { filterProductsOrInvoiceProducts, groupProducts } from '@/hooks/restaurant/useScreenOrdersLogic';
+import { filterProductsOrInvoiceProducts, getOrderStationIds, groupProducts } from '@/hooks/restaurant/useScreenOrdersLogic';
 import { useRelativeTime } from '@/hooks/useRelativeTime';
 import { formatDate, formatHourAsHM } from '@/lib/date-formats';
 import { BiCar, BiRestaurant, BiUser } from 'react-icons/bi';
-import { FaClock } from 'react-icons/fa';
+import { FaClock, FaLock } from 'react-icons/fa';
 import { TbPointFilled } from 'react-icons/tb';
 import { deliveryTypeMap } from './utils';
 
@@ -18,8 +18,10 @@ export function ScreenCard({ order, activeStation, processData }: ScreenCardProp
   const filteredResult = filterProductsOrInvoiceProducts(order, activeStation);
   const groupedProducts = groupProducts(filteredResult);
   const time = useRelativeTime(order.created_at);
+  const hasMultipleStations = getOrderStationIds(order).length > 1;
 
   const handleProcessOrder = () => {
+    if (hasMultipleStations) return;
     processData({ order: order?.id, status: 2, url: 'screen/order/process' });
   };
 
@@ -36,11 +38,23 @@ export function ScreenCard({ order, activeStation, processData }: ScreenCardProp
     <div className="bg-bg-content shadow-lg rounded-lg overflow-hidden border border-bg-subtle flex flex-col h-full">
       {/* Card Header */}
       <div
-        className="p-3 border-b border-bg-subtle cursor-pointer clickeable hover:bg-bg-subtle/30 transition-colors"
-        onClick={handleProcessOrder}
+        className={`p-3 border-b border-bg-subtle transition-colors ${
+          hasMultipleStations ? '' : 'cursor-pointer clickeable hover:bg-bg-subtle/30'
+        }`}
+        onClick={hasMultipleStations ? undefined : handleProcessOrder}
+        title={hasMultipleStations ? 'Esta orden tiene productos de varias estaciones, procesa cada producto por separado' : undefined}
       >
         <div className="flex justify-between items-start">
-          <h3 className="text-xl font-bold text-text-base">Orden #{order.number}</h3>
+          <h3 className="text-xl font-bold text-text-base flex items-center gap-2">
+            Orden #{order.number}
+            {hasMultipleStations && (
+              <FaLock
+                size={13}
+                className="text-text-muted"
+                title="No se puede borrar: tiene productos de varias estaciones"
+              />
+            )}
+          </h3>
           {order.status === 6 && (
             <span className="status-warning text-xs font-bold px-2 py-1 rounded">ELIMINADA</span>
           )}
