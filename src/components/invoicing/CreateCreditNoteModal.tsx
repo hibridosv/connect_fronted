@@ -74,7 +74,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     // Calculate the final total before submission
     const currentTotal = calculateTotal();
     setTotalState(currentTotal);
-    const totalIsDiferent = currentTotal !== record.total;
+    const totalIsDiferent = Math.abs(currentTotal - record.total) >= 0.01;
     
     const formattedData = formProducts
       .map((product: any) => {
