@@ -42,9 +42,7 @@ export function RestaurantProductModifiersModal({ isShow, onClose }: Props) {
     setToggling(false);
   };
 
-  const assignedIds = new Set(assigned.map((a: any) => a.option?.id ?? a.product_options_id));
-
-  const availableItems = options?.filter((opt: any) => !assignedIds.has(opt.id)).map((opt: any) => (
+  const availableItems = options?.map((opt: any) => (
     <li key={opt.id} className="flex justify-between items-center px-4 py-2.5 hover:bg-bg-subtle text-text-base text-sm transition-colors">
       <span>{opt.name}</span>
       {toggling

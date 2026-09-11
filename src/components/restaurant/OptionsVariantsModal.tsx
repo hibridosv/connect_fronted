@@ -3,7 +3,9 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
 import { URL } from '@/constants';
+import { numberToMoney } from "@/lib/utils";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
+import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,6 +23,7 @@ const imageLoader = ({ src, width, quality }: any) => `${URL}/images/ico/${src}?
 export function OptionsVariantsModal(props: OptionsVariantsModalI) {
   const { onClose, isShow } = props;
   const { sending, deleting, deleteOption, addVariant } = manageRestaurantStore();
+  const { system } = useConfigStore();
   const { getElement, clearElement } = useTempStorage();
   const optionSelected = getElement("optionSelected");
 
@@ -50,7 +53,10 @@ export function OptionsVariantsModal(props: OptionsVariantsModalI) {
     <li key={variant.id} className="flex justify-between items-center px-4 py-2.5 hover:bg-bg-subtle text-text-base text-sm transition-colors">
       <div className="flex items-center gap-2">
         <Image loader={imageLoader} src={variant?.image || "default.png"} alt="Icono de la variante" width={32} height={32} className="rounded mr-2" />
-        <span>{variant?.name}</span>
+        <div className="flex flex-col">
+          <span>{variant?.name}</span>
+          <span className="text-xs text-text-muted">{numberToMoney(variant?.price, system)}</span>
+        </div>
       </div>
       <span className="flex justify-center">
         {deleting || sending

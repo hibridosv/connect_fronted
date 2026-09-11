@@ -102,6 +102,7 @@ export function ChatbotPhoneCard({ phoneNumber, loadingPhone, saving, canManageP
         <div className="relative mb-2 animate-scale-in">
           <div className="absolute inset-0 rounded-xl bg-success/40 blur-lg animate-pulse-glow" />
           <div className="relative bg-bg-content border border-bg-subtle rounded-xl p-2 shadow-sm">
+            {/* eslint-disable-next-line @next/next/no-img-element -- data URL generado localmente, no aplica optimización de next/image */}
             <img src={qrDataUrl} alt="QR para escribirle al chatbot" width={170} height={170} />
           </div>
           <FaWhatsapp

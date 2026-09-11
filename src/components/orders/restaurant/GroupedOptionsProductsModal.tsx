@@ -2,6 +2,8 @@
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { NothingHere } from "@/components/NothingHere";
+import { numberToMoney } from "@/lib/utils";
+import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { TbPointFilled } from "react-icons/tb";
@@ -14,6 +16,7 @@ export interface GroupedOptionsProductsModalI {
 export function GroupedOptionsProductsModal(props: GroupedOptionsProductsModalI) {
   const { onClose, isShow } = props;
   const { order } = ordersStore();
+  const { system } = useConfigStore();
   const { getElement } = useTempStorage();
   const productSelected = getElement('productOptionsGroupSelected');
 
@@ -46,6 +49,11 @@ export function GroupedOptionsProductsModal(props: GroupedOptionsProductsModalI)
                           <li key={option.id} className="flex items-center text-sm text-text-muted">
                             <TbPointFilled className="text-accent mr-2 flex-shrink-0" size={14} />
                             <span>{option?.option?.name}</span>
+                            {option?.option?.price > 0 && (
+                              <span className="ml-1.5 text-xs text-text-muted/70">
+                                (+{numberToMoney(option.option.price, system)})
+                              </span>
+                            )}
                           </li>
                         ))}
                       </ul>
