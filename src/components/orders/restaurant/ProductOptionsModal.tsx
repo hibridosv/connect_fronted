@@ -69,7 +69,7 @@ const handleUpdate = (data: any) => {
                 </div>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={()=>handleUpdate({ id: lastOption.id, iden: lastOption.iden})} preset={Preset.close} text="Saltar Opción" isFull /> 
+            <Button onClick={()=>handleUpdate({ iden: lastOption.iden})} preset={Preset.close} text="Saltar Opción" isFull />
           </Modal.Footer>
         </Modal>
   );
