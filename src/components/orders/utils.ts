@@ -12,6 +12,18 @@ export const sumarTotalesWithoutDiscount = (datos: any): number => {
   return totalDiscount + totalSuma;
 }
 
+export const sumarOptionsTotal = (datos: any): number => {
+  let totalSuma = 0;
+
+  datos?.forEach((elemento: any) => {
+    elemento?.options?.forEach((option: any) => {
+      totalSuma += option?.option?.price ?? 0;
+    });
+  });
+
+  return totalSuma;
+}
+
 export const sumarDiscount = (datos: any): number => {
   let totalSuma = 0;
 
