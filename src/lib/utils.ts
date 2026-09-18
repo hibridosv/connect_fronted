@@ -113,7 +113,7 @@ export const getMunicipiosByDepartamentoId = (data: any, departamentoId: string)
 
 
 export function formatDocument(cadena: string) {
-  if (!cadena) return;
+  if (!cadena) return '';
   return cadena.replace(/-/g, '');
 }
 
