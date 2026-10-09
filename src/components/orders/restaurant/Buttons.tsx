@@ -1,5 +1,6 @@
 'use client';
 
+import CodeRequestGuard from '@/components/modal/CodeRequestGuard';
 import { usePopper } from '@/components/popper/popperContext';
 import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import { Order } from '@/interfaces/order';
@@ -54,8 +55,7 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('searchContact'); setElement('contactSearch', "referralSearch");}}> Asignar Referido</div>}
             { isDelivery && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setUser'); setElement('setUser', "setDriver");}}> Asignar Repartidor </div>}
-            { isOtherSales && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('otherSales') }}> Otras Ventas</div>}
+            { isOtherSales && <CodeRequestGuard permission="code-request-others-sales" onAuthorized={()=>{ setIsOpen(false); openModal('otherSales') }} ><div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('otherSales') }}> Otras Ventas</div></CodeRequestGuard>}
             { isComment && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addComment') }}> Agregar comentario </div>}
             { isSpecial && 
