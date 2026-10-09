@@ -1,4 +1,5 @@
 
+import CodeRequestGuard from "@/components/modal/CodeRequestGuard";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
@@ -24,7 +25,9 @@ export function InitialButtons() {
   return (
     <div className="flex justify-center space-x-4 mt-4">
               { isOtherSales && 
-              <MdOutlinePointOfSale className="clickeable text-lime-500 shadow-md" size={24} title="Otras Ventas" onClick={()=> openModal('otherSales')} /> 
+              <CodeRequestGuard permission="code-request-others-sales" onAuthorized={()=> openModal('otherSales')} > 
+                <MdOutlinePointOfSale className="clickeable text-lime-500 shadow-md" size={24} title="Otras Ventas" /> 
+              </CodeRequestGuard>
               }
               { isSpecial && 
               <MdMoney className="clickeable text-teal-500 shadow-md" size={24} title="Ventas Especiales" onClick={()=> openModal('specialSales')} />

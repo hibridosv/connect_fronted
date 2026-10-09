@@ -54,13 +54,13 @@ export default function Page() {
             <div className="mt-2 p-2 mb-4">
               <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" animating={searching} />
             </div>
-            <Button onClick={end} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Finalizar ajuste de inventario" />
+            <Button onClick={end} disabled={loading} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Finalizar ajuste de inventario" />
             </div> :
             <div>
             <div className="flex justify-center m-8">
               <Alert type={Preset.info} text="No se ha iniciado el ajuste de inventario. Con esta herramienta podrá ajustar su inventario con los datos existentes reales" />
             </div>
-            <Button onClick={start} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Iniciar ajuste de inventario" />
+            <Button onClick={start} disabled={loading} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Iniciar ajuste de inventario" />
             </div>
           }
           </div>
