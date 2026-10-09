@@ -4,6 +4,9 @@ import { useAjustmentModalLogic } from "@/hooks/tools/useAjustmentModalLogic";
 import { usePagination } from "@/hooks/usePagination";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import adjustStore from "@/stores/tools/adjustStore";
+import useTempStorage from "@/stores/useTempStorage";
+import { FaDownload } from "react-icons/fa";
+import { ButtonDownloadGet } from "../button/button-download-get";
 import { NothingHere } from "../NothingHere";
 import { Pagination } from "../Pagination";
 import SkeletonTable from "../skeleton/skeleton-table";
@@ -15,6 +18,8 @@ export interface AdjustmentsDetailsModalI {
 
 export function AdjustmentsDetailsModal(props: AdjustmentsDetailsModalI) {
         const { onClose, isShow } = props;
+        const { getElement } = useTempStorage();
+        const record = getElement('adjustmentDetails') || null;
         const {currentPage, handlePageNumber} = usePagination("&page=1");
         useAjustmentModalLogic(currentPage, isShow);
         const { adjustment, loadingAdjustment } = adjustStore();
@@ -75,6 +80,10 @@ export function AdjustmentsDetailsModal(props: AdjustmentsDetailsModalI) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex justify-end gap-4">
+        {
+          record &&
+          <ButtonDownloadGet href={`id=${record.id}&route=download.pdf.adjustment`}><FaDownload size={24} /></ButtonDownloadGet>
+        }
         <Button onClick={onClose} preset={Preset.close} disabled={false} />
         </div>
       </Modal.Footer>
