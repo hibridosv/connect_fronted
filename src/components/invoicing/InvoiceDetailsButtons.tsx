@@ -6,7 +6,7 @@ import { FaFilePdf, FaPrint } from "react-icons/fa";
 import { MdCreditScore } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownloadGet } from "../button/button-download-get";
-import { DeleteModal } from "../DeleteModal";
+import { InvalidateDocumentModal } from "./InvalidateDocumentModal";
 
 
 export interface InvoiceDetailsButtonsI {
@@ -19,7 +19,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
     const { activeConfig, client } = useConfigStore();
     const { setError } = useToastMessageStore();
-    const { printOrder, printing, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
+    const { printOrder, printing, deleting, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
     const { modals, closeModal, openModal} = useModalStore();
     const API_URL = process.env.NEXT_PUBLIC_URL_API;
     const isSending = printing;
@@ -102,10 +102,10 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     if (isDeleted) {
                       setError({ message: "Este documento ya se encuentra eliminado" });
                     } else {
-                      openModal('deleteOrder'); // Placeholder for modal logic
+                      openModal('invalidateOrder');
                     }
                   }}
-                  disabled={isDeleted || isSending || hasCreditNote}
+                  disabled={isDeleted || isSending || deleting || hasCreditNote}
                   className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-danger disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                 >
                   <div className="p-3 bg-bg-subtle rounded-full">
@@ -114,11 +114,12 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <span className="text-xs font-medium">Anular</span>
                 </button>
               </div>
-              <DeleteModal
-                      isShow={modals.deleteOrder}
-                      text={`¿Estas seguro de eliminar este contacto?`}
-                      onDelete={() =>{ deleteOrder(order?.id) }}
-                      onClose={() => closeModal('deleteOrder')} />
+              <InvalidateDocumentModal
+                      isShow={modals.invalidateOrder}
+                      record={order}
+                      isSending={deleting}
+                      onConfirm={(data) => deleteOrder(order?.id, data)}
+                      onClose={() => closeModal('invalidateOrder')} />
             </div>
   )
 }

@@ -1,4 +1,4 @@
-import useInvoiceDetailsStore from '@/stores/invoicing/invoiceDetailsStore';
+import useInvoiceDetailsStore, { InvalidateDocumentPayload } from '@/stores/invoicing/invoiceDetailsStore';
 import { useEffect } from 'react';
 
 
@@ -31,7 +31,7 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
         deleting,
         deletingCreditNote,
         printOrder,
-        deleteOrder: (id: string) => deleteOrder(id, invoiceId),
-        deleteCreditNote: (creditNoteId: string) => deleteCreditNote(creditNoteId, invoiceId),
+        deleteOrder: (id: string, data: InvalidateDocumentPayload) => deleteOrder(id, invoiceId, data),
+        deleteCreditNote: (creditNoteId: string, data: InvalidateDocumentPayload) => deleteCreditNote(creditNoteId, invoiceId, data),
     };
 }

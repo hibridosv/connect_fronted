@@ -6,6 +6,12 @@ import useModalStore from '../modalStorage';
 import useToastMessageStore from '../toastMessageStore';
 
 
+export interface InvalidateDocumentPayload {
+  tipo_anulacion: number;
+  motivo_anulacion: string;
+  codigo_generacion_reemplazo: string | null;
+}
+
 interface InvoiceDetailsStoreI {
   order: any | null;
   error: boolean;
@@ -15,8 +21,8 @@ interface InvoiceDetailsStoreI {
   deletingCreditNote: boolean;
   fetchOrder: (invoiceId: string) => Promise<void>;
   printOrder: (id: string) => Promise<void>;
-  deleteOrder: (id: string, invoiceId: string) => Promise<void>;
-  deleteCreditNote: (creditNoteId: string, invoiceId: string) => Promise<void>;
+  deleteOrder: (id: string, invoiceId: string, data: InvalidateDocumentPayload) => Promise<void>;
+  deleteCreditNote: (creditNoteId: string, invoiceId: string, data: InvalidateDocumentPayload) => Promise<void>;
 }
 
 const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
@@ -59,11 +65,11 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
     }
   },
 
-  deleteOrder: async (id: string, invoiceId: string) => {
-    useModalStore.getState().closeModal('deleteOrder');
+  deleteOrder: async (id: string, invoiceId: string, data: InvalidateDocumentPayload) => {
+    useModalStore.getState().closeModal('invalidateOrder');
     set({ deleting: true });
     try {
-      const response = await createService(`documents/delete`, { invoice: id });
+      const response = await createService(`documents/delete`, { invoice: id, ...data });
       if (response.status === 200 || response.status === 204) {
         useToastMessageStore.getState().setMessage({ message: "Orden anulada correctamente" });
       }
@@ -75,10 +81,11 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
     }
   },
 
-  deleteCreditNote: async (creditNoteId: string, invoiceId: string) => {
+  deleteCreditNote: async (creditNoteId: string, invoiceId: string, data: InvalidateDocumentPayload) => {
+    useModalStore.getState().closeModal('invalidateCreditNote');
     set({ deletingCreditNote: true });
     try {
-      const response = await createService(`documents/delete-credit-note`, { invoice: creditNoteId, dte_type: "05" });
+      const response = await createService(`documents/delete-credit-note`, { invoice: creditNoteId, dte_type: "05", ...data });
       useToastMessageStore.getState().setMessage(response);
       if (response.status === 200 || response.status === 204) {
         await get().fetchOrder(invoiceId);

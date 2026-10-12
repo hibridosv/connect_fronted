@@ -1,22 +1,23 @@
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getTotalOfItem, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import { InvalidateDocumentPayload } from "@/stores/invoicing/invoiceDetailsStore";
 import { useState } from "react";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { Alert } from "../Alert/Alert";
-import { DeleteModal } from "../DeleteModal";
+import { InvalidateDocumentModal } from "./InvalidateDocumentModal";
 
 interface CreditNotesTableProps {
   creditnotes: any[];
   orderStatus: number;
-  onDeleteCreditNote?: (id: string) => void;
+  onDeleteCreditNote?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingCreditNote?: boolean;
 }
 
 export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote, isDeletingCreditNote = false }: CreditNotesTableProps) {
   const { system, client } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
-  const [selectedCreditNoteId, setSelectedCreditNoteId] = useState<string | null>(null);
+  const [selectedCreditNote, setSelectedCreditNote] = useState<any | null>(null);
 
   const activeCreditNotes = creditnotes.filter((cn) => cn.status === 1);
 
@@ -74,7 +75,7 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
                       <button
                         title={isCancelled ? 'Esta nota ya fue anulada' : 'Anular nota de crédito'}
                         disabled={isDeletingCreditNote || orderStatus !== 3 || isCancelled}
-                        onClick={() => setSelectedCreditNoteId(creditnote.id)}
+                        onClick={() => setSelectedCreditNote(creditnote)}
                         className="text-danger hover:text-danger/70 disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                       >
                         <RiDeleteBin2Line size={18} />
@@ -92,19 +93,18 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
           </tbody>
         </table>
       </div>
-      <DeleteModal
-        isShow={!!selectedCreditNoteId}
-        header="Anular Nota de Crédito"
-        text="¿Estás seguro de anular esta nota de crédito? Esta acción no se puede deshacer."
-        textDelete="Sí, Anular"
+      <InvalidateDocumentModal
+        isShow={!!selectedCreditNote}
+        record={selectedCreditNote}
+        isCreditNote={true}
         isSending={isDeletingCreditNote}
-        onDelete={() => {
-          if (selectedCreditNoteId && onDeleteCreditNote) {
-            onDeleteCreditNote(selectedCreditNoteId);
-            setSelectedCreditNoteId(null);
+        onConfirm={(data) => {
+          if (selectedCreditNote && onDeleteCreditNote) {
+            onDeleteCreditNote(selectedCreditNote.id, data);
+            setSelectedCreditNote(null);
           }
         }}
-        onClose={() => setSelectedCreditNoteId(null)}
+        onClose={() => setSelectedCreditNote(null)}
       />
     </div>
   );

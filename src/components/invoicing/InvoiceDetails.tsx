@@ -2,6 +2,7 @@ import { useGetRequest } from "@/hooks/request/useGetRequest";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import { InvalidateDocumentPayload } from "@/stores/invoicing/invoiceDetailsStore";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { InvoiceDetailsSkeleton } from "../skeleton/InvoiceDetailsSkeleton";
@@ -11,7 +12,7 @@ export interface InvoiceDetailsI {
   isLoading: boolean;
   order: any;
   onElectronic?: boolean;
-  onDeleteCreditNote?: (id: string) => void;
+  onDeleteCreditNote?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingCreditNote?: boolean;
 }
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
