@@ -25,7 +25,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const isSending = printing;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2);
     const creditNotesTotal = order?.creditnotes?.filter((note: any) => note.status === 1).reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0) ?? 0;
-    const hasCreditNote = creditNotesTotal >= Number(order?.total ?? 0);
+    const hasCreditNote = creditNotesTotal > 0 && creditNotesTotal >= Number(order?.total ?? 0);
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
     const isElectronic = order?.invoice_assigned?.is_electronic === 1;
