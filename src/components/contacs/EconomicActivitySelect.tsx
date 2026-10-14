@@ -11,7 +11,8 @@ export interface EconomicActivitySelectProps {
 const MAX_RESULTS = 50;
 
 // sin acentos ni mayusculas para buscar "basicos" y encontrar "básicos"
-const normalize = (text: string) => text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const DIACRITICS = new RegExp(`[${String.fromCharCode(0x300)}-${String.fromCharCode(0x36f)}]`, "g"); // marcas de acento tras normalize("NFD")
+const normalize = (text: string) => text.normalize("NFD").replace(DIACRITICS, "").toLowerCase();
 
 // Select con busqueda por codigo o descripcion para el CAT-019 (~800 actividades)
 export function EconomicActivitySelect(props: EconomicActivitySelectProps) {
