@@ -37,7 +37,8 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
       const initializedProducts = record.products.map((product: any) => ({
         ...product,
         quantity: product.quantity || 1,
-        discount: product.discount || 0,
+        original_quantity: Number(product.quantity) || 1,
+        discount: Number(product.discount) || 0,
       }));
       setFormProducts(initializedProducts);
       productsRef.current = initializedProducts;
@@ -53,14 +54,17 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     // eslint-disable-next-line
   }, [record?.products, setValue, isShow]);
 
+  // unit_price es el precio sin descuento y discount el descuento de toda la linea:
+  // se descuenta la parte proporcional a la cantidad de la nota de credito
+  const lineTotal = (p: any) => {
+    const quantity = Number(getValues(`product-${p.id}`)) || 0;
+    const price = Number(getValues(`price-${p.id}`)) || 0;
+    const discount = p.original_quantity ? (p.discount * quantity) / p.original_quantity : 0;
+    return Math.max(quantity * price - discount, 0);
+  };
+
   const calculateTotal = (products = formProducts) => {
-    let total = 0;
-    products.forEach((p) => {
-      const quantity = Number(getValues(`product-${p.id}`)) || 0;
-      const price = Number(getValues(`price-${p.id}`)) || 0;
-      total += quantity * price;
-    });
-    return total;
+    return products.reduce((total: number, p: any) => total + lineTotal(p), 0);
   };
 
   // Update the total after blur (focus lost) rather than on every change
@@ -82,7 +86,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
         const unit_price = Number(getValues(`price-${product.id}`)) || 0;
         const name = getValues(`name-${product.id}`);
         if (quantity === 0) return null;
-        const total = quantity * unit_price;
+        const total = lineTotal(product);
         const subtotal = total / taxesPercent;
         const taxes = total - subtotal;
         return {
@@ -132,11 +136,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   };
 
   // Calculate product total for display in table
-  const getProductTotal = (productId: any) => {
-    const quantity = Number(getValues(`product-${productId}`)) || 0;
-    const price = Number(getValues(`price-${productId}`)) || 0;
-    return quantity * price;
-  };
+  const getProductTotal = (product: any) => lineTotal(product);
 
 
   if (!isShow || !record) return null;
@@ -221,7 +221,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                         />
                       </td>
                       <td className="px-4 py-2 text-right font-medium">
-                        {numberToMoney(getProductTotal(product.id), system)}
+                        {numberToMoney(getProductTotal(product), system)}
                       </td>
                     </tr>
                   ))}
