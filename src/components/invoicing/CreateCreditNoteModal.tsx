@@ -19,6 +19,8 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     const { onClose, isShow, record } = props;
   
   const [isSending, setIsSending] = useState(false);
+  // motivo del ultimo intento fallido: queda visible en el modal (el toast desaparece a los pocos segundos)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isProductReturn, setIsProductReturn] = useState(true);
   const [formProducts, setFormProducts] = useState<any[]>([]);
   const [totalState, setTotalState] = useState(0);
@@ -33,6 +35,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   const productsRef = useRef<any[]>([]);
 
   useEffect(() => {
+    if (isShow) setErrorMessage(null);
     if (record?.products && isShow) {
       const initializedProducts = record.products.map((product: any) => ({
         ...product,
@@ -121,6 +124,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
 
     try {
       setIsSending(true);
+      setErrorMessage(null);
       const response = await createService(`documents/credit-note`, newData);
       if (response.status === 200) {
         setMessage({ message: "Nota de crédito enviada correctamente"});
@@ -130,6 +134,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     } catch (error) {
       console.error(error);
       setError(error);
+      setErrorMessage((error as any)?.response?.data?.message || (error as any)?.message || "No se pudo crear la nota de crédito");
     } finally {
       setIsSending(false);
     }
@@ -247,6 +252,15 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                 </tfoot>
               </table>
             </div>
+            {errorMessage && (
+              <Alert
+                type="danger"
+                title="No se pudo crear la nota de crédito"
+                text={errorMessage}
+                isDismissible={false}
+                className="mt-6"
+              />
+            )}
             {record?.invoice_assigned?.type !== 3 ? (
               <Alert
                 type="warning"
