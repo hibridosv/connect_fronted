@@ -14,6 +14,7 @@ export interface Contact {
     document?:        string;
     register?:        string;
     roar?:            string;
+    activity_code?:   string | null;
     departament_doc?: string;
     town_doc?:        string;
     address_doc?:     string;

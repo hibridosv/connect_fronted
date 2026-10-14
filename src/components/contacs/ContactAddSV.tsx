@@ -1,6 +1,7 @@
 'use client';
 import { useContactsAddLogic } from "@/hooks/contacts/useContactsAddLogic";
 import { useCountries } from "@/hooks/locations/useCountries";
+import { useEconomicActivities } from "@/hooks/locations/useEconomicActivities";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { useTownByDepartament } from "@/hooks/locations/useTownByDepartaments";
 import { Contact } from "@/interfaces/contact";
@@ -11,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
 import { SkeletonContactAddSV } from "../skeleton/SkeletonContactAddSV";
+import { EconomicActivitySelect } from "./EconomicActivitySelect";
 import { getParamString } from "./utils";
 
 export interface ContactAddSVPropd {
@@ -26,6 +28,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const { register, handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm();
   const { departaments } = useDepartaments();
   const { countries } = useCountries();
+  const { activities } = useEconomicActivities();
   let selectDepartament =  (watch("departament_doc")) ? watch("departament_doc") : departaments && departaments.departamentos[0].id;
   const { townsExtracted } = useTownByDepartament(departaments, selectDepartament);
   let regex =  (watch("country") == "SV") ? "^([0-9]{8}-[0-9]{1}|[0-9]{4}-[0-9]{6}-[0-9]{3}-[0-9]{1})?$" : "^[a-zA-Z0-9-]+$";
@@ -38,7 +41,7 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const isContactExcluded = activeConfig && activeConfig.includes("contact-excluded");
   const isContactCodeActive = activeConfig &&  activeConfig.includes("contact-code");
 
-  const isLoading = !departaments || !countries || !townsExtracted.length || (isSellerActive && loadingUsers);
+  const isLoading = !departaments || !countries || !activities || !townsExtracted.length || (isSellerActive && loadingUsers);
 
   if (!isShow) return null;
 
@@ -124,8 +127,18 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     </div>
 
                     <div className="w-full md:w-full px-3 mb-2">
+                        <label htmlFor="activity_code_search" className="input-label">Actividad económica (MH)</label>
+                        <input type="hidden" {...register("activity_code")} />
+                        <EconomicActivitySelect activities={activities ?? []} value={watch("activity_code")}
+                          onChange={(activity) => {
+                            setValue("activity_code", activity ? activity.code : null);
+                            if (activity) setValue("roar", activity.activity); // el giro toma la descripcion del CAT-019
+                          }} />
+                    </div>
+
+                    <div className="w-full md:w-full px-3 mb-2">
                         <label htmlFor="roar" className="input-label">Giro</label>
-                        <input type="text" id="roar" {...register("roar")} className="input" />
+                        <input type="text" id="roar" {...register("roar")} maxLength={150} className="input" />
                     </div>
 
                     <div className="w-full md:w-full px-3 mb-2">

@@ -31,6 +31,7 @@ export function useContactsAddLogic(isShow: boolean, record:any, setValue:any, d
         setValue("document", formatDuiWithAll(record.document));
         setValue("register", formatDuiWithAll(record.register));
         setValue("roar", record.roar);
+        setValue("activity_code", record.activity_code);
         setValue("address_doc", record.address_doc);
         setValue("taxpayer_type", record.taxpayer_type);
         setValue("is_credit_block", record.is_credit_block);
