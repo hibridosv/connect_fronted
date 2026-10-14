@@ -173,7 +173,7 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
                   <RiInformationLine size={16} className="mt-px flex-shrink-0 text-info" />
                   <span>
                     Hacienda exige que ya exista otro documento, ya facturado y sellado, que corrija este error. Busque y seleccione ese
-                    documento; no es el documento que está anulando.
+                    documento; no es el documento que está anulando, es el que reemplazara a este.
                   </span>
                 </div>
               </div>
