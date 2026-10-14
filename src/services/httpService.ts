@@ -1,6 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { signOut } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import sessionStore, { sessionChecked } from '@/stores/sessionStore';
+import { safeSignOut } from '@/lib/safeSignOut';
 
 interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -21,15 +22,22 @@ httpService.interceptors.request.use(
     if (!sessionStore.getState().accessToken) {
       await sessionChecked;
     }
-    const session = sessionStore.getState();
+    let session = sessionStore.getState();
 
-    if (session?.url) {
-      config.baseURL = `${session.url}/api/v2`;
+    // Without a tenant url the request would hit the Next.js origin and fail with a 404.
+    if (!session.url || !session.accessToken) {
+      const fresh = await getSession();
+      if (fresh?.accessToken && fresh?.url) {
+        session.setSession(fresh.accessToken, fresh.url);
+        session = sessionStore.getState();
+      } else {
+        safeSignOut();
+        return Promise.reject(new axios.Cancel('Sesión no disponible'));
+      }
     }
 
-    if (session?.accessToken) {
-      config.headers.Authorization = `Bearer ${session.accessToken}`;
-    }
+    config.baseURL = `${session.url}/api/v2`;
+    config.headers.Authorization = `Bearer ${session.accessToken}`;
 
     if (
       config.data instanceof FormData &&
@@ -67,7 +75,7 @@ httpService.interceptors.response.use(
       if (unauthorizedCount >= MAX_UNAUTHORIZED) {
         unauthorizedCount = 0;
         lastUnauthorizedToken = null;
-        await signOut({ callbackUrl: '/' });
+        safeSignOut();
         return Promise.reject(error);
       }
     }

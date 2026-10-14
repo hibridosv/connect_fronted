@@ -3,30 +3,34 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 async function refreshAccessToken(token: any) {
-  const res = await fetch(`${token.url}/oauth/token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      grant_type: 'refresh_token',
-      refresh_token: token.refreshToken,
-      client_id: process.env.AUTH_CLIENT_ID,
-      client_secret: process.env.AUTH_SECRET_ID,
-      scope: '',
-    }),
-  })
+  try {
+    const res = await fetch(`${token.url}/oauth/token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        grant_type: 'refresh_token',
+        refresh_token: token.refreshToken,
+        client_id: process.env.AUTH_CLIENT_ID,
+        client_secret: process.env.AUTH_SECRET_ID,
+        scope: '',
+      }),
+    })
 
-  const refreshed = await res.json()
+    if (!res.ok) {
+      throw new Error(`Refresh failed with status ${res.status}`)
+    }
 
-  if (!res.ok) {
+    const refreshed = await res.json()
+
+    return {
+      ...token,
+      accessToken: refreshed.access_token,
+      refreshToken: refreshed.refresh_token ?? token.refreshToken,
+      expiresAt: Date.now() + refreshed.expires_in * 1000,
+      error: undefined,
+    }
+  } catch {
     return { ...token, accessToken: undefined, refreshToken: undefined, error: 'RefreshAccessTokenError' }
-  }
-
-  return {
-    ...token,
-    accessToken: refreshed.access_token,
-    refreshToken: refreshed.refresh_token,
-    expiresAt: Date.now() + refreshed.expires_in * 1000,
-    error: undefined,
   }
 }
 
