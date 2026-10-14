@@ -86,6 +86,7 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
               orderStatus={order.status}
               onDeleteCreditNote={onDeleteCreditNote}
               isDeletingCreditNote={isDeletingCreditNote}
+              isElectronic={order?.invoice_assigned?.is_electronic === 1}
             />
           )}
 

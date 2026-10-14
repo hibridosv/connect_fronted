@@ -5,16 +5,18 @@ import { InvalidateDocumentPayload } from "@/stores/invoicing/invoiceDetailsStor
 import { useState } from "react";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { Alert } from "../Alert/Alert";
-import { InvalidateDocumentModal } from "./InvalidateDocumentModal";
+import { DeleteModal } from "../DeleteModal";
+import { InvalidateDocumentModal, SIN_INVALIDACION_MH } from "./InvalidateDocumentModal";
 
 interface CreditNotesTableProps {
   creditnotes: any[];
   orderStatus: number;
   onDeleteCreditNote?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingCreditNote?: boolean;
+  isElectronic?: boolean; // documento sin factura electronica: confirmacion simple, sin Evento de Invalidacion
 }
 
-export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote, isDeletingCreditNote = false }: CreditNotesTableProps) {
+export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote, isDeletingCreditNote = false, isElectronic = true }: CreditNotesTableProps) {
   const { system, client } = useConfigStore();
   const API_URL = process.env.NEXT_PUBLIC_URL_API;
   const [selectedCreditNote, setSelectedCreditNote] = useState<any | null>(null);
@@ -93,6 +95,7 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
           </tbody>
         </table>
       </div>
+      {isElectronic ? (
       <InvalidateDocumentModal
         isShow={!!selectedCreditNote}
         record={selectedCreditNote}
@@ -106,6 +109,22 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
         }}
         onClose={() => setSelectedCreditNote(null)}
       />
+      ) : (
+      <DeleteModal
+        isShow={!!selectedCreditNote}
+        header="Anular Nota de Crédito"
+        text={`¿Está seguro de anular la Nota de Crédito N° ${selectedCreditNote?.invoice ?? "--"}?`}
+        textDelete="Sí, Anular"
+        isSending={isDeletingCreditNote}
+        onDelete={() => {
+          if (selectedCreditNote && onDeleteCreditNote) {
+            onDeleteCreditNote(selectedCreditNote.id, SIN_INVALIDACION_MH);
+            setSelectedCreditNote(null);
+          }
+        }}
+        onClose={() => setSelectedCreditNote(null)}
+      />
+      )}
     </div>
   );
 }

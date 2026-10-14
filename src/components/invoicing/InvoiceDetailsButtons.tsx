@@ -6,7 +6,8 @@ import { FaFilePdf, FaPrint } from "react-icons/fa";
 import { MdCreditScore } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownloadGet } from "../button/button-download-get";
-import { InvalidateDocumentModal } from "./InvalidateDocumentModal";
+import { DeleteModal } from "../DeleteModal";
+import { InvalidateDocumentModal, SIN_INVALIDACION_MH } from "./InvalidateDocumentModal";
 
 
 export interface InvoiceDetailsButtonsI {
@@ -114,12 +115,24 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <span className="text-xs font-medium">Anular</span>
                 </button>
               </div>
-              <InvalidateDocumentModal
-                      isShow={modals.invalidateOrder}
-                      record={order}
-                      isSending={deleting}
-                      onConfirm={(data) => deleteOrder(order?.id, data)}
-                      onClose={() => closeModal('invalidateOrder')} />
+              {isElectronic ? (
+                <InvalidateDocumentModal
+                        isShow={modals.invalidateOrder}
+                        record={order}
+                        isSending={deleting}
+                        onConfirm={(data) => deleteOrder(order?.id, data)}
+                        onClose={() => closeModal('invalidateOrder')} />
+              ) : (
+                // sin factura electronica no hay Evento de Invalidacion: confirmacion simple como antes
+                <DeleteModal
+                        isShow={modals.invalidateOrder}
+                        header="Anular documento"
+                        text={`¿Está seguro de anular ${order?.invoice_assigned?.name ?? "el documento"} N° ${order?.invoice ?? "--"}?`}
+                        textDelete="Sí, Anular"
+                        isSending={deleting}
+                        onDelete={() => deleteOrder(order?.id, SIN_INVALIDACION_MH)}
+                        onClose={() => closeModal('invalidateOrder')} />
+              )}
             </div>
   )
 }

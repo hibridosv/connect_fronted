@@ -5,9 +5,8 @@ import { useSearchTerm } from "@/hooks/useSearchTerm";
 import useConfigStore from "@/stores/configStore";
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { RiArrowGoBackLine, RiCheckboxCircleFill, RiCloseLine, RiEdit2Line, RiErrorWarningLine, RiFileTextLine, RiInformationLine, RiQuestionLine } from "react-icons/ri";
+import { RiArrowGoBackLine, RiCheckboxCircleFill, RiCloseLine, RiEdit2Line, RiErrorWarningLine, RiFileTextLine, RiInformationLine, RiLoader4Line, RiQuestionLine } from "react-icons/ri";
 import { SearchInput } from "../Search";
-import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
 
 export interface InvalidateDocumentData {
@@ -29,6 +28,13 @@ const MOTIVOS_DEFECTO: Record<number, string> = {
   1: "Error en la información del documento",
   2: "Devolucion de producto",
   3: "Otro",
+};
+
+// documento no electronico: no hay Evento de Invalidacion, pero connect exige tipo y motivo al anular
+export const SIN_INVALIDACION_MH: InvalidateDocumentData = {
+  tipo_anulacion: 2,
+  motivo_anulacion: MOTIVOS_DEFECTO[2],
+  codigo_generacion_reemplazo: null,
 };
 
 const MOTIVO_MAX = 200;
@@ -226,13 +232,24 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onClose} preset={Preset.close} text="Cancelar" disabled={isSending} />
-        <Button
+        {/* mismos estilos que DeleteModal: cancelar neutro, anular en rojo */}
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={isSending}
+          className="inline-flex justify-center rounded-md border border-bg-subtle bg-bg-content px-4 py-2 text-sm font-medium text-text-muted shadow-sm hover:bg-bg-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50"
+        >
+          No, Cancelar
+        </button>
+        <button
+          type="button"
           onClick={handleConfirm}
-          preset={isSending ? Preset.saving : Preset.danger}
-          text="Sí, Anular"
           disabled={isSending || !puedeConfirmar}
-        />
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-danger px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-danger/90 focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isSending && <RiLoader4Line size={16} className="animate-spin" />}
+          {isSending ? "Anulando..." : "Sí, Anular"}
+        </button>
       </Modal.Footer>
     </Modal>
   );
