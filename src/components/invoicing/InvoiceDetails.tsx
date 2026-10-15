@@ -17,6 +17,18 @@ export interface InvoiceDetailsI {
   isDeletingCreditNote?: boolean;
   onDeleteReturn?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingReturn?: boolean;
+  showCancelled?: boolean; // la pagina del documento lo muestra en la columna derecha, debajo de "Regresar"
+}
+
+/** aviso de documento anulado, con quien lo anulo y cuando (los anulados antes de guardarlo no lo tienen) */
+export function DocumentCancelledAlert({ order }: { order: any }) {
+  if (order?.status !== 4) return null;
+  return (
+    <Alert
+      type="danger"
+      text={`Este Documento ha sido anulado${order?.canceled_by?.name ? ` por ${order.canceled_by.name}` : ''}${order?.canceled_at ? ` el ${formatDateAsDMY(order.canceled_at)} a las ${formatHourAsHM(order.canceled_at)}` : ''}.`}
+    />
+  );
 }
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
   <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 flex flex-col items-center justify-center text-center">
@@ -26,7 +38,7 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 );
 
 export function InvoiceDetails(props: InvoiceDetailsI) {
-  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false, onDeleteReturn, isDeletingReturn = false } = props;
+  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false, onDeleteReturn, isDeletingReturn = false, showCancelled = true } = props;
   const { system, activeConfig } = useConfigStore();
   const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
   const { getRequest, loading: loadingRequest } = useGetRequest();
@@ -126,12 +138,7 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
                 <span className="uppercase font-semibold ml-1">{order.id}</span>
               </div>
             </>}
-            {order?.status === 4 && (
-              <Alert
-                type="danger"
-                text={`Este Documento ha sido anulado${order?.canceled_by?.name ? ` por ${order.canceled_by.name}` : ''}${order?.canceled_at ? ` el ${formatDateAsDMY(order.canceled_at)} a las ${formatHourAsHM(order.canceled_at)}` : ''}.`}
-              />
-            )}
+            {showCancelled && <DocumentCancelledAlert order={order} />}
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
