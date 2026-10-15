@@ -7,6 +7,7 @@ import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { InvoiceDetailsSkeleton } from "../skeleton/InvoiceDetailsSkeleton";
 import { CreditNotesTable } from "./CreditNotesTable";
+import { ReturnsTable } from "./ReturnsTable";
 
 export interface InvoiceDetailsI {
   isLoading: boolean;
@@ -14,6 +15,8 @@ export interface InvoiceDetailsI {
   onElectronic?: boolean;
   onDeleteCreditNote?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingCreditNote?: boolean;
+  onDeleteReturn?: (id: string, data: InvalidateDocumentPayload) => void;
+  isDeletingReturn?: boolean;
 }
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
   <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 flex flex-col items-center justify-center text-center">
@@ -23,7 +26,7 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 );
 
 export function InvoiceDetails(props: InvoiceDetailsI) {
-  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false } = props;
+  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false, onDeleteReturn, isDeletingReturn = false } = props;
   const { system, activeConfig } = useConfigStore();
   const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
   const { getRequest, loading: loadingRequest } = useGetRequest();
@@ -87,6 +90,15 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
               onDeleteCreditNote={onDeleteCreditNote}
               isDeletingCreditNote={isDeletingCreditNote}
               isElectronic={order?.invoice_assigned?.is_electronic === 1}
+            />
+          )}
+
+          {order?.returns?.length > 0 && (
+            <ReturnsTable
+              returns={order.returns}
+              orderStatus={order.status}
+              onDeleteReturn={onDeleteReturn}
+              isDeletingReturn={isDeletingReturn}
             />
           )}
 

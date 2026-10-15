@@ -3,7 +3,8 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { FaFilePdf, FaPrint } from "react-icons/fa";
-import { MdCreditScore } from "react-icons/md";
+import { MdAssignmentReturn, MdCreditScore } from "react-icons/md";
+import { activeReturns, isReturnAvailable } from "@/lib/returns";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownloadGet } from "../button/button-download-get";
 import { DeleteModal } from "../DeleteModal";
@@ -30,6 +31,9 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
     const isElectronic = order?.invoice_assigned?.is_electronic === 1;
+    // Evento de Retorno: Factura, Exportacion o Sujeto Excluido electronicos, dentro del plazo
+    const isReturnEnabled = isReturnAvailable(order);
+    const hasActiveReturns = activeReturns(order).length > 0;
 
   if (!order) return null;
 
@@ -97,11 +101,28 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   </button>
                 )}
 
+                {isReturnEnabled && (
+                  <button
+                    title="Crear retorno de productos"
+                    onClick={() => openModal('createReturn')}
+                    disabled={isSending}
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-amber-600 disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
+                  >
+                    <div className="p-3 bg-bg-subtle rounded-full">
+                      <MdAssignmentReturn size={28} />
+                    </div>
+                    <span className="text-xs font-medium">Retorno</span>
+                  </button>
+                )}
+
                 <button
                   title="Anular orden"
                   onClick={() => {
                     if (isDeleted) {
                       setError({ message: "Este documento ya se encuentra eliminado" });
+                    } else if (hasActiveReturns) {
+                      // el MH no permite invalidar el documento con un Evento de Retorno validado
+                      setError({ message: "Primero anule los retornos del documento" });
                     } else {
                       openModal('invalidateOrder');
                     }

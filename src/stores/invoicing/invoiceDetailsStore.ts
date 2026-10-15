@@ -19,10 +19,12 @@ interface InvoiceDetailsStoreI {
   printing: boolean;
   deleting: boolean;
   deletingCreditNote: boolean;
+  deletingReturn: boolean;
   fetchOrder: (invoiceId: string) => Promise<void>;
   printOrder: (id: string) => Promise<void>;
   deleteOrder: (id: string, invoiceId: string, data: InvalidateDocumentPayload) => Promise<void>;
   deleteCreditNote: (creditNoteId: string, invoiceId: string, data: InvalidateDocumentPayload) => Promise<void>;
+  deleteReturn: (returnId: string, invoiceId: string, data: InvalidateDocumentPayload) => Promise<void>;
 }
 
 const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
@@ -32,12 +34,13 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
   printing: false,
   deleting: false,
   deletingCreditNote: false,
+  deletingReturn: false,
 
   fetchOrder: async (invoiceId: string) => {
     set({ loadingOrder: true });
     try {
       const iden = invoiceId.toLowerCase();
-      const url = `orders/find?filter[id]==${iden}&included=creditnotes,creditnotes.emitedBy,creditnotes.deletedBy,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
+      const url = `orders/find?filter[id]==${iden}&included=creditnotes,creditnotes.emitedBy,creditnotes.deletedBy,returns,returns.emitedBy,returns.deletedBy,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
       const response = await getServices(url);
       set({ order: response.data.data, error: false });
     } catch (error) {
@@ -94,6 +97,22 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ deletingCreditNote: false });
+    }
+  },
+
+  // Evento de Retorno: se invalida siempre con tipo 2 y sin documento de reemplazo (connect lo fuerza)
+  deleteReturn: async (returnId: string, invoiceId: string, data: InvalidateDocumentPayload) => {
+    set({ deletingReturn: true });
+    try {
+      const response = await createService(`documents/delete-return`, { invoice: returnId, ...data });
+      useToastMessageStore.getState().setMessage(response);
+      if (response.status === 200 || response.status === 204) {
+        await get().fetchOrder(invoiceId);
+      }
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ deletingReturn: false });
     }
   },
 }));

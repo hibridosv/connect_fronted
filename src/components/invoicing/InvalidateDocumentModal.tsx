@@ -20,6 +20,7 @@ export interface InvalidateDocumentModalI {
   onClose: () => void;
   record: any;
   isCreditNote?: boolean;
+  isReturn?: boolean; // Evento de Retorno: siempre tipo 2 y sin documento de reemplazo
   isSending?: boolean;
   onConfirm: (data: InvalidateDocumentData) => void;
 }
@@ -47,7 +48,7 @@ const TIPOS_ANULACION: { value: number; label: string; description: string; icon
 ];
 
 export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
-  const { isShow, onClose, record, isCreditNote = false, isSending = false, onConfirm } = props;
+  const { isShow, onClose, record, isCreditNote = false, isReturn = false, isSending = false, onConfirm } = props;
   const { system } = useConfigStore();
   const [tipoAnulacion, setTipoAnulacion] = useState(2);
   const [motivo, setMotivo] = useState(MOTIVOS_DEFECTO[2]);
@@ -63,7 +64,7 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
     }
   }, [isShow, record?.id]);
 
-  const requiereReemplazo = !isCreditNote && (tipoAnulacion === 1 || tipoAnulacion === 3);
+  const requiereReemplazo = !isCreditNote && !isReturn && (tipoAnulacion === 1 || tipoAnulacion === 3);
   const resultados = (responseData?.data?.data ?? []).filter((r: any) => r.id !== record?.id && r.status === 3);
   const puedeConfirmar = motivo.trim().length > 0 && (!requiereReemplazo || !!reemplazo);
 
@@ -85,10 +86,11 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
 
   // la Nota de Credito trae emited_at; el documento, charged_at, cliente y tipo de documento
   const fecha = record.charged_at ?? record.emited_at;
-  const tituloDocumento = isCreditNote ? "Nota de Crédito" : record.invoice_assigned?.name ?? "Documento";
+  const tituloDocumento = isReturn ? "Evento de Retorno" : isCreditNote ? "Nota de Crédito" : record.invoice_assigned?.name ?? "Documento";
+  const tituloModal = isReturn ? "Anular retorno" : isCreditNote ? "Anular Nota de Crédito" : "Anular documento";
 
   return (
-    <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={isCreditNote ? "Anular Nota de Crédito" : "Anular documento"}>
+    <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={tituloModal}>
       <Modal.Body>
         <div className="px-1 pb-2 space-y-5">
 
@@ -101,7 +103,7 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                   <div className="font-semibold text-text-base">
-                    {tituloDocumento} N° {record.invoice ?? "--"}
+                    {tituloDocumento}{record.invoice !== undefined && <> N° {record.invoice ?? "--"}</>}
                   </div>
                   {record.total !== undefined && (
                     <div className="text-lg font-bold text-text-base">{numberToMoney(record.total ?? 0, system)}</div>
@@ -118,8 +120,8 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
             </div>
           </div>
 
-          {/* tipo de anulacion */}
-          <div>
+          {/* tipo de anulacion (el retorno se invalida siempre con tipo 2) */}
+          {!isReturn && <div>
             <div className="mb-2 text-sm font-semibold text-text-base">Tipo de anulación</div>
             <div className="grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="Tipo de anulación">
               {TIPOS_ANULACION.map((opcion) => {
@@ -144,7 +146,7 @@ export function InvalidateDocumentModal(props: InvalidateDocumentModalI) {
                 );
               })}
             </div>
-          </div>
+          </div>}
 
           {/* motivo */}
           <div>
