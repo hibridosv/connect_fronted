@@ -1,5 +1,5 @@
 import { useGetRequest } from "@/hooks/request/useGetRequest";
-import { formatDateAsDMY } from "@/lib/date-formats";
+import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { InvalidateDocumentPayload } from "@/stores/invoicing/invoiceDetailsStore";
@@ -126,7 +126,12 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
                 <span className="uppercase font-semibold ml-1">{order.id}</span>
               </div>
             </>}
-            {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
+            {order?.status === 4 && (
+              <Alert
+                type="danger"
+                text={`Este Documento ha sido anulado${order?.canceled_by?.name ? ` por ${order.canceled_by.name}` : ''}${order?.canceled_at ? ` el ${formatDateAsDMY(order.canceled_at)} a las ${formatHourAsHM(order.canceled_at)}` : ''}.`}
+              />
+            )}
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">

@@ -40,7 +40,7 @@ const useInvoiceDetailsStore = create<InvoiceDetailsStoreI>((set, get) => ({
     set({ loadingOrder: true });
     try {
       const iden = invoiceId.toLowerCase();
-      const url = `orders/find?filter[id]==${iden}&included=creditnotes,creditnotes.emitedBy,creditnotes.deletedBy,returns,returns.emitedBy,returns.deletedBy,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
+      const url = `orders/find?filter[id]==${iden}&included=creditnotes,creditnotes.emitedBy,creditnotes.deletedBy,returns,returns.emitedBy,returns.deletedBy,canceledBy,products,invoiceproducts,employee,client,referred,delivery,casheir,invoiceAssigned`;
       const response = await getServices(url);
       set({ order: response.data.data, error: false });
     } catch (error) {
