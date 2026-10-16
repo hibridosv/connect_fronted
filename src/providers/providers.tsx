@@ -5,6 +5,7 @@ import { useThemeStore } from '@/stores/themeStore';
 import { useEffect } from 'react';
 import sessionStore from '@/stores/sessionStore';
 import { safeSignOut } from '@/lib/safeSignOut';
+import { clearTenantStorage, isSwitchingTenant } from '@/lib/clearTenantStorage';
 
 const SESSION_RETRY_ATTEMPTS = 2;
 const SESSION_RETRY_DELAY_MS = 1500;
@@ -37,6 +38,13 @@ function SessionSyncer() {
     }
 
     if (session?.accessToken && session?.url) {
+      // Another tab switched the branch: every in-memory store here still holds the previous branch's data.
+      const previousUrl = sessionStore.getState().url;
+      if (previousUrl && previousUrl !== session.url && !isSwitchingTenant()) {
+        clearTenantStorage();
+        window.location.reload();
+        return;
+      }
       setSession(session.accessToken, session.url);
       return;
     }

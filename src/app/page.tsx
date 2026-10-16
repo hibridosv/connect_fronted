@@ -1,6 +1,7 @@
 'use client';
 
 import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
+import { clearTenantStorage } from "@/lib/clearTenantStorage";
 import useConfigStore from "@/stores/configStore";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -26,9 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     setBrand(getBrand());
-    localStorage.removeItem('config-storage');
-    localStorage.removeItem('menu-storage');
-    localStorage.removeItem('default-contact-storage');
+    clearTenantStorage();
     useConfigStore.getState().clearConfig();
   }, []);
 

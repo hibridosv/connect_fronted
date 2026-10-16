@@ -2,6 +2,7 @@
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
+import { clearTenantStorage, setSwitchingTenant } from '@/lib/clearTenantStorage';
 import useConfigStore from '@/stores/configStore';
 import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -21,10 +22,11 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
   const [errorMessage, setErrorMessage] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit, reset } = useForm();
-  const { user, clearConfig } = useConfigStore();
+  const { user } = useConfigStore();
 
   const handleFormSubmit = async (data: any) => {
     setSending(true);
+    setSwitchingTenant(true);
     try {
       const result = await signIn('credentials', {
         username: user?.email,
@@ -34,16 +36,16 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
       });
 
       if (result?.error) {
+        setSwitchingTenant(false);
         setErrorMessage(true);
       } else if (result?.ok) {
         setRedirecting(true);
         setErrorMessage(false);
-        clearConfig();
-        localStorage.removeItem('config-storage');
-        localStorage.removeItem('menu-storage');
-        window.location.href = '/dashboard';
+        clearTenantStorage();
+        window.location.replace('/dashboard');
       }
     } catch {
+      setSwitchingTenant(false);
       setErrorMessage(true);
     } finally {
       setSending(false);
