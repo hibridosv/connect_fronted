@@ -10,13 +10,14 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { ButtonDownloadGet } from "../button/button-download-get";
 import { AccountsReceivableInstallmentsTable } from "./AccountsReceivableInstallmentsTable";
 import { AccountsReceivablePaymentsTable } from "./AccountsReceivablePaymentsTable";
+import { RestructureCreditForm } from "./RestructureCreditForm";
 import { calculateNewBalance, creditTotal, frequencyName, sumBalance } from "./utils";
 
 export interface AddReceivableAddModalI {
@@ -32,7 +33,8 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee } = useAccountReceivableLogic();
+        const { savePayment, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure } = useAccountReceivableLogic();
+        const [restructuring, setRestructuring] = useState(false);
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
         const { setElement} = useTempStorage();
@@ -54,6 +56,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
     if (isShow) {
       setValue("payment_type", 1);
     }
+    setRestructuring(false);
   }, [isShow, setValue]);
 
 
@@ -211,7 +214,11 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                     <span className="text-sm text-primary font-semibold clickeable">Plan de pagos (PDF)</span>
                   </ButtonDownloadGet>
                 </div>
-                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
+                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} currentVersion={receivableRecord?.plan_version ?? 1} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
+        </div>}
+        {restructuring &&
+        <div className="mt-3">
+                <RestructureCreditForm credit={receivableRecord} sending={sending} onConfirm={handleRestructure} onCancel={() => setRestructuring(false)} />
         </div>}
         {receivableRecord?.payments &&
         <div className="mt-3">
@@ -221,6 +228,8 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
       <Modal.Footer>
         <div className="flex justify-end gap-4">
         <Button onClick={()=>{ setElement('documentSelected',  receivableRecord?.order); openModal('documentDetail')  }} preset={Preset.success} disabled={deleting} text="Factura Asociada" />
+        { canRestructure && receivableRecord?.status == 1 && Number(receivableRecord?.balance) > 0 && !restructuring &&
+          <Button onClick={() => setRestructuring(true)} preset={Preset.warning} text={installments ? "Reestructurar" : "Pasar a cuotas"} disabled={sending} /> }
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
         </div>
       </Modal.Footer>

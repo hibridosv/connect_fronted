@@ -51,6 +51,7 @@ export interface CreditInstallment extends CreditPlanInstallment {
     balance:        number;
     status:         number;
     paid_at:        string | null;
+    plan_version:   number;
 }
 
 export interface CreditAgingRow {
@@ -74,5 +75,21 @@ export interface ClientCreditSummary {
     credit_limit: number | null;
     balance:      number;
     available:    number | null;
+}
+
+export interface CreditPlanTemplate {
+    id:                 string;
+    name:               string;
+    frequency:          number;
+    installments_count: number;
+}
+
+export interface CreditRestructurePreview {
+    plan:            CreditPlan;
+    principal:       number;
+    waived_interest: number;
+    waived_late_fee: number;
+    interest_method: number;
+    interest_rate:   number;
 }
 

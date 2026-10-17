@@ -11,7 +11,7 @@ import { usePutRequest } from '../request/usePutRequest';
 import { useDownloadLink } from '../useDownloadLink';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
-  const { loadAccounts, createPayment, waiveLateFee, error } = accountReceivableStore();
+  const { loadAccounts, createPayment, waiveLateFee, restructureCredit, error } = accountReceivableStore();
   const { getElement } = useTempStorage();
   const selectedOption = getElement("optionSelected");
   const contactSelected = getElement('clientSelectedBySearch');
@@ -21,6 +21,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
 
   const { activeConfig, system, permission } = useConfigStore();
   const canWaiveLateFee = permissionExists(permission, 'credits-waive-late-fee');
+  const canRestructure = permissionExists(permission, 'credits-restructure');
 
 
   useEffect(() => { 
@@ -70,9 +71,17 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
     }
   }
 
+  const handleRestructure = async (data: any) => {
+    const success = await restructureCredit(`accounts/receivable/${receivableRecord?.id}/restructure`, data);
+    if (success) {
+      loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client,installments&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
+    }
+    return success;
+  }
+
   const installments = isInstallments(receivableRecord);
   const overdue = overdueInstallments(receivableRecord);
   const next = nextInstallment(receivableRecord);
 
-  return { savePayment, isPrint, links, handleGet, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee };
+  return { savePayment, isPrint, links, handleGet, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure };
 }

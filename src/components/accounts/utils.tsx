@@ -34,9 +34,19 @@ import { Indicator } from "../Indicators";
 
   export const sumBalance = (installments: any[]): number => Math.round(installments.reduce((total, installment) => total + Number(installment.balance), 0) * 100) / 100;
 
+  // frecuencia => campo de la configuracion de creditos que la habilita
+  export const frequencySettings: Record<number, 'allow_daily' | 'allow_weekly' | 'allow_biweekly' | 'allow_monthly'> = {
+    1: 'allow_daily',
+    2: 'allow_weekly',
+    3: 'allow_biweekly',
+    4: 'allow_monthly',
+  };
+
   export const frequencyName = (frequency: number): string => ({ 1: 'Diaria', 2: 'Semanal', 3: 'Cada 15 días', 4: 'Mensual' } as Record<number, string>)[frequency] ?? '';
 
   export const installmentStatus = (installment: any) => {
+    if (Number(installment.status) === 5) return <Indicator text="REESTRUCTURADA" type="inactive" />;
+    if (Number(installment.status) === 4) return <Indicator text="CONDONADA" type="inactive" />;
     if (Number(installment.balance) <= 0) return <Indicator text="PAGADA" type="success" />;
     if (installment.due_date < today()) return <Indicator text="VENCIDA" type="danger" />;
     if (Number(installment.status) === 2) return <Indicator text="PARCIAL" type="warning" />;

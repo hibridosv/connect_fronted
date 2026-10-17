@@ -441,7 +441,7 @@ const use[Modulo]Logic = () => {
 | Facturación | `useInvoicingLogic`, `useInvoicingElectronicLogic`, `useInvoiceTypesLogic`, `useInvoiceTypesElectronicLogic`, `useInvoicingCorrelativesLogic`, `useRemissionNoteLogic`, `useSearchDocumentLogic`, `useInvoiceDetailsLogic`, `useRecalculateYearsLogic`, `useInvoiceFnLogic` | 10 |
 | Caja | `useCashAccountLogic`, `useCashExpensesLogic`, `useCashRemittancesLogic`, `useCashTransfersLogic`, `useCashHistoryLogic` | 5 |
 | Cajas registradoras | `useCashDrawersLogic`, `useCutsLogic`, `useCutLogic` | 3 |
-| Cuentas | `useAccountReceivableLogic`, `useAccountPayableLogic`, `useCreditPlanLogic`, `useAccountAgingLogic`, `useClientCreditLimitLogic` | 5 |
+| Cuentas | `useAccountReceivableLogic`, `useAccountPayableLogic`, `useCreditPlanLogic`, `useAccountAgingLogic`, `useClientCreditLimitLogic`, `useCreditRestructureLogic` | 6 |
 | Configuración | `useCreditSettingsLogic` (además de `useBranchesLogic`, `useChatbotLogic`, `useInvoicesLogic`, `useSettingsPermissionLogic`, `useUsersLogic`) | 6 |
 | Contactos | `useContactsLogic`, `useContactsAddLogic`, `useContactSearchLogic` | 3 |
 | Historial | `useHistorySalesLogic`, `useHistoryCostLogic` | 2 |
@@ -504,7 +504,7 @@ Definidas en `src/interfaces/`:
 | `QuantityUnit` | `quantity_unit.ts` | Unidad de medida |
 | `InvoiceProduct` | `Invoiceproduct.ts` | Línea de factura |
 | `InvoiceAssigned` | `invoiceassigned.ts` | Asignación de factura |
-| `CreditSettings`, `CreditPlan`, `CreditInstallment`, `CreditAging`, `ClientCreditSummary` | `credits.ts` | Configuración de créditos, plan simulado, cuota, cartera por antigüedad y límite del cliente |
+| `CreditSettings`, `CreditPlan`, `CreditInstallment`, `CreditAging`, `ClientCreditSummary`, `CreditPlanTemplate`, `CreditRestructurePreview` | `credits.ts` | Configuración de créditos, plan simulado, cuota, cartera por antigüedad, límite del cliente, plantillas y reestructuración |
 
 ---
 

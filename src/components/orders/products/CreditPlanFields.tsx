@@ -21,7 +21,14 @@ export function CreditPlanFields({ register, watch, setValue, total }: CreditPla
   useCashAccountLogic();
   const { accounts } = cashAccountStore();
   const credit = watch('credit') ?? {};
-  const { settings, enabled, frequencies, plan, planError, simulating } = useCreditPlanLogic(credit, total);
+  const { settings, enabled, frequencies, plan, planError, simulating, templates } = useCreditPlanLogic(credit, total);
+
+  const applyTemplate = (templateId: string) => {
+    const template = templates.find((item) => item.id === templateId);
+    if (!template) return;
+    setValue('credit.frequency', String(template.frequency));
+    setValue('credit.installments_count', template.installments_count);
+  };
 
   useEffect(() => {
     if (enabled && settings) {
@@ -49,6 +56,13 @@ export function CreditPlanFields({ register, watch, setValue, total }: CreditPla
       </div>
 
       {credit.modality === '2' && <>
+        {templates.length > 0 && <div>
+          <label htmlFor="credit_template" className="input-label">Plantilla</label>
+          <select id="credit_template" className="input-select" defaultValue="" onChange={(event) => applyTemplate(event.target.value)}>
+            <option value="">Elegir plantilla (opcional)</option>
+            {templates.map((template) => <option key={template.id} value={template.id}>{template.name}</option>)}
+          </select>
+        </div>}
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label htmlFor="credit_frequency" className="input-label">Frecuencia</label>

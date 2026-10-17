@@ -3,6 +3,7 @@ import { Button, Preset } from '@/components/button/button';
 import { Switch } from '@/components/button/Switch';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import { useCreditSettingsLogic } from '@/hooks/settings/useCreditSettingsLogic';
+import SettingsCreditTemplates from './SettingsCreditTemplates';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -18,7 +19,7 @@ const frequencies = [
 ];
 
 export default function SettingsCreditForm({ changes }: SettingsCreditFormProps) {
-  const { settings, loading, saving, onSave } = useCreditSettingsLogic();
+  const { settings, loading, saving, templates, onSave, onAddTemplate, onDeleteTemplate } = useCreditSettingsLogic();
   const { register, handleSubmit, reset, control, watch } = useForm();
   const available = !!settings?.installments_available;
 
@@ -51,7 +52,12 @@ export default function SettingsCreditForm({ changes }: SettingsCreditFormProps)
     />
   );
 
+  const allowedFrequencies = frequencies
+    .map((frequency, index) => (settings[frequency.name as keyof typeof settings] ? index + 1 : 0))
+    .filter((frequency) => frequency > 0);
+
   return (
+    <div>
     <form onSubmit={handleSubmit(onSubmit)} className="p-4 space-y-6">
       <div>
         <span className="text-sm font-semibold text-text-base">Créditos</span>
@@ -136,5 +142,11 @@ export default function SettingsCreditForm({ changes }: SettingsCreditFormProps)
         </div>
       )}
     </form>
+    {available && settings.installments_enabled && (
+      <div className="px-4 pb-4">
+        <SettingsCreditTemplates templates={templates} frequencies={allowedFrequencies} changes={changes} saving={saving} onAdd={onAddTemplate} onDelete={onDeleteTemplate} />
+      </div>
+    )}
+    </div>
   );
 }

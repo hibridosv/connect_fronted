@@ -9,12 +9,13 @@ import { installmentStatus } from "./utils";
 
 export interface AccountsReceivableInstallmentsTableI {
   records: CreditInstallment[];
+  currentVersion?: number;
   canWaiveLateFee?: boolean;
   onWaiveLateFee?: (installmentId: string) => void;
   sending?: boolean;
 }
 
-export function AccountsReceivableInstallmentsTable({ records, canWaiveLateFee = false, onWaiveLateFee, sending = false }: AccountsReceivableInstallmentsTableI) {
+export function AccountsReceivableInstallmentsTable({ records, currentVersion = 1, canWaiveLateFee = false, onWaiveLateFee, sending = false }: AccountsReceivableInstallmentsTableI) {
   const { system } = useConfigStore();
 
   if (!records || records.length === 0) return null;
@@ -37,7 +38,7 @@ export function AccountsReceivableInstallmentsTable({ records, canWaiveLateFee =
         </thead>
         <tbody className="divide-y divide-bg-subtle/50">
           {records.map((installment) => (
-            <tr key={installment.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+            <tr key={installment.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${installment.plan_version < currentVersion ? 'opacity-60' : ''}`}>
               <td className="px-3 py-2 text-center whitespace-nowrap">{installment.number}</td>
               <td className="px-3 py-2 text-center whitespace-nowrap">{formatDateAsDMY(installment.due_date)}</td>
               <td className="px-3 py-2 text-right whitespace-nowrap">{numberToMoney(installment.principal, system)}</td>

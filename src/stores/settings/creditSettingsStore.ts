@@ -1,11 +1,12 @@
-import { CreditPlan, CreditSettings } from '@/interfaces/credits';
-import { createService, getServices, updateService } from '@/services/services';
+import { CreditPlan, CreditPlanTemplate, CreditSettings } from '@/interfaces/credits';
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
 
 interface CreditSettingsStoreI {
   settings: CreditSettings | null;
   plan: CreditPlan | null;
+  templates: CreditPlanTemplate[];
   planError: string | null;
   loading: boolean;
   saving: boolean;
@@ -16,11 +17,15 @@ interface CreditSettingsStoreI {
   updateSettings: (url: string, data: any) => Promise<boolean>;
   simulatePlan: (url: string, data: any) => Promise<void>;
   clearPlan: () => void;
+  loadTemplates: (url: string) => Promise<void>;
+  createTemplate: (url: string, data: any) => Promise<boolean>;
+  deleteTemplate: (url: string) => Promise<boolean>;
 }
 
 const creditSettingsStore = create<CreditSettingsStoreI>((set) => ({
   settings: null,
   plan: null,
+  templates: [],
   planError: null,
   loading: false,
   saving: false,
@@ -69,6 +74,43 @@ const creditSettingsStore = create<CreditSettingsStoreI>((set) => ({
   },
 
   clearPlan: () => set({ plan: null, planError: null }),
+
+  loadTemplates: async (url: string) => {
+    try {
+      const response = await getServices(url);
+      set({ templates: response.data.data ?? [] });
+    } catch (error) {
+      set({ templates: [] });
+    }
+  },
+
+  createTemplate: async (url: string, data: any) => {
+    set({ saving: true });
+    try {
+      const response = await createService(url, data);
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
+
+  deleteTemplate: async (url: string) => {
+    set({ saving: true });
+    try {
+      const response = await deleteService(url);
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
 }));
 
 export default creditSettingsStore;
