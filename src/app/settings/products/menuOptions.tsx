@@ -1,5 +1,5 @@
 import { BiCategory } from "react-icons/bi";
-import { MdBrandingWatermark, MdDescription, MdLocationOn, MdPointOfSale } from "react-icons/md";
+import { MdBrandingWatermark, MdCreditScore, MdDescription, MdLocationOn, MdPointOfSale } from "react-icons/md";
 import { TbRulerMeasure } from "react-icons/tb";
 
 export const menuOptions = [
@@ -9,4 +9,5 @@ export const menuOptions = [
   { label: "Ubicaciones", value: 4, icon: <MdLocationOn className="mr-2" /> },
   { label: "Documentos", value: 5, icon: <MdDescription className="mr-2" /> },
   { label: "Cajas de Cobro", value: 6, icon: <MdPointOfSale className="mr-2" /> },
+  { label: "Créditos", value: 7, icon: <MdCreditScore className="mr-2" /> },
 ];
