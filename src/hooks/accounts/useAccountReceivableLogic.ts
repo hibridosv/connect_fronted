@@ -1,5 +1,6 @@
 'use client'
 import { DateRangeValues } from '@/components/button/DateRange';
+import { isInstallments, nextInstallment, overdueInstallments } from '@/components/accounts/utils';
 import { postForPrint } from '@/services/OtherServices';
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
@@ -60,5 +61,9 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
     addLink(data, 'download.excel.credits', params, 3, 'Descargar Reporte');
   }, [addLink, contactSelected, selectedOption]);
 
-  return { savePayment, isPrint, links, handleGet };
+  const installments = isInstallments(receivableRecord);
+  const overdue = overdueInstallments(receivableRecord);
+  const next = nextInstallment(receivableRecord);
+
+  return { savePayment, isPrint, links, handleGet, installments, overdue, next };
 }

@@ -17,7 +17,7 @@ import { NothingHere } from "../NothingHere";
 import { ButtonDownloadGet } from "../button/button-download-get";
 import { AccountsReceivableInstallmentsTable } from "./AccountsReceivableInstallmentsTable";
 import { AccountsReceivablePaymentsTable } from "./AccountsReceivablePaymentsTable";
-import { calculateNewBalance, creditTotal, frequencyName, isInstallments, nextInstallment, overdueInstallments, sumBalance } from "./utils";
+import { calculateNewBalance, creditTotal, frequencyName, sumBalance } from "./utils";
 
 export interface AddReceivableAddModalI {
   onClose: () => void;
@@ -32,7 +32,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment } = useAccountReceivableLogic();
+        const { savePayment, installments, overdue, next } = useAccountReceivableLogic();
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
         const { setElement} = useTempStorage();
@@ -56,9 +56,6 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
     }
   }, [isShow, setValue]);
 
-  const installments = isInstallments(receivableRecord);
-  const overdue = overdueInstallments(receivableRecord);
-  const next = nextInstallment(receivableRecord);
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl3" headerTitle="AGREGAR ABONO">

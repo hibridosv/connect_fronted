@@ -1,12 +1,13 @@
 'use client';
 
+import { CreditInstallment } from "@/interfaces/credits";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { installmentStatus } from "./utils";
 
 export interface AccountsReceivableInstallmentsTableI {
-  records: any[];
+  records: CreditInstallment[];
 }
 
 export function AccountsReceivableInstallmentsTable({ records }: AccountsReceivableInstallmentsTableI) {
@@ -30,7 +31,7 @@ export function AccountsReceivableInstallmentsTable({ records }: AccountsReceiva
           </tr>
         </thead>
         <tbody className="divide-y divide-bg-subtle/50">
-          {records.map((installment: any) => (
+          {records.map((installment) => (
             <tr key={installment.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
               <td className="px-3 py-2 text-center whitespace-nowrap">{installment.number}</td>
               <td className="px-3 py-2 text-center whitespace-nowrap">{formatDateAsDMY(installment.due_date)}</td>

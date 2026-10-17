@@ -363,6 +363,7 @@ paymentSuccess
 | Caja | `cashAccountStore`, `cashExpensesStore`, `cashRemittancesStore`, `cashTransferStore` | `cash/*.ts` |
 | Cajas registradoras | `cashdrawersStore`, `cutStore` | `cashdrawer/*.ts` |
 | Cuentas | `accountReceivableStore`, `accountPayableStore` | `accounts/*.ts` |
+| Configuración de créditos | `creditSettingsStore` (configuración y simulación del plan de cuotas) | `settings/creditSettingsStore.ts` |
 | Herramientas | `adjustStore`, `quotesStore` | `tools/*.ts` |
 
 ---
@@ -440,7 +441,8 @@ const use[Modulo]Logic = () => {
 | Facturación | `useInvoicingLogic`, `useInvoicingElectronicLogic`, `useInvoiceTypesLogic`, `useInvoiceTypesElectronicLogic`, `useInvoicingCorrelativesLogic`, `useRemissionNoteLogic`, `useSearchDocumentLogic`, `useInvoiceDetailsLogic`, `useRecalculateYearsLogic`, `useInvoiceFnLogic` | 10 |
 | Caja | `useCashAccountLogic`, `useCashExpensesLogic`, `useCashRemittancesLogic`, `useCashTransfersLogic`, `useCashHistoryLogic` | 5 |
 | Cajas registradoras | `useCashDrawersLogic`, `useCutsLogic`, `useCutLogic` | 3 |
-| Cuentas | `useAccountReceivableLogic`, `useAccountPayableLogic` | 2 |
+| Cuentas | `useAccountReceivableLogic`, `useAccountPayableLogic`, `useCreditPlanLogic` | 3 |
+| Configuración | `useCreditSettingsLogic` (además de `useBranchesLogic`, `useChatbotLogic`, `useInvoicesLogic`, `useSettingsPermissionLogic`, `useUsersLogic`) | 6 |
 | Contactos | `useContactsLogic`, `useContactsAddLogic`, `useContactSearchLogic` | 3 |
 | Historial | `useHistorySalesLogic`, `useHistoryCostLogic` | 2 |
 | Reportes | `useReportsLogic`, `useDownloadsLogic` | 2 |
@@ -502,6 +504,7 @@ Definidas en `src/interfaces/`:
 | `QuantityUnit` | `quantity_unit.ts` | Unidad de medida |
 | `InvoiceProduct` | `Invoiceproduct.ts` | Línea de factura |
 | `InvoiceAssigned` | `invoiceassigned.ts` | Asignación de factura |
+| `CreditSettings`, `CreditPlan`, `CreditInstallment` | `credits.ts` | Configuración de créditos, plan simulado y cuota de un crédito |
 
 ---
 

@@ -2,9 +2,8 @@
 import { Button, Preset } from '@/components/button/button';
 import { Switch } from '@/components/button/Switch';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
-import { getServices, updateService } from '@/services/services';
-import useToastMessageStore from '@/stores/toastMessageStore';
-import { useEffect, useState } from 'react';
+import { useCreditSettingsLogic } from '@/hooks/settings/useCreditSettingsLogic';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 interface SettingsCreditFormProps {
@@ -19,44 +18,23 @@ const frequencies = [
 ];
 
 export default function SettingsCreditForm({ changes }: SettingsCreditFormProps) {
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [available, setAvailable] = useState(false);
+  const { settings, loading, saving, onSave } = useCreditSettingsLogic();
   const { register, handleSubmit, reset, control, watch } = useForm();
-
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const res = await getServices('settings/credits');
-      const { installments_available, id, created_at, updated_at, ...settings } = res.data.data;
-      setAvailable(installments_available);
-      reset(settings);
-    } catch (error) {
-      useToastMessageStore.getState().setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const available = !!settings?.installments_available;
 
   useEffect(() => {
-    loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (settings) {
+      const { installments_available, ...values } = settings;
+      reset(values);
+    }
+  }, [settings, reset]);
 
   const onSubmit = async (data: any) => {
-    setSaving(true);
-    try {
-      const response = await updateService('settings/credits', data);
-      useToastMessageStore.getState().setMessage(response);
-      await loadData();
-    } catch (error) {
-      useToastMessageStore.getState().setError(error);
-    } finally {
-      setSaving(false);
-    }
+    const { id, created_at, updated_at, ...values } = data;
+    await onSave(values);
   };
 
-  if (loading) return <SkeletonTable rows={6} columns={2} />;
+  if (loading || !settings) return <SkeletonTable rows={6} columns={2} />;
 
   const installmentsEnabled = available && watch('installments_enabled');
   const interestMethod = Number(watch('interest_method'));
