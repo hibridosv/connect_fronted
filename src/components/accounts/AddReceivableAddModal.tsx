@@ -30,7 +30,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment, handleCheckIn } = useAccountReceivableLogic();
+        const { savePayment } = useAccountReceivableLogic();
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
         const { setElement} = useTempStorage();
@@ -197,10 +197,6 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
       <Modal.Footer>
         <div className="flex justify-end gap-4">
         <Button onClick={()=>{ setElement('documentSelected',  receivableRecord?.order); openModal('documentDetail')  }} preset={Preset.success} disabled={deleting} text="Factura Asociada" />
-        {
-          receivableRecord?.balance == 0 && receivableRecord?.order?.status == 5 && 
-          <Button onClick={handleCheckIn} preset={sending ? Preset.saving : Preset.save} text="Facturar Credito" disabled={sending} />
-        }
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
         </div>
       </Modal.Footer>
