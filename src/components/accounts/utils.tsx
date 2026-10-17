@@ -15,10 +15,10 @@ import { Indicator } from "../Indicators";
 
   export const isInstallments = (credit: any): boolean => Number(credit?.modality) === 2;
 
-  // lo que el cliente paga: el gran contribuyente retiene el 1 %; en cuotas, la prima mas las cuotas con su interes
+  // lo que el cliente paga: total menos retencion y notas de credito (amount); en cuotas, la prima mas las cuotas con su interes
   export const creditTotal = (credit: any): number => isInstallments(credit)
     ? Number(credit?.down_payment ?? 0) + Number(credit?.total_amount ?? 0)
-    : Number(credit?.order?.total ?? 0) - Number(credit?.order?.retention ?? 0);
+    : credit?.amount != null ? Number(credit.amount) : Number(credit?.order?.total ?? 0) - Number(credit?.order?.retention ?? 0);
 
   const today = (): string => {
     const now = new Date();
