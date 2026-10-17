@@ -8,7 +8,7 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
 import { MdAddchart } from "react-icons/md";
-import { status } from "./utils";
+import { creditTotal, status } from "./utils";
 
 
 export interface AccountsReceivableTableI {
@@ -40,7 +40,7 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
         { record?.expiration ? formatDateAsDMY(record?.expiration) : "N/A"}
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { numberToMoney(record?.order?.total ?? 0, system) }
+        { numberToMoney(creditTotal(record?.order), system) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { numberToMoney(record?.balance ?? 0, system) }

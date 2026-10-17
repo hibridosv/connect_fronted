@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { AccountsReceivablePaymentsTable } from "./AccountsReceivablePaymentsTable";
-import { calculateNewBalance } from "./utils";
+import { calculateNewBalance, creditTotal } from "./utils";
 
 export interface AddReceivableAddModalI {
   onClose: () => void;
@@ -38,7 +38,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
 
 
   const onSubmit = async (data: any) => {
-      let isMax = calculateNewBalance( receivableRecord?.order?.total ?? 0, receivableRecord?.balance ?? 0, data.quantity ?? 0 ) > receivableRecord?.order?.total ? true : false;
+      let isMax = calculateNewBalance( creditTotal(receivableRecord?.order), receivableRecord?.balance ?? 0, data.quantity ?? 0 ) > creditTotal(receivableRecord?.order) ? true : false;
       if (isMax) {
       setError({ message: "No puede ingresar una cantidad mayor al saldo pendiente"});
       return;
@@ -62,7 +62,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Abonos</div>
-                        <div className="text-2xl font-bold text-text-base">{ numberToMoney((receivableRecord?.order?.total - receivableRecord?.balance), system) }</div>
+                        <div className="text-2xl font-bold text-text-base">{ numberToMoney((creditTotal(receivableRecord?.order) - receivableRecord?.balance), system) }</div>
                     </div>
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Saldo</div>
@@ -147,7 +147,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                     <div className="w-full mb-6">
                         <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                             <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Total</div>
-                            <div className="text-2xl font-bold text-text-base">{ numberToMoney(receivableRecord?.order?.total ?? 0, system) }</div>
+                            <div className="text-2xl font-bold text-text-base">{ numberToMoney(creditTotal(receivableRecord?.order), system) }</div>
                         </div>
                     </div>
                <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-5 grid grid-cols-2 gap-4"> 
