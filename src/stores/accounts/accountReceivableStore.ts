@@ -1,3 +1,4 @@
+import { ClientCreditSummary, CreditAging } from '@/interfaces/credits';
 import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
@@ -6,6 +7,8 @@ import useTempStorage from '../useTempStorage';
 
 interface accountReceivableStoreI {
   accounts: any | null;
+  aging: CreditAging | null;
+  clientSummary: ClientCreditSummary | null;
   account: any | null;
   error: boolean;
   loading: boolean;
@@ -16,10 +19,14 @@ interface accountReceivableStoreI {
   createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
   waiveLateFee: (url: string) => Promise<boolean>;
+  loadAging: (url: string) => Promise<void>;
+  loadClientSummary: (url: string) => Promise<void>;
 }
 
 const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
   accounts: null,
+  aging: null,
+  clientSummary: null,
   account: null,
   error: false, 
   loading: false,
@@ -103,6 +110,28 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
             set({ sending: false });
         }
     },
+
+    loadAging: async (url: string) => {
+    set({ loading: true });
+    try {
+      const response = await getServices(url);
+      set({ aging: response.data.data, error: false });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ aging: null, error: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+    loadClientSummary: async (url: string) => {
+    try {
+      const response = await getServices(url);
+      set({ clientSummary: response.data.data });
+    } catch (error) {
+      set({ clientSummary: null });
+    }
+  },
 
 }));
 

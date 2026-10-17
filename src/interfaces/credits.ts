@@ -52,3 +52,27 @@ export interface CreditInstallment extends CreditPlanInstallment {
     status:         number;
     paid_at:        string | null;
 }
+
+export interface CreditAgingRow {
+    client_id:    string | null;
+    client:       string;
+    current:      number;
+    days_1_30:    number;
+    days_31_60:   number;
+    days_61_90:   number;
+    days_over_90: number;
+    total:        number;
+}
+
+export interface CreditAging {
+    clients: CreditAgingRow[];
+    totals:  Omit<CreditAgingRow, 'client_id' | 'client'>;
+}
+
+export interface ClientCreditSummary {
+    client_id:    string;
+    credit_limit: number | null;
+    balance:      number;
+    available:    number | null;
+}
+

@@ -2,7 +2,7 @@ import { useCountries } from "@/hooks/locations/useCountries";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
 import { Contact } from "@/interfaces/contact";
 import { formatDateAsDMY } from "@/lib/date-formats";
-import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById } from "@/lib/utils";
+import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { BiCheckCircle } from "react-icons/bi";
 
@@ -177,7 +177,7 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
       </div>
 
       {/* Card 4: Estado y Otros Detalles */}
-      { record?.is_credit_block == 1 || record?.excluded == 1 || record?.employee_id && (
+      { (record?.is_credit_block == 1 || record?.excluded == 1 || record?.employee_id || record?.credit_limit != null) && (
       <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-2">
         <h3 className="text-lg font-semibold text-text-base mb-2">Estado y Otros Detalles</h3> {/* Reduced mb */} 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2"> {/* Reduced gap-y */} 
@@ -185,6 +185,13 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
             <div className="md:col-span-2">
               <div className="text-text-muted text-xs uppercase font-medium">Estado de Crédito</div>
               <div className="text-danger font-semibold">Cliente Bloqueado para créditos</div>
+            </div>
+          )}
+
+          {record?.credit_limit != null && (
+            <div className="md:col-span-2">
+              <div className="text-text-muted text-xs uppercase font-medium">Límite de Crédito</div>
+              <div className="text-text-base text-sm font-semibold">{numberToMoney(record.credit_limit, system)}</div>
             </div>
           )}
 

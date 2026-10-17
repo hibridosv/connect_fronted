@@ -2,8 +2,9 @@
 import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
+import { useClientCreditLimitLogic } from "@/hooks/accounts/useClientCreditLimitLogic";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
-import { calculateOrderTotal } from "@/lib/utils";
+import { calculateOrderTotal, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -32,12 +33,13 @@ export const nameOfPaymentType = (type: number) => {
 
 export function PayModal(props: PayModalI) {
   const { onClose, isShow } = props;
-  const { payMethods } = useConfigStore();
+  const { payMethods, system } = useConfigStore();
   const { order, collecting, sending } = ordersStore();
   const { register, handleSubmit, reset, setFocus, setValue, watch, formState: { errors } } = useForm();
   const { setElement, getElement} = useTempStorage();
   const payMethod = getElement('payMethod') ?? 1;
   const { pay } = useOrderFnLogic();
+  const { summary: creditSummary, exceedsLimit } = useClientCreditLimitLogic(order?.client_id, order ? calculateOrderTotal(order) : 0, isShow && payMethod === 5);
 
   useEffect(() => {
     if (isShow) {
@@ -79,6 +81,9 @@ export function PayModal(props: PayModalI) {
                   ) :
                   (
                     <>
+                    { payMethod === 5 && order?.client_id && order?.client?.is_credit_block != 1 && exceedsLimit && creditSummary &&
+                      <Alert type="warning" isDismissible={false} className="my-2"
+                        text={`El cliente supera su límite de crédito: saldo ${numberToMoney(creditSummary.balance, system)} + esta venta ${numberToMoney(calculateOrderTotal(order), system)}, límite ${numberToMoney(creditSummary.credit_limit ?? 0, system)}`} /> }
                     { payMethod === 5 && order?.client_id && order?.client?.is_credit_block != 1 &&
                       <CreditPlanFields register={register} watch={watch} setValue={setValue} total={calculateOrderTotal(order)} /> }
                     <div className="flex justify-center mt-3">
