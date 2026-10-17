@@ -3,12 +3,14 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useOrderFnLogic } from "@/hooks/order/product/useOrderFnLogic";
+import { calculateOrderTotal } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { HiCurrencyDollar } from "react-icons/hi2";
+import { CreditPlanFields } from "./CreditPlanFields";
 import { OrderTotal } from "./OrderTotal";
 
 export interface PayModalI {
@@ -76,7 +78,10 @@ export function PayModal(props: PayModalI) {
                     </div>
                   ) :
                   (
-                    <div className="flex justify-center">
+                    <>
+                    { payMethod === 5 && order?.client_id && order?.client?.is_credit_block != 1 &&
+                      <CreditPlanFields register={register} watch={watch} setValue={setValue} total={calculateOrderTotal(order)} /> }
+                    <div className="flex justify-center mt-3">
                       { payMethod === 5 && !order?.client_id ?
                        <Alert text="Debe agregar un cliente para continuar con el credito" type="danger" isDismissible={false} /> :
                        payMethod === 5 && order?.client_id && order?.client?.is_credit_block == 1 ?
@@ -85,6 +90,7 @@ export function PayModal(props: PayModalI) {
                         text={ payMethod === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(payMethod)}`} disabled={collecting} />
                       }
                     </div>
+                    </>
                   )}
                 </form>
               </div>

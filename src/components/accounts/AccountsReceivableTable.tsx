@@ -8,7 +8,7 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
 import { MdAddchart } from "react-icons/md";
-import { creditTotal, status } from "./utils";
+import { creditTotal, isInstallments, nextInstallment, overdueInstallments, status } from "./utils";
 
 
 export interface AccountsReceivableTableI {
@@ -37,10 +37,16 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
        { record?.order?.invoice == 5 ? "N/A" : record?.order?.invoice }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { record?.expiration ? formatDateAsDMY(record?.expiration) : "N/A"}
+        { isInstallments(record) && nextInstallment(record) ? <>
+            <span className={overdueInstallments(record).length > 0 ? 'text-danger font-semibold' : ''}>{ formatDateAsDMY(nextInstallment(record).due_date) }</span>
+            <div className="text-xs text-text-muted">
+              Cuota { nextInstallment(record).number }/{ record.installments_count }
+              { overdueInstallments(record).length > 0 && <span className="text-danger"> · { overdueInstallments(record).length } vencida(s)</span> }
+            </div>
+          </> : (record?.expiration ? formatDateAsDMY(record?.expiration) : "N/A") }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        { numberToMoney(creditTotal(record?.order), system) }
+        { numberToMoney(creditTotal(record), system) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { numberToMoney(record?.balance ?? 0, system) }
@@ -62,7 +68,7 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
             <tr>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Cliente </th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Factura </th>
-              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">limite</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Vence</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Saldo</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
