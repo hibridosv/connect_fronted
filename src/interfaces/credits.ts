@@ -44,6 +44,7 @@ export interface CreditInstallment extends CreditPlanInstallment {
     id:             string;
     receivable_id:  string;
     late_fee:       number;
+    late_fee_waived: number;
     paid_principal: number;
     paid_interest:  number;
     paid_late_fee:  number;

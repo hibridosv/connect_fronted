@@ -15,6 +15,7 @@ interface accountReceivableStoreI {
   loadAccount: (url: string) => Promise<void>;
   createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
+  waiveLateFee: (url: string) => Promise<boolean>;
 }
 
 const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
@@ -85,6 +86,23 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     }
   },
 
+
+    waiveLateFee: async (url: string) => {
+        set({ sending: true });
+        try {
+            const response = await createService(url, {});
+            useToastMessageStore.getState().setMessage(response);
+            useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
+            set({ error: false });
+            return true;
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+            return false;
+        } finally {
+            set({ sending: false });
+        }
+    },
 
 }));
 

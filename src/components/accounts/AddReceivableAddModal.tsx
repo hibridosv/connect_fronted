@@ -32,7 +32,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment, installments, overdue, next } = useAccountReceivableLogic();
+        const { savePayment, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee } = useAccountReceivableLogic();
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
         const { setElement} = useTempStorage();
@@ -211,7 +211,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                     <span className="text-sm text-primary font-semibold clickeable">Plan de pagos (PDF)</span>
                   </ButtonDownloadGet>
                 </div>
-                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} />
+                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
         </div>}
         {receivableRecord?.payments &&
         <div className="mt-3">
