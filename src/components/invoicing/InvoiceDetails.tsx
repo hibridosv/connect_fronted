@@ -1,18 +1,34 @@
 import { useGetRequest } from "@/hooks/request/useGetRequest";
-import { formatDateAsDMY } from "@/lib/date-formats";
+import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { getPaymentTypeName, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
+import { InvalidateDocumentPayload } from "@/stores/invoicing/invoiceDetailsStore";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
 import { InvoiceDetailsSkeleton } from "../skeleton/InvoiceDetailsSkeleton";
 import { CreditNotesTable } from "./CreditNotesTable";
+import { ReturnsTable } from "./ReturnsTable";
 
 export interface InvoiceDetailsI {
   isLoading: boolean;
   order: any;
   onElectronic?: boolean;
-  onDeleteCreditNote?: (id: string) => void;
+  onDeleteCreditNote?: (id: string, data: InvalidateDocumentPayload) => void;
   isDeletingCreditNote?: boolean;
+  onDeleteReturn?: (id: string, data: InvalidateDocumentPayload) => void;
+  isDeletingReturn?: boolean;
+  showCancelled?: boolean; // la pagina del documento lo muestra en la columna derecha, debajo de "Regresar"
+}
+
+/** aviso de documento anulado, con quien lo anulo y cuando (los anulados antes de guardarlo no lo tienen) */
+export function DocumentCancelledAlert({ order }: { order: any }) {
+  if (order?.status !== 4) return null;
+  return (
+    <Alert
+      type="danger"
+      text={`Este Documento ha sido anulado${order?.canceled_by?.name ? ` por ${order.canceled_by.name}` : ''}${order?.canceled_at ? ` el ${formatDateAsDMY(order.canceled_at)} a las ${formatHourAsHM(order.canceled_at)}` : ''}.`}
+    />
+  );
 }
 const InfoCard = ({ title, value }: { title: string; value: string | undefined }) => (
   <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-3 flex flex-col items-center justify-center text-center">
@@ -22,7 +38,7 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 );
 
 export function InvoiceDetails(props: InvoiceDetailsI) {
-  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false } = props;
+  const { isLoading, order, onElectronic, onDeleteCreditNote, isDeletingCreditNote = false, onDeleteReturn, isDeletingReturn = false, showCancelled = true } = props;
   const { system, activeConfig } = useConfigStore();
   const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
   const { getRequest, loading: loadingRequest } = useGetRequest();
@@ -85,6 +101,16 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
               orderStatus={order.status}
               onDeleteCreditNote={onDeleteCreditNote}
               isDeletingCreditNote={isDeletingCreditNote}
+              isElectronic={order?.invoice_assigned?.is_electronic === 1}
+            />
+          )}
+
+          {order?.returns?.length > 0 && (
+            <ReturnsTable
+              returns={order.returns}
+              orderStatus={order.status}
+              onDeleteReturn={onDeleteReturn}
+              isDeletingReturn={isDeletingReturn}
             />
           )}
 
@@ -112,7 +138,7 @@ export function InvoiceDetails(props: InvoiceDetailsI) {
                 <span className="uppercase font-semibold ml-1">{order.id}</span>
               </div>
             </>}
-            {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
+            {showCancelled && <DocumentCancelledAlert order={order} />}
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">

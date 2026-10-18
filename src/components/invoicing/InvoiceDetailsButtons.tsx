@@ -3,10 +3,12 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import { FaFilePdf, FaPrint } from "react-icons/fa";
-import { MdCreditScore } from "react-icons/md";
+import { MdAssignmentReturn, MdCreditScore } from "react-icons/md";
+import { activeReturns, isReturnAvailable } from "@/lib/returns";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { ButtonDownloadGet } from "../button/button-download-get";
 import { DeleteModal } from "../DeleteModal";
+import { InvalidateDocumentModal, SIN_INVALIDACION_MH } from "./InvalidateDocumentModal";
 
 
 export interface InvoiceDetailsButtonsI {
@@ -19,7 +21,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const { order } = props;
     const { activeConfig, client } = useConfigStore();
     const { setError } = useToastMessageStore();
-    const { printOrder, printing, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
+    const { printOrder, printing, deleting, deleteOrder } = useInvoiceDetailsLogic(order?.id, false);
     const { modals, closeModal, openModal} = useModalStore();
     const API_URL = process.env.NEXT_PUBLIC_URL_API;
     const isSending = printing;
@@ -29,6 +31,9 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
     const isElectronic = order?.invoice_assigned?.is_electronic === 1;
+    // Evento de Retorno: Factura, Exportacion o Sujeto Excluido electronicos, dentro del plazo
+    const isReturnEnabled = isReturnAvailable(order);
+    const hasActiveReturns = activeReturns(order).length > 0;
 
   if (!order) return null;
 
@@ -96,16 +101,33 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   </button>
                 )}
 
+                {isReturnEnabled && (
+                  <button
+                    title="Crear retorno de productos"
+                    onClick={() => openModal('createReturn')}
+                    disabled={isSending}
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-amber-600 disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
+                  >
+                    <div className="p-3 bg-bg-subtle rounded-full">
+                      <MdAssignmentReturn size={28} />
+                    </div>
+                    <span className="text-xs font-medium">Retorno</span>
+                  </button>
+                )}
+
                 <button
                   title="Anular orden"
                   onClick={() => {
                     if (isDeleted) {
                       setError({ message: "Este documento ya se encuentra eliminado" });
+                    } else if (hasActiveReturns) {
+                      // el MH no permite invalidar el documento con un Evento de Retorno validado
+                      setError({ message: "Primero anule los retornos del documento" });
                     } else {
-                      openModal('deleteOrder'); // Placeholder for modal logic
+                      openModal('invalidateOrder');
                     }
                   }}
-                  disabled={isDeleted || isSending || hasCreditNote}
+                  disabled={isDeleted || isSending || deleting || hasCreditNote}
                   className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-danger disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                 >
                   <div className="p-3 bg-bg-subtle rounded-full">
@@ -114,11 +136,24 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <span className="text-xs font-medium">Anular</span>
                 </button>
               </div>
-              <DeleteModal
-                      isShow={modals.deleteOrder}
-                      text={`¿Estas seguro de eliminar este contacto?`}
-                      onDelete={() =>{ deleteOrder(order?.id) }}
-                      onClose={() => closeModal('deleteOrder')} />
+              {isElectronic ? (
+                <InvalidateDocumentModal
+                        isShow={modals.invalidateOrder}
+                        record={order}
+                        isSending={deleting}
+                        onConfirm={(data) => deleteOrder(order?.id, data)}
+                        onClose={() => closeModal('invalidateOrder')} />
+              ) : (
+                // sin factura electronica no hay Evento de Invalidacion: confirmacion simple como antes
+                <DeleteModal
+                        isShow={modals.invalidateOrder}
+                        header="Anular documento"
+                        text={`¿Está seguro de anular ${order?.invoice_assigned?.name ?? "el documento"} N° ${order?.invoice ?? "--"}?`}
+                        textDelete="Sí, Anular"
+                        isSending={deleting}
+                        onDelete={() => deleteOrder(order?.id, SIN_INVALIDACION_MH)}
+                        onClose={() => closeModal('invalidateOrder')} />
+              )}
             </div>
   )
 }

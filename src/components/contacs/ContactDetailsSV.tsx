@@ -123,6 +123,13 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
             </div>
           )}
 
+          {record?.activity_code && (
+            <div className="md:col-span-2">
+              <div className="text-text-muted text-xs uppercase font-medium">Código de actividad (MH)</div>
+              <div className="text-text-base text-sm font-semibold">{record?.activity_code}</div>
+            </div>
+          )}
+
           {record?.roar && (
             <div className="md:col-span-2">
               <div className="text-text-muted text-xs uppercase font-medium">Giro</div>

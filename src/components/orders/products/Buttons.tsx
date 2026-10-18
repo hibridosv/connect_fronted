@@ -59,7 +59,7 @@ export function Buttons(props: ButtonsI) {
             { isQuote &&
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); order?.client_id ? quote(order.id) : setError({message: "Debe agregar un cliente primero"}); }}> Guardar como Cotización</div> }
             { isRemission && 
-            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('setRemissionNote'); }}> Crear Nota de Remisión</div> }
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); order?.client_id ? openModal('setRemissionNote') : setError({message: "Debe agregar un cliente para la Nota de Remisión"}); }}> Crear Nota de Remisión</div> }
             {/* <div className='button-options-sales' onClick={()=>{ setIsOpen(false); }}> Agregar Retención Renta</div> */}
           </div>
     </div>);

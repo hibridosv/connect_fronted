@@ -1,4 +1,4 @@
-import useInvoiceDetailsStore from '@/stores/invoicing/invoiceDetailsStore';
+import useInvoiceDetailsStore, { InvalidateDocumentPayload } from '@/stores/invoicing/invoiceDetailsStore';
 import { useEffect } from 'react';
 
 
@@ -10,10 +10,12 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
         printing,
         deleting,
         deletingCreditNote,
+        deletingReturn,
         fetchOrder,
         printOrder,
         deleteOrder,
         deleteCreditNote,
+        deleteReturn,
     } = useInvoiceDetailsStore();
 
     useEffect(() => {
@@ -30,8 +32,10 @@ export function useInvoiceDetailsLogic(invoiceId: string, isShow: boolean) {
         printing,
         deleting,
         deletingCreditNote,
+        deletingReturn,
         printOrder,
-        deleteOrder: (id: string) => deleteOrder(id, invoiceId),
-        deleteCreditNote: (creditNoteId: string) => deleteCreditNote(creditNoteId, invoiceId),
+        deleteOrder: (id: string, data: InvalidateDocumentPayload) => deleteOrder(id, invoiceId, data),
+        deleteCreditNote: (creditNoteId: string, data: InvalidateDocumentPayload) => deleteCreditNote(creditNoteId, invoiceId, data),
+        deleteReturn: (returnId: string, data: InvalidateDocumentPayload) => deleteReturn(returnId, invoiceId, data),
     };
 }

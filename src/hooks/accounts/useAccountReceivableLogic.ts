@@ -9,7 +9,7 @@ import { usePutRequest } from '../request/usePutRequest';
 import { useDownloadLink } from '../useDownloadLink';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
-  const { loadAccounts, createPayment, error, checkIn } = accountReceivableStore();
+  const { loadAccounts, createPayment, error } = accountReceivableStore();
   const { getElement } = useTempStorage();
   const selectedOption = getElement("optionSelected");
   const contactSelected = getElement('clientSelectedBySearch');
@@ -39,13 +39,6 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   }
 
 
-    const handleCheckIn = async() => {
-      const success = await checkIn("accounts/checkin", receivableRecord); 
-      if (success) {
-            loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
-    }
-  }
-
   const isPrint = async () => {
     try {
       await putRequest(`accounts/payment/${receivableRecord?.id}/print`, {});
@@ -67,5 +60,5 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
     addLink(data, 'download.excel.credits', params, 3, 'Descargar Reporte');
   }, [addLink, contactSelected, selectedOption]);
 
-  return { savePayment, isPrint, handleCheckIn, links, handleGet };
+  return { savePayment, isPrint, links, handleGet };
 }
