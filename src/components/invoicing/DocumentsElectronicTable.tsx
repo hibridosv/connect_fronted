@@ -82,7 +82,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/json/${record?.codigo_generacion}/${record?.client_id}`}>Descargas JSON</DropdownItem>
             <DropdownItem disabled={!isDownloader} onClick={() => { setElement('documentSelected', record); openModal('documentEmail')  }}>Reenviar Email</DropdownItem>
-            <DropdownItem disabled={!isRejected || !isWithinTwoMonths} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento</DropdownItem>
+            <DropdownItem disabled={!isRejected || !isWithinTwoMonths} onClick={() => { resendDocument(record?.codigo_generacion) }}>Reenviar Documento al MH</DropdownItem>
           </Dropdown> }
       </td>
     </tr>
