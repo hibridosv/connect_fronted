@@ -1,6 +1,6 @@
 'use client'
 import { DateRangeValues } from '@/components/button/DateRange';
-import { isInstallments, nextInstallment, overdueInstallments } from '@/components/accounts/utils';
+import { dueInstallments, isInstallments, payoffAmount } from '@/components/accounts/utils';
 import { permissionExists } from '@/lib/utils';
 import { postForPrint } from '@/services/OtherServices';
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
@@ -80,8 +80,8 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   }
 
   const installments = isInstallments(receivableRecord);
-  const overdue = overdueInstallments(receivableRecord);
-  const next = nextInstallment(receivableRecord);
+  const due = dueInstallments(receivableRecord);
+  const payoff = installments ? payoffAmount(receivableRecord) : Number(receivableRecord?.balance ?? 0);
 
-  return { savePayment, isPrint, links, handleGet, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure };
+  return { savePayment, isPrint, links, handleGet, installments, due, payoff, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure };
 }

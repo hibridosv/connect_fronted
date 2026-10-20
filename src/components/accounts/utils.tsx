@@ -30,7 +30,18 @@ import { Indicator } from "../Indicators";
 
   export const overdueInstallments = (credit: any): any[] => pendingInstallments(credit).filter((installment: any) => installment.due_date < today());
 
+  // las que vencen hoy o antes: el abono las cubre primero; lo demas es adelanto y va a las ultimas cuotas
+  export const dueInstallments = (credit: any): any[] => pendingInstallments(credit).filter((installment: any) => installment.due_date <= today());
+
   export const nextInstallment = (credit: any): any | null => pendingInstallments(credit)[0] ?? null;
+
+  // lo que liquida el credito hoy: lo vencido mas el capital pendiente de las cuotas que aun no vencen (su interes se condona)
+  export const payoffAmount = (credit: any): number => {
+    const cents = pendingInstallments(credit).reduce((total: number, installment: any) => total + (installment.due_date <= today()
+      ? Math.round(Number(installment.balance) * 100)
+      : Math.round(Number(installment.principal) * 100) - Math.round(Number(installment.paid_principal ?? 0) * 100)), 0);
+    return cents / 100;
+  };
 
   export const sumBalance = (installments: any[]): number => Math.round(installments.reduce((total, installment) => total + Number(installment.balance), 0) * 100) / 100;
 

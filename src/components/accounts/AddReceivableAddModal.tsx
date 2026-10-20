@@ -33,7 +33,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure } = useAccountReceivableLogic();
+        const { savePayment, installments, due, payoff, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure } = useAccountReceivableLogic();
         const [restructuring, setRestructuring] = useState(false);
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
@@ -45,6 +45,11 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
       let isMax = calculateNewBalance( creditTotal(receivableRecord), receivableRecord?.balance ?? 0, data.quantity ?? 0 ) > creditTotal(receivableRecord) ? true : false;
       if (isMax) {
       setError({ message: "No puede ingresar una cantidad mayor al saldo pendiente"});
+      return;
+      }
+      // en cuotas el adelanto no paga el interes de las ultimas cuotas: el credito se liquida con menos que el saldo
+      if (installments && Number(data.quantity ?? 0) > payoff) {
+      setError({ message: `El crédito se liquida hoy con ${numberToMoney(payoff, system)}; no puede abonar más`});
       return;
       }
       await savePayment(data);
@@ -119,11 +124,14 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                 </div> }
 
 
-                { installments && receivableRecord?.balance > 0 && <div className="w-full px-3 mb-3 flex flex-wrap gap-2">
-                    { overdue.length > 0 &&
-                      <Button type="button" preset={Preset.danger} text={`Pagar vencido ${numberToMoney(sumBalance(overdue), system)}`} onClick={() => setValue("quantity", sumBalance(overdue))} /> }
-                    { next &&
-                      <Button type="button" preset={Preset.info} text={`Cuota ${next.number}: ${numberToMoney(next.balance, system)}`} onClick={() => setValue("quantity", Number(next.balance))} /> }
+                { installments && receivableRecord?.balance > 0 && <div className="w-full px-3 mb-3">
+                    <div className="flex flex-wrap gap-2">
+                    { due.length > 0 &&
+                      <Button type="button" preset={Preset.danger} text={`Pagar a la fecha ${numberToMoney(sumBalance(due), system)}`} onClick={() => setValue("quantity", sumBalance(due))} /> }
+                    { payoff > sumBalance(due) &&
+                      <Button type="button" preset={Preset.info} text={`Liquidar ${numberToMoney(payoff, system)}`} onClick={() => setValue("quantity", payoff)} /> }
+                    </div>
+                    <p className="text-xs text-text-muted mt-2">Lo que se abone antes de la fecha de pago se descuenta de las últimas cuotas, solo a capital, y se descuenta el interés de la cuota que quede saldada.</p>
                 </div> }
 
                 <div className="w-full px-3 mb-4">
