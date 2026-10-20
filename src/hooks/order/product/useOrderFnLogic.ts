@@ -62,11 +62,22 @@ const addNew = async (data: any) => {
           setElement('payMethod', 1);
           payMethodNew = 1;
         }
-        let values = {
+        let values: any = {
           payment_type: payMethodNew,
           cash: data.cash,
           invoice_type_id: order?.invoice_type_id,
         };
+        if (payMethodNew === 5 && data.credit?.modality === '2') {
+          values.credit = {
+            modality: 2,
+            frequency: Number(data.credit.frequency),
+            installments_count: Number(data.credit.installments_count),
+            first_due_date: data.credit.first_due_date || null,
+            down_payment: Number(data.credit.down_payment || 0),
+            down_payment_type: Number(data.credit.down_payment_type ?? 1),
+            cash_accounts_id: data.credit.cash_accounts_id || null,
+          };
+        }
       const response = await payOrder(`orders/${order?.id}/pay`, values);
       if (response && isPrintLocal) {
           let orderToPrint = getElement("paymentSuccess");

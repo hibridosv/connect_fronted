@@ -60,6 +60,7 @@ export const menuItems: MenuItem[] = [
     permissions: ["credits-receivable", "credits-payable"],
     children: [
       { label: "Cuentas por cobrar", href: "/accounts/receivable", permission: "credits-receivable" },
+      { label: "Cartera por antigüedad", href: "/accounts/aging", permission: "credits-receivable" },
       { label: "Cuentas por Pagar", href: "/accounts/payable", permission: "credits-payable" },
     ],
   },

@@ -35,6 +35,7 @@ export function useContactsAddLogic(isShow: boolean, record:any, setValue:any, d
         setValue("address_doc", record.address_doc);
         setValue("taxpayer_type", record.taxpayer_type);
         setValue("is_credit_block", record.is_credit_block);
+        setValue("credit_limit", record.credit_limit);
         setValue("excluded", record.excluded);
         setValue("employee_id", record.employee_id);
     }

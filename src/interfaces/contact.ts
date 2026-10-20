@@ -24,6 +24,7 @@ export interface Contact {
     is_employee?:     number;
     is_referred?:     number;
     is_credit_block?: number;
+    credit_limit?:    number | null;
     excluded?:        number;
     employee_id?:     null;
     employee?:        User;

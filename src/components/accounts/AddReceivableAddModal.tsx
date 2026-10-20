@@ -10,12 +10,15 @@ import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Alert } from "../Alert/Alert";
 import { NothingHere } from "../NothingHere";
+import { ButtonDownloadGet } from "../button/button-download-get";
+import { AccountsReceivableInstallmentsTable } from "./AccountsReceivableInstallmentsTable";
 import { AccountsReceivablePaymentsTable } from "./AccountsReceivablePaymentsTable";
-import { calculateNewBalance } from "./utils";
+import { RestructureCreditForm } from "./RestructureCreditForm";
+import { calculateNewBalance, creditTotal, frequencyName, sumBalance } from "./utils";
 
 export interface AddReceivableAddModalI {
   onClose: () => void;
@@ -30,7 +33,8 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
         const receivableRecord = getElement('paymentReceivableAdd');
         useCashAccountLogic();
         const { accounts } = cashAccountStore();
-        const { savePayment } = useAccountReceivableLogic();
+        const { savePayment, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure } = useAccountReceivableLogic();
+        const [restructuring, setRestructuring] = useState(false);
         const { sending, deleting } = accountReceivableStore();
         const { setError } = useToastMessageStore();
         const { setElement} = useTempStorage();
@@ -38,7 +42,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
 
 
   const onSubmit = async (data: any) => {
-      let isMax = calculateNewBalance( receivableRecord?.order?.total ?? 0, receivableRecord?.balance ?? 0, data.quantity ?? 0 ) > receivableRecord?.order?.total ? true : false;
+      let isMax = calculateNewBalance( creditTotal(receivableRecord), receivableRecord?.balance ?? 0, data.quantity ?? 0 ) > creditTotal(receivableRecord) ? true : false;
       if (isMax) {
       setError({ message: "No puede ingresar una cantidad mayor al saldo pendiente"});
       return;
@@ -52,7 +56,9 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
     if (isShow) {
       setValue("payment_type", 1);
     }
+    setRestructuring(false);
   }, [isShow, setValue]);
+
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl3" headerTitle="AGREGAR ABONO">
@@ -62,7 +68,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Abonos</div>
-                        <div className="text-2xl font-bold text-text-base">{ numberToMoney((receivableRecord?.order?.total - receivableRecord?.balance), system) }</div>
+                        <div className="text-2xl font-bold text-text-base">{ numberToMoney((creditTotal(receivableRecord) - receivableRecord?.balance), system) }</div>
                     </div>
                     <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                         <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Saldo</div>
@@ -113,6 +119,13 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                 </div> }
 
 
+                { installments && receivableRecord?.balance > 0 && <div className="w-full px-3 mb-3 flex flex-wrap gap-2">
+                    { overdue.length > 0 &&
+                      <Button type="button" preset={Preset.danger} text={`Pagar vencido ${numberToMoney(sumBalance(overdue), system)}`} onClick={() => setValue("quantity", sumBalance(overdue))} /> }
+                    { next &&
+                      <Button type="button" preset={Preset.info} text={`Cuota ${next.number}: ${numberToMoney(next.balance, system)}`} onClick={() => setValue("quantity", Number(next.balance))} /> }
+                </div> }
+
                 <div className="w-full px-3 mb-4">
                     <label htmlFor="quantity" className="input-label mb-2"> Cantidad *</label>
                     <input
@@ -147,7 +160,7 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                     <div className="w-full mb-6">
                         <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-4 flex flex-col items-center justify-center">
                             <div className="text-text-muted text-sm font-medium uppercase tracking-wide mb-1">Total</div>
-                            <div className="text-2xl font-bold text-text-base">{ numberToMoney(receivableRecord?.order?.total ?? 0, system) }</div>
+                            <div className="text-2xl font-bold text-text-base">{ numberToMoney(creditTotal(receivableRecord), system) }</div>
                         </div>
                     </div>
                <div className="bg-bg-content border border-bg-subtle shadow-sm rounded-lg p-5 grid grid-cols-2 gap-4"> 
@@ -189,6 +202,24 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                </div>
             </div>
         </div>
+        {installments &&
+        <div className="mt-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <span className="text-sm font-semibold text-text-base">
+                    Plan: { receivableRecord?.installments_count } cuotas { frequencyName(receivableRecord?.frequency).toLowerCase() }
+                    { Number(receivableRecord?.down_payment) > 0 && ` · prima ${numberToMoney(receivableRecord?.down_payment, system)}` }
+                    { Number(receivableRecord?.interest_total) > 0 && ` · interés ${numberToMoney(receivableRecord?.interest_total, system)}` }
+                  </span>
+                  <ButtonDownloadGet autoclass={false} href={`id=${receivableRecord?.id}&route=download.pdf.creditPlan`}>
+                    <span className="text-sm text-primary font-semibold clickeable">Plan de pagos (PDF)</span>
+                  </ButtonDownloadGet>
+                </div>
+                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} currentVersion={receivableRecord?.plan_version ?? 1} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
+        </div>}
+        {restructuring &&
+        <div className="mt-3">
+                <RestructureCreditForm credit={receivableRecord} sending={sending} onConfirm={handleRestructure} onCancel={() => setRestructuring(false)} />
+        </div>}
         {receivableRecord?.payments &&
         <div className="mt-3">
                 <AccountsReceivablePaymentsTable records={receivableRecord?.payments} />
@@ -197,6 +228,8 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
       <Modal.Footer>
         <div className="flex justify-end gap-4">
         <Button onClick={()=>{ setElement('documentSelected',  receivableRecord?.order); openModal('documentDetail')  }} preset={Preset.success} disabled={deleting} text="Factura Asociada" />
+        { canRestructure && receivableRecord?.status == 1 && Number(receivableRecord?.balance) > 0 && !restructuring &&
+          <Button onClick={() => setRestructuring(true)} preset={Preset.warning} text={installments ? "Reestructurar" : "Pasar a cuotas"} disabled={sending} /> }
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
         </div>
       </Modal.Footer>

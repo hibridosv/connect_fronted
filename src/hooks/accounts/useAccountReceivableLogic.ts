@@ -1,5 +1,7 @@
 'use client'
 import { DateRangeValues } from '@/components/button/DateRange';
+import { isInstallments, nextInstallment, overdueInstallments } from '@/components/accounts/utils';
+import { permissionExists } from '@/lib/utils';
 import { postForPrint } from '@/services/OtherServices';
 import accountReceivableStore from '@/stores/accounts/accountReceivableStore';
 import useConfigStore from '@/stores/configStore';
@@ -9,7 +11,7 @@ import { usePutRequest } from '../request/usePutRequest';
 import { useDownloadLink } from '../useDownloadLink';
 
 export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolean = false) {
-  const { loadAccounts, createPayment, error } = accountReceivableStore();
+  const { loadAccounts, createPayment, waiveLateFee, restructureCredit, error } = accountReceivableStore();
   const { getElement } = useTempStorage();
   const selectedOption = getElement("optionSelected");
   const contactSelected = getElement('clientSelectedBySearch');
@@ -17,12 +19,14 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   const { putRequest, responseData, loading } = usePutRequest() as any;
   const { links, addLink } = useDownloadLink();
 
-  const { activeConfig, system } = useConfigStore();
+  const { activeConfig, system, permission } = useConfigStore();
+  const canWaiveLateFee = permissionExists(permission, 'credits-waive-late-fee');
+  const canRestructure = permissionExists(permission, 'credits-restructure');
 
 
   useEffect(() => { 
           if (initialLoad && selectedOption) {
-            loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
+            loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client,installments&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
             }
   }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);
 
@@ -34,7 +38,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
       data.creditSelected = receivableRecord?.id;
       const success = await createPayment("accounts/payment", data); 
       if (success) {
-            loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+            loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client,installments&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
 
@@ -60,5 +64,24 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
     addLink(data, 'download.excel.credits', params, 3, 'Descargar Reporte');
   }, [addLink, contactSelected, selectedOption]);
 
-  return { savePayment, isPrint, links, handleGet };
+  const handleWaiveLateFee = async (installmentId: string) => {
+    const success = await waiveLateFee(`accounts/receivable/installments/${installmentId}/waive-late-fee`);
+    if (success) {
+      loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client,installments&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
+    }
+  }
+
+  const handleRestructure = async (data: any) => {
+    const success = await restructureCredit(`accounts/receivable/${receivableRecord?.id}/restructure`, data);
+    if (success) {
+      loadAccounts(`accounts/receivable?included=order.products,order.invoiceAssigned,employee,payments.employee,payments.deletedBy,client,installments&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[client_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`);
+    }
+    return success;
+  }
+
+  const installments = isInstallments(receivableRecord);
+  const overdue = overdueInstallments(receivableRecord);
+  const next = nextInstallment(receivableRecord);
+
+  return { savePayment, isPrint, links, handleGet, installments, overdue, next, canWaiveLateFee, handleWaiveLateFee, canRestructure, handleRestructure };
 }
