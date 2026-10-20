@@ -19,7 +19,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
     <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 animate-fade-in">
       <div className="mb-4">
         <h3 className="text-sm font-bold text-text-base">Productos más comprados</h3>
-        <p className="text-[11px] text-text-muted mt-0.5 font-medium">Top 10 por unidades</p>
+        <p className="text-[11px] text-text-muted mt-0.5 font-medium">Top 10 por unidades compradas</p>
       </div>
 
       {loading && !products && (
@@ -53,7 +53,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
                 <div className="h-full rounded-full bg-primary/70" style={{ width: `${max ? (product.quantity_sum / max) * 100 : 0}%` }} />
               </div>
               <div className="ml-7 mt-1 flex flex-wrap gap-x-3 text-[11px] text-text-muted">
-                <span>{product.quantity_sum.toLocaleString()} unidades</span>
+                <span>{product.quantity_sum.toLocaleString()} unidades compradas</span>
                 <span>{product.orders_count} compra(s)</span>
                 <span>Última: {formatDateAsDMY(product.last_bought_at)}</span>
               </div>

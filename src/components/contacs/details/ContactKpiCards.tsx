@@ -69,7 +69,7 @@ export function ContactKpiCards({ summary, loading }: ContactKpiCardsProps) {
     {
       title: 'Producto favorito',
       value: favorite?.product ?? '--',
-      hint: favorite ? `${favorite.quantity_sum.toLocaleString()} unidades` : undefined,
+      hint: favorite ? `${favorite.quantity_sum.toLocaleString()} unidades compradas` : undefined,
       icon: FiStar, color: 'text-orange-600', bg: 'bg-orange-50',
     },
   ];
