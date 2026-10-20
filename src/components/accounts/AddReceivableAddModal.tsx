@@ -18,7 +18,7 @@ import { ButtonDownloadGet } from "../button/button-download-get";
 import { AccountsReceivableInstallmentsTable } from "./AccountsReceivableInstallmentsTable";
 import { AccountsReceivablePaymentsTable } from "./AccountsReceivablePaymentsTable";
 import { RestructureCreditForm } from "./RestructureCreditForm";
-import { calculateNewBalance, creditTotal, frequencyName, sumBalance } from "./utils";
+import { calculateNewBalance, creditTotal, frequencyName, installmentsToShow, sumBalance } from "./utils";
 
 export interface AddReceivableAddModalI {
   onClose: () => void;
@@ -222,7 +222,8 @@ export function AddReceivableAddModal({ onClose, isShow }: AddReceivableAddModal
                     <span className="text-sm text-primary font-semibold clickeable">Plan de pagos (PDF)</span>
                   </ButtonDownloadGet>
                 </div>
-                <AccountsReceivableInstallmentsTable records={receivableRecord?.installments} currentVersion={receivableRecord?.plan_version ?? 1} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
+                <AccountsReceivableInstallmentsTable records={installmentsToShow(receivableRecord)} currentVersion={receivableRecord?.plan_version ?? 1} canWaiveLateFee={canWaiveLateFee} onWaiveLateFee={handleWaiveLateFee} sending={sending} />
+                <p className="text-xs text-text-muted mt-1">Se muestran las cuotas vencidas y la próxima por vencer. El plan completo está en el PDF.</p>
         </div>}
         {restructuring &&
         <div className="mt-3">

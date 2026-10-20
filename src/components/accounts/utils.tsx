@@ -35,6 +35,12 @@ import { Indicator } from "../Indicators";
 
   export const nextInstallment = (credit: any): any | null => pendingInstallments(credit)[0] ?? null;
 
+  // lo que se cobra en el abono: las cuotas vencidas y la proxima por vencer; las demas se pueden adelantar o no
+  export const installmentsToShow = (credit: any): any[] => {
+    const upcoming = pendingInstallments(credit).find((installment: any) => installment.due_date > today());
+    return [...dueInstallments(credit), ...(upcoming ? [upcoming] : [])];
+  };
+
   // lo que liquida el credito hoy: lo vencido mas el capital pendiente de las cuotas que aun no vencen (su interes se condona)
   export const payoffAmount = (credit: any): number => {
     const cents = pendingInstallments(credit).reduce((total: number, installment: any) => total + (installment.due_date <= today()
