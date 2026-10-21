@@ -51,18 +51,33 @@ const CodeRequestRow = ({ request, onCancel }: { request: CodeRequest; onCancel:
 };
 
 /**
+ * Carga los codigos activos y los refresca con cada evento de Reverb.
+ * Devuelve cuantos siguen vigentes para el badge del boton.
+ */
+export function useCodeRequestsLive(enabled: boolean) {
+  const { tenant } = useConfigStore();
+  const { requests, loadRequests } = useCodeRequestStore();
+  const { data, random } = useReverb(`${tenant?.id}-channel-code-requests`, 'CodeRequestEvent', enabled && !!tenant?.id);
+
+  useEffect(() => {
+    if (enabled) loadRequests();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, data, random]);
+
+  return requests.filter((request) => new Date(request.expires_at).getTime() > Date.now()).length;
+}
+
+/**
  * Codigos solicitados y activos, visible para quien tiene code-view.
- * Mientras esta abierto se actualiza con cada solicitud nueva por Reverb.
+ * El dashboard mantiene la lista al dia por Reverb (ver useCodeRequestsLive).
  */
 export function CodeRequestsModal({ onClose, isShow }: CodeRequestsModalI) {
-  const { tenant } = useConfigStore();
   const { requests, loading, loadRequests, cancelRequest } = useCodeRequestStore();
-  const { data, random } = useReverb(`${tenant?.id}-channel-code-requests`, 'CodeRequestEvent', isShow && !!tenant?.id);
 
   useEffect(() => {
     if (isShow) loadRequests();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isShow, data, random]);
+  }, [isShow]);
 
   if (!isShow) return null;
 

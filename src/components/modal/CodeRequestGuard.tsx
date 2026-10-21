@@ -7,6 +7,8 @@ import { useCountdown } from '@/hooks/useCountdown';
 import { cloneElement, isValidElement, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
+import { ImSpinner5 } from 'react-icons/im';
+import { IoKeyOutline } from 'react-icons/io5';
 
 interface CodeRequestGuardProps {
   permission: string;
@@ -103,18 +105,30 @@ export default function CodeRequestGuard({ permission, onAuthorized, children }:
               <small className="text-text-muted">Vence en <span className="font-semibold text-warning">{remaining}</span></small>
             </>
           ) : (
-            <p className="text-sm text-text-muted text-center">
-              {loading ? 'Consultando...' : 'Esta acción requiere autorización. Solicite un código al administrador.'}
-            </p>
+            <>
+              <div className="text-center">
+                <p className="font-semibold text-text-base">Autorización requerida</p>
+                <p className="mt-1 text-sm text-text-muted">
+                  Solicite un código al administrador, tendrá 15 minutos para ingresarlo.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleRequest}
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-text-inverted shadow-sm transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading ? <ImSpinner5 className="animate-spin" /> : <IoKeyOutline size={16} />}
+                {loading ? 'Consultando...' : 'Solicitar código'}
+              </button>
+            </>
           )}
         </div>
       </Modal.Body>
       <Modal.Footer>
         <Button preset={Preset.close} onClick={handleClose} />
-        {hasRequest
-          ? <Button preset={loading ? Preset.loading : Preset.save} text='Acceder' onClick={handleSubmit} disabled={loading} />
-          : <Button preset={loading ? Preset.loading : Preset.send} text='Solicitar código' onClick={handleRequest} disabled={loading} />
-        }
+        {hasRequest && <Button preset={loading ? Preset.loading : Preset.save} text='Acceder' onClick={handleSubmit} disabled={loading} />}
       </Modal.Footer>
     </Modal>,
     document.body
