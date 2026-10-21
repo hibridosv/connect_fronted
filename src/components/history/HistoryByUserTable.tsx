@@ -3,7 +3,7 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDate, formatHourAsHM } from "@/lib/date-formats";
-import { getPaymentTypeName, getTotalOfItem, numberToMoney } from "@/lib/utils";
+import { getPaymentTypeName, getTotalOfItem, isRestaurant, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 
 
@@ -14,13 +14,16 @@ export interface HistoryByUserTableI {
 
 export function HistoryByUserTable(props: HistoryByUserTableI) {
   const { records, isLoading } = props;
-  const { system } = useConfigStore();
+  const { system, tenant } = useConfigStore();
+  const showTips = isRestaurant(tenant?.system); // la propina solo aplica en restaurante
 
   if(isLoading) return <SkeletonTable rows={5} columns={8} />
 
   if (!records || records.length === 0) {
     return <NothingHere text="Seleccione un usuario" />;
   }
+
+  const totalTips = records.reduce((sum: number, record: any) => sum + Number(record?.attributes?.tips ?? 0), 0);
 
 
   const listItems = records.map((record: any) => (
@@ -47,6 +50,11 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         { numberToMoney(record?.total ?? 0, system) }
       </td>
+      { showTips &&
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
+        { numberToMoney(Number(record?.attributes?.tips ?? 0), system) }
+      </td>
+      }
     </tr>
   ));
 
@@ -63,6 +71,7 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Tipo Pago</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Descuento</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
+              { showTips && <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Propina</th> }
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
@@ -79,6 +88,12 @@ export function HistoryByUserTable(props: HistoryByUserTableI) {
           <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total ventas</span>
           <span className="text-xl font-bold text-success mt-0.5">{ numberToMoney(getTotalOfItem(records, "total"), system) }</span>
         </div>
+        { showTips &&
+        <div className="flex-1 flex flex-col items-center py-3 px-4">
+          <span className="text-xs uppercase font-medium text-text-muted tracking-wider">Total propinas</span>
+          <span className="text-xl font-bold text-info mt-0.5">{ numberToMoney(totalTips, system) }</span>
+        </div>
+        }
       </div>
     </div>
   );
