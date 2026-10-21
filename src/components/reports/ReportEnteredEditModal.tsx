@@ -38,7 +38,7 @@ export function ReportEnteredEditModal({ isShow, onClose, record, onUpdated }: P
     await putRequest(`registers/${record.id}`, {
       lot: data.lot || null,
       expiration: data.expiration || null,
-      unit_cost: data.unit_cost,
+      unit_cost: Number(data.unit_cost),
     });
   };
 
