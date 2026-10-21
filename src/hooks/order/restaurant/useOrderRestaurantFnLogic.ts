@@ -92,7 +92,12 @@ const addNew = async (producId: any, quantity = 1) => {
       return await updateOrder(`orders/restaurant/${id}/name-table`, values);
   }
 
-  
+  /** Agrega el envio a la orden de delivery */
+  const shipping = async (id: string, amount: number) => {
+      return await updateOrder(`orders/restaurant/${id}/shipping`, { amount });
+  }
+
+
   /** las opciones de un producto */
   const option = async (id: string, values: any) => {
       await updateOrder(`orders/restaurant/${id}/option`, values, false);
@@ -159,6 +164,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, cancel, del, option, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, select, pay, paySplit }
 
 }

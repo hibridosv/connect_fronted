@@ -167,6 +167,12 @@ export function groupInvoiceProductsByCodAll(order: any) {
   return order;
 }
 
+export const SHIPPING_COD = 9999999998; // linea de envio de delivery en restaurante
+
+export function orderHasShipping(order: any): boolean {
+  return order?.invoiceproducts?.some((product: any) => product.cod == SHIPPING_COD) ?? false;
+}
+
 export function isProductPendientToSend(product: any) {
   if (!product) return false;
   const sendPrint = product?.attributes?.send_print;

@@ -28,6 +28,7 @@ import { RestaurantProductsAdded } from "@/components/orders/restaurant/Restaura
 import { RestaurantShowTotal } from "@/components/orders/restaurant/RestaurantShowTotal";
 import { RestaurantTables } from "@/components/orders/restaurant/RestaurantTables";
 import { ServiceTypeSelect } from "@/components/orders/restaurant/ServiceTypeSelect";
+import { ShippingModal } from "@/components/orders/restaurant/ShippingModal";
 import { SpecialSaleProductsModal } from "@/components/orders/restaurant/SpecialSaleProductsModal";
 import { SpecialSalesRestaurantModal } from "@/components/orders/restaurant/SpecialSalesRestaurantModal";
 import { TipsModal } from "@/components/orders/restaurant/TipsModal";
@@ -67,6 +68,7 @@ export default function Page() {
           </div>
         </div>
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
+          <ShippingModal isShow={modals.shipping} onClose={()=>{ closeModal('shipping')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />

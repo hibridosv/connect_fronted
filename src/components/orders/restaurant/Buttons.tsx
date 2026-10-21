@@ -8,6 +8,7 @@ import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import { useRouter } from 'next/navigation';
+import { orderHasShipping } from '../utils';
 
 export interface ButtonsI {
   order: Order;
@@ -61,6 +62,8 @@ export function Buttons(props: ButtonsI) {
             { isSpecial && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); }}> Venta Especial </div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); save(order.id, true) }}> Imprimir pre cuenta</div>
+            { serviceType == 3 && !orderHasShipping(order) &&
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('shipping') }}> Agregar envío</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
