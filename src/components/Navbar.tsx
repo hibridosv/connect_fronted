@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { HiMenu } from 'react-icons/hi';
 import { IoHome, IoReloadOutline } from 'react-icons/io5';
-import { CodeRequestsBell } from './codeRequests/CodeRequestsBell';
 import Drawer from './Drawer'; // Restauramos la importación del Drawer
 import { SearchProductModal } from './modal/SearchProductModal';
 import { NotificationBell } from './notifications/NotificationBell';
@@ -65,9 +64,6 @@ export const Navbar = () => {
               </button>
             ) : (
               <>
-                <div className="mx-2 sm:mx-3">
-                  <CodeRequestsBell />
-                </div>
                 <div className="mx-2 sm:mx-3">
                   <NotificationBell />
                 </div>

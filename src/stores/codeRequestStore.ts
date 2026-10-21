@@ -6,9 +6,6 @@ import useToastMessageStore from './toastMessageStore';
 interface CodeRequestStoreState {
   requests: CodeRequest[];
   loading: boolean;
-  isPanelOpen: boolean;
-  openPanel: () => void;
-  closePanel: () => void;
   loadRequests: () => Promise<void>;
   cancelRequest: (id: string) => Promise<void>;
 }
@@ -19,13 +16,6 @@ interface CodeRequestStoreState {
 const useCodeRequestStore = create<CodeRequestStoreState>((set, get) => ({
   requests: [],
   loading: false,
-  isPanelOpen: false,
-
-  openPanel: () => {
-    set({ isPanelOpen: true });
-    get().loadRequests();
-  },
-  closePanel: () => set({ isPanelOpen: false }),
 
   loadRequests: async () => {
     set({ loading: true });
