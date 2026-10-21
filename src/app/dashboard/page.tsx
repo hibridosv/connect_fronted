@@ -4,16 +4,15 @@ import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
 import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
 import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
 import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
-import { KeyModal } from '@/components/dashboard/KeyModal';
 import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
-import useModalStore from '@/stores/modalStorage';
+import useCodeRequestStore from '@/stores/codeRequestStore';
 import { BiPlusCircle } from 'react-icons/bi';
 
 
 export default function DashboardPage() {
-    const { modals, openModal, closeModal} = useModalStore();
+    const { openPanel } = useCodeRequestStore();
     const { permission, tenant } = useConfigStore();
     const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
     const isUnauthorized = usePermissionGuard('dashboard', redirect);
@@ -42,7 +41,7 @@ export default function DashboardPage() {
           </div>
           { permission && permissionExists(permission, "code-view") &&
             <button
-              onClick={() => openModal('showKeyPass')}
+              onClick={openPanel}
               className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
             >
               <BiPlusCircle size={15} />
@@ -59,7 +58,6 @@ export default function DashboardPage() {
         <DashboardDetailCards />
       </div>
 
-      <KeyModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
     </div>
   );
 }

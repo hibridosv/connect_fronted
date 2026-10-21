@@ -1,58 +1,78 @@
-import { formatDateFor10MinWindow } from '@/lib/date-formats';
+import { CodeRequest } from '@/interfaces/codeRequest';
 import { permissionExists } from '@/lib/utils';
+import { createService, getServices } from '@/services/services';
 import useConfigStore from '@/stores/configStore';
-import useTempStorage from '@/stores/useTempStorage';
-import CryptoJS from 'crypto-js';
 import { useMemo, useState } from 'react';
 
-const unlockTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const errorMessage = (error: any, fallback: string): string =>
+  error?.response?.data?.message || fallback;
 
+/**
+ * Codigos de un solo uso validados en el backend para acciones code-request-*.
+ * Quien tiene el permiso no necesita codigo; el resto lo solicita al administrador.
+ */
 export function useCodeRequest(permission: string) {
   const { permission: permissionsActive } = useConfigStore();
-  const { getElement, setElement, clearElement } = useTempStorage();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [error, setError] = useState(false);
-
-  const isUnlocked: boolean = getElement(`unlocked:${permission}`) === true;
+  const [activeRequest, setActiveRequest] = useState<CodeRequest | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const isRequired = useMemo(() => {
-    if (isUnlocked) return false;
     return !!permissionsActive && !permissionExists(permissionsActive, permission);
-  }, [permissionsActive, permission, isUnlocked]);
+  }, [permissionsActive, permission]);
 
-  const verifyCode = (code: string): boolean => {
-    const now = new Date();
-    const tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
-
-    const dateStrCurrent = formatDateFor10MinWindow(now);
-    const hashCurrent = CryptoJS.MD5(dateStrCurrent).toString().substring(0, 4).toUpperCase();
-
-    const dateStrPrevious = formatDateFor10MinWindow(tenMinutesAgo);
-    const hashPrevious = CryptoJS.MD5(dateStrPrevious).toString().substring(0, 4).toUpperCase();
-
-    const upperCaseCode = code.toUpperCase();
-    const isValid = upperCaseCode === hashCurrent || upperCaseCode === hashPrevious;
-
-    if (isValid) {
-      setElement(`unlocked:${permission}`, true);
-      const existingTimer = unlockTimers.get(permission);
-      if (existingTimer) clearTimeout(existingTimer);
-      const timer = setTimeout(() => {
-        clearElement(`unlocked:${permission}`);
-        unlockTimers.delete(permission);
-      }, 10 * 60 * 1000);
-      unlockTimers.set(permission, timer);
+  // Consulta si el usuario ya tiene un codigo solicitado para esta accion
+  const loadActiveRequest = async (): Promise<CodeRequest | null> => {
+    setLoading(true);
+    try {
+      const response = await getServices(`code-requests/mine?permission=${permission}`);
+      setActiveRequest(response.data.data);
+      return response.data.data;
+    } catch {
+      setActiveRequest(null);
+      return null;
+    } finally {
+      setLoading(false);
     }
-    setError(!isValid);
-    return isValid;
+  };
+
+  const requestCode = async (): Promise<{ ok: boolean; message: string }> => {
+    setLoading(true);
+    try {
+      const response = await createService('code-requests', { permission });
+      setActiveRequest(response.data.data);
+      return { ok: true, message: response.data.message };
+    } catch (error) {
+      return { ok: false, message: errorMessage(error, 'No se pudo solicitar el código') };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const verifyCode = async (code: string): Promise<{ ok: boolean; message: string }> => {
+    setLoading(true);
+    try {
+      await createService('code-requests/verify', { permission, code });
+      setActiveRequest(null);
+      return { ok: true, message: 'Código válido' };
+    } catch (error: any) {
+      // Si ya no hay solicitud activa (vencida, anulada o usada) se vuelve a pedir
+      if (error?.response?.data?.message !== 'Código incorrecto') setActiveRequest(null);
+      return { ok: false, message: errorMessage(error, 'No se pudo validar el código') };
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {
     isRequired,
     isModalOpen,
     setIsModalOpen,
+    activeRequest,
+    setActiveRequest,
+    loading,
+    loadActiveRequest,
+    requestCode,
     verifyCode,
-    error,
-    setError,
   };
 }
