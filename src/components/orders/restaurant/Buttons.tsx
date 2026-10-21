@@ -62,7 +62,7 @@ export function Buttons(props: ButtonsI) {
             { isSpecial && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); }}> Venta Especial </div>}
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); save(order.id, true) }}> Imprimir pre cuenta</div>
-            { serviceType == 3 && !orderHasShipping(order) &&
+            { serviceType == 3 && order.order_type == 3 && !orderHasShipping(order) &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('shipping') }}> Agregar envío</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
