@@ -58,6 +58,6 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
     }, [url, linkUrl, handleGet, loadAtStart]);
 
 
-  return { history, handleGet, loading, links }
+  return { history, setHistory, handleGet, loading, links }
 
 }

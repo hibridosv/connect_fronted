@@ -7,11 +7,15 @@ import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 
 
 export default function Page() {
-  const { history, handleGet, loading, links } = useReportsLogic('reports/products-in', 'download.excel.reports.products-in');
+  const { history, setHistory, handleGet, loading, links } = useReportsLogic('reports/products-in', 'download.excel.reports.products-in');
   const isLoading = loading.history ?? false; 
 
     const handleFormSubmit = async (values: DateRangeValues) => { 
         await handleGet(values, 'reports/products-in', 'download.excel.reports.products-in');
+    }
+
+    const handleUpdated = (updated: any) => {
+        setHistory((records: any) => records?.map((record: any) => record.id === updated.id ? updated : record));
     }
 
   return (
@@ -19,7 +23,7 @@ export default function Page() {
     <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Productos Ingresados" />
         <div className="p-4">
-          <ReportEnteredTable records={history} isLoading={isLoading} />
+          <ReportEnteredTable records={history} isLoading={isLoading} onUpdated={handleUpdated} />
         </div>
     </div>
     <div className="md:col-span-3">
