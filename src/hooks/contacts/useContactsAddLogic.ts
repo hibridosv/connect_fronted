@@ -63,6 +63,10 @@ useEffect(() => {
 
 
   const onSubmit = async (data: any) => {
+    // del contacto predeterminado solo se puede cambiar el nombre
+    if (record?.is_default) {
+        data = { name: data.name };
+    } else {
       if (!data.is_client && !data.is_provider && !data.is_employee && !data.is_referred) {
           useToastMessageStore.getState().setError({ message: "Debe elegir el tipo de contacto"});
           return false; }
@@ -71,6 +75,7 @@ useEffect(() => {
     data.document = formatDocument(data.document ? data.document : data.id_number) // se registra sin guiones
     data.register = formatDocument(data.register) // se registra sin guiones
     data.town_doc =  data.town_doc.slice(-2);
+    }
 
     try {
         if (record) {

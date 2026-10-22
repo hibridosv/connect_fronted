@@ -2,6 +2,7 @@ import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import useConfigStore from "@/stores/configStore";
 import { ContactAddGT } from "./ContactAddGT";
+import { ContactDefaultForm } from "./ContactDefaultForm";
 import { ContactAddHN } from "./ContactAddHN";
 import { ContactAddSV } from "./ContactAddSV";
 
@@ -23,6 +24,8 @@ export function AddContactModal(props: AddContactModalProps) {
     <Modal show={isShow} onClose={onClose} size="xl" headerTitle={headerTitle} closeOnOverlayClick={false} >
       <Modal.Body>
         <div className="p-2">
+          {record?.is_default == 1 ?
+            <ContactDefaultForm isShow={isShow} record={record} /> : <>
           {system?.country == 1 &&
             <ContactAddSV isShow={isShow} record={record} />
           }
@@ -32,6 +35,7 @@ export function AddContactModal(props: AddContactModalProps) {
           {system?.country == 3 &&
             <ContactAddGT isShow={isShow} record={record} />
           }
+          </>}
         </div>
       </Modal.Body>
       <Modal.Footer>

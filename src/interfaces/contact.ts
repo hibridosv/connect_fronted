@@ -23,6 +23,7 @@ export interface Contact {
     is_provider?:     number;
     is_employee?:     number;
     is_referred?:     number;
+    is_default?:      number;
     is_credit_block?: number;
     credit_limit?:    number | null;
     excluded?:        number;
