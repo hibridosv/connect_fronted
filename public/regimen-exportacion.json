@@ -1,0 +1,362 @@
+[
+    {
+        "code": "1000.000",
+        "name": "Exportación Definitiva, Régimen Común"
+    },
+    {
+        "code": "1040.000",
+        "name": "Exportación Definitiva Sustitución de Mercancías, Régimen Común"
+    },
+    {
+        "code": "1041.020",
+        "name": "Exportación Definitiva Proveniente de Franquicia Provisional, Franq. Presidenciales exento de DAI"
+    },
+    {
+        "code": "1041.021",
+        "name": "Exportación Definitiva Proveniente de Franquicia Provisional, Franq. Presidenciales exento de DAI e IVA"
+    },
+    {
+        "code": "1048.025",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Maquinaria y Equipo LZF. DPA"
+    },
+    {
+        "code": "1048.031",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Distribución Internacional"
+    },
+    {
+        "code": "1048.032",
+        "name": "Exportación Definitiva Proveniente. de Franquicia Definitiva, Operaciones Internacionales de Logística"
+    },
+    {
+        "code": "1048.033",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Centro Internacional de llamadas(Call Center)"
+    },
+    {
+        "code": "1048.034",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Tecnologias de Información LSI"
+    },
+    {
+        "code": "1048.035",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Investigación y Desarrollo LSI"
+    },
+    {
+        "code": "1048.036",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Reparación y Mantenimiento de Embarcaciones Marítimas LSI"
+    },
+    {
+        "code": "1048.037",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Reparación y Mantenimiento de Aeronaves LSI"
+    },
+    {
+        "code": "1048.038",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Procesos Empresariales LSI"
+    },
+    {
+        "code": "1048.039",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Servicios Medico-Hospitalarios LSI"
+    },
+    {
+        "code": "1048.040",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Servicios Financieros Internacionales LSI"
+    },
+    {
+        "code": "1048.043",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Reparación y Mantenimiento de Contenedores LSI"
+    },
+    {
+        "code": "1048.044",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Reparación de Equipos Tecnológicos LSI"
+    },
+    {
+        "code": "1048.054",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Atención Ancianos y Convalecientes LSI"
+    },
+    {
+        "code": "1048.055",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Telemedicina LSI"
+    },
+    {
+        "code": "1048.056",
+        "name": "Exportación Definitiva Proveniente de Franquicia Definitiva, Cinematografía LSI"
+    },
+    {
+        "code": "1052.000",
+        "name": "Exportación Definitiva de DPA con origen en Compras Locales, Régimen Común"
+    },
+    {
+        "code": "1054.000",
+        "name": "Exportación Definitiva de Zona Franca con origen en Compras Locales, Régimen Común"
+    },
+    {
+        "code": "1100.000",
+        "name": "Exportación Definitiva de Envíos de Socorro , Régimen Común"
+    },
+    {
+        "code": "1200.000",
+        "name": "Exportación Definitiva de Envíos Postales, Régimen Común"
+    },
+    {
+        "code": "1300.000",
+        "name": "Exportación Definitiva Envíos que  requieren despacho urgente, Régimen Común"
+    },
+    {
+        "code": "1400.000",
+        "name": "Exportación Definitiva  Courier, Régimen Común"
+    },
+    {
+        "code": "1400.011",
+        "name": "Exportación Definitiva  Courier, Muestras Sin Valor Comercial"
+    },
+    {
+        "code": "1400.012",
+        "name": "Exportación Definitiva  Courier, Material Publicitario"
+    },
+    {
+        "code": "1400.017",
+        "name": "Exportación Definitiva  Courier, Declaración de Documentos"
+    },
+    {
+        "code": "1500.000",
+        "name": "Exportación Definitiva Menaje de casa, Régimen Común"
+    },
+    {
+        "code": "2100.000",
+        "name": "Exportación Temporal para Perfeccionamiento Pasivo, Régimen Común"
+    },
+    {
+        "code": "2100.065",
+        "name": "Exportación Temporal para Perfeccionamiento Pasivo, De Mercado Nacional a ZF o DPA"
+    },
+    {
+        "code": "2200.000",
+        "name": "Exportación Temporal con Reimportación en el mismo estado, Régimen Común"
+    },
+    {
+        "code": "2200.065",
+        "name": "Exportación Temporal con Reimportación en el mismo estado, De Mercado Nacional a ZF o DPA"
+    },
+    {
+        "code": "2400.000",
+        "name": "Traslados Definitivos"
+    },
+    {
+        "code": "3050.000",
+        "name": "Reexportación Proveniente de Importación Temporal, Régimen Común"
+    },
+    {
+        "code": "3051.000",
+        "name": "Reexportación Proveniente de Tiendas Libres, Régimen Común"
+    },
+    {
+        "code": "3052.000",
+        "name": "Reexportación Proveniente de Admisión Temporal para Perfeccionamiento Activo, Régimen Común"
+    },
+    {
+        "code": "3053.000",
+        "name": "Reexportación Proveniente de Admisión Temporal, Régimen Común"
+    },
+    {
+        "code": "3054.000",
+        "name": "Reexportación Proveniente de Régimen de Zona Franca, Régimen Común"
+    },
+    {
+        "code": "3055.000",
+        "name": "Reexportación Proveniente de Admisión Temporal para Perfeccionamiento Activo con Garantía, Régimen Común"
+    },
+    {
+        "code": "3056.000",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Régimen Común"
+    },
+    {
+        "code": "3056.047",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Remisión a Departamento de Subastas"
+    },
+    {
+        "code": "3056.057",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Remisión entre Usuarios Directos del Mismo Parque de Servicios"
+    },
+    {
+        "code": "3056.058",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Remisión entre Usuarios Directos de Diferente Parque de Servicios"
+    },
+    {
+        "code": "3056.072",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Decreto 738 Eléctricos e Híbridos"
+    },
+    {
+        "code": "3056.081",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, Remisión entre Usuarios Directos LSI"
+    },
+    {
+        "code": "3056.084",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, De una LSI para un DPA"
+    },
+    {
+        "code": "3056.085",
+        "name": "Reexportación Proveniente de Admisión Temporal Distribución Internacional Parque de Servicios, De una LSI para una ZF"
+    },
+    {
+        "code": "3057.000",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, Régimen Común"
+    },
+    {
+        "code": "3057.047",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, Remisión a Departamento de Subastas"
+    },
+    {
+        "code": "3057.057",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, Remisión entre Usuarios Directos del Mismo Parque de Servicios"
+    },
+    {
+        "code": "3057.058",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, Remisión entre Usuarios Directos de Diferente Parque de Servicios"
+    },
+    {
+        "code": "3057.081",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, Remisión entre Usuarios Directos LSI"
+    },
+    {
+        "code": "3057.084",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, De una LSI para un DPA"
+    },
+    {
+        "code": "3057.085",
+        "name": "Reexportación Proveniente de Admisión Temporal Operaciones Internacional de Logística Parque de Servicios, De una LSI para una ZF"
+    },
+    {
+        "code": "3058.033",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Centro Internacional de llamadas(Call Center)"
+    },
+    {
+        "code": "3058.034",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Tecnologías de Información LSI"
+    },
+    {
+        "code": "3058.035",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Investigación y Desarrollo LSI"
+    },
+    {
+        "code": "3058.036",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Reparación y Mantenimiento de Embarcaciones Marítimas LSI"
+    },
+    {
+        "code": "3058.037",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Reparación y Mantenimiento de Aeronaves LSI"
+    },
+    {
+        "code": "3058.038",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Procesos Empresariales LSI"
+    },
+    {
+        "code": "3058.039",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Servicios Medico-Hospitalarios LSI"
+    },
+    {
+        "code": "3058.040",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Servicios Financieros Internacionales LSI"
+    },
+    {
+        "code": "3058.043",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Reparación y Mantenimiento de Contenedores LSI"
+    },
+    {
+        "code": "3058.044",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Reparación de Equipos Tecnológicos LSI"
+    },
+    {
+        "code": "3058.054",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Atención Ancianos y Convalecientes LSI"
+    },
+    {
+        "code": "3058.055",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Telemedicina LSI"
+    },
+    {
+        "code": "3058.056",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Cinematografía LSI"
+    },
+    {
+        "code": "3058.082",
+        "name": "Reexportación Proveniente de Admisión Temporal Centro Servicio LSI, Remisión entre Centros de Servicios LSI"
+    },
+    {
+        "code": "3059.000",
+        "name": "Reexportación Proveniente de Admisión Temporal Reparación de Equipo Tecnológico Parque de Servicios, Régimen Común"
+    },
+    {
+        "code": "3059.057",
+        "name": "Reexportación Proveniente de Admisión Temporal Reparación de Equipo Tecnológico Parque de Servicios, Remisión entre Usuarios Directos del Mismo Parque de Servicios"
+    },
+    {
+        "code": "3059.058",
+        "name": "Reexportación Proveniente de Admisión Temporal Reparación de Equipo Tecnológico Parque de Servicios, Remisión entre Usuarios Directos de Diferente Parque de Servicios"
+    },
+    {
+        "code": "3059.033",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Centro Internacional de llamadas(Call Center)"
+    },
+    {
+        "code": "3059.034",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Tecnologías de Información LSI"
+    },
+    {
+        "code": "3059.035",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Investigación y Desarrollo LSI"
+    },
+    {
+        "code": "3059.038",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Procesos Empresariales LSI"
+    },
+    {
+        "code": "3059.039",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Servicios Medico-Hospitalarios LSI"
+    },
+    {
+        "code": "3059.040",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Servicios Financieros Internacionales LSI"
+    },
+    {
+        "code": "3059.044",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Reparación de Equipos Tecnológicos LSI"
+    },
+    {
+        "code": "3059.047",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Remisión a Departamento de Subastas"
+    },
+    {
+        "code": "3059.054",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Atención Ancianos y Convalecientes LSI"
+    },
+    {
+        "code": "3059.055",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Telemedicina LS"
+    },
+    {
+        "code": "3059.056",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Cinematografía LSI"
+    },
+    {
+        "code": "3059.081",
+        "name": "Reexportación Proveniente de Servicios Internacionales en Parques de Servicios, Remisión entre Usuarios Directos"
+    },
+    {
+        "code": "3070.000",
+        "name": "Reexportación Proveniente de Depósito., Régimen Común"
+    },
+    {
+        "code": "3070.047",
+        "name": "Reexportación Proveniente de Depósito., Remisión a Departamento de Subastas"
+    },
+    {
+        "code": "3070.072",
+        "name": "Reexportación Proveniente de Depósito., Decreto 738 Eléctricos e Híbridos"
+    },
+    {
+        "code": "3071.000",
+        "name": "Reexp. Prov. de Deposito."
+    },
+    {
+        "code": "0000.000",
+        "name": "Tránsito Aduanero"
+    }
+]

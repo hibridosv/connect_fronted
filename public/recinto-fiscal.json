@@ -1,0 +1,194 @@
+[
+    {
+        "code": "01",
+        "name": "Terrestre San Bartolo"
+    },
+    {
+        "code": "02",
+        "name": "Marítima de Acajutla"
+    },
+    {
+        "code": "03",
+        "name": "Aérea De Comalapa"
+    },
+    {
+        "code": "04",
+        "name": "Terrestre Las Chinamas"
+    },
+    {
+        "code": "05",
+        "name": "Terrestre La Hachadura"
+    },
+    {
+        "code": "06",
+        "name": "Terrestre Santa Ana"
+    },
+    {
+        "code": "07",
+        "name": "Terrestre San Cristóbal"
+    },
+    {
+        "code": "08",
+        "name": "Terrestre Anguiatú"
+    },
+    {
+        "code": "09",
+        "name": "Terrestre El Amatillo"
+    },
+    {
+        "code": "10",
+        "name": "Marítima La Unión"
+    },
+    {
+        "code": "11",
+        "name": "Terrestre El Poy"
+    },
+    {
+        "code": "12",
+        "name": "Terrestre Metalío"
+    },
+    {
+        "code": "15",
+        "name": "Fardos Postales"
+    },
+    {
+        "code": "16",
+        "name": "Z.F. San Marcos"
+    },
+    {
+        "code": "17",
+        "name": "Z.F. El Pedregal"
+    },
+    {
+        "code": "18",
+        "name": "Z.F. San Bartolo"
+    },
+    {
+        "code": "20",
+        "name": "Z.F. Exportsalva"
+    },
+    {
+        "code": "21",
+        "name": "Z.F. American Park"
+    },
+    {
+        "code": "23",
+        "name": "Z.F. Internacional"
+    },
+    {
+        "code": "24",
+        "name": "Z.F. Diez"
+    },
+    {
+        "code": "26",
+        "name": "Z.F. Miramar"
+    },
+    {
+        "code": "27",
+        "name": "Z.F. Santo Tomas"
+    },
+    {
+        "code": "28",
+        "name": "Z.F. Santa Tecla"
+    },
+    {
+        "code": "29",
+        "name": "Z.F. Santa Ana"
+    },
+    {
+        "code": "30",
+        "name": "Z.F. La Concordia"
+    },
+    {
+        "code": "31",
+        "name": "Aérea Ilopango"
+    },
+    {
+        "code": "32",
+        "name": "Z.F. Pipil"
+    },
+    {
+        "code": "33",
+        "name": "Puerto Barillas"
+    },
+    {
+        "code": "34",
+        "name": "Z.F. Calvo Conservas"
+    },
+    {
+        "code": "35",
+        "name": "Feria Internacional"
+    },
+    {
+        "code": "36",
+        "name": "Aduana El Papalón"
+    },
+    {
+        "code": "37",
+        "name": "Z.F. Sam-Li"
+    },
+    {
+        "code": "38",
+        "name": "Z.F. San José"
+    },
+    {
+        "code": "39",
+        "name": "Z.F. Las Mercedes"
+    },
+    {
+        "code": "40",
+        "name": "Z.F. EMCO"
+    },
+    {
+        "code": "41",
+        "name": "Z.F. Gigante"
+    },
+    {
+        "code": "42",
+        "name": "Z.F. NOVABES"
+    },
+    {
+        "code": "43",
+        "name": "Z.F. INHDELVA"
+    },
+    {
+        "code": "71",
+        "name": "Aldesa"
+    },
+    {
+        "code": "72",
+        "name": "Agdosa Merliot"
+    },
+    {
+        "code": "73",
+        "name": "Bodesa"
+    },
+    {
+        "code": "76",
+        "name": "Delegacion DHL"
+    },
+    {
+        "code": "77",
+        "name": "Transauto"
+    },
+    {
+        "code": "80",
+        "name": "Nejapa"
+    },
+    {
+        "code": "81",
+        "name": "Almaconsa"
+    },
+    {
+        "code": "83",
+        "name": "Agdosa Apopa"
+    },
+    {
+        "code": "85",
+        "name": "Gutiérrez Courier Y Cargo"
+    },
+    {
+        "code": "99",
+        "name": "San Bartolo Envío Hn/Gt"
+    }
+]
