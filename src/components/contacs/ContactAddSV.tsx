@@ -3,15 +3,18 @@ import { useContactsAddLogic } from "@/hooks/contacts/useContactsAddLogic";
 import { useCountries } from "@/hooks/locations/useCountries";
 import { useEconomicActivities } from "@/hooks/locations/useEconomicActivities";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
+import { useRecintosFiscales, useRegimenesExportacion } from "@/hooks/locations/useExportCatalogs";
 import { useTownByDepartament } from "@/hooks/locations/useTownByDepartaments";
 import { Contact } from "@/interfaces/contact";
 import useConfigStore from "@/stores/configStore";
 import useContactStore from "@/stores/ContactStore";
 import useUserStore from "@/stores/UserStore";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
 import { SkeletonContactAddSV } from "../skeleton/SkeletonContactAddSV";
+import { CatalogSearchSelect } from "./CatalogSearchSelect";
 import { EconomicActivitySelect } from "./EconomicActivitySelect";
 import { getParamString } from "./utils";
 
@@ -29,12 +32,22 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const { departaments } = useDepartaments();
   const { countries } = useCountries();
   const { activities } = useEconomicActivities();
+  const { recintos } = useRecintosFiscales();
+  const { regimenes } = useRegimenesExportacion();
   let selectDepartament =  (watch("departament_doc")) ? watch("departament_doc") : departaments && departaments.departamentos[0].id;
   const { townsExtracted } = useTownByDepartament(departaments, selectDepartament);
   let regex =  (watch("country") == "SV") ? "^([0-9]{8}-[0-9]{1}|[0-9]{4}-[0-9]{6}-[0-9]{3}-[0-9]{1})?$" : "^[a-zA-Z0-9-]+$";
   const { onSubmit } = useContactsAddLogic(isShow, record, setValue, departaments, countries, townsExtracted,  getParamString(pageParam));
   const { saving } = useContactStore();
   const { users, loading: loadingUsers} = useUserStore();
+
+  // datos de exportacion (CAT-027/028/033): colapsados salvo que el contacto ya tenga alguno cargado
+  const [showExportFields, setShowExportFields] = useState(false);
+  useEffect(() => {
+    if (record && (record.recinto_fiscal || record.tipo_regimen || record.regimen)) {
+      setShowExportFields(true);
+    }
+  }, [record]);
 
   const isSellerActive = activeConfig && activeConfig.includes("contact-user-seller");
   const isCountryActive = activeConfig && activeConfig.includes("contact-country");
@@ -145,6 +158,48 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                         <label htmlFor="address_doc" className="input-label">Dirección</label>
                         <input type="text" id="address_doc" {...register("address_doc")} className="input" />
                     </div>
+
+                    {!showExportFields && (
+                      <div className="w-full px-3 mb-2">
+                        <button type="button" onClick={() => setShowExportFields(true)}
+                          className="text-sm text-primary hover:underline">
+                          + Agregar datos de exportación
+                        </button>
+                      </div>
+                    )}
+
+                    {showExportFields && (
+                      <>
+                        <div className="w-full uppercase px-2 text-sm font-bold text-center text-text-muted">Datos de exportación (MH)</div>
+
+                        <div className="w-full md:w-full px-3 mb-2">
+                          <label htmlFor="tipo_regimen" className="input-label">Tipo de régimen (CAT-033)</label>
+                          <select defaultValue="" id="tipo_regimen" {...register("tipo_regimen")} className="input-select">
+                            <option value="">Sin definir</option>
+                            <option value="EX-1">EX-1 - Exportación Definitiva</option>
+                            <option value="EX-2">EX-2 - Exportación Temporal</option>
+                            <option value="EX-3">EX-3 - Reexportación</option>
+                            <option value="TA-1">TA-1 - Tránsito Aduanero</option>
+                          </select>
+                        </div>
+
+                        <div className="w-full md:w-full px-3 mb-2">
+                          <label htmlFor="recinto_fiscal_search" className="input-label">Recinto fiscal (CAT-027)</label>
+                          <input type="hidden" {...register("recinto_fiscal")} />
+                          <CatalogSearchSelect id="recinto_fiscal_search" placeholder="Buscar por código o nombre"
+                            entries={recintos ?? []} value={watch("recinto_fiscal")}
+                            onChange={(entry) => setValue("recinto_fiscal", entry ? entry.code : null)} />
+                        </div>
+
+                        <div className="w-full md:w-full px-3 mb-2">
+                          <label htmlFor="regimen_search" className="input-label">Régimen (CAT-028)</label>
+                          <input type="hidden" {...register("regimen")} />
+                          <CatalogSearchSelect id="regimen_search" placeholder="Buscar por código o nombre"
+                            entries={regimenes ?? []} value={watch("regimen")}
+                            onChange={(entry) => setValue("regimen", entry ? entry.code : null)} />
+                        </div>
+                      </>
+                    )}
 
                     <div className="w-full md:w-1/2 px-3 mb-2">
                     <label htmlFor="departament_doc" className="input-label"> Departamento </label>

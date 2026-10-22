@@ -1,5 +1,6 @@
 import { useCountries } from "@/hooks/locations/useCountries";
 import { useDepartaments } from "@/hooks/locations/useDepartaments";
+import { useRecintosFiscales, useRegimenesExportacion } from "@/hooks/locations/useExportCatalogs";
 import { Contact } from "@/interfaces/contact";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import { formatDuiWithAll, getCountryNameByCode, getDepartmentNameById, getMunicipioNameById, numberToMoney } from "@/lib/utils";
@@ -16,6 +17,15 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
   const { system, activeConfig } = useConfigStore();
   const { departaments } = useDepartaments();
   const { countries } = useCountries();
+  const { recintos } = useRecintosFiscales();
+  const { regimenes } = useRegimenesExportacion();
+
+  const tipoRegimenNames: Record<string, string> = {
+    "EX-1": "Exportación Definitiva",
+    "EX-2": "Exportación Temporal",
+    "EX-3": "Reexportación",
+    "TA-1": "Tránsito Aduanero",
+  };
 
   if (!isShow) return null;
 
@@ -171,6 +181,33 @@ export function ContactDetailsSV(props: ContactDetailsSVPropd) {
             <div>
               <div className="text-text-muted text-xs uppercase font-medium">Pais</div>
               <div className="text-text-base text-sm font-semibold">{getCountryNameByCode(`${record?.country}`, countries)}</div>
+            </div>
+          )}
+
+          {record?.tipo_regimen && (
+            <div>
+              <div className="text-text-muted text-xs uppercase font-medium">Tipo de régimen (CAT-033)</div>
+              <div className="text-text-base text-sm font-semibold">
+                {record?.tipo_regimen} - {tipoRegimenNames[record?.tipo_regimen] ?? ""}
+              </div>
+            </div>
+          )}
+
+          {record?.recinto_fiscal && (
+            <div>
+              <div className="text-text-muted text-xs uppercase font-medium">Recinto fiscal (CAT-027)</div>
+              <div className="text-text-base text-sm font-semibold">
+                {record?.recinto_fiscal} - {recintos?.find((r) => r.code === record?.recinto_fiscal)?.name ?? ""}
+              </div>
+            </div>
+          )}
+
+          {record?.regimen && (
+            <div className="md:col-span-2">
+              <div className="text-text-muted text-xs uppercase font-medium">Régimen (CAT-028)</div>
+              <div className="text-text-base text-sm font-semibold">
+                {record?.regimen} - {regimenes?.find((r) => r.code === record?.regimen)?.name ?? ""}
+              </div>
             </div>
           )}
         </div>

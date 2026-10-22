@@ -15,6 +15,9 @@ export interface Contact {
     register?:        string;
     roar?:            string;
     activity_code?:   string | null;
+    recinto_fiscal?:  string | null;
+    tipo_regimen?:    string | null;
+    regimen?:         string | null;
     departament_doc?: string;
     town_doc?:        string;
     address_doc?:     string;
