@@ -4,6 +4,7 @@ import { UpdateServiceInterface } from '@/services/Interfaces';
 import { postForPrint } from '@/services/OtherServices';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
+import { enqueueProductRequest } from '@/lib/orderProductQueue';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
 import ordersStore from '@/stores/orders/ordersStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
@@ -50,16 +51,18 @@ const addNew = async (producId: any, quantity = 1) => {
 }
 
 /** GUardar la orden y manda comandas a imprimir si asi se necesita, no sale de la orden*/
-  const save = async (id: string, withOrder: boolean = false) => {
+  // va en la misma cola que agregar productos para que una respuesta vieja del guardado no pise un producto recien agregado
+  const save = (id: string, withOrder: boolean = false) => enqueueProductRequest(async () => {
       await saveOrder(`orders/restaurant/${id}/save`, { with_order: withOrder });
-      if (!error && withOrder) {
+      const { error: saveError, order: savedOrder } = ordersStore.getState();
+      if (!saveError && withOrder) {
         setMessage({message: "Imprimiendo pre cuenta"})
         if (isPrintLocal) {
-          let orderToPrint = {...order, is_pre_account: true};
+          let orderToPrint = {...savedOrder, is_pre_account: true};
           await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', orderToPrint);
         }
       }
-  }
+  });
 
   // Guarda la orden y sale de la pantalla
   const saveAndOut = async (id: string) => {
@@ -89,7 +92,12 @@ const addNew = async (producId: any, quantity = 1) => {
       return await updateOrder(`orders/restaurant/${id}/name-table`, values);
   }
 
-  
+  /** Agrega el envio a la orden de delivery */
+  const shipping = async (id: string, amount: number) => {
+      return await updateOrder(`orders/restaurant/${id}/shipping`, { amount });
+  }
+
+
   /** las opciones de un producto */
   const option = async (id: string, values: any) => {
       await updateOrder(`orders/restaurant/${id}/option`, values, false);
@@ -156,6 +164,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, cancel, del, option, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, select, pay, paySplit }
 
 }

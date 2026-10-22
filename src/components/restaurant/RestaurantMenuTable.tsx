@@ -11,7 +11,7 @@ import Image from "next/image";
 import { BiCategory, BiRename } from "react-icons/bi";
 import { FaCheckCircle, FaImages, FaSolarPanel, FaStar } from "react-icons/fa";
 import { IoMdCloseCircleOutline, IoMdOptions } from "react-icons/io";
-import { MdDelete, MdOutlinePriceCheck, MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { MdAttachMoney, MdDelete, MdOutlinePriceCheck, MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { RiMenuSearchFill } from "react-icons/ri";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownDivider } from "../dropDown/DropdownDivider";
@@ -36,7 +36,7 @@ export function RestaurantMenuTable() {
 
   let data = products?.per_page ? products.data : products;
 
-  if(loadingProducts) return <SkeletonTable rows={8} columns={7} />
+  if(loadingProducts) return <SkeletonTable rows={8} columns={8} />
 
   if (!data || data.length === 0) {
     return <NothingHere text="Seleccione un producto" />;
@@ -71,11 +71,20 @@ export function RestaurantMenuTable() {
         {record?.prices ? numberToMoney(record?.prices[0]?.price, system) : numberToMoney(0, system)}
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
+        {numberToMoney(record?.unit_cost ?? 0, system)}
+      </td>
+      <td className={`px-3 py-2 text-center whitespace-nowrap`}>
         <Dropdown label={<RiMenuSearchFill size={18} /> }>
           <DropdownItem onClick={() => handleOpenFieldModal(record, 'price', 'number', 'Precio')}>
             <span className="flex justify-items-start">
               <span className="mt-1"><MdOutlinePriceCheck /></span>
               <span className="ml-2">Cambiar Precio</span>
+            </span>
+          </DropdownItem>
+          <DropdownItem onClick={() => handleOpenFieldModal(record, 'unit_cost', 'number', 'Costo')}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><MdAttachMoney /></span>
+              <span className="ml-2">Cambiar Costo</span>
             </span>
           </DropdownItem>
           <DropdownItem onClick={() => handleOpenFieldModal(record, 'description', 'text', 'Nombre')}>
@@ -144,6 +153,7 @@ export function RestaurantMenuTable() {
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Modificadores</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Panel</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
+              <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Costo</th>
               <th scope="col" className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">OP</th>
             </tr>
           </thead>

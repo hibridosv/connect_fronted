@@ -1,3 +1,4 @@
+import { ClientCreditSummary, CreditAging, CreditRestructurePreview } from '@/interfaces/credits';
 import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from '../toastMessageStore';
@@ -6,6 +7,11 @@ import useTempStorage from '../useTempStorage';
 
 interface accountReceivableStoreI {
   accounts: any | null;
+  aging: CreditAging | null;
+  clientSummary: ClientCreditSummary | null;
+  restructurePreview: CreditRestructurePreview | null;
+  restructureError: string | null;
+  previewing: boolean;
   account: any | null;
   error: boolean;
   loading: boolean;
@@ -15,10 +21,21 @@ interface accountReceivableStoreI {
   loadAccount: (url: string) => Promise<void>;
   createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
+  waiveLateFee: (url: string) => Promise<boolean>;
+  loadAging: (url: string) => Promise<void>;
+  loadClientSummary: (url: string) => Promise<void>;
+  previewRestructure: (url: string, data: any) => Promise<void>;
+  clearRestructurePreview: () => void;
+  restructureCredit: (url: string, data: any) => Promise<boolean>;
 }
 
 const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
   accounts: null,
+  aging: null,
+  clientSummary: null,
+  restructurePreview: null,
+  restructureError: null,
+  previewing: false,
   account: null,
   error: false, 
   loading: false,
@@ -85,6 +102,76 @@ const accountReceivableStore = create<accountReceivableStoreI>((set) => ({
     }
   },
 
+
+    waiveLateFee: async (url: string) => {
+        set({ sending: true });
+        try {
+            const response = await createService(url, {});
+            useToastMessageStore.getState().setMessage(response);
+            useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
+            set({ error: false });
+            return true;
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+            return false;
+        } finally {
+            set({ sending: false });
+        }
+    },
+
+    loadAging: async (url: string) => {
+    set({ loading: true });
+    try {
+      const response = await getServices(url);
+      set({ aging: response.data.data, error: false });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ aging: null, error: true });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+    loadClientSummary: async (url: string) => {
+    try {
+      const response = await getServices(url);
+      set({ clientSummary: response.data.data });
+    } catch (error) {
+      set({ clientSummary: null });
+    }
+  },
+
+    previewRestructure: async (url: string, data: any) => {
+    set({ previewing: true });
+    try {
+      const response = await createService(url, { ...data, preview: true });
+      set({ restructurePreview: response.data.data, restructureError: null });
+    } catch (error: any) {
+      set({ restructurePreview: null, restructureError: error?.response?.data?.message ?? 'No se pudo calcular el plan' });
+    } finally {
+      set({ previewing: false });
+    }
+  },
+
+    clearRestructurePreview: () => set({ restructurePreview: null, restructureError: null }),
+
+    restructureCredit: async (url: string, data: any) => {
+        set({ sending: true });
+        try {
+            const response = await createService(url, data);
+            useToastMessageStore.getState().setMessage(response);
+            useTempStorage.getState().setElement("paymentReceivableAdd", response.data.data);
+            set({ error: false, restructurePreview: null });
+            return true;
+        } catch (error) {
+            useToastMessageStore.getState().setError(error);
+            set({ error: true });
+            return false;
+        } finally {
+            set({ sending: false });
+        }
+    },
 
 }));
 

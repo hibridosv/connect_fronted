@@ -21,7 +21,7 @@ const useDefaultContactStore = create<DefaultContactStoreState>()(
         set({ loading: true });
         try {
           const response = await getServices(
-            'contacts?filterWhere[status]==1&filterWhere[is_client]==1&filterWhere[is_provider]==1&filterWhere[is_employee]==1&filterWhere[is_referred]==1&perPage=1&page=1'
+            'contacts?filterWhere[is_default]==1&perPage=1&page=1'
           );
           const contacts = response.data.data?.data;
           if (contacts && contacts.length > 0) {

@@ -187,6 +187,13 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                     </div>
                   }
 
+                  { watch("is_client") == 1 &&
+                    <div className="w-full md:w-1/2 px-3 mb-2">
+                      <label htmlFor="credit_limit" className="input-label"> Límite de crédito (vacío sin límite) </label>
+                      <input type="number" step="any" min={0} id="credit_limit" {...register("credit_limit")} className="input" />
+                    </div>
+                  }
+
                   { isCountryActive && countries &&
                     <div className="w-full md:w-full px-3 mb-2">
                       <label htmlFor="country" className="input-label"> Seleccione un pais </label>

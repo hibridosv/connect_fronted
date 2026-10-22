@@ -4,7 +4,7 @@ import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
 import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
 import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
 import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
-import { KeyModal } from '@/components/dashboard/KeyModal';
+import { CodeRequestsModal, useCodeRequestsLive } from '@/components/dashboard/CodeRequestsModal';
 import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -17,6 +17,8 @@ export default function DashboardPage() {
     const { permission, tenant } = useConfigStore();
     const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
     const isUnauthorized = usePermissionGuard('dashboard', redirect);
+    const canViewCodes = !!permission && permissionExists(permission, "code-view");
+    const pendingCodes = useCodeRequestsLive(canViewCodes);
 
   if (isUnauthorized) return null;
 
@@ -40,13 +42,18 @@ export default function DashboardPage() {
               <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">Datos en tiempo real</span>
             </div>
           </div>
-          { permission && permissionExists(permission, "code-view") &&
+          { canViewCodes &&
             <button
               onClick={() => openModal('showKeyPass')}
-              className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
             >
               <BiPlusCircle size={15} />
               <span className="hidden sm:inline">Código</span>
+              {pendingCodes > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
+                  {pendingCodes > 9 ? '9+' : pendingCodes}
+                </span>
+              )}
             </button>
           }
         </div>
@@ -59,7 +66,8 @@ export default function DashboardPage() {
         <DashboardDetailCards />
       </div>
 
-      <KeyModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
+      <CodeRequestsModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
+
     </div>
   );
 }

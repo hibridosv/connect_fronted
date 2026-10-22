@@ -1,6 +1,6 @@
 "use client";
 import { formatDate, formatTime } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { isRestaurant, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { FaDownload } from "react-icons/fa";
 import { Button, Preset } from "../button/button";
@@ -16,7 +16,8 @@ export interface CutDetailsModalProps {
 
 export function CutDetailsModal(props: CutDetailsModalProps) {
     const { onClose, isShow, record } = props;
-    const { system } = useConfigStore();
+    const { system, tenant } = useConfigStore();
+    const showTips = isRestaurant(tenant?.system); // la propina solo aplica en restaurante
 
     if (!record || !isShow) return null;
 
@@ -119,6 +120,21 @@ const cashDifference = Math.round((record.cash_diference ?? 0) * 100) / 100;
                 <span>Total Retenciones:</span>
                 <span className="font-medium">{ numberToMoney(record?.sales_total_retention ? record?.sales_total_retention : 0, system) }</span>
               </div>
+              {/* Tips */}
+              { showTips && <>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Propinas Efectivo:</span>
+                <span className="font-medium">{ numberToMoney(record?.tips_cash ? record?.tips_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Propinas Otros Medios:</span>
+                <span className="font-medium">{ numberToMoney(record?.tips_no_cash ? record?.tips_no_cash : 0, system) }</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-700">
+                <span>Total Propinas:</span>
+                <span className="font-medium">{ numberToMoney(record?.tips_total ? record?.tips_total : 0, system) }</span>
+              </div>
+              </>}
             </div>
           </div>
 

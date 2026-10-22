@@ -31,13 +31,3 @@ export const formatDateAsNumber = (date: Date | string): string => {
   date = getDateFromStringOrDate(date);
   return DateTime.fromJSDate(date).toFormat("yyyyLLddHH");
 };
-
-export const formatDateFor10MinWindow = (date: Date | string): string => {
-  const dt = DateTime.fromJSDate(getDateFromStringOrDate(date));
-  const year = dt.toFormat('yyyy');
-  const month = dt.toFormat('LL');
-  const day = dt.toFormat('dd');
-  const hour = dt.toFormat('HH');
-  const minuteBlock = Math.floor(dt.minute / 10);
-  return `${year}${month}${day}${hour}${minuteBlock}`;
-};

@@ -2,6 +2,7 @@
 import SettingsBrandList from "@/components/settings/SettingsBrandList";
 import SettingsCashDrawerList from "@/components/settings/SettingsCashDrawerList";
 import SettingsCategoryList from "@/components/settings/SettingsCategoryList";
+import SettingsCreditForm from "@/components/settings/SettingsCreditForm";
 import SettingsDocumentList from "@/components/settings/SettingsDocumentList";
 import SettingsLocationList from "@/components/settings/SettingsLocationList";
 import SettingsQuantityUnitList from "@/components/settings/SettingsQuantityUnitList";
@@ -17,6 +18,8 @@ export default function Page() {
   const [screen, setScreen] = useState(1);
 
   const changes = permissionExists(permission, 'config-changes');
+  const creditChanges = permissionExists(permission, 'credits-settings');
+  const showCredits = activeConfig && activeConfig?.includes('sales-credit');
   const showBrands = activeConfig && activeConfig?.includes('product-brand');
   const showLocations = activeConfig && activeConfig?.includes('product-locations');
 
@@ -27,6 +30,7 @@ export default function Page() {
     4: !!showLocations,
     5: true,
     6: true,
+    7: !!showCredits,
   };
 
   const visibleOptions = menuOptions.filter((o) => visibilityMap[o.value]);
@@ -39,6 +43,7 @@ export default function Page() {
       case 4: return <SettingsLocationList />;
       case 5: return <SettingsDocumentList changes={changes} />;
       case 6: return <SettingsCashDrawerList changes={changes} />;
+      case 7: return <SettingsCreditForm changes={creditChanges} />;
       default: return null;
     }
   };

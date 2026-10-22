@@ -42,9 +42,12 @@ export function ContactsTable() {
             <td className="px-1 py-1 flex justify-center">
             <Dropdown label={<FiSettings size={18} /> }>
                 <DropdownItem onClick={() => { setElement('contactDetails', record); openModal('contactDetails'); }}>Ver Contacto</DropdownItem>
+                <DropdownItem as={`/contacts/${record.id}`}>Ver Dashboard</DropdownItem>
                 <DropdownItem onClick={() => { setElement('contactAdd', record); openModal('contactAdd'); }}>Editar</DropdownItem>
+                {record?.is_default != 1 && <>
                 <DropdownDivider />
                 <DropdownItem onClick={() => { setElement('deleteContact', record); openModal('deleteContact'); }}> <span className="text-danger font-semibold">Eliminar</span> </DropdownItem>
+                </>}
             </Dropdown> 
             </td>
             </tr>
