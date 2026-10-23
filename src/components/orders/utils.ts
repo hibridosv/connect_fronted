@@ -180,6 +180,13 @@ export function isProductPendientToSend(product: any) {
   return product.attributes && product.attributes.work_station_id && isValidPrintStatus;
 }
 
+// La orden tiene productos mandados a cocina (comanda o pantalla), actuales o ya eliminados
+export function orderHasSentProducts(order: any) {
+  if (!order) return false;
+  if ((order.deletedproducts?.length ?? 0) > 0) return true;
+  return (order.invoiceproducts ?? []).some((product: any) => isProductPendientToSend(product));
+}
+
 export function countSendPrintZero(order: any) {
   if (!order?.invoiceproducts) return 0;
   return order.invoiceproducts.filter(
