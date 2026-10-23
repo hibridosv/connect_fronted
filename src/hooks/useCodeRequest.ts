@@ -10,6 +10,7 @@ const errorMessage = (error: any, fallback: string): string =>
 /**
  * Codigos de un solo uso validados en el backend para acciones code-request-*.
  * Quien tiene el permiso no necesita codigo; el resto lo solicita al administrador.
+ * Si el administrador extiende el codigo, no se consume y sirve hasta que vence.
  */
 export function useCodeRequest(permission: string) {
   const { permission: permissionsActive } = useConfigStore();
