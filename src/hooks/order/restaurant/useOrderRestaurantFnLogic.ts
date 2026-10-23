@@ -11,7 +11,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit } = ordersRestaurantsStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit, productOption } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
@@ -103,6 +103,16 @@ const addNew = async (producId: any, quantity = 1) => {
       await updateOrder(`orders/restaurant/${id}/option`, values, false);
   }
 
+  /** Agrega una opcion del catalogo a un producto ya marcado (va en la cola de productos) */
+  const addProductOption = (id: string, productId: string, variantId: string) => enqueueProductRequest(() =>
+      productOption(`orders/restaurant/${id}/product/${productId}/options`, { variant_id: variantId })
+  );
+
+  /** Quita una opcion de un producto */
+  const removeProductOption = (id: string, optionId: string) => enqueueProductRequest(() =>
+      productOption(`orders/restaurant/${id}/product-options/${optionId}`)
+  );
+
   /** Eliminar la orden */
   const cancel = async (id: string) => {
       await deleteOrder(`orders/${id}`);
@@ -164,6 +174,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, select, pay, paySplit }
 
 }

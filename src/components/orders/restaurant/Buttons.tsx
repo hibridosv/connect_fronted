@@ -61,6 +61,7 @@ export function Buttons(props: ButtonsI) {
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addComment') }}> Agregar comentario </div>}
             { isSpecial && 
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('specialSales'); }}> Venta Especial </div>}
+            <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('productOptionsEdit') }}> Agregar/Quitar opciones</div>
             <div className='button-options-sales' onClick={()=>{ setIsOpen(false); save(order.id, true) }}> Imprimir pre cuenta</div>
             { serviceType == 3 && order.order_type == 3 && !orderHasShipping(order) &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('shipping') }}> Agregar envío</div>}
