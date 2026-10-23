@@ -1,5 +1,5 @@
 import { CodeRequest } from '@/interfaces/codeRequest';
-import { deleteService, getServices } from '@/services/services';
+import { createService, deleteService, getServices } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from './toastMessageStore';
 
@@ -8,6 +8,7 @@ interface CodeRequestStoreState {
   loading: boolean;
   loadRequests: () => Promise<void>;
   cancelRequest: (id: string) => Promise<void>;
+  extendRequest: (id: string) => Promise<void>;
 }
 
 /**
@@ -34,6 +35,17 @@ const useCodeRequestStore = create<CodeRequestStoreState>((set, get) => ({
       const response = await deleteService(`code-requests/${id}`);
       useToastMessageStore.getState().setMessage(response);
       set({ requests: get().requests.filter((request) => request.id !== id) });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    }
+  },
+
+  // Suma 15 minutos al vencimiento; el codigo pasa a ser reutilizable
+  extendRequest: async (id: string) => {
+    try {
+      const response = await createService(`code-requests/${id}/extend`, {});
+      useToastMessageStore.getState().setMessage(response);
+      set({ requests: get().requests.map((request) => (request.id === id ? response.data.data : request)) });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     }

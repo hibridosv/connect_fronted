@@ -34,8 +34,14 @@ export default function CodeRequestGuard({ permission, onAuthorized, children }:
       onAuthorized();
       return;
     }
+    if (loading) return;
+    // Un codigo extendido que el usuario ya valido sirve hasta que vence, sin volver a escribirlo
+    const request = await loadActiveRequest();
+    if (request?.reusable && request.verified && new Date(request.expires_at).getTime() > Date.now()) {
+      onAuthorized();
+      return;
+    }
     setIsModalOpen(true);
-    await loadActiveRequest();
   };
 
   const handleRequest = async () => {
@@ -103,6 +109,9 @@ export default function CodeRequestGuard({ permission, onAuthorized, children }:
               />
 
               <small className="text-text-muted">Vence en <span className="font-semibold text-warning">{remaining}</span></small>
+              {activeRequest?.reusable && (
+                <small className="text-center text-text-muted">Este código se puede usar varias veces hasta que venza</small>
+              )}
             </>
           ) : (
             <>
