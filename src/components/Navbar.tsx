@@ -1,6 +1,7 @@
 'use client';
 
 import { useConfigLogic } from '@/hooks/config/useConfigLogic';
+import { useMenuSyncLogic } from '@/hooks/order/restaurant/useMenuSyncLogic';
 import { isProducts } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
@@ -18,6 +19,7 @@ export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
   const { user, client, tenant, invoiceExist } = useConfigStore();
   const { configFailed } = useConfigLogic();
+  useMenuSyncLogic();
   const { modals, closeModal, openModal } = useModalStore();
   const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
 

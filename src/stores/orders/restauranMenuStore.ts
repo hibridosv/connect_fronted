@@ -11,6 +11,7 @@ interface restauranMenuI {
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
   getRestauranMenu: (url: string) => Promise<void>;
+  invalidate: () => void;
   clearConfig: () => void;
 }
 
@@ -38,6 +39,11 @@ const restauranMenuStore = create(
         }
       },
 
+
+    // Marca el menu como desactualizado sin borrarlo: se sigue mostrando y useMenuLogic lo vuelve a descargar
+    invalidate: () => {
+        set({ isLoaded: false });
+      },
 
     clearConfig: () => {
         set({ 
