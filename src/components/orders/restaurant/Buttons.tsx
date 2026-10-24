@@ -68,7 +68,7 @@ export function Buttons(props: ButtonsI) {
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
-              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addName'); }}> Agregar nombre a la mesa</div>}
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('renameTable', null); openModal('addName'); }}> Agregar nombre a la mesa</div>}
             { serviceType == 2 && isSpliter &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); router.push(`/orders/restaurant/split`) }}> Dividir Cuenta</div>}
             { system?.country == 3 &&

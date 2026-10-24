@@ -4,6 +4,7 @@ import Modal from "@/components/modal/Modal";
 import { useOrderRestaurantFnLogic } from "@/hooks/order/restaurant/useOrderRestaurantFnLogic";
 import ordersStore from "@/stores/orders/ordersStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
+import useTempStorage from "@/stores/useTempStorage";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdDeleteSweep } from "react-icons/md";
@@ -14,52 +15,64 @@ export interface AddNameModalI {
 }
 
 
-
+/**
+ * Cambia el nombre de la mesa principal de la orden.
+ * Desde la pantalla de mesas la orden no esta cargada: usa el elemento temporal 'renameTable' ({ orderId, name }).
+ */
 export function AddNameModal(props: AddNameModalI) {
   const { onClose, isShow } = props;
-  const { order, sending, error } = ordersStore();
-  const { addName } = useOrderRestaurantFnLogic();
+  const { order, sending } = ordersStore();
+  const { addName, renameTable } = useOrderRestaurantFnLogic();
   const { setError } = useToastMessageStore();
+  const { getElement, setElement } = useTempStorage();
+  const fromTables = getElement('renameTable');
+  const orderId = fromTables?.orderId ?? order?.id;
 
 
-  const { register, handleSubmit, resetField, setFocus, setValue } = useForm();
+  const { register, handleSubmit, setFocus, setValue } = useForm();
 
   useEffect(() => {
-    if (order && isShow) {
-        setValue("value", order?.attributes?.table?.name ?? null);
+    if (orderId && isShow) {
+        setValue("value", fromTables ? fromTables.name : order?.attributes?.table?.name ?? null);
         setFocus('value', { shouldSelect: true });
       }
-  }, [setFocus, isShow, order, setValue,]);
+  }, [setFocus, isShow, order, orderId, fromTables, setValue,]);
 
-  if (!isShow || !order) return null;
+  if (!isShow || !orderId) return null;
+
+  const handleClose = () => {
+    setElement('renameTable', null);
+    onClose();
+  }
+
+  const saveName = (values: any) => fromTables ? renameTable(orderId, values) : addName(orderId, values);
 
  const onSubmit = async(data: any) => {
-     if (!data.value || !order) return;
+     if (!data.value) return;
      let values: any = {
        name_table: data.value
      }
-    const success = await addName(order.id, values);
+    const success = await saveName(values);
      if (success) {
-       onClose();
+       handleClose();
      } else {
       setError({ message: `Existe un error, No se actualizo correctamente el registro. Vuelva a intentarlo.`})
      }
  }
 
  const clean = async ()=>{
-    if (!order) return;
      let values: any = {
        name_table: null
      }
-    const success = await addName(order.id, values);
+    const success = await saveName(values);
      if (success) {
-       onClose();
+       handleClose();
      }
  }
 
 
   return (
-    <Modal show={isShow} onClose={onClose} size="sm" headerTitle="Agregar Nombre de la mesa" >
+    <Modal show={isShow} onClose={handleClose} size="sm" headerTitle="Agregar Nombre de la mesa" >
       <Modal.Body>
         <div className="flex flex-col gap-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 p-4">
@@ -75,7 +88,7 @@ export function AddNameModal(props: AddNameModalI) {
       </Modal.Body>
       <Modal.Footer>
         <MdDeleteSweep title="Eliminar Comentario" size={32} className="text-red-700 clickeable justify-start w-full" onClick={clean} />
-        <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 
+        <Button onClick={handleClose} preset={Preset.close} disabled={sending} />
       </Modal.Footer>
     </Modal>
   );

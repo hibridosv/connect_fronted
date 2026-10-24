@@ -1,10 +1,14 @@
 'use client';
 
+import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
+import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { HiCheck, HiUser } from 'react-icons/hi2';
+import { HiCheck, HiUser, HiUserPlus } from 'react-icons/hi2';
 
 export function RestaurantClients( { order }: any) {
   const { getElement, setElement } = useTempStorage();
+  const { addClient } = useOrderRestaurantFnLogic();
+  const { sending } = ordersStore();
   const serviceType: number = getElement('serviceType');
   const clientActive: number = getElement('clientActive');
   const selectedTable = getElement('selectedTable');
@@ -47,10 +51,22 @@ const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.ma
     </div>
   );
 
+  // igual que "Agregar cliente a la mesa" del menu de opciones; necesita la orden creada
+  const newClient = () => (
+    <div className={`group animate-scale-in flex flex-col items-center gap-1.5 ${sending ? 'opacity-50 pointer-events-none' : 'clickeable'}`}
+      onClick={() => addClient(order.id)} title="Agregar cliente a la mesa" >
+      <div className="relative w-12 h-12 rounded-full flex items-center justify-center border-2 border-dashed border-success/60 bg-success/10 transition-all duration-300 group-hover:scale-105 group-hover:bg-success/20">
+        <HiUserPlus className="w-5 h-5 text-success" />
+      </div>
+      <span className="text-[11px] font-semibold text-success">Nuevo</span>
+    </div>
+  );
+
   return (
     <div className="w-full px-3 py-3 animate-fade-in">
       <div className="flex flex-wrap justify-center gap-5">
         { listItems ? listItems : clientAlone()}
+        { order?.id && newClient() }
       </div>
     </div>
   );

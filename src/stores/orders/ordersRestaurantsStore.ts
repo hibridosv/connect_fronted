@@ -19,7 +19,7 @@ interface ordersRestaurantsStoreI {
   saveAs: (url: string, data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
   productOption: (url: string, data?: any) => Promise<boolean>;
-  joinTable: (url: string, data: any) => Promise<boolean>;
+  updateTables: (url: string, data: any) => Promise<boolean>;
   setOrders: (orders: Order[]) => void;
   loadTables: (url: string, showToast?: boolean) => Promise<void>;
 }
@@ -240,7 +240,8 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     }
   },
 
-  joinTable: async (url: string, data: any) => {
+  // acciones sobre las mesas de una orden (unir, separar, cambiar, renombrar); sirve desde la orden o desde la pantalla de mesas
+  updateTables: async (url: string, data: any) => {
     ordersStore.setState({ sending: true });
     try {
       const response = await updateService(url, data);
