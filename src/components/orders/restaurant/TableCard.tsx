@@ -59,16 +59,17 @@ export function TableCard({ record }: TableCardProps) {
           )}
         </div>
 
+        {/* alto fijo para que la leyenda de mesa unida no agrande la tarjeta */}
         <div
-          className={`relative px-2 py-1.5 rounded-b-xl text-center border-t ${isOccupied ? 'bg-danger/5 border-danger/15' : 'bg-bg-subtle/30 border-bg-subtle/60'} `} title={record?.name} >
-          <p className="text-[11px] font-semibold text-text-base uppercase truncate w-full">
-            {record?.name}
-          </p>
+          className={`relative h-7 px-2 flex flex-col justify-center rounded-b-xl text-center border-t ${isOccupied ? 'bg-danger/5 border-danger/15' : 'bg-bg-subtle/30 border-bg-subtle/60'} `} title={principal ? `${record?.name} (unida a ${principal.name})` : record?.name} >
           { principal &&
-            <p className="text-[9px] text-text-muted truncate w-full" title={`Unida a ${principal.name}`}>
+            <p className="text-[9px] leading-none text-text-muted truncate w-full">
               Unida a {principal.name}
             </p>
           }
+          <p className="text-[11px] leading-tight font-semibold text-text-base uppercase truncate w-full">
+            {record?.name}
+          </p>
         </div>
       </div>
     </div>
