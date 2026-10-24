@@ -3,11 +3,11 @@
 import { useOrderRestaurantFnLogic } from '@/hooks/order/restaurant/useOrderRestaurantFnLogic';
 import ordersStore from '@/stores/orders/ordersStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { HiCheck, HiUser, HiUserPlus } from 'react-icons/hi2';
+import { HiCheck, HiUser, HiUserPlus, HiXMark } from 'react-icons/hi2';
 
 export function RestaurantClients( { order }: any) {
   const { getElement, setElement } = useTempStorage();
-  const { addClient } = useOrderRestaurantFnLogic();
+  const { addClient, removeClient } = useOrderRestaurantFnLogic();
   const { sending } = ordersStore();
   const serviceType: number = getElement('serviceType');
   const clientActive: number = getElement('clientActive');
@@ -15,6 +15,10 @@ export function RestaurantClients( { order }: any) {
 
   if ((serviceType != 2 || !selectedTable)) return <></>;
 
+
+  // el cliente 1 no se elimina (es el predeterminado) ni los que tienen productos
+  const canRemove = (client: number) => client != 1 &&
+    !order?.invoiceproducts?.some((product: any) => product?.attributes?.client == client);
 
 const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.map((record: any, index: number) => {
     const isActive = clientActive == record;
@@ -26,6 +30,12 @@ const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.ma
           {isActive && (
             <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-success flex items-center justify-center shadow-md ring-2 ring-bg-content">
               <HiCheck className="w-3 h-3 text-white" />
+            </div>
+          )}
+          {isActive && canRemove(record) && (
+            <div className={`absolute -top-1 -left-1 w-5 h-5 rounded-full bg-danger flex items-center justify-center shadow-md ring-2 ring-bg-content ${sending ? 'opacity-50 pointer-events-none' : 'clickeable'}`}
+              title="Eliminar cliente" onClick={(e) => { e.stopPropagation(); removeClient(order.id, record); }} >
+              <HiXMark className="w-3 h-3 text-white" />
             </div>
           )}
         </div>

@@ -86,6 +86,12 @@ const addNew = async (producId: any, quantity = 1) => {
       } catch { }
   }
 
+  /** Elimina un cliente de la mesa sin productos y deja activo el cliente 1 */
+  const removeClient = async (id: string, client: number) => {
+      const success = await updateOrder(`orders/restaurant/${id}/remove-client`, { client });
+      if (success) setElement('clientActive', 1);
+  }
+
   /** cambia el cliente al producto al dicidir orden */
   const changeClient = async (id: string) => {
       await updateOrder(`orders/product/${id}/client`, { client: clientActive });
@@ -200,6 +206,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, moveTable, renameTable, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, removeClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, moveTable, renameTable, select, pay, paySplit }
 
 }
