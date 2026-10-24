@@ -70,7 +70,8 @@ export default function Page() {
                     <input
                       type="number"
                       id="quantity"
-                      {...register('quantity')}
+                      {...register('quantity', { required: true })}
+                      required
                       className="input"
                       step="any"
                       min={0}
