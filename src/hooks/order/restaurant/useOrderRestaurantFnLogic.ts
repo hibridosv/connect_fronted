@@ -11,7 +11,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit, productOption } = ordersRestaurantsStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit, productOption, joinTable: joinTableRequest } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
@@ -113,6 +113,16 @@ const addNew = async (producId: any, quantity = 1) => {
       productOption(`orders/restaurant/${id}/product-options/${optionId}`)
   );
 
+  /** Une una mesa libre a la orden (varias mesas, una sola orden) */
+  const joinTable = async (id: string, tableId: string) => {
+      return await joinTableRequest(`orders/restaurant/${id}/join-table`, { table_id: tableId });
+  }
+
+  /** Separa una mesa unida a la orden */
+  const unjoinTable = async (id: string, tableId: string) => {
+      return await joinTableRequest(`orders/restaurant/${id}/unjoin-table`, { table_id: tableId });
+  }
+
   /** Eliminar la orden */
   const cancel = async (id: string) => {
       await deleteOrder(`orders/${id}`);
@@ -174,6 +184,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, select, pay, paySplit }
 
 }

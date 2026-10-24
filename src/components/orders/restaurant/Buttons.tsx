@@ -69,6 +69,8 @@ export function Buttons(props: ButtonsI) {
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); addClient(order.id) }}> Agregar cliente a la mesa</div>}
             { serviceType == 2 &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); openModal('addName'); }}> Agregar nombre a la mesa</div>}
+            { serviceType == 2 && order.order_type == 2 &&
+              <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('joinTable', { orderId: order.id, tableId: order.attributes?.restaurant_table_id }); openModal('joinTable') }}> Unir mesas</div>}
             { serviceType == 2 && isSpliter &&
               <div className='button-options-sales' onClick={()=>{ setIsOpen(false); router.push(`/orders/restaurant/split`) }}> Dividir Cuenta</div>}
             { system?.country == 3 &&

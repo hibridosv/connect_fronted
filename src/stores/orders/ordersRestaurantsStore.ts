@@ -19,6 +19,7 @@ interface ordersRestaurantsStoreI {
   saveAs: (url: string, data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
   productOption: (url: string, data?: any) => Promise<boolean>;
+  joinTable: (url: string, data: any) => Promise<boolean>;
   setOrders: (orders: Order[]) => void;
   loadTables: (url: string, showToast?: boolean) => Promise<void>;
 }
@@ -229,6 +230,27 @@ const ordersRestaurantsStore = create<ordersRestaurantsStoreI>(() => ({
     try {
       const response = data ? await createService(url, data) : await deleteService(url);
       ordersStore.setState({ order: response.data.data, error: false });
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      ordersStore.setState({ error: true });
+      return false;
+    } finally {
+      ordersStore.setState({ sending: false });
+    }
+  },
+
+  joinTable: async (url: string, data: any) => {
+    ordersStore.setState({ sending: true });
+    try {
+      const response = await updateService(url, data);
+      // desde la pantalla de mesas la orden no esta cargada: solo se actualiza si es la misma
+      if (ordersStore.getState().order?.id === response.data.data?.id) {
+        ordersStore.setState({ order: response.data.data });
+      }
+      ordersStore.setState({ error: false });
+      useToastMessageStore.getState().setMessage(response);
+      ordersRestaurantsStore.getState().loadTables(`tables?included=tables`, false);
       return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);

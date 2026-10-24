@@ -228,3 +228,9 @@ export function filterInvoiceProductsByClientNumber(invoice: any, clientNumber: 
   };
 }
 
+
+/** Nombre de la mesa principal y de las unidas: "Mesa 1 + Mesa 2" */
+export const tableNames = (order: any): string => {
+  const principal = order?.table ?? order?.attributes?.table;
+  return [principal, ...(order?.joined_tables ?? [])].filter(Boolean).map((table: any) => table.name).join(' + ');
+}

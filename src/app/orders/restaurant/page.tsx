@@ -17,6 +17,7 @@ import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
 import { GroupedOptionsProductsModal } from "@/components/orders/restaurant/GroupedOptionsProductsModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
+import { JoinTableModal } from "@/components/orders/restaurant/JoinTableModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
 import { PercentSalesType } from "@/components/orders/restaurant/PercentSalesType";
@@ -71,6 +72,7 @@ export default function Page() {
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
           <ShippingModal isShow={modals.shipping} onClose={()=>{ closeModal('shipping')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
+          <JoinTableModal isShow={modals.joinTable} onClose={()=>{ closeModal('joinTable')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />

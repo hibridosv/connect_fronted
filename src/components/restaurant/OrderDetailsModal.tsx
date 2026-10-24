@@ -2,6 +2,7 @@
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
+import { tableNames } from '@/components/orders/utils';
 import { useRelativeTime } from '@/hooks/useRelativeTime';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { numberToMoney } from '@/lib/utils';
@@ -43,7 +44,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
   if (!order) return null;
 
   const status = orderStatusModalMap[order?.status] || { label: 'Desconocido', className: 'bg-gray-500/10 text-gray-500' };
-  const clientName = order?.order_type === 2 ? order?.table?.name : order?.client?.name;
+  const clientName = order?.order_type === 2 ? tableNames(order) : order?.client?.name;
 
   return (
     <Modal show={isShow} onClose={onClose} size="xl2" headerTitle={`Orden #${order?.number}`}>
