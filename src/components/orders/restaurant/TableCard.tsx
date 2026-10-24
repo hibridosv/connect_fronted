@@ -101,6 +101,7 @@ function TableOptions({ record, principal, onSelect }: TableOptionsProps) {
   if (record.status == 1) {
     return (<div>
       <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('joinTable', { orderId: record.ticket_order_id, tableId: record.id }); openModal('joinTable') }}> Unir mesas</div>
+      <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('joinTable', { orderId: record.ticket_order_id, tableId: record.id, move: true }); openModal('joinTable') }}> Cambiar de mesa</div>
     </div>);
   }
 

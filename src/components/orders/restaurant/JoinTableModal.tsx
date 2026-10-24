@@ -19,12 +19,13 @@ export interface JoinTableModalI {
  * Usa el elemento temporal 'joinTable':
  * - { orderId, tableId }: une mesas libres a la orden de la mesa principal tableId.
  * - { freeTableId }: elige la mesa ocupada a la que se une la mesa libre.
+ * - { orderId, tableId, move: true }: cambia la orden a una mesa libre o a una de sus unidas.
  */
 export function JoinTableModal(props: JoinTableModalI) {
   const { onClose, isShow } = props;
   const { tables, sending } = ordersStore();
   const { loadTables } = ordersRestaurantsStore();
-  const { joinTable, unjoinTable } = useOrderRestaurantFnLogic();
+  const { joinTable, unjoinTable, moveTable } = useOrderRestaurantFnLogic();
   const { getElement } = useTempStorage();
   const joinData = getElement('joinTable');
   const [zoneId, setZoneId] = useState<string | null>(null);
@@ -49,6 +50,7 @@ export function JoinTableModal(props: JoinTableModalI) {
   }
 
   const isChooseOrder = !!joinData.freeTableId;
+  const isMove = !!joinData.move;
   const zone = Array.isArray(tables) ? tables.find((location: any) => location.id === zoneId) ?? tables[0] : null;
   const joinedTables = allTables.filter((table: any) => table.combining_by && table.combining_by === joinData.tableId);
   const zoneTables = (zone?.tables ?? []).filter((table: any) => isChooseOrder
@@ -58,7 +60,10 @@ export function JoinTableModal(props: JoinTableModalI) {
 
   const handleSelect = async (table: any) => {
     if (sending) return;
-    if (isChooseOrder) {
+    if (isMove) {
+      const success = await moveTable(joinData.orderId, table.id);
+      if (success) handleClose();
+    } else if (isChooseOrder) {
       const success = await joinTable(table.ticket_order_id, joinData.freeTableId);
       if (success) handleClose();
     } else {
@@ -66,13 +71,17 @@ export function JoinTableModal(props: JoinTableModalI) {
     }
   }
 
+  const title = isMove ? `Cambiar ${baseTable?.name ?? 'la mesa'} a otra mesa`
+    : isChooseOrder ? `Unir ${baseTable?.name ?? 'mesa'} a una mesa ocupada`
+    : `Unir mesas a ${baseTable?.name ?? 'la mesa'}`;
+
   const handleUnjoin = (table: any) => {
     if (sending) return;
     unjoinTable(joinData.orderId, table.id);
   }
 
   return (
-    <Modal show={isShow} onClose={handleClose} size="md" headerTitle={isChooseOrder ? `Unir ${baseTable?.name ?? 'mesa'} a una mesa ocupada` : `Unir mesas a ${baseTable?.name ?? 'la mesa'}`}>
+    <Modal show={isShow} onClose={handleClose} size="md" headerTitle={title}>
       <Modal.Body>
         <div className={`flex flex-col gap-4 ${sending ? 'opacity-50 pointer-events-none' : ''}`}>
           { !isChooseOrder && joinedTables.length > 0 && (
@@ -80,7 +89,9 @@ export function JoinTableModal(props: JoinTableModalI) {
               { joinedTables.map((table: any) => (
                 <div key={table.id} className="flex items-center justify-between p-2">
                   <span className="text-sm font-semibold uppercase text-text-base">{table.name}</span>
-                  <Button onClick={() => handleUnjoin(table)} preset={Preset.cancel} text="Separar" disabled={sending} />
+                  { isMove ?
+                    <Button onClick={() => handleSelect(table)} preset={Preset.primary} text="Mover aquí" disabled={sending} /> :
+                    <Button onClick={() => handleUnjoin(table)} preset={Preset.cancel} text="Separar" disabled={sending} /> }
                 </div>
               ))}
             </div>

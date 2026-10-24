@@ -129,6 +129,11 @@ const addNew = async (producId: any, quantity = 1) => {
       return await joinTableRequest(`orders/restaurant/${id}/unjoin-table`, { table_id: tableId });
   }
 
+  /** Cambia la orden a otra mesa libre o a una de sus mesas unidas */
+  const moveTable = async (id: string, tableId: string) => {
+      return await joinTableRequest(`orders/restaurant/${id}/move-table`, { table_id: tableId });
+  }
+
   /** Eliminar la orden */
   const cancel = async (id: string) => {
       await deleteOrder(`orders/${id}`);
@@ -190,6 +195,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, moveTable, select, pay, paySplit }
 
 }
