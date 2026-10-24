@@ -1,5 +1,6 @@
 'use client';
 
+import { tableNames } from '@/components/orders/utils';
 import { filterProductsOrInvoiceProducts, getOrderStationIds, groupProducts } from '@/hooks/restaurant/useScreenOrdersLogic';
 import { useRelativeTime } from '@/hooks/useRelativeTime';
 import { formatDate, formatHourAsHM } from '@/lib/date-formats';
@@ -60,7 +61,7 @@ export function ScreenCard({ order, activeStation, processData }: ScreenCardProp
           )}
         </div>
         <p className="text-base font-semibold text-primary mt-1">
-          {order.order_type === 2 ? order.table?.name : order.client?.name}
+          {order.order_type === 2 ? tableNames(order) : order.client?.name}
         </p>
         <div className="text-xs text-text-muted flex items-center mt-2">
           <FaClock size={12} className="text-danger mr-2 animate-spin" />

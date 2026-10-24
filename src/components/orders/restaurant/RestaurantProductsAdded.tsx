@@ -13,7 +13,7 @@ import Image from "next/image";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { CgSpinner } from "react-icons/cg";
 import { MdDelete, MdInfo } from "react-icons/md";
-import { groupInvoiceProductsByCodAll, isProductPendientToSend } from "../utils";
+import { groupInvoiceProductsByCodAll, isProductPendientToSend, orderHasSentProducts } from "../utils";
 
 
 
@@ -115,9 +115,12 @@ export function RestaurantProductsAdded({ order } : any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
-                 <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } > 
-                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> : <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-red-800 clickeable`}  /> }
-                 </CodeRequestGuard> 
+                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> :
+                  orderHasSentProducts(order) ? (
+                    <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } >
+                      <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-red-800 clickeable`}  />
+                    </CodeRequestGuard>) :
+                  <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-red-800 clickeable`}  /> }
               </th>
             </tr>
           </thead>

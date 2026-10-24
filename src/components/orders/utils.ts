@@ -176,14 +176,21 @@ export function orderHasShipping(order: any): boolean {
 export function isProductPendientToSend(product: any) {
   if (!product) return false;
   const sendPrint = product?.attributes?.send_print;
-  const isValidPrintStatus = [1, 2, 3].includes(sendPrint ?? -1);
+  const isValidPrintStatus = [1, 2, 3, 6].includes(sendPrint ?? -1); // 6: ya impreso y con opciones cambiadas
   return product.attributes && product.attributes.work_station_id && isValidPrintStatus;
+}
+
+// La orden tiene productos mandados a cocina (comanda o pantalla), actuales o ya eliminados
+export function orderHasSentProducts(order: any) {
+  if (!order) return false;
+  if ((order.deletedproducts?.length ?? 0) > 0) return true;
+  return (order.invoiceproducts ?? []).some((product: any) => isProductPendientToSend(product));
 }
 
 export function countSendPrintZero(order: any) {
   if (!order?.invoiceproducts) return 0;
   return order.invoiceproducts.filter(
-    (product: any) => product.attributes?.work_station_id && product.attributes?.send_print === 0
+    (product: any) => product.attributes?.work_station_id && [0, 6].includes(product.attributes?.send_print) // 6: opciones cambiadas, vuelve a la comanda
   ).length;
 }
 
@@ -196,7 +203,7 @@ export function countSendPrint(invoice: any) {
 
   invoice.invoiceproducts.forEach((product: any) => {
       const sendPrint = product?.attributes?.send_print;
-      const isValidPrintStatus = [1, 2, 3].includes(sendPrint ?? -1);
+      const isValidPrintStatus = [1, 2, 3, 6].includes(sendPrint ?? -1); // 6: ya impreso y con opciones cambiadas
       if (product.attributes && product.attributes.work_station_id && isValidPrintStatus) {
           count++;
       }
@@ -221,3 +228,9 @@ export function filterInvoiceProductsByClientNumber(invoice: any, clientNumber: 
   };
 }
 
+
+/** Nombre de la mesa principal y de las unidas: "Mesa 1 + Mesa 2" */
+export const tableNames = (order: any): string => {
+  const principal = order?.table ?? order?.attributes?.table;
+  return [principal, ...(order?.joined_tables ?? [])].filter(Boolean).map((table: any) => table.name).join(' + ');
+}

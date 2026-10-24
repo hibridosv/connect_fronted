@@ -17,9 +17,11 @@ import { DeliveryOrders } from "@/components/orders/restaurant/DeliveryOrders";
 import { DeliveryTypeModal } from "@/components/orders/restaurant/DeliveryTypeModal";
 import { GroupedOptionsProductsModal } from "@/components/orders/restaurant/GroupedOptionsProductsModal";
 import { InvoicePaymentMethodModal } from "@/components/orders/restaurant/InvoicePaymentMethodModal";
+import { JoinTableModal } from "@/components/orders/restaurant/JoinTableModal";
 import { OptionsSelect } from "@/components/orders/restaurant/OptionsSelect";
 import { PayedRestaurantModal } from "@/components/orders/restaurant/PayedRestaurantModal";
 import { PercentSalesType } from "@/components/orders/restaurant/PercentSalesType";
+import { ProductOptionsEditModal } from "@/components/orders/restaurant/ProductOptionsEditModal";
 import { ProductOptionsModal } from "@/components/orders/restaurant/ProductOptionsModal";
 import { RestaurantButtons } from "@/components/orders/restaurant/RestaurantButtons";
 import { RestaurantClients } from "@/components/orders/restaurant/RestaurantClients";
@@ -70,6 +72,7 @@ export default function Page() {
           <TipsModal isShow={modals.tips} onClose={()=>{ closeModal('tips')}} />
           <ShippingModal isShow={modals.shipping} onClose={()=>{ closeModal('shipping')}} />
           <AddNameModal isShow={modals.addName} onClose={()=>{ closeModal('addName')}} />
+          <JoinTableModal isShow={modals.joinTable} onClose={()=>{ closeModal('joinTable')}} />
           <AddCommentModal isShow={modals.addComment} onClose={()=>{ closeModal('addComment')}} />
           <SpecialSalesRestaurantModal isShow={modals.specialSales} onClose={()=>{ closeModal('specialSales')}} />
           <ChangeQuantityRestaurantModal isShow={modals.changeQuantity} onClose={()=>{ closeModal('changeQuantity')}} />
@@ -82,6 +85,7 @@ export default function Page() {
           <DiscountsModal isShow={modals.discountModal} onClose={()=>{ closeModal('discountModal')}} />
         
           <ProductOptionsModal isShow={modals.productOptions} onClose={()=>{ closeModal('productOptions')}} />
+          <ProductOptionsEditModal isShow={modals.productOptionsEdit} onClose={()=>{ closeModal('productOptionsEdit')}} />
           <PayedRestaurantModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
           <InvoicePaymentMethodModal isShow={modals.payMethod} onClose={()=>{ closeModal('payMethod')}} />
           <DeliveryTypeModal isShow={modals.deliveryType} onClose={()=>{ closeModal('deliveryType')}} />

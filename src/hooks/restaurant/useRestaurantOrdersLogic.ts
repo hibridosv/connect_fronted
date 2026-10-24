@@ -17,7 +17,7 @@ export function useRestaurantOrdersLogic(currentPage: string) {
 
   useEffect(() => {
     loadOrders(
-      `orders?included=employee,client,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes&sort=-created_at&perPage=15${currentPage}`
+      `orders?included=employee,client,invoiceproducts.attributes,invoiceproducts.options.option,products.attributes,products.options.option,attributes,table,joinedTables&sort=-created_at&perPage=15${currentPage}`
     );
   }, [pusherEvent, currentPage, loadOrders]);
 
