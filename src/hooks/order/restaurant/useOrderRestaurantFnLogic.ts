@@ -77,7 +77,13 @@ const addNew = async (producId: any, quantity = 1) => {
 
     /** Agrega nuevo cliente a la orden */
   const addClient = async (id: string) => {
-      await updateOrder(`orders/restaurant/${id}/add-client`, {});
+      const success = await updateOrder(`orders/restaurant/${id}/add-client`, {});
+      if (!success) return;
+      // deja activo el cliente recien agregado (el backend le asigna el numero mas alto)
+      try {
+        const clients: number[] = JSON.parse(ordersStore.getState().order?.attributes?.clients ?? '[]');
+        if (clients.length > 0) setElement('clientActive', Math.max(...clients));
+      } catch { }
   }
 
   /** cambia el cliente al producto al dicidir orden */
