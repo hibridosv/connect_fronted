@@ -6,13 +6,17 @@ import useProductStore from "@/stores/products/productStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { LiComponent } from "../button/LiComponent";
 
-export function ProductsSearch() {
+interface ProductsSearchProps {
+    filter?: string;
+}
+
+export function ProductsSearch({ filter }: ProductsSearchProps = {}) {
     const { setElement} = useTempStorage();
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "description"], 500);
     const {currentPage} = usePagination("&page=1");
     const sortBy = "-updated_at";
     const { products, loading } = useProductStore();
-    useProductsSearchLogic(currentPage, searchTerm, sortBy);
+    useProductsSearchLogic(currentPage, searchTerm, sortBy, filter);
 
 
     const handleSelectProduct = (product: any) => {
