@@ -1,20 +1,18 @@
 'use client'
 import useProductStore from '@/stores/products/productStore';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useProductLogic(currentPage: any, searchTerm: string, sortBy: string) {
   const { loadProducts } = useProductStore()
-  const [searchTermNew, setSearchTermNew] = useState("");
-  const [sortByNew, setSortByNew] = useState("");
+  // ultima busqueda pedida; es un ref (no estado) para no volver a disparar el efecto
+  const lastQuery = useRef<string | null>(null);
 
   useEffect(() => {
-        if (searchTerm != searchTermNew || sortBy != sortByNew) {
-          setSearchTermNew(searchTerm);
-          setSortByNew(sortBy);
-          loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15&page=1${searchTerm}`)
-        } else {
-           loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15${currentPage}${searchTerm}`)
-        }
-  }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew])
+        const query = `${searchTerm}|${sortBy}`;
+        // busqueda u orden nuevo: vuelve a la pagina 1
+        const page = query !== lastQuery.current ? "&page=1" : currentPage;
+        lastQuery.current = query;
+        loadProducts(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&included=prices,category,quantityUnit,provider,brand,location&perPage=15${page}${searchTerm}`)
+  }, [loadProducts, currentPage, searchTerm, sortBy])
 
 }

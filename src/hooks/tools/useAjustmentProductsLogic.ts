@@ -2,11 +2,12 @@
 import useModalStore from '@/stores/modalStorage';
 import adjustStore from '@/stores/tools/adjustStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, initialLoad: boolean = false) {
   const { loadDetails, sendAdjustment: send, error } = adjustStore()
-  const [searchTermNew, setSearchTermNew] = useState("");
+  // ultima busqueda pedida; es un ref (no estado) para no volver a disparar el efecto
+  const lastQuery = useRef<string | null>(null);
   const { closeModal } = useModalStore();
   const { getElement } = useTempStorage();
   const record = getElement('setAdjustment') || null;
@@ -14,14 +15,13 @@ export function useAjustmentProductsLogic(currentPage?: any, searchTerm?: any, i
 
   useEffect(() => {
     if (initialLoad) {
-        if (searchTerm != searchTermNew) {
-          setSearchTermNew(searchTerm);
-          loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25&page=1${searchTerm}`)
-        } else {
-           loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25${currentPage}${searchTerm}`)
-        }
+        const query = String(searchTerm);
+        // busqueda nueva: vuelve a la pagina 1
+        const page = query !== lastQuery.current ? "&page=1" : currentPage;
+        lastQuery.current = query;
+        loadDetails(`tools/adjust/products?sort=-cod&filterWhere[status]==1&perPage=25${page}${searchTerm}`)
     }
-  }, [loadDetails, currentPage, searchTerm, searchTermNew, initialLoad])
+  }, [loadDetails, currentPage, searchTerm, initialLoad])
 
 
     const sendAdjustment = async(product: any) =>{

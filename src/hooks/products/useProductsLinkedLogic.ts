@@ -5,12 +5,12 @@ import useProductStore from '@/stores/products/productStore';
 import useStateStore from '@/stores/stateStorage';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function useProductLinkedLogic(currentPage: any, searchTerm: string, sortBy: string, product: any, isShow: boolean) {
   const { loadProducts } = useProductStore()
-  const [searchTermNew, setSearchTermNew] = useState("");
-  const [sortByNew, setSortByNew] = useState("");
+  // ultima busqueda pedida; es un ref (no estado) para no volver a disparar el efecto
+  const lastQuery = useRef<string | null>(null);
   const [ products, setProducts ] = useState([]) as any;
   const { openLoading, closeLoading } = useStateStore();
   const { loadProducts: fetchDataLinked, products: productsLinked, loading, productId} = useProductLinkedStore();
@@ -33,16 +33,17 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
 
     if (isShow) {
         if(searchTerm === "") {
+            lastQuery.current = null;
             setProducts([]);
-        } else if (searchTerm != searchTermNew || sortBy != sortByNew) {
-            setSearchTermNew(searchTerm);
-            setSortByNew(sortBy);
-            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10&page=1${searchTerm}`)
         } else {
-            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10${currentPage}${searchTerm}`)
+            const query = `${searchTerm}|${sortBy}`;
+            // busqueda u orden nuevo: vuelve a la pagina 1
+            const page = query !== lastQuery.current ? "&page=1" : currentPage;
+            lastQuery.current = query;
+            fetchData(`products?sort=${sortBy}&filterWhere[status]==1&filterWhere[is_restaurant]==0&filterWhere[product_type]=!3&perPage=10${page}${searchTerm}`)
         }
     }
-  }, [loadProducts, currentPage, searchTerm, sortBy, searchTermNew, sortByNew, product, openLoading, closeLoading, isShow]);
+  }, [loadProducts, currentPage, searchTerm, sortBy, product, openLoading, closeLoading, isShow]);
 
 
     useEffect(() => {
