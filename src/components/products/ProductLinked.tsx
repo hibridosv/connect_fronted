@@ -24,7 +24,7 @@ export function ProductLinked(props: ProductLinkedProps) {
     if (!record) { return <NothingHere />; }
 
     const listItems = productsLinked && productsLinked.map((product: any) => (
-          <tr key={product.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${product.status === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
+          <tr key={product.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle ${Number(product?.composed?.status) === 0 ? 'bg-danger/10 text-danger' : 'text-text-base'}`}>
           <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
               {product?.composed?.cod}
           </td>
