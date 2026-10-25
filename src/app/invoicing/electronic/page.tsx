@@ -15,7 +15,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   const { history, handleGet,links, resendDocument } = useInvoicingElectronicLogic('electronic/documents', 'download.excel.electronic');
-  const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1&FilterWhereIn[status]==1,0');
+  const { Additionalfields, loading: loadingFields} =  useInvoiceTypesElectronicLogic('invoice/type?filterWhere[type]=!9&filterWhere[is_electronic]==1');
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
   const { getElement} = useTempStorage();
   const { modals, closeModal } = useModalStore();

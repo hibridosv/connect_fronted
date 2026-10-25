@@ -13,8 +13,8 @@ export function useProductAddLogic() {
 
 
     useEffect(() => {
-        loadProduct(`registers/principal/find?included=provider,registers.product&filter[status]=0`);
-        loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
+        loadProduct(`registers/principal/find?included=provider,registers.product&filter[status]==0`);
+        loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]==1&perPage=10`);
         loadExpensesCategories(`cash/categories`);
         loadAccount(`cash/accounts?sort=-created_at&filterWhere[status]==1`);
     }, [loadProduct, loadProducts, loadExpensesCategories, loadAccount]);

@@ -15,7 +15,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
     const {currentPage, handlePageNumber} = usePagination("&page=1");
-    const { searchTerm, handleSearchTerm } = useSearchTerm(["client_name", "quote_number"], 500);
+    const { searchTerm, handleSearchTerm } = useSearchTerm(["invoice"], 500, 1);
     const { responseData, loading } = useRemissionNoteLogic(currentPage, searchTerm);
     const data = responseData?.data;
     const quantity =  data?.total ?? 0;

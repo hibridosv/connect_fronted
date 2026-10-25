@@ -99,7 +99,7 @@ const productRemovedStore = create<ProductRemovedStoreState>((set) => ({
             const response = await deleteService(url); 
             set({ product: null, error: false });
             useToastMessageStore.getState().setMessage(response);
-            await productRemovedStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=12`);
+            await productRemovedStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]==2&perPage=12`);
         } catch (error) {
             set({ error: true });
             useToastMessageStore.getState().setError(error);
@@ -114,7 +114,7 @@ const productRemovedStore = create<ProductRemovedStoreState>((set) => ({
             const response = await updateService(url, { status: 2 }); 
             set({ product: null, error: false });
             useToastMessageStore.getState().setMessage(response);
-            await productRemovedStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]=2&perPage=12`);
+            await productRemovedStore.getState().loadProducts(`removes?sort=-created_at&included=employee,failures,failures.employee,failures.deleted_by,failures.product&filter[status]==2&perPage=12`);
         } catch (error) {
             set({ error: true });
             useToastMessageStore.getState().setError(error);
