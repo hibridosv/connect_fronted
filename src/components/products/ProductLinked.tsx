@@ -34,7 +34,7 @@ export function ProductLinked(props: ProductLinkedProps) {
               <span>{product?.composed?.description}</span>
               </div>
           </td>
-          <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${product.quantity <= product.minimum_stock ? 'text-danger' : ''}`}>
+          <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${product?.composed && Number(product.composed.quantity) <= Number(product.composed.minimum_stock) ? 'text-danger' : ''}`}>
               {product.quantity}
           </td>
           </tr>
