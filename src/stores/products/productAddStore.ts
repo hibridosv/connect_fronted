@@ -101,7 +101,7 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
             const response = await deleteService(url);
             set({ product: null, error: false });
             useToastMessageStore.getState().setMessage(response);
-            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
+            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]==1&perPage=10`);
         } catch (error) {
             set({ error: true });
             useToastMessageStore.getState().setError(error);
@@ -116,7 +116,7 @@ const productAddStore = create<ProductAddStoreState>((set) => ({
             const response = await updateService(url, {}); 
             set({ product: null, error: false });
             useToastMessageStore.getState().setMessage(response);
-            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]=1&perPage=10`);
+            await productAddStore.getState().loadProducts(`registers/principal?sort=-created_at&included=provider,registers.product,employee&filter[status]==1&perPage=10`);
         } catch (error) {
             set({ error: true });
             useToastMessageStore.getState().setError(error);

@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 
 export default function Page() {
   const { history, handleGet, loading, links } = useInvoicingCorrelativesLogic('documents/correlatives', false);
-  const { invoiceTypes, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
+  const { invoiceTypes, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9');
   const { years, months, currentYear, currentMonth } =  useRecalculateYearsLogic();
   const isSending = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 

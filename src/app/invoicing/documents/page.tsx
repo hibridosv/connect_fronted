@@ -12,7 +12,7 @@ import useTempStorage from "@/stores/useTempStorage";
 
 export default function Page() {
   const { history, handleGet, loading, links } = useInvoicingLogic('documents', 'download.excel.invoices.documents');
-  const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9&FilterWhereIn[status]==1,0');
+  const { fieldsFiltered, loading: loadingFields} =  useInvoiceTypesLogic('invoice/type?filterWhere[type]=!9');
   const isLoading = loading.history ?? false; 
   const isLoadingField = loadingFields.invoiceTypes ?? false; 
   const { getElement} = useTempStorage();

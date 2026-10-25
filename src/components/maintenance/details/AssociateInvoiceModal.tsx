@@ -26,7 +26,7 @@ export function AssociateInvoiceModal({ isShow, onClose, contactId, onAssociate,
     if (!term.trim()) return;
     setSearching(true);
     try {
-      const response = await getServices(`orders?filterwherein[status]==3,4&filterWhere[client_id]==${contactId}&filter[invoice]=${term.trim()}&included=invoiceAssigned&sort=-charged_at&perPage=10`);
+      const response = await getServices(`orders?filterWhereIn[status]=3,4&filterWhere[client_id]==${contactId}&filter[invoice]=${encodeURIComponent(term.trim())}&included=invoiceAssigned&sort=-charged_at&perPage=10`);
       setResults(response.data.data?.data ?? []);
     } catch {
       setResults([]);

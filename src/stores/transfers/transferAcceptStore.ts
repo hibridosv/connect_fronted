@@ -30,8 +30,9 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
     const tenant = useConfigStore.getState().tenant;
     set({ loading: true });
     try {
-      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from`);
-      set({ transfers: response.data.data });
+      // Solo las ultimas 50; la tabla y el resumen esperan una lista, no la paginacion
+      const response = await getServices(`transfers?sort=-created_at&filter[to_tenant_id]==${tenant.id}&included=products,to,from&perPage=50&page=1`);
+      set({ transfers: response.data.data.data });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {

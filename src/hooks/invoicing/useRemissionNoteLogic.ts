@@ -1,20 +1,20 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useGetRequest } from '../request/useGetRequest';
 
 export function useRemissionNoteLogic(currentPage: any, searchTerm: string) {
   const { getRequest, responseData, loading } = useGetRequest();
-  const [searchTermNew, setSearchTermNew] = useState("");
+  // ultima busqueda pedida; es un ref (no estado) para no volver a disparar el efecto
+  const lastQuery = useRef<string | null>(null);
 
   useEffect(() => {
 
-        if (searchTerm != searchTermNew ) {
-          setSearchTermNew(searchTerm);
-            getRequest(`remissions?sort=-created_at&included=products,client,employee,delivery,referred,invoiceAssigned&perPage=10&page=1${searchTerm}`, false)
-        } else {
-           getRequest(`remissions?sort=-created_at&included=products,client,employee,delivery,referred,invoiceAssigned&perPage=10${currentPage}${searchTerm}`, false)
-        }
-  }, [currentPage, searchTerm, searchTermNew, getRequest])
+        const query = searchTerm;
+        // busqueda nueva: vuelve a la pagina 1
+        const page = query !== lastQuery.current ? "&page=1" : currentPage;
+        lastQuery.current = query;
+        getRequest(`remissions?sort=-created_at&included=products,client,employee,delivery,referred,invoiceAssigned&perPage=10${page}${searchTerm}`, false)
+  }, [currentPage, searchTerm, getRequest])
 
   return { loading, responseData};
 

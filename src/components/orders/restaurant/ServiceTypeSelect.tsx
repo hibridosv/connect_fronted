@@ -69,15 +69,15 @@ export function ServiceTypeSelect(props: ServiceTypeSelectI) {
   return (
         <div className="flex justify-around w-full h-7 shadow-md">
           { isDelivery && permissionDelivery &&
-          <div className={`w-full font-medium clickeable ${serviceType == 3 ? 'bg-slate-200 text-black' : 'bg-slate-600 text-white'} items-center text-center`} 
+          <div className={`w-full font-medium clickeable-table ${serviceType == 3 ? 'bg-slate-200 text-black' : 'bg-slate-600 text-white'} items-center text-center`} 
           onClick={sending ? ()=>{} : ()=> handleSelected(3)}>Delivery</div> 
           }
           { isQuick && permissionQuick &&
-          <div className={`w-full font-medium ${serviceType == 1 ? 'bg-slate-200 text-black cursor-not-allowed' : 'bg-slate-600 text-white clickeable'} items-center text-center`} 
+          <div className={`w-full font-medium clickeable-table ${serviceType == 1 ? 'bg-slate-200 text-black cursor-not-allowed' : 'bg-slate-600 text-white'} items-center text-center`} 
           onClick={sending ? ()=>{} : ()=> handleSelected(1)}>Venta Rapida</div> 
           }
           { isHere && permissionHere &&
-          <div className={`w-full font-medium clickeable ${serviceType == 2 ? 'bg-slate-200 text-black' : 'bg-slate-600 text-white'} items-center text-center`} 
+          <div className={`w-full font-medium clickeable-table ${serviceType == 2 ? 'bg-slate-200 text-black' : 'bg-slate-600 text-white'} items-center text-center`} 
           onClick={sending ? ()=>{} : ()=> handleSelected(2)}>Servicio Mesa</div> 
           }
     </div>

@@ -6,11 +6,12 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import quotesStore from '@/stores/tools/quotesStore';
 import useTempStorage from '@/stores/useTempStorage';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad: boolean = false) {
   const { loadQuotes, deleteQuote, error } = quotesStore()
-  const [searchTermNew, setSearchTermNew] = useState("");
+  // ultima busqueda pedida; es un ref (no estado) para no volver a disparar el efecto
+  const lastQuery = useRef<string | null>(null);
   const router = useRouter();
   const { openLoading, closeLoading, loading: sending } = useStateStore()
   const { clearElement } = useTempStorage();
@@ -19,14 +20,13 @@ export function useQuotesLogic(currentPage?: any, searchTerm?: any, initialLoad:
 
   useEffect(() => {
     if (initialLoad) {
-        if (searchTerm != searchTermNew) {
-          setSearchTermNew(searchTerm);
-          loadQuotes(`tools/quotes?sort=-created_at&included=products,client&perPage=10&page=1${searchTerm}`)
-        } else {
-           loadQuotes(`tools/quotes?sort=-created_at&included=products,client&perPage=10${currentPage}${searchTerm}`)
-        }
+        const query = String(searchTerm);
+        // busqueda nueva: vuelve a la pagina 1
+        const page = query !== lastQuery.current ? "&page=1" : currentPage;
+        lastQuery.current = query;
+        loadQuotes(`tools/quotes?sort=-created_at&included=products,client&perPage=10${page}${searchTerm}`)
     }
-  }, [loadQuotes, currentPage, searchTerm, searchTermNew, initialLoad])
+  }, [loadQuotes, currentPage, searchTerm, initialLoad])
 
   const deleteRegister = async (url: string) => {
     const success = await deleteQuote(url);

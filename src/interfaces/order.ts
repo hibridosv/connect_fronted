@@ -40,6 +40,8 @@ export interface Order {
   attributes: any
   products: Invoiceproduct[]
   invoiceproducts: Invoiceproduct[]
+  deletedproducts?: { id: string }[] // solo restaurante: eliminados despues de mandarse a cocina
+  joined_tables?: any[] // solo restaurante: mesas unidas a la mesa principal
   delivery: Contact
   client: Contact
   invoice_assigned: InvoiceAssigned

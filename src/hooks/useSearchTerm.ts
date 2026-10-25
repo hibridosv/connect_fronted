@@ -10,7 +10,7 @@ export function useSearchTerm(searchRows: string[], delay = 300, minChars = 3) {
             return "";
         }
         const filters = searchRows
-            .map((field: string) => `filter[${field}]=${debouncedValue}`)
+            .map((field: string) => `filter[${field}]=${encodeURIComponent(debouncedValue)}`)
             .join('&');
         return `&${filters}`;
     }, [debouncedValue, searchRows, minChars]);

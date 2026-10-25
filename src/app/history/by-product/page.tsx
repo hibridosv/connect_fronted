@@ -7,6 +7,7 @@ import { ProductsSearch } from "@/components/search/ProductsSearch";
 import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
+import { isRestaurant } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import useToastMessageStore from "@/stores/toastMessageStore";
 import useTempStorage from "@/stores/useTempStorage";
@@ -19,7 +20,9 @@ export default function Page() {
   const elementSelected = getElement('productSearched');
   const { history, handleGet, loading, links } = useHistorySalesLogic('histories/by-product', 'download.excel.by-product', false);
   const isLoading = loading.history ?? false;
-  const { activeConfig } = useConfigStore();
+  const { activeConfig, tenant } = useConfigStore();
+  // en restaurante solo se buscan los platillos del menu
+  const productsFilter = isRestaurant(tenant?.system) ? 'filterWhere[status]==1&filterWhere[is_restaurant]==1' : undefined;
   const isShowLot = activeConfig && activeConfig.includes('sales-change-lot')
 
   const handleFormSubmit = async (values: DateRangeValues) => {
@@ -59,7 +62,7 @@ export default function Page() {
       <div className="md:col-span-3">
         <ViewTitle text="Seleccionar fechas" />
         <div className="mt-2 p-2">
-          <ProductsSearch />
+          <ProductsSearch filter={productsFilter} />
           <ProductLotSearch onLotSearch={handleLotSearch} loading={isLoading} showLot={isShowLot} />
         </div>
         <div className="mt-2 p-2">

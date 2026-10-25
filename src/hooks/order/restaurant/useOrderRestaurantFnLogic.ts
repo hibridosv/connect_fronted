@@ -11,7 +11,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderRestaurantFnLogic() {
-  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit } = ordersRestaurantsStore();
+  const { saveOrder, payOrder, updateOrder, deleteOrder, addOrder, deleteProduct, loadOrder, saveAs, payOrderSplit, productOption, updateTables } = ordersRestaurantsStore();
   const { order, error, lastResponse } = ordersStore();
   const { activeConfig, system } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
@@ -77,7 +77,19 @@ const addNew = async (producId: any, quantity = 1) => {
 
     /** Agrega nuevo cliente a la orden */
   const addClient = async (id: string) => {
-      await updateOrder(`orders/restaurant/${id}/add-client`, {});
+      const success = await updateOrder(`orders/restaurant/${id}/add-client`, {});
+      if (!success) return;
+      // deja activo el cliente recien agregado (el backend le asigna el numero mas alto)
+      try {
+        const clients: number[] = JSON.parse(ordersStore.getState().order?.attributes?.clients ?? '[]');
+        if (clients.length > 0) setElement('clientActive', Math.max(...clients));
+      } catch { }
+  }
+
+  /** Elimina un cliente de la mesa sin productos y deja activo el cliente 1 */
+  const removeClient = async (id: string, client: number) => {
+      const success = await updateOrder(`orders/restaurant/${id}/remove-client`, { client });
+      if (success) setElement('clientActive', 1);
   }
 
   /** cambia el cliente al producto al dicidir orden */
@@ -101,6 +113,36 @@ const addNew = async (producId: any, quantity = 1) => {
   /** las opciones de un producto */
   const option = async (id: string, values: any) => {
       await updateOrder(`orders/restaurant/${id}/option`, values, false);
+  }
+
+  /** Agrega una opcion del catalogo a un producto ya marcado (va en la cola de productos) */
+  const addProductOption = (id: string, productId: string, variantId: string) => enqueueProductRequest(() =>
+      productOption(`orders/restaurant/${id}/product/${productId}/options`, { variant_id: variantId })
+  );
+
+  /** Quita una opcion de un producto */
+  const removeProductOption = (id: string, optionId: string) => enqueueProductRequest(() =>
+      productOption(`orders/restaurant/${id}/product-options/${optionId}`)
+  );
+
+  /** Une una mesa libre a la orden (varias mesas, una sola orden) */
+  const joinTable = async (id: string, tableId: string) => {
+      return await updateTables(`orders/restaurant/${id}/join-table`, { table_id: tableId });
+  }
+
+  /** Separa una mesa unida a la orden */
+  const unjoinTable = async (id: string, tableId: string) => {
+      return await updateTables(`orders/restaurant/${id}/unjoin-table`, { table_id: tableId });
+  }
+
+  /** Cambia la orden a otra mesa libre o a una de sus mesas unidas */
+  const moveTable = async (id: string, tableId: string) => {
+      return await updateTables(`orders/restaurant/${id}/move-table`, { table_id: tableId });
+  }
+
+  /** Cambia el nombre de la mesa principal desde la pantalla de mesas (no carga la orden) */
+  const renameTable = async (id: string, values: any) => {
+      return await updateTables(`orders/restaurant/${id}/name-table`, values);
   }
 
   /** Eliminar la orden */
@@ -164,6 +206,6 @@ const paySplit = async (data: any) => {
     }
   }
 
-  return { addNew, save, saveAndOut, update, changeClient, addClient, addName, shipping, cancel, del, option, select, pay, paySplit }
+  return { addNew, save, saveAndOut, update, changeClient, addClient, removeClient, addName, shipping, cancel, del, option, addProductOption, removeProductOption, joinTable, unjoinTable, moveTable, renameTable, select, pay, paySplit }
 
 }
