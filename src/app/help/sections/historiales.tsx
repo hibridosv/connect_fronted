@@ -1,4 +1,4 @@
-import { LuBanknote, LuChartBar, LuCalendarClock, LuClipboardList, LuHistory, LuPackage, LuReceipt, LuStar, LuTag, LuTrash2, LuTruck, LuUser, LuUsers, LuWallet } from 'react-icons/lu';
+import { LuBanknote, LuChartBar, LuCalendarClock, LuClipboardList, LuHistory, LuPackage, LuReceipt, LuShieldCheck, LuStar, LuTag, LuTrash2, LuTruck, LuUser, LuUsers, LuWallet } from 'react-icons/lu';
 import { HelpSection } from './types';
 
 export const historiales: HelpSection = {
@@ -149,6 +149,14 @@ export const historiales: HelpSection = {
       route: '/history/commissions',
       menu: 'Historiales › Comisiones Pagadas',
       description: 'Comisiones de un referido en el período (normales o de puntos de oro) con su estado. Seleccione el referido; la descarga es en PDF.',
+    },
+    {
+      id: 'historiales-acciones',
+      title: 'Historial de Acciones',
+      icon: <LuShieldCheck size={18} />,
+      route: '/history/activity',
+      menu: 'Historiales › Historial de Acciones',
+      description: 'Quién hizo cada cambio sensible (anulaciones, descuentos, cambios de precio, caja, inventario, usuarios y configuración), cuándo y qué cambió. Filtre por módulo, acción o usuario y haga clic en una fila para ver el antes y el después. Se guardan los últimos 15 días.',
     },
   ],
 };
