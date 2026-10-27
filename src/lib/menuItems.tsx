@@ -77,7 +77,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Historiales", icon: <BiHistory size={15} />,
-    permissions: ["histories-sales", "histories-bills", "histories-remittance", "histories-cut", "histories-discount", "histories-list", "histories-by-user", "histories-by-client", "histories-deleted", "histories-cost", "histories-shipping-notes", "histories-payments", "histories-commission-pay"],
+    permissions: ["histories-sales", "histories-bills", "histories-remittance", "histories-cut", "histories-discount", "histories-list", "histories-by-user", "histories-by-client", "histories-deleted", "histories-cost", "histories-shipping-notes", "histories-payments", "histories-commission-pay", "histories-activity"],
     children: [
       { label: "Ventas", href: "/history/sales", permission: "histories-sales" },
       { label: "Gastos", href: "/history/expenses", permission: "histories-bills" },
@@ -94,6 +94,7 @@ export const menuItems: MenuItem[] = [
       { label: "Notas de Envio", href: "/history/shipping-notes", permission: "histories-shipping-notes" },
       { label: "Abonos Recibidos", href: "/history/payments", permission: "histories-payments" },
       { label: "Comisiones Pagadas", href: "/history/commissions", permission: "histories-commission-pay" },
+      { label: "Historial de Acciones", href: "/history/activity", permission: "histories-activity" },
     ],
   },
   {
