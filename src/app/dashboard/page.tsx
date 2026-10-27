@@ -27,7 +27,7 @@ export default function DashboardPage() {
   return (
     <div className="bg-bg-base min-h-screen">
 
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary px-5 sm:px-8 pt-5 pb-12">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary px-5 sm:px-8 pt-3 pb-9">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/[0.04] blur-3xl animate-float pointer-events-none" />
@@ -35,8 +35,8 @@ export default function DashboardPage() {
 
         <div className="relative flex items-center justify-between">
           <div className="animate-slide-up">
-            <h1 className="text-3xl sm:text-4xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
-            <div className="mt-2 flex items-center gap-1.5">
+            <h1 className="text-2xl sm:text-3xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
+            <div className="mt-1 flex items-center gap-1.5">
               <span className="relative flex h-1.5 w-1.5 shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
@@ -71,7 +71,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="-mt-7 px-3 sm:px-5 pb-10 space-y-4">
+      <div className="relative z-10 -mt-6 px-3 sm:px-5 pb-10 space-y-4">
         <DashboardRangeSelector range={range} period={period} loading={loadingKeys.length > 0} onChange={setRange} onRefresh={refresh} />
         {loading && visibleWidgets.length === 0 && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
