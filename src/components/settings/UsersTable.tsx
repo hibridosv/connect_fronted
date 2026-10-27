@@ -5,6 +5,8 @@ import { DropdownItem } from '@/components/dropDown/DropdownItem';
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import useUserStore from '@/stores/UserStore';
+import useConfigStore from '@/stores/configStore';
+import { canEditUser, canManageUser } from '@/app/settings/utils';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import { BiLoader } from 'react-icons/bi';
@@ -18,6 +20,7 @@ export function UsersTable({ showAll }: UsersTableProps) {
   const { users, loading, deleting } = useUserStore();
   const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
+  const { role: currentRole, user: currentUser } = useConfigStore();
 
   if (!users && loading) return <SkeletonTable rows={6} columns={4} />;
   if (!users) return null;
@@ -50,7 +53,10 @@ export function UsersTable({ showAll }: UsersTableProps) {
           </tr>
         </thead>
         <tbody className="divide-y divide-bg-subtle">
-          {filteredUsers.map((user: any) => (
+          {filteredUsers.map((user: any) => {
+            const manageable = canManageUser(currentRole ?? '', currentUser?.id, user);
+            const editable = canEditUser(currentRole ?? '', currentUser?.id, user);
+            return (
             <tr
               key={user.id}
               className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${user.status === 0 ? 'opacity-50 bg-danger/10' : ''}`}
@@ -63,18 +69,19 @@ export function UsersTable({ showAll }: UsersTableProps) {
                   <BiLoader className="animate-spin mx-auto" />
                 ) : (
                   <Dropdown label={<FiSettings size={16} />}>
-                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUser')}>Editar</DropdownItem>
-                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUserPassword')}>Cambiar password</DropdownItem>
-                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'editUserRole')}>Cambiar rol</DropdownItem>
+                    <DropdownItem disabled={user.status === 0 || !editable} onClick={() => handleAction(user, 'editUser')}>Editar</DropdownItem>
+                    <DropdownItem disabled={user.status === 0 || !editable} onClick={() => handleAction(user, 'editUserPassword')}>Cambiar password</DropdownItem>
+                    <DropdownItem disabled={user.status === 0 || !manageable} onClick={() => handleAction(user, 'editUserRole')}>Cambiar rol</DropdownItem>
                     <DropdownDivider />
-                    <DropdownItem disabled={user.status === 0} onClick={() => handleAction(user, 'deleteUser')}>
+                    <DropdownItem disabled={user.status === 0 || !manageable} onClick={() => handleAction(user, 'deleteUser')}>
                       <span className="text-danger font-semibold">Eliminar</span>
                     </DropdownItem>
                   </Dropdown>
                 )}
               </td>
             </tr>
-          ))}
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { ViewTitle } from '@/components/ViewTitle';
 import { Button, Preset } from '@/components/button/button';
@@ -12,6 +12,8 @@ import { ToasterMessage } from '@/components/toaster-message';
 import { useUsersLogic } from '@/hooks/settings/useUsersLogic';
 import { buildPhoneNumber, PHONE_COUNTRY_CODES } from '@/lib/phone';
 import useModalStore from '@/stores/modalStorage';
+import useConfigStore from '@/stores/configStore';
+import { canViewRole } from '@/app/settings/utils';
 import useTempStorage from '@/stores/useTempStorage';
 import { FaUser, FaUsers, FaWhatsapp } from 'react-icons/fa';
 
@@ -28,13 +30,22 @@ interface NewUserFormValues {
 }
 
 export default function Page() {
-  const { register, handleSubmit, reset, watch } = useForm<NewUserFormValues>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<NewUserFormValues>({
     defaultValues: { type: 'Gerencia', country_code: PHONE_COUNTRY_CODES[0].code },
   });
   const { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, userType, saving } = useUsersLogic();
   const { modals, closeModal } = useModalStore();
   const { getElement } = useTempStorage();
   const [showAll, setShowAll] = useState(false);
+  const { role } = useConfigStore();
+
+  // el servidor no deja crear usuarios de un rol superior (RoleHierarchy)
+  const typeOptions = ['Gerencia', 'Administracion', 'Cajero', userType, 'Contador'].filter((t) => canViewRole(role ?? '', t));
+  const defaultType = typeOptions[0] ?? '';
+
+  useEffect(() => {
+    setValue('type', defaultType);
+  }, [defaultType, setValue]);
 
   const selectedType = watch('type');
   const isPhoneEligible = PHONE_ELIGIBLE_TYPES.includes(selectedType);
@@ -48,7 +59,7 @@ export default function Page() {
       type: data.type,
       phone_number: isPhoneEligible ? buildPhoneNumber(data.country_code, data.phone_local) : '',
     });
-    if (success) reset();
+    if (success) reset({ type: defaultType, country_code: PHONE_COUNTRY_CODES[0].code });
   };
 
   return (
@@ -81,11 +92,9 @@ export default function Page() {
               <div className="w-full px-3 mb-3">
                 <label htmlFor="type" className="input-label">Tipo de usuario *</label>
                 <select id="type" {...register('type')} className="input-select">
-                  <option value="Gerencia">Gerencia</option>
-                  <option value="Administracion">Administracion</option>
-                  <option value="Cajero">Cajero</option>
-                  <option value={userType}>{userType}</option>
-                  <option value="Contador">Contador</option>
+                  {typeOptions.map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
                 </select>
               </div>
 
