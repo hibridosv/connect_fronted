@@ -10,7 +10,7 @@ import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useOrderFnLogic() {
-  const { saveOrder, loadOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
+  const { saveOrder, selectOrder, payOrder, updateOrder, saveAs, deleteOrder, addOrder, deleteProduct } = ordersProductsStore();
   const {  order } = ordersStore();
   const { getElement, clearElement, setElement } = useTempStorage();
   const {modals} = useModalStore();
@@ -51,7 +51,7 @@ const addNew = async (data: any) => {
    
   /** Seleccionar una orden con id */
   const select = async (id: string) => {
-    await loadOrder(`orders/${id}/select`);
+    await selectOrder(`orders/${id}/select`);
   }
 
   /** Cobrar o terminar orden */
