@@ -6,10 +6,7 @@ import useReverb from '@/hooks/useReverb'
 import useConfigStore from '@/stores/configStore'
 import useDashBoardStore from '@/stores/dashboardStore'
 import { DateTime } from 'luxon'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
-
-const REFRESH_MS = 120000
-const AI_POLL_MS = 15000
+import { useCallback, useEffect, useMemo } from 'react'
 
 export const rangePresets = [
   { key: 'today', label: 'Hoy' },
@@ -46,7 +43,7 @@ export const formatDashboardValue = (value: any, format: DashboardFormat, curren
 }
 
 export function useDashboardWidgetsLogic() {
-  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, loadAi, setRange, ai } = useDashBoardStore()
+  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, loadAi, setRange } = useDashBoardStore()
   const { system, tenant } = useConfigStore()
   const currency = system ? getCountryProperty(parseInt(system.country)).currency : '$'
 
@@ -82,29 +79,11 @@ export function useDashboardWidgetsLogic() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiEvent])
 
-  // por si Reverb no llega: mientras haya un analisis generandose se consulta cada 15 segundos,
-  // y al terminar se traen sus recomendaciones
-  const aiPending = ai?.last?.status === 'pending'
-  const wasPending = useRef(false)
-  useEffect(() => {
-    if (wasPending.current && !aiPending && showsInsights) loadInsights()
-    wasPending.current = aiPending
-    if (!aiPending || !showsAi) return
-    const interval = setInterval(loadAi, AI_POLL_MS)
-    return () => clearInterval(interval)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [aiPending, showsAi])
-
+  // no hay consultas periodicas: los datos se traen al entrar, al cambiar el periodo o los widgets,
+  // con el boton Actualizar y con los eventos de Reverb
   useEffect(() => {
     refresh()
   }, [refresh])
-
-  // con un rango que incluye hoy los datos se actualizan solos (el backend los guarda 2 minutos)
-  useEffect(() => {
-    if (!includesToday || visibleWidgets.length === 0) return
-    const interval = setInterval(refresh, REFRESH_MS)
-    return () => clearInterval(interval)
-  }, [includesToday, refresh, visibleWidgets.length])
 
   return {
     visibleWidgets,

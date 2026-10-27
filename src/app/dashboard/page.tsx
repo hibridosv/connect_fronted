@@ -36,8 +36,8 @@ export default function DashboardPage() {
         <div className="relative flex items-center justify-between">
           <div className="animate-slide-up flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
-            {/* en verde mientras el período incluye hoy y se actualiza solo */}
-            <span className="relative flex h-2 w-2 shrink-0" title={includesToday ? 'Se actualiza cada 2 minutos' : 'Período cerrado'}>
+            {/* en verde mientras el período incluye hoy; los datos se traen con el botón Actualizar */}
+            <span className="relative flex h-2 w-2 shrink-0" title={includesToday ? 'Incluye hoy: usa Actualizar para traer lo último' : 'Período cerrado'}>
               {includesToday && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />}
               <span className={`relative inline-flex rounded-full h-2 w-2 ${includesToday ? 'bg-emerald-500' : 'bg-white/30'}`} />
             </span>
