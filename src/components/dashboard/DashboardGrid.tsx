@@ -3,6 +3,7 @@
 import { DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
 import { WidgetDonut } from './widgets/WidgetDonut';
 import { WidgetForecast } from './widgets/WidgetForecast';
+import { WidgetInsights } from './widgets/WidgetInsights';
 import { WidgetKpi } from './widgets/WidgetKpi';
 import { WidgetList } from './widgets/WidgetList';
 import { WidgetSeries } from './widgets/WidgetSeries';
@@ -31,6 +32,7 @@ const components = {
   list: WidgetList,
   forecast: WidgetForecast,
   stats: WidgetStats,
+  insights: WidgetInsights,
 };
 
 export function DashboardGrid({ widgets, data, loadingKeys, currency }: DashboardGridProps) {

@@ -1,4 +1,4 @@
-export type DashboardWidgetType = 'kpi' | 'series' | 'donut' | 'list' | 'forecast' | 'stats';
+export type DashboardWidgetType = 'kpi' | 'series' | 'donut' | 'list' | 'forecast' | 'stats' | 'insights';
 export type DashboardFormat = 'money' | 'number' | 'percent' | 'date';
 
 export interface DashboardColumn {
@@ -56,4 +56,18 @@ export interface DashboardRangeValues {
     option:       string;
     initialDate:  string;
     finalDate:    string;
+}
+
+export type DashboardInsightSeverity = 'info' | 'warning' | 'danger';
+
+export interface DashboardInsight {
+    id:         string;
+    source:     'rule' | 'ai';
+    type:       string;
+    severity:   DashboardInsightSeverity;
+    title:      string;
+    body:       string;
+    data:       { [key: string]: any } | null;
+    action:     string | null;
+    updated_at: string;
 }

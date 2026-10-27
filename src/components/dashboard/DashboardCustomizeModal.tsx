@@ -20,6 +20,7 @@ const typeNames: { [key: string]: string } = {
   list: 'Lista',
   forecast: 'Proyección',
   stats: 'Resumen',
+  insights: 'Panel',
 };
 
 export function DashboardCustomizeModal({ isShow, onClose }: DashboardCustomizeModalProps) {

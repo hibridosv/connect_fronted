@@ -44,7 +44,7 @@ export const formatDashboardValue = (value: any, format: DashboardFormat, curren
 }
 
 export function useDashboardWidgetsLogic() {
-  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, setRange } = useDashBoardStore()
+  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, setRange } = useDashBoardStore()
   const { system } = useConfigStore()
   const currency = system ? getCountryProperty(parseInt(system.country)).currency : '$'
 
@@ -61,10 +61,13 @@ export function useDashboardWidgetsLogic() {
     loadWidgets()
   }, [loadWidgets])
 
+  const showsInsights = visibleWidgets.some((widget) => widget.type === 'insights')
+
   const refresh = useCallback(() => {
     loadData(visibleWidgets.map((widget) => widget.key), currentRange)
+    if (showsInsights) loadInsights()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleWidgets, currentRange.preset, currentRange.initialDate, currentRange.finalDate, loadData])
+  }, [visibleWidgets, showsInsights, currentRange.preset, currentRange.initialDate, currentRange.finalDate, loadData, loadInsights])
 
   useEffect(() => {
     refresh()

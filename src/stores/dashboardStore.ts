@@ -1,4 +1,4 @@
-import { DashboardArrangement, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
+import { DashboardArrangement, DashboardInsight, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
 import { deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from './toastMessageStore';
@@ -13,6 +13,8 @@ interface DashboardState {
   period: DashboardPeriod | null;
   data: { [key: string]: DashboardWidgetData };
   loadingKeys: string[];
+  insights: DashboardInsight[] | null;
+  insightsLoading: boolean;
   loading: boolean;
   error: boolean;
   loadWidgets: () => Promise<void>;
@@ -20,6 +22,8 @@ interface DashboardState {
   setRange: (range: DashboardRangeValues) => void;
   saveLayout: (arrangement: DashboardArrangement[]) => Promise<boolean>;
   resetLayout: () => Promise<boolean>;
+  loadInsights: () => Promise<void>;
+  updateInsight: (id: string, status: 'dismissed' | 'done') => Promise<void>;
 }
 
 const rangeQuery = (range: DashboardRangeValues | null): string => {
@@ -45,6 +49,8 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
   period: null,
   data: {},
   loadingKeys: [],
+  insights: null,
+  insightsLoading: false,
   loading: false,
   error: false,
 
@@ -65,7 +71,10 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
   loadData: async (keys, range) => {
     if (keys.length === 0) return;
     const { widgets } = get();
-    const isKpi = (key: string) => widgets.find((widget) => widget.key === key)?.type === 'kpi';
+    const typeOf = (key: string) => widgets.find((widget) => widget.key === key)?.type;
+    const isKpi = (key: string) => typeOf(key) === 'kpi';
+    keys = keys.filter((key) => typeOf(key) !== 'insights');
+    if (keys.length === 0) return;
     const batches = [keys.filter(isKpi), keys.filter((key) => !isKpi(key))].filter((batch) => batch.length > 0);
 
     set((state) => ({ loadingKeys: Array.from(new Set([...state.loadingKeys, ...keys])) }));
@@ -111,6 +120,28 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
       return false;
     } finally {
       set({ saving: false });
+    }
+  },
+
+  loadInsights: async () => {
+    set({ insightsLoading: true });
+    try {
+      const response = await getServices('dashboard/insights');
+      set({ insights: response.data.data });
+    } catch (error) {
+      set({ insights: [] });
+    } finally {
+      set({ insightsLoading: false });
+    }
+  },
+
+  updateInsight: async (id, status) => {
+    try {
+      const response = await updateService(`dashboard/insights/${id}`, { status });
+      set((state) => ({ insights: (state.insights ?? []).filter((insight) => insight.id !== id) }));
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
     }
   },
 }));
