@@ -1,5 +1,5 @@
 import { DashboardAiState, DashboardArrangement, DashboardInsight, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
-import { deleteService, getServices, updateService } from '@/services/services';
+import { createService, deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from './toastMessageStore';
 
@@ -17,6 +17,7 @@ interface DashboardState {
   insightsLoading: boolean;
   ai: DashboardAiState | null;
   aiLoading: boolean;
+  aiRequesting: boolean;
   loading: boolean;
   error: boolean;
   loadWidgets: () => Promise<void>;
@@ -27,6 +28,7 @@ interface DashboardState {
   loadInsights: () => Promise<void>;
   updateInsight: (id: string, status: 'dismissed' | 'done') => Promise<void>;
   loadAi: () => Promise<void>;
+  requestAi: () => Promise<void>;
 }
 
 const rangeQuery = (range: DashboardRangeValues | null): string => {
@@ -56,6 +58,7 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
   insightsLoading: false,
   ai: null,
   aiLoading: false,
+  aiRequesting: false,
   loading: false,
   error: false,
 
@@ -146,9 +149,25 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
       const response = await getServices('dashboard/ai');
       set({ ai: response.data.data });
     } catch (error) {
-      set({ ai: { report: null, last: null } });
+      set({ ai: { report: null, last: null, manual: { used: 0, limit: 0, remaining: 0 } } });
     } finally {
       set({ aiLoading: false });
+    }
+  },
+
+  // pide un analisis de hoy; el resultado llega por Reverb (o por el sondeo mientras esta pendiente)
+  requestAi: async () => {
+    set({ aiRequesting: true });
+    try {
+      const response = await createService('dashboard/ai/refresh', {});
+      set((state) => ({
+        ai: state.ai ? { ...state.ai, manual: response.data.data.manual, last: { status: 'pending', trigger: 'manual', created_at: new Date().toISOString() } } : state.ai,
+      }));
+      useToastMessageStore.getState().setMessage(response);
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ aiRequesting: false });
     }
   },
 

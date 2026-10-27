@@ -6,9 +6,10 @@ import useReverb from '@/hooks/useReverb'
 import useConfigStore from '@/stores/configStore'
 import useDashBoardStore from '@/stores/dashboardStore'
 import { DateTime } from 'luxon'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 const REFRESH_MS = 120000
+const AI_POLL_MS = 15000
 
 export const rangePresets = [
   { key: 'today', label: 'Hoy' },
@@ -45,7 +46,7 @@ export const formatDashboardValue = (value: any, format: DashboardFormat, curren
 }
 
 export function useDashboardWidgetsLogic() {
-  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, loadAi, setRange } = useDashBoardStore()
+  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, loadAi, setRange, ai } = useDashBoardStore()
   const { system, tenant } = useConfigStore()
   const currency = system ? getCountryProperty(parseInt(system.country)).currency : '$'
 
@@ -80,6 +81,19 @@ export function useDashboardWidgetsLogic() {
     if (showsInsights) loadInsights()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aiEvent])
+
+  // por si Reverb no llega: mientras haya un analisis generandose se consulta cada 15 segundos,
+  // y al terminar se traen sus recomendaciones
+  const aiPending = ai?.last?.status === 'pending'
+  const wasPending = useRef(false)
+  useEffect(() => {
+    if (wasPending.current && !aiPending && showsInsights) loadInsights()
+    wasPending.current = aiPending
+    if (!aiPending || !showsAi) return
+    const interval = setInterval(loadAi, AI_POLL_MS)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiPending, showsAi])
 
   useEffect(() => {
     refresh()

@@ -4,7 +4,7 @@ import { DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import useDashBoardStore from '@/stores/dashboardStore';
 import { DateTime } from 'luxon';
-import { FiAlertCircle, FiCheckCircle, FiCpu, FiLoader } from 'react-icons/fi';
+import { FiAlertCircle, FiCheckCircle, FiCpu, FiLoader, FiRefreshCw } from 'react-icons/fi';
 import { WidgetCard } from './WidgetCard';
 
 interface WidgetAiProps {
@@ -21,9 +21,12 @@ const generatedText = (generatedAt: string, periodFrom: string): string => {
 };
 
 export function WidgetAi({ widget }: WidgetAiProps) {
-  const { ai, aiLoading } = useDashBoardStore();
+  const { ai, aiLoading, aiRequesting, requestAi } = useDashBoardStore();
   const report = ai?.report ?? null;
   const last = ai?.last ?? null;
+  const manual = ai?.manual ?? null;
+  const pending = last?.status === 'pending';
+  const canRequest = !!manual && manual.remaining > 0 && !pending && !aiRequesting;
 
   const status = last?.status === 'pending'
     ? <span className="flex items-center gap-1 text-[11px] font-bold text-info"><FiLoader className="animate-spin" /> Generando análisis</span>
@@ -35,7 +38,7 @@ export function WidgetAi({ widget }: WidgetAiProps) {
     <WidgetCard widget={widget} loading={ai === null && aiLoading} badge={status}>
       {!report ? (
         <p className="text-xs text-text-muted font-medium">
-          Todavía no hay un análisis. Se genera todos los días a las 6:15 con las ventas del día anterior.
+          Todavía no hay un análisis. Se genera todos los días a las 6:15 con las ventas del día anterior, o pídelo ahora con el botón.
         </p>
       ) : (
         <div className="flex flex-col lg:flex-row gap-4">
@@ -58,6 +61,24 @@ export function WidgetAi({ widget }: WidgetAiProps) {
               ))}
             </ul>
           )}
+        </div>
+      )}
+      {manual && (
+        <div className="mt-3 pt-3 border-t border-bg-subtle flex flex-wrap items-center justify-between gap-2">
+          <span className="text-[11px] text-text-muted">
+            {manual.remaining > 0
+              ? `Puedes pedir ${manual.remaining} análisis más hoy con las ventas de hasta ahora`
+              : 'Ya usaste los análisis de hoy. Mañana a las 6:15 llega uno nuevo'}
+          </span>
+          <button
+            type="button"
+            onClick={requestAi}
+            disabled={!canRequest}
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-primary text-text-inverted hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FiRefreshCw className={pending || aiRequesting ? 'animate-spin' : ''} />
+            {pending ? 'Generando…' : 'Actualizar análisis'}
+          </button>
         </div>
       )}
     </WidgetCard>

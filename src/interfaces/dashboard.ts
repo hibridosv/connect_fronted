@@ -85,4 +85,5 @@ export interface DashboardAiReport {
 export interface DashboardAiState {
     report: DashboardAiReport | null;
     last:   { status: 'pending' | 'ok' | 'error'; trigger: 'scheduled' | 'manual'; created_at: string } | null;
+    manual: { used: number; limit: number; remaining: number };
 }
