@@ -18,6 +18,11 @@ export interface DashboardWidget {
     columns?:    DashboardColumn[];
 }
 
+export interface DashboardArrangement {
+    key:     string;
+    visible: boolean;
+}
+
 export interface DashboardPeriod {
     from:          string;
     to:            string;

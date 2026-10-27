@@ -1,6 +1,7 @@
 'use client';
 
 import { CodeRequestsModal, useCodeRequestsLive } from '@/components/dashboard/CodeRequestsModal';
+import { DashboardCustomizeModal } from '@/components/dashboard/DashboardCustomizeModal';
 import { DashboardGrid } from '@/components/dashboard/DashboardGrid';
 import { DashboardRangeSelector } from '@/components/dashboard/DashboardRangeSelector';
 import { useDashboardWidgetsLogic } from '@/hooks/dashboard/useDashboardWidgetsLogic';
@@ -9,6 +10,7 @@ import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import { BiPlusCircle } from 'react-icons/bi';
+import { FiSliders } from 'react-icons/fi';
 
 
 export default function DashboardPage() {
@@ -42,20 +44,30 @@ export default function DashboardPage() {
               <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">{includesToday ? 'Se actualiza cada 2 minutos' : 'Período cerrado'}</span>
             </div>
           </div>
-          { canViewCodes &&
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => openModal('showKeyPass')}
-              className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              onClick={() => openModal('dashboardCustomize')}
+              disabled={loading}
+              className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50"
             >
-              <BiPlusCircle size={15} />
-              <span className="hidden sm:inline">Código</span>
-              {pendingCodes > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
-                  {pendingCodes > 9 ? '9+' : pendingCodes}
-                </span>
-              )}
+              <FiSliders size={15} />
+              <span className="hidden sm:inline">Personalizar</span>
             </button>
-          }
+            { canViewCodes &&
+              <button
+                onClick={() => openModal('showKeyPass')}
+                className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <BiPlusCircle size={15} />
+                <span className="hidden sm:inline">Código</span>
+                {pendingCodes > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
+                    {pendingCodes > 9 ? '9+' : pendingCodes}
+                  </span>
+                )}
+              </button>
+            }
+          </div>
         </div>
       </div>
 
@@ -66,10 +78,16 @@ export default function DashboardPage() {
             {[...Array(8)].map((_, i) => <div key={i} className="h-20 bg-bg-content rounded-xl border border-bg-subtle animate-pulse" />)}
           </div>
         )}
+        {!loading && visibleWidgets.length === 0 && (
+          <div className="bg-bg-content rounded-xl border border-bg-subtle p-6 text-center text-sm text-text-muted">
+            No tienes widgets visibles. Usa <span className="font-semibold">Personalizar</span> para elegir qué ver.
+          </div>
+        )}
         <DashboardGrid widgets={visibleWidgets} data={data} loadingKeys={loadingKeys} currency={currency} />
       </div>
 
       <CodeRequestsModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
+      <DashboardCustomizeModal isShow={modals.dashboardCustomize} onClose={() => closeModal('dashboardCustomize')} />
 
     </div>
   );

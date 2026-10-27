@@ -1,11 +1,14 @@
-import { DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
-import { getServices } from '@/services/services';
+import { DashboardArrangement, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
+import { deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from './toastMessageStore';
 
 interface DashboardState {
   widgets: DashboardWidget[];
   layout: string[];
+  arrangement: DashboardArrangement[];
+  customized: boolean;
+  saving: boolean;
   range: DashboardRangeValues | null;
   period: DashboardPeriod | null;
   data: { [key: string]: DashboardWidgetData };
@@ -15,6 +18,8 @@ interface DashboardState {
   loadWidgets: () => Promise<void>;
   loadData: (keys: string[], range: DashboardRangeValues | null) => Promise<void>;
   setRange: (range: DashboardRangeValues) => void;
+  saveLayout: (arrangement: DashboardArrangement[]) => Promise<boolean>;
+  resetLayout: () => Promise<boolean>;
 }
 
 const rangeQuery = (range: DashboardRangeValues | null): string => {
@@ -23,9 +28,19 @@ const rangeQuery = (range: DashboardRangeValues | null): string => {
   return `&option=${range.option}&initialDate=${range.initialDate}${finalDate}`;
 };
 
+const catalogState = (data: any) => ({
+  widgets: data.widgets,
+  layout: data.layout,
+  arrangement: data.arrangement,
+  customized: data.customized,
+});
+
 const useDashBoardStore = create<DashboardState>((set, get) => ({
   widgets: [],
   layout: [],
+  arrangement: [],
+  customized: false,
+  saving: false,
   range: null,
   period: null,
   data: {},
@@ -37,7 +52,7 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
     set({ loading: true });
     try {
       const response = await getServices('dashboard/widgets');
-      set({ widgets: response.data.data.widgets, layout: response.data.data.layout, error: false });
+      set({ ...catalogState(response.data.data), error: false });
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
@@ -68,6 +83,36 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
   },
 
   setRange: (range) => set({ range, data: {} }),
+
+  saveLayout: async (arrangement) => {
+    set({ saving: true });
+    try {
+      const response = await updateService('dashboard/layout', { widgets: arrangement });
+      set(catalogState(response.data.data));
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
+
+  resetLayout: async () => {
+    set({ saving: true });
+    try {
+      const response = await deleteService('dashboard/layout');
+      set(catalogState(response.data.data));
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
 }));
 
 export default useDashBoardStore;
