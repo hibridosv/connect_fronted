@@ -1,15 +1,16 @@
 'use client';
 
-import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
-import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
-import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
-import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
 import { CodeRequestsModal, useCodeRequestsLive } from '@/components/dashboard/CodeRequestsModal';
+import { DashboardCustomizeModal } from '@/components/dashboard/DashboardCustomizeModal';
+import { DashboardGrid } from '@/components/dashboard/DashboardGrid';
+import { DashboardRangeSelector } from '@/components/dashboard/DashboardRangeSelector';
+import { useDashboardWidgetsLogic } from '@/hooks/dashboard/useDashboardWidgetsLogic';
 import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import { BiPlusCircle } from 'react-icons/bi';
+import { FiSliders } from 'react-icons/fi';
 
 
 export default function DashboardPage() {
@@ -19,54 +20,72 @@ export default function DashboardPage() {
     const isUnauthorized = usePermissionGuard('dashboard', redirect);
     const canViewCodes = !!permission && permissionExists(permission, "code-view");
     const pendingCodes = useCodeRequestsLive(canViewCodes);
+    const { visibleWidgets, data, period, loadingKeys, loading, currency, range, includesToday, setRange, refresh } = useDashboardWidgetsLogic();
 
   if (isUnauthorized) return null;
 
   return (
     <div className="bg-bg-base min-h-screen">
 
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary px-5 sm:px-8 pt-5 pb-12">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary to-secondary px-5 sm:px-8 pt-3 pb-9">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
         <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         <div className="absolute -right-20 -top-20 w-72 h-72 rounded-full bg-white/[0.04] blur-3xl animate-float pointer-events-none" />
         <div className="absolute right-1/3 bottom-0 w-52 h-52 rounded-full bg-accent/[0.08] blur-3xl animate-float-slow pointer-events-none" />
 
         <div className="relative flex items-center justify-between">
-          <div className="animate-slide-up">
-            <h1 className="text-3xl sm:text-4xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
-            <div className="mt-2 flex items-center gap-1.5">
-              <span className="relative flex h-1.5 w-1.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-              </span>
-              <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">Datos en tiempo real</span>
-            </div>
+          <div className="animate-slide-up flex items-center gap-2">
+            <h1 className="text-2xl sm:text-3xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
+            {/* en verde mientras el período incluye hoy; los datos se traen con el botón Actualizar */}
+            <span className="relative flex h-2 w-2 shrink-0" title={includesToday ? 'Incluye hoy: usa Actualizar para traer lo último' : 'Período cerrado'}>
+              {includesToday && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />}
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${includesToday ? 'bg-emerald-500' : 'bg-white/30'}`} />
+            </span>
           </div>
-          { canViewCodes &&
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => openModal('showKeyPass')}
-              className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              onClick={() => openModal('dashboardCustomize')}
+              disabled={loading}
+              className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50"
             >
-              <BiPlusCircle size={15} />
-              <span className="hidden sm:inline">Código</span>
-              {pendingCodes > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
-                  {pendingCodes > 9 ? '9+' : pendingCodes}
-                </span>
-              )}
+              <FiSliders size={15} />
+              <span className="hidden sm:inline">Personalizar</span>
             </button>
-          }
+            { canViewCodes &&
+              <button
+                onClick={() => openModal('showKeyPass')}
+                className="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-text-inverted text-xs font-semibold px-3 py-2 rounded-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              >
+                <BiPlusCircle size={15} />
+                <span className="hidden sm:inline">Código</span>
+                {pendingCodes > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
+                    {pendingCodes > 9 ? '9+' : pendingCodes}
+                  </span>
+                )}
+              </button>
+            }
+          </div>
         </div>
       </div>
 
-      <div className="-mt-7 px-3 sm:px-5 pb-10 space-y-4">
-        <DashboardKpiCards />
-        <DashboardCharts />
-        <DashboardHourlySalesChart />
-        <DashboardDetailCards />
+      <div className="relative z-10 -mt-6 px-3 sm:px-5 pb-10 space-y-4">
+        <DashboardRangeSelector range={range} period={period} loading={loadingKeys.length > 0} onChange={setRange} onRefresh={refresh} />
+        {loading && visibleWidgets.length === 0 && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[...Array(8)].map((_, i) => <div key={i} className="h-20 bg-bg-content rounded-xl border border-bg-subtle animate-pulse" />)}
+          </div>
+        )}
+        {!loading && visibleWidgets.length === 0 && (
+          <div className="bg-bg-content rounded-xl border border-bg-subtle p-6 text-center text-sm text-text-muted">
+            No tienes widgets visibles. Usa <span className="font-semibold">Personalizar</span> para elegir qué ver.
+          </div>
+        )}
+        <DashboardGrid widgets={visibleWidgets} data={data} loadingKeys={loadingKeys} currency={currency} />
       </div>
 
       <CodeRequestsModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
+      <DashboardCustomizeModal isShow={modals.dashboardCustomize} onClose={() => closeModal('dashboardCustomize')} />
 
     </div>
   );
