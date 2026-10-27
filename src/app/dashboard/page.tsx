@@ -34,15 +34,13 @@ export default function DashboardPage() {
         <div className="absolute right-1/3 bottom-0 w-52 h-52 rounded-full bg-accent/[0.08] blur-3xl animate-float-slow pointer-events-none" />
 
         <div className="relative flex items-center justify-between">
-          <div className="animate-slide-up">
+          <div className="animate-slide-up flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-black text-text-inverted tracking-tight leading-none">Dashboard</h1>
-            <div className="mt-1 flex items-center gap-1.5">
-              <span className="relative flex h-1.5 w-1.5 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-              </span>
-              <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">{includesToday ? 'Se actualiza cada 2 minutos' : 'Período cerrado'}</span>
-            </div>
+            {/* en verde mientras el período incluye hoy y se actualiza solo */}
+            <span className="relative flex h-2 w-2 shrink-0" title={includesToday ? 'Se actualiza cada 2 minutos' : 'Período cerrado'}>
+              {includesToday && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />}
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${includesToday ? 'bg-emerald-500' : 'bg-white/30'}`} />
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <button
