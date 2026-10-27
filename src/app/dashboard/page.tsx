@@ -1,10 +1,9 @@
 'use client';
 
-import { DashboardCharts } from '@/components/dashboard/DashboardCharts';
-import { DashboardDetailCards } from '@/components/dashboard/DashboardDetailCards';
-import { DashboardHourlySalesChart } from '@/components/dashboard/DashboardHourlySalesChart';
-import { DashboardKpiCards } from '@/components/dashboard/DashboardKpiCards';
 import { CodeRequestsModal, useCodeRequestsLive } from '@/components/dashboard/CodeRequestsModal';
+import { DashboardGrid } from '@/components/dashboard/DashboardGrid';
+import { DashboardRangeSelector } from '@/components/dashboard/DashboardRangeSelector';
+import { useDashboardWidgetsLogic } from '@/hooks/dashboard/useDashboardWidgetsLogic';
 import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 import { isProducts, permissionExists } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -19,6 +18,7 @@ export default function DashboardPage() {
     const isUnauthorized = usePermissionGuard('dashboard', redirect);
     const canViewCodes = !!permission && permissionExists(permission, "code-view");
     const pendingCodes = useCodeRequestsLive(canViewCodes);
+    const { visibleWidgets, data, period, loadingKeys, loading, currency, range, includesToday, setRange, refresh } = useDashboardWidgetsLogic();
 
   if (isUnauthorized) return null;
 
@@ -39,7 +39,7 @@ export default function DashboardPage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
               </span>
-              <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">Datos en tiempo real</span>
+              <span className="text-text-inverted/35 text-[10px] font-bold uppercase tracking-[0.2em]">{includesToday ? 'Se actualiza cada 2 minutos' : 'Período cerrado'}</span>
             </div>
           </div>
           { canViewCodes &&
@@ -60,10 +60,13 @@ export default function DashboardPage() {
       </div>
 
       <div className="-mt-7 px-3 sm:px-5 pb-10 space-y-4">
-        <DashboardKpiCards />
-        <DashboardCharts />
-        <DashboardHourlySalesChart />
-        <DashboardDetailCards />
+        <DashboardRangeSelector range={range} period={period} loading={loadingKeys.length > 0} onChange={setRange} onRefresh={refresh} />
+        {loading && visibleWidgets.length === 0 && (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {[...Array(8)].map((_, i) => <div key={i} className="h-20 bg-bg-content rounded-xl border border-bg-subtle animate-pulse" />)}
+          </div>
+        )}
+        <DashboardGrid widgets={visibleWidgets} data={data} loadingKeys={loadingKeys} currency={currency} />
       </div>
 
       <CodeRequestsModal isShow={modals.showKeyPass} onClose={()=>{ closeModal('showKeyPass')}} />
