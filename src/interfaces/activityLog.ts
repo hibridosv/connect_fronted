@@ -5,6 +5,13 @@ export interface ActivityLogChanges {
   extra?: Record<string, any> | null;
 }
 
+// properties en texto para mostrar (connect: ActivityLog::getDetailsAttribute)
+export interface ActivityLogDetails {
+  changes: { label: string; before: string | null; after: string | null }[];
+  data: { label: string; value: string }[];
+  tables: { label: string; columns: string[]; rows: string[][] }[];
+}
+
 export interface ActivityLog {
   id: string;
   event: string;
@@ -16,10 +23,11 @@ export interface ActivityLog {
   subject_id: string | null;
   user_id: string;
   is_root: boolean;
-  // Codigo de autorizacion usado para desbloquear la accion
+  // Codigo de autorizacion usado para desbloquear la accion (ya va en la descripcion)
   code_request_id: string | null;
   code_request?: { id: string; permission: string } | null;
   properties: ActivityLogChanges | null;
+  details?: ActivityLogDetails;
   ip: string | null;
   user_agent: string | null;
   created_at: string;

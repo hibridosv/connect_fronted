@@ -156,7 +156,7 @@ export const historiales: HelpSection = {
       icon: <LuShieldCheck size={18} />,
       route: '/history/activity',
       menu: 'Historiales › Historial de Acciones',
-      description: 'Quién hizo cada cambio sensible (anulaciones, descuentos, cambios de precio, caja, inventario, usuarios y configuración), cuándo y qué cambió. Filtre por módulo, acción o usuario y haga clic en una fila para ver el antes y el después. Se guardan los últimos 15 días.',
+      description: 'Quién hizo cada cambio sensible (anulaciones, descuentos, cambios de precio, caja, inventario, usuarios y configuración), cuándo y qué cambió. Filtre por módulo, acción o usuario y haga clic en una fila para ver el usuario, el antes y el después. Si la acción se autorizó con código, la descripción lo indica. Se guardan los últimos 15 días.',
     },
   ],
 };
