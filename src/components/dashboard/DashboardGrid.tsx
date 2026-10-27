@@ -1,6 +1,7 @@
 'use client';
 
 import { DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
+import { WidgetAi } from './widgets/WidgetAi';
 import { WidgetDonut } from './widgets/WidgetDonut';
 import { WidgetForecast } from './widgets/WidgetForecast';
 import { WidgetInsights } from './widgets/WidgetInsights';
@@ -33,6 +34,7 @@ const components = {
   forecast: WidgetForecast,
   stats: WidgetStats,
   insights: WidgetInsights,
+  ai: WidgetAi,
 };
 
 export function DashboardGrid({ widgets, data, loadingKeys, currency }: DashboardGridProps) {

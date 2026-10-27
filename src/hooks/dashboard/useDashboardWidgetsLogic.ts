@@ -2,6 +2,7 @@
 import { DashboardFormat, DashboardRangeValues, DashboardWidget } from '@/interfaces/dashboard'
 import { formatDateAsDMY } from '@/lib/date-formats'
 import { getCountryProperty } from '@/lib/utils'
+import useReverb from '@/hooks/useReverb'
 import useConfigStore from '@/stores/configStore'
 import useDashBoardStore from '@/stores/dashboardStore'
 import { DateTime } from 'luxon'
@@ -44,8 +45,8 @@ export const formatDashboardValue = (value: any, format: DashboardFormat, curren
 }
 
 export function useDashboardWidgetsLogic() {
-  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, setRange } = useDashBoardStore()
-  const { system } = useConfigStore()
+  const { widgets, layout, range, period, data, loadingKeys, loading, loadWidgets, loadData, loadInsights, loadAi, setRange } = useDashBoardStore()
+  const { system, tenant } = useConfigStore()
   const currency = system ? getCountryProperty(parseInt(system.country)).currency : '$'
 
   const visibleWidgets = useMemo(() => layout
@@ -62,12 +63,23 @@ export function useDashboardWidgetsLogic() {
   }, [loadWidgets])
 
   const showsInsights = visibleWidgets.some((widget) => widget.type === 'insights')
+  const showsAi = visibleWidgets.some((widget) => widget.type === 'ai')
 
   const refresh = useCallback(() => {
     loadData(visibleWidgets.map((widget) => widget.key), currentRange)
     if (showsInsights) loadInsights()
+    if (showsAi) loadAi()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visibleWidgets, showsInsights, currentRange.preset, currentRange.initialDate, currentRange.finalDate, loadData, loadInsights])
+  }, [visibleWidgets, showsInsights, showsAi, currentRange.preset, currentRange.initialDate, currentRange.finalDate, loadData, loadInsights, loadAi])
+
+  // connect avisa por Reverb cuando n8n termina un analisis de IA: trae el resumen y sus recomendaciones
+  const { random: aiEvent } = useReverb(`${tenant?.id}-channel-dashboard`, 'DashboardEvent', showsAi && !!tenant?.id)
+  useEffect(() => {
+    if (!aiEvent) return
+    loadAi()
+    if (showsInsights) loadInsights()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiEvent])
 
   useEffect(() => {
     refresh()

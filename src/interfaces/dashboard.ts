@@ -1,4 +1,4 @@
-export type DashboardWidgetType = 'kpi' | 'series' | 'donut' | 'list' | 'forecast' | 'stats' | 'insights';
+export type DashboardWidgetType = 'kpi' | 'series' | 'donut' | 'list' | 'forecast' | 'stats' | 'insights' | 'ai';
 export type DashboardFormat = 'money' | 'number' | 'percent' | 'date';
 
 export interface DashboardColumn {
@@ -70,4 +70,19 @@ export interface DashboardInsight {
     data:       { [key: string]: any } | null;
     action:     string | null;
     updated_at: string;
+}
+
+export interface DashboardAiReport {
+    id:           string;
+    trigger:      'scheduled' | 'manual';
+    period_from:  string;
+    period_to:    string;
+    summary:      string;
+    highlights:   string[] | null;
+    generated_at: string;
+}
+
+export interface DashboardAiState {
+    report: DashboardAiReport | null;
+    last:   { status: 'pending' | 'ok' | 'error'; trigger: 'scheduled' | 'manual'; created_at: string } | null;
 }

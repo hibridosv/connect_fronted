@@ -21,6 +21,7 @@ const typeNames: { [key: string]: string } = {
   forecast: 'Proyección',
   stats: 'Resumen',
   insights: 'Panel',
+  ai: 'Inteligencia artificial',
 };
 
 export function DashboardCustomizeModal({ isShow, onClose }: DashboardCustomizeModalProps) {

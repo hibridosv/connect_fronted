@@ -1,4 +1,4 @@
-import { DashboardArrangement, DashboardInsight, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
+import { DashboardAiState, DashboardArrangement, DashboardInsight, DashboardPeriod, DashboardRangeValues, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
 import { deleteService, getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import useToastMessageStore from './toastMessageStore';
@@ -15,6 +15,8 @@ interface DashboardState {
   loadingKeys: string[];
   insights: DashboardInsight[] | null;
   insightsLoading: boolean;
+  ai: DashboardAiState | null;
+  aiLoading: boolean;
   loading: boolean;
   error: boolean;
   loadWidgets: () => Promise<void>;
@@ -24,6 +26,7 @@ interface DashboardState {
   resetLayout: () => Promise<boolean>;
   loadInsights: () => Promise<void>;
   updateInsight: (id: string, status: 'dismissed' | 'done') => Promise<void>;
+  loadAi: () => Promise<void>;
 }
 
 const rangeQuery = (range: DashboardRangeValues | null): string => {
@@ -51,6 +54,8 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
   loadingKeys: [],
   insights: null,
   insightsLoading: false,
+  ai: null,
+  aiLoading: false,
   loading: false,
   error: false,
 
@@ -73,7 +78,7 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
     const { widgets } = get();
     const typeOf = (key: string) => widgets.find((widget) => widget.key === key)?.type;
     const isKpi = (key: string) => typeOf(key) === 'kpi';
-    keys = keys.filter((key) => typeOf(key) !== 'insights');
+    keys = keys.filter((key) => !['insights', 'ai'].includes(typeOf(key) as string));
     if (keys.length === 0) return;
     const batches = [keys.filter(isKpi), keys.filter((key) => !isKpi(key))].filter((batch) => batch.length > 0);
 
@@ -132,6 +137,18 @@ const useDashBoardStore = create<DashboardState>((set, get) => ({
       set({ insights: [] });
     } finally {
       set({ insightsLoading: false });
+    }
+  },
+
+  loadAi: async () => {
+    set({ aiLoading: true });
+    try {
+      const response = await getServices('dashboard/ai');
+      set({ ai: response.data.data });
+    } catch (error) {
+      set({ ai: { report: null, last: null } });
+    } finally {
+      set({ aiLoading: false });
     }
   },
 

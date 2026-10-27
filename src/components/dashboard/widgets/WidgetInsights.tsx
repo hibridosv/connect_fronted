@@ -27,7 +27,10 @@ function InsightItem({ insight, onUpdate }: { insight: DashboardInsight; onUpdat
     <li className={`flex items-start gap-3 rounded-lg border px-3 py-2.5 ${style.box}`}>
       <Icon className={`shrink-0 mt-0.5 ${style.text}`} size={16} />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold text-text-base">{insight.title}</p>
+        <p className="text-sm font-bold text-text-base">
+          {insight.source === 'ai' && <span className="mr-1.5 align-middle text-[9px] font-bold uppercase tracking-wider bg-accent/15 text-accent px-1.5 py-0.5 rounded">IA</span>}
+          {insight.title}
+        </p>
         <p className="text-xs text-text-muted mt-0.5">{insight.body}</p>
         <div className="flex flex-wrap items-center gap-3 mt-1.5 text-[11px] font-semibold">
           {insight.action && (
