@@ -10,7 +10,7 @@ import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { useSetLinkLogic } from "@/hooks/products/useSetLinksLogic";
-import { useGetRequest } from "@/hooks/request/useGetRequest";
+import { usePostRequest } from "@/hooks/request/usePostRequest";
 import { usePagination } from "@/hooks/usePagination";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
 import { permissionExists } from "@/lib/utils";
@@ -29,7 +29,7 @@ export default function Page() {
   useProductLogic(currentPage, searchTerm, sortBy);
   const { permission } = useConfigStore();
   const links = useSetLinkLogic();
-  const { getRequest, loading: loadingRequest } = useGetRequest();
+  const { postRequest, loading: loadingRequest } = usePostRequest();
   const { modals, closeModal } = useModalStore();
   const { getElement } = useTempStorage();
 
@@ -55,7 +55,7 @@ export default function Page() {
           { permissionExists(permission, "inventory-download") && 
               <div className="mt-2 p-2">
                 <LinksList links={links} text="DESCARGAS" />
-                <div onClick={loadingRequest ? ()=>{} : ()=>getRequest('transactions/products/prices')} >
+                <div onClick={loadingRequest ? ()=>{} : ()=>postRequest('transactions/products/prices', {})} >
                     {loadingRequest ? <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
                       ACTUALIZANDO...
                       <FaSpinner className="animate-spin" />

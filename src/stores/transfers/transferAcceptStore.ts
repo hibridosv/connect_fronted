@@ -43,7 +43,7 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
   checkTransfer: async (id: string) => {
     set({ loadingDetail: true });
     try {
-      const response = await getServices(`transfers/check/${id}`);
+      const response = await updateService(`transfers/check/${id}`, {});
       set({ selectedTransfer: response.data.data });
     } catch (error) {
       useToastMessageStore.getState().setError(error);

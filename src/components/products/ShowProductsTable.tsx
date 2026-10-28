@@ -4,7 +4,7 @@ import { Dropdown } from "@/components/dropDown/Dropdown";
 import { DropdownDivider } from "@/components/dropDown/DropdownDivider";
 import { DropdownItem } from "@/components/dropDown/DropdownItem";
 import { NothingHere } from "@/components/NothingHere";
-import { useGetRequest } from "@/hooks/request/useGetRequest";
+import { usePostRequest } from "@/hooks/request/usePostRequest";
 import { Product } from "@/interfaces/products";
 import { numberToMoney, permissionExists } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -31,7 +31,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const isLocation = activeConfig?.includes("product-brand");
   const isBrand = activeConfig?.includes("product-locations");
   const { deleteProduct, deleting } = useProductStore();
-  const { getRequest, loading: loadingRequest } = useGetRequest();
+  const { postRequest, loading: loadingRequest } = usePostRequest();
   const { setElement, getElement } = useTempStorage();
   const elementSelected = getElement('productDetails');
   const canDelete = permissionExists(permission, "product-delete");
@@ -73,7 +73,7 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
         { deleting || loadingRequest ? <BiLoader className="animate-spin" /> : 
         <Dropdown label={<FiSettings size={18} /> }>
           <DropdownItem onClick={() => { setElement('productDetails', product); openModal('productDetails'); }}>Ver Producto</DropdownItem>
-          <DropdownItem onClick={() => { getRequest(`transactions/products/prices/${product.cod}`); }}>Actualizar Precios</DropdownItem>
+          <DropdownItem onClick={() => { postRequest(`transactions/products/prices/${product.cod}`, {}); }}>Actualizar Precios</DropdownItem>
           <DropdownItem disabled={!canEdit} as={`/products/${product.id}/edit`}>Editar</DropdownItem>
           <DropdownItem as={`/products/${product.id}/kardex`}>Kardex</DropdownItem>
           <DropdownDivider />
