@@ -31,7 +31,7 @@ export default function Page() {
           <div className="mt-2 p-2">
             <DateRange onSubmit={handleFormSubmit} loading={isLoading} additionalFields={additionalFields} />
           </div>
-          <p className="px-4 text-xs text-text-muted">Se guardan las acciones de los últimos 15 días.</p>
+          <p className="px-4 text-xs text-text-muted">Se guardan las acciones de los últimos 5 días.</p>
     </div>
 </div>
   );
