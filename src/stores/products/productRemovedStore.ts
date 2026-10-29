@@ -6,11 +6,13 @@ import useToastMessageStore from '../toastMessageStore';
 interface ProductRemovedStoreState {
   products: any | null;
   product: any | null;
+  openRegisters: any[];
   error: boolean;
   loading: boolean;
   deleting: boolean;
   loadProducts: (url: string) => Promise<void>;
   loadProduct: (url: string) => Promise<void>;
+  loadOpenRegisters: (url: string) => Promise<void>;
   createPrincipal: (data: any) => Promise<void>;
   createProduct: (data: any) => Promise<void>;
   deleteProduct: (url: string) => Promise<void>;
@@ -21,6 +23,7 @@ interface ProductRemovedStoreState {
 const productRemovedStore = create<ProductRemovedStoreState>((set) => ({
     products: null,
     product: null,
+    openRegisters: [],
     loading: false,
     error: false,
     deleting: false,
@@ -47,6 +50,17 @@ const productRemovedStore = create<ProductRemovedStoreState>((set) => ({
             console.error('Error fetching data:', error);
         } finally {
             set({ loading: false });
+        }
+    },
+
+    // registros sin guardar (status 1) de todos los empleados: solo informativo, no muestra error
+    loadOpenRegisters: async (url: string) => {
+        try {
+            const response = await getServices(url);
+            set({ openRegisters: response.data.data ?? [] });
+        } catch (error) {
+            set({ openRegisters: [] });
+            console.error('Error fetching data:', error);
         }
     },
 
