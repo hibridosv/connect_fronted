@@ -14,7 +14,7 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
 
   useEffect(() => {
      if (initialLoad && selectedOption) {
-       loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+       loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note,notes&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
       }
   }, [currentPage, loadAccounts, contactSelected, selectedOption, initialLoad]);
 
@@ -27,7 +27,7 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
 
       const success = await createAccount("accounts/payable", data);
         if (success) {
-            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note,notes&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
         }
   }
 
@@ -38,7 +38,7 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
       data.creditSelected = payableRecord?.id;
       const success = await createPayment("accounts/payment", data); 
       if (success) {
-            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note,notes&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
 
@@ -51,12 +51,16 @@ export function useAccountPayableLogic(currentPage?: any, initialLoad: boolean =
       data.credits_payable_id = payableRecord?.id;
       const success = await createCreditNote("accounts/notes", data);
       if (success) {
-            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note,notes&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
     }
   }
 
-  const delCreditNote = async () => {
-      await deleteCreditNote(`accounts/notes/${payableRecord?.note?.id}`);
+  // url = accounts/notes/{id} (DeleteButton de cada nota)
+  const delCreditNote = async (url: string) => {
+      const success = await deleteCreditNote(url);
+      if (success) {
+            loadAccounts(`accounts/payable?included=provider,employee,payments.employee,payments.deletedBy,note,notes&${selectedOption?.id != 2 ? `filterWhere[status]==${selectedOption?.id}&`:``}${contactSelected?.id ? `filterWhere[provider_id]==${contactSelected.id}&` : ``}sort=-created_at&perPage=10${currentPage ? currentPage : ''}`)
+      }
   }
 
 

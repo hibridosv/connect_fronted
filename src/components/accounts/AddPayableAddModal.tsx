@@ -192,10 +192,11 @@ export function AddPayableAddModal({ onClose, isShow }: AddPayableModal) {
         <div className="flex justify-end gap-4">
         {
           activeConfig && activeConfig.includes("payable-credit-notes") && 
-          <Button preset={payableRecord?.note ? Preset.accept : Preset.add} text={payableRecord?.note ? "Ver nota de credito" : "Agregar Nota de credito"} 
-          onClick={()=>{openModal('creditNoteAdd'); }} /> 
+          <Button preset={payableRecord?.notes?.length ? Preset.accept : Preset.add} text={payableRecord?.notes?.length ? `Notas de credito (${payableRecord.notes.length})` : "Agregar Nota de credito"}
+          onClick={()=>{openModal('creditNoteAdd'); }} />
         }
-        { payableRecord?.payments?.length == 0 && 
+        {/* el servidor solo impide eliminar con abonos activos; las notas activas tambien son abonos */}
+        { !payableRecord?.payments?.some((payment: any) => payment.status == 1) &&
         <Button preset={deleting ? Preset.loading : Preset.danger}  text="ELIMINAR CUENTA" style="mr-2" onClick={deletePayableAccount} disabled={deleting} />}
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
         </div>
