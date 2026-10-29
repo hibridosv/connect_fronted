@@ -39,7 +39,7 @@ export function OrderButtons(props: OrderButtonsI) {
 
   let fieldsRequired = validateFields();
   let isSuspended = tenant?.status == 2 ? true : false;
-  let payDisabled = sending || !cashdrawer || (!invoice?.client_id && invoice?.invoice_assigned?.type == 3) || fieldsRequired && fieldsRequired.length > 0 || isSuspended;
+  let payDisabled = sending || !cashdrawer || (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) || fieldsRequired && fieldsRequired.length > 0 || isSuspended;
 
   return (<div>
 
