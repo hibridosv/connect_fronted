@@ -24,10 +24,13 @@ const InfoCard = ({ title, value }: { title: string; value: string | undefined }
 export function RemissionNoteModal(props: RemissionNoteModalI) {
     const { onClose, isShow, document, onElectronic = false } = props;
     const { system, activeConfig } = useConfigStore();
-    const { sendRemissions, sending } = useInvoiceFnLogic();
-    const isSending = sending.sendRemissions ?? false;
+    const { sendRemissions, resendRemission, sending } = useInvoiceFnLogic();
+    const isSending = (sending.sendRemissions || sending.resendRemission) ?? false;
     const order = document;
     const showCodeStatus = activeConfig && activeConfig.includes("sales-show-code");
+    // igual que RemissionNote::canCharge(): sin facturar, o facturada con su orden eliminada o anulada
+    const canCharge = [1, 2].includes(order?.status) || (order?.status === 5 && (!order?.order || [4, 6].includes(order.order.status)));
+    const isElectronic = order?.invoice_assigned?.is_electronic === 1 && order?.status !== 4;
 
     
   if (!isShow || !document || !order) return null;
@@ -95,11 +98,12 @@ export function RemissionNoteModal(props: RemissionNoteModalI) {
               {order?.invoice_assigned?.type === 9 && <Alert text="Este Documento tiene una numeración temporal." />}
               {order?.invoice_assigned?.is_electronic === 1 && <Alert text="Este Documento se envió electrónicamente." />}
               {order?.status === 4 && <Alert text="Este Documento ha sido anulado." type="danger" />}
+              {order?.status === 5 && !canCharge && <Alert text="Esta nota de remisión ya fue facturada." type="info" />}
             </div>
           </div>
           {order?.invoice_assigned?.is_electronic === 1 && onElectronic && (
             <div className="text-sm text-text-muted p-3 bg-bg-content rounded-lg border border-bg-subtle">
-              Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold">aquí</button>.
+              Si este documento no se envió electrónicamente, puede reintentarlo <button className="text-primary hover:underline font-semibold" onClick={()=> resendRemission(order?.id)} disabled={isSending}>aquí</button>.
             </div>
           )}
           </> : <NothingHere text="No se encontraron datos del documento" /> }
@@ -107,7 +111,8 @@ export function RemissionNoteModal(props: RemissionNoteModalI) {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex justify-end w-full gap-4">
-          <Button onClick={()=> sendRemissions(order?.id)} disabled={isSending} preset={isSending ? Preset.loading : Preset.save} text="Facturar" />
+          {isElectronic && <Button onClick={()=> resendRemission(order?.id)} disabled={isSending} preset={sending.resendRemission ? Preset.loading : Preset.send} text="Reenviar DTE" />}
+          {canCharge && <Button onClick={()=> sendRemissions(order?.id)} disabled={isSending} preset={sending.sendRemissions ? Preset.loading : Preset.save} text="Facturar" />}
           <Button onClick={onClose} disabled={isSending} preset={Preset.close} text="Cerrar" />
         </div>
       </Modal.Footer>
