@@ -95,7 +95,7 @@ export const herramientas: HelpSection = {
         },
       ],
       warnings: [
-        'Haga el conteo cuando no haya ventas en curso, para que las existencias no cambien mientras cuenta.',
+        'La cantidad de cada producto se compara con la existencia del sistema al momento de guardarlo. Puede seguir vendiendo durante el ajuste, pero guarde cada producto apenas lo cuente.',
       ],
     },
   ],
