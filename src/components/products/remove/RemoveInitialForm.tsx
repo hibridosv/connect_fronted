@@ -16,7 +16,7 @@ export function RemoveInitialForm() {
         <div className="bg-bg-content rounded-2xl shadow-lg border border-bg-subtle p-4 w-full max-w-4xl mx-auto">
             <form onSubmit={handleSubmit(createPrincipal)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                    <div>
+                    <div className="md:col-span-2">
                         <label htmlFor="type" className="block text-sm font-bold text-text-muted mb-1">Tipo de Salida</label>
                         <select id="type" {...register("type")} className="input-select" >
                             <option value={1}> Averia </option>
