@@ -118,6 +118,7 @@ function TableOptions({ record, principal, onSelect }: TableOptionsProps) {
 
   if (record.combining_by) {
     return (<div>
+      <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('orderDetails', { orderId: record.ticket_order_id }); openModal('orderDetails') }}> Detalles de la orden</div>
       <div className='button-options-sales' onClick={()=>{ setIsOpen(false); unjoinTable(record.ticket_order_id, record.id) }}> Separar mesa</div>
       { principal &&
         <div className='button-options-sales' onClick={()=>{ setIsOpen(false); onSelect(principal) }}> Ir a la mesa principal</div>}
@@ -126,6 +127,7 @@ function TableOptions({ record, principal, onSelect }: TableOptionsProps) {
 
   if (record.status == 1) {
     return (<div>
+      <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('orderDetails', { orderId: record.ticket_order_id }); openModal('orderDetails') }}> Detalles de la orden</div>
       <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('joinTable', { orderId: record.ticket_order_id, tableId: record.id }); openModal('joinTable') }}> Unir mesas</div>
       <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('joinTable', { orderId: record.ticket_order_id, tableId: record.id, move: true }); openModal('joinTable') }}> Cambiar de mesa</div>
       <div className='button-options-sales' onClick={()=>{ setIsOpen(false); setElement('renameTable', { orderId: record.ticket_order_id, name: record.name }); openModal('addName') }}> Renombrar mesa</div>
