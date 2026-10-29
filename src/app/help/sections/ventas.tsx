@@ -348,6 +348,13 @@ export const ventasRestaurante: HelpSection = {
             'Para renombrar: tres puntos de la mesa ocupada › "Renombrar mesa", escriba el nombre y guarde.',
           ],
         },
+        {
+          title: 'Ver los detalles de la orden',
+          steps: [
+            'Tres puntos de la mesa ocupada (o unida) › "Detalles de la orden": muestra los productos, el total, el mesero y si la orden está aperturada.',
+            'Si está aperturada, indica qué usuario la tiene abierta. Si está guardada, puede abrirla desde ahí con "Abrir orden".',
+          ],
+        },
       ],
     },
   ],
