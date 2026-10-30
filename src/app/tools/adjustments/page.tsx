@@ -9,6 +9,7 @@ import { AdjustmentSetModal } from "@/components/tools/AdjustmentSetModal";
 import { AdjustmentsProductsToChangeTable } from "@/components/tools/AdjustmentsProductsToChangeTable";
 import { AdjustmentsTable } from "@/components/tools/AdjustmentsTable";
 import { ViewTitle } from "@/components/ViewTitle";
+import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { useAjustmentLogic } from "@/hooks/tools/useAjustmentLogic";
 import { useAjustmentProductsLogic } from "@/hooks/tools/useAjustmentProductsLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -22,7 +23,7 @@ export default function Page() {
     const {currentPage: currentPageProducts, handlePageNumber: handlePageNumberProducts} = usePagination("&page=1");
     const { searchTerm, handleSearchTerm } = useSearchTerm(["cod", "name"], 500);
     const { start, end } = useAjustmentLogic(currentPage, true);
-    const { adjustments, loading, adjustmentActive, sending, searching, isAdjustmentActive } = adjustStore();
+    const { adjustments, loading, adjustmentActive, activeAdjustment, sending, searching, isAdjustmentActive } = adjustStore();
     const { modals, closeModal } = useModalStore();
     const { sendAdjustment } = useAjustmentProductsLogic(currentPageProducts, searchTerm, true);
     const data = adjustments?.data || [];
@@ -55,6 +56,10 @@ export default function Page() {
               <SearchInput handleSearchTerm={handleSearchTerm} placeholder="Buscar producto" animating={searching} />
             </div>
             <Button onClick={end} disabled={loading} isFull={true} preset={loading ? Preset.saving : Preset.save} text="Finalizar ajuste de inventario" />
+            </div> :
+            activeAdjustment ?
+            <div className="flex justify-center m-8">
+              <Alert type={Preset.warning} text={`${activeAdjustment?.employee?.name ?? 'Otro usuario'} tiene un ajuste de inventario en curso desde el ${formatDate(activeAdjustment?.initial_date)} ${formatHourAsHM(activeAdjustment?.initial_date)}. Debe finalizarse antes de iniciar uno nuevo.`} />
             </div> :
             <div>
             <div className="flex justify-center m-8">

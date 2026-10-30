@@ -7,6 +7,7 @@ interface adjustStoreI {
   adjustments: any | null;
   adjustment: any | null;
   adjustmentActive: any | null;
+  activeAdjustment: any | null;
   error: boolean;
   loading: boolean;
   searching: boolean;
@@ -16,6 +17,7 @@ interface adjustStoreI {
   isAdjustmentActive?: boolean;
   loadAdjustments: (url: string) => Promise<void>;
   loadAdjustment: (url: string) => Promise<void>;
+  loadActiveAdjustment: (userId?: string | number) => Promise<void>;
   manageAdjustment: (url: string, data: any) => Promise<void>;
   loadDetails: (url: string) => Promise<void>;
   sendAdjustment: (url: string, data: any) => Promise<boolean>;
@@ -25,6 +27,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
   adjustments: null,
   adjustment: null,
   adjustmentActive: null,
+  activeAdjustment: null,
   error: false,
   loading: false,
   sending: false,
@@ -64,6 +67,18 @@ const adjustStore = create<adjustStoreI>((set) => ({
     }
   },
 
+  /* ajuste en curso de cualquier usuario: si es del usuario actual lo retoma */
+  loadActiveAdjustment: async (userId) => {
+    try {
+      const response = await getServices('tools/adjust/active');
+      const active = response.data.data;
+      set({ activeAdjustment: active, isAdjustmentActive: !!userId && active?.employee_id === userId });
+    } catch (error) {
+      // 404: no hay ajuste en curso
+      set({ activeAdjustment: null });
+    }
+  },
+
   manageAdjustment: async (url, data) => {
         set({ loading: true });
         try {
@@ -74,7 +89,7 @@ const adjustStore = create<adjustStoreI>((set) => ({
                 set({ isAdjustmentActive: true });
             }
             if (data.status === 2) {
-                set({ adjustmentActive: null, isAdjustmentActive: false });
+                set({ adjustmentActive: null, activeAdjustment: null, isAdjustmentActive: false });
             }
           
         } catch (error) {
