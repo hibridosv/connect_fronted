@@ -199,6 +199,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                           render={({ field }) => (
                             <input
                               type="number"
+                              step="any"
                               {...field}
                               min={0}
                               className="w-20 bg-bg-content border border-bg-subtle rounded-md shadow-sm text-center focus:ring-primary focus:border-primary sm:text-sm"
