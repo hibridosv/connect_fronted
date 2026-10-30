@@ -32,6 +32,10 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     shouldUnregister: false,
   });
   const taxesPercent = 1 + (getCountryProperty(parseInt(system?.country)).taxes / 100);
+  // con notas activas solo cabe una parcial por el saldo: la total anula toda la venta y connect la rechaza
+  const activeCreditNotes = record?.creditnotes?.filter((note: any) => note.status === 1).reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0) ?? 0;
+  const hasCreditNotes = activeCreditNotes > 0;
+  const available = Math.max(Number(record?.total ?? 0) - activeCreditNotes, 0);
   const productsRef = useRef<any[]>([]);
 
   useEffect(() => {
@@ -82,6 +86,12 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     const currentTotal = calculateTotal();
     setTotalState(currentTotal);
     const totalIsDiferent = Math.abs(currentTotal - record.total) >= 0.01;
+    if (hasCreditNotes && currentTotal - available >= 0.01) {
+      const message = `El monto supera el saldo disponible para notas de crédito (${numberToMoney(available, system)})`;
+      setError({ message });
+      setErrorMessage(message);
+      return;
+    }
     
     const formattedData = formProducts
       .map((product: any) => {
@@ -118,7 +128,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
         subtotal: currentTotal / taxesPercent,
         taxes: currentTotal - (currentTotal / taxesPercent),
         total: currentTotal,
-        credit_note_type: totalIsDiferent ? 2 : 1, // 1 for full credit note, 2 for partial
+        credit_note_type: totalIsDiferent || hasCreditNotes ? 2 : 1, // 1 for full credit note, 2 for partial
         is_product_return: isProductReturn
     };
 
@@ -152,12 +162,21 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
       <Modal.Body>
         <form onSubmit={handleSubmit(handleNc)}>
           <div className="p-4">
-            <Alert
-              type="info"
-              text="Para emitir una Nota de Crédito por el total del documento, haga clic directamente en 'Crear Nota de Crédito'. Para una nota parcial, modifique las cantidades de los productos antes de enviarla."
-              isDismissible={false}
-              className="mb-6"
-            />
+            {hasCreditNotes ? (
+              <Alert
+                type="warning"
+                text={`Esta factura ya tiene notas de crédito por ${numberToMoney(activeCreditNotes, system)}. Solo puede emitir una nota parcial por ${numberToMoney(available, system)} como máximo: modifique las cantidades o los precios antes de enviarla.`}
+                isDismissible={false}
+                className="mb-6"
+              />
+            ) : (
+              <Alert
+                type="info"
+                text="Para emitir una Nota de Crédito por el total del documento, haga clic directamente en 'Crear Nota de Crédito'. Para una nota parcial, modifique las cantidades de los productos antes de enviarla."
+                isDismissible={false}
+                className="mb-6"
+              />
+            )}
             <div className="w-full overflow-x-auto rounded-lg border border-bg-subtle">
               <table className="w-full text-sm text-left text-text-base">
                 <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
