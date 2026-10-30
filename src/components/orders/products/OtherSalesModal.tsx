@@ -90,7 +90,7 @@ export function OtherSalesModal(props: OtherSalesModalI) {
                 <label htmlFor="total" className="block text-sm font-medium text-text-muted mb-1">Precio</label>
                 <input type="number" step="any" {...register("total", {
                   required: "El precio es requerido",
-                  min: { value: 0, message: "El precio debe ser mayor o igual a 0" },
+                  validate: (value) => Number(value) > 0 || "El precio debe ser mayor a 0",
                 })} className="input" />
               </div>
             </div>

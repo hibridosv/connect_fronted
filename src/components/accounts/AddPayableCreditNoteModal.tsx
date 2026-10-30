@@ -17,11 +17,14 @@ export interface AddPayableCreditNoteModalI {
 export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditNoteModalI) {
         const { getElement } = useTempStorage();
 
-        const { register, handleSubmit, reset, setValue, watch } = useForm();
+        const { register, handleSubmit, reset } = useForm();
         const payableRecord = getElement('paymentPayableAdd');
         const { saveCreditNote, delCreditNote } = useAccountPayableLogic();
         const { sending, deleting } = useAccountPayableStore();
         const { system } = useConfigStore();
+        // una cuenta puede tener varias notas; se agregan mientras quede saldo
+        const notes = payableRecord?.notes ?? [];
+        const balance = Number(payableRecord?.balance ?? 0);
 
 
 
@@ -31,40 +34,43 @@ export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditN
   }
 
 
+  const listNotes = notes.map((note: any) => (
+    <tr key={note.id} className="whitespace-nowrap transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+      <td className="px-3 py-2 text-center">{note.number}</td>
+      <td className="px-3 py-2 text-center">{note.invoice}</td>
+      <td className="px-3 py-2 text-center">{formatDateAsDMY(note.emited_at)}</td>
+      <td className="px-3 py-2 text-right font-semibold">{numberToMoney(note.quantity, system)}</td>
+      <td className="px-3 py-2 flex justify-center">
+        <DeleteButton id={note.id} url="accounts/notes" onDeleteConfirm={delCreditNote} disabled={deleting} text="Seguro que desea eliminar la nota de credito?" />
+      </td>
+    </tr>
+  ));
+
+
   return (
-    <Modal show={isShow} onClose={onClose} size="md" headerTitle="agregar nota de credito">
+    <Modal show={isShow} onClose={onClose} size="md" headerTitle="notas de credito">
       <Modal.Body>
-        <div className="p-6">
-              {
-                    payableRecord?.note ? 
-                    <div className="bg-bg-content/50 p-4 rounded-lg border border-bg-subtle shadow-sm">
-                        <h3 className="text-lg font-semibold text-text-base mb-4 border-b border-bg-subtle pb-2">
-                            Información de la Nota de Crédito
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                            <div>
-                                <div className="text-sm font-medium text-text-muted">Número de Nota</div>
-                                <div className="text-base font-semibold text-text-base">{payableRecord?.note?.number}</div>
-                            </div>
-                            <div>
-                                <div className="text-sm font-medium text-text-muted">Factura Afectada</div>
-                                <div className="text-base font-semibold text-text-base">{payableRecord?.note?.invoice}</div>
-                            </div>
-                            <div>
-                                <div className="text-sm font-medium text-text-muted">Fecha de Emisión</div>
-                                <div className="text-base font-semibold text-text-base">{formatDateAsDMY(payableRecord?.note?.emited_at)}</div>
-                            </div>
-                            <div>
-                                <div className="text-sm font-medium text-text-muted">Fecha de Ingreso</div>
-                                <div className="text-base font-semibold text-text-base">{formatDateAsDMY(payableRecord?.note?.created_at)}</div>
-                            </div>
-                            <div className="md:col-span-2">
-                                <div className="text-sm font-medium text-text-muted">Monto</div>
-                                <div className="text-lg font-bold text-primary">{numberToMoney(payableRecord?.note?.quantity, system)}</div>
-                            </div>
-                        </div>
+        <div className="p-6 space-y-4">
+              { notes.length > 0 &&
+                    <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
+                        <table className="w-full text-sm text-left">
+                            <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
+                                <tr>
+                                    <th scope="col" className="px-3 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Nota</th>
+                                    <th scope="col" className="px-3 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Factura</th>
+                                    <th scope="col" className="px-3 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Emisión</th>
+                                    <th scope="col" className="px-3 py-3 font-bold tracking-wider border-r border-bg-subtle text-center">Monto</th>
+                                    <th scope="col" className="px-3 py-3 font-bold tracking-wider text-center">Del</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-bg-subtle">
+                                {listNotes}
+                            </tbody>
+                        </table>
                     </div>
-                    :
+              }
+
+              { balance > 0 &&
                     <form onSubmit={handleSubmit(onSubmit)} className="pb-4 border-2 shadow-lg rounded-md pt-3">
                         <div className="flex flex-wrap mx-3 mb-2 ">
 
@@ -84,24 +90,20 @@ export function AddPayableCreditNoteModal({ onClose, isShow }: AddPayableCreditN
                             </div>
 
                             <div className="w-full md:w-full px-3 mb-2">
-                                <label htmlFor="quantity" className="input-label"> Cantidad *</label>
-                                <input type="number" id="quantity" {...register("quantity", {required: true})} className="input" step="any" min={0} />
+                                <label htmlFor="quantity" className="input-label"> Cantidad * (saldo {numberToMoney(balance, system)})</label>
+                                <input type="number" id="quantity" {...register("quantity", {required: true})} className="input" step="any" min={0} max={balance} />
                             </div>
-                        
+
                         </div>
                         <div className="flex justify-center">
                         <Button type="submit" disabled={sending} preset={sending ? Preset.saving : Preset.save} />
                         </div>
                     </form>
-                  }
+              }
         </div>
       </Modal.Body>
       <Modal.Footer>
         <div className="flex justify-end gap-4">
-        { payableRecord?.note &&
-        <DeleteButton id={payableRecord?.note.id} url="cash/expenses" onDeleteConfirm={delCreditNote} disabled={deleting} preset={Preset.cancel} text="Seguro que desea eliminar la nota de credito?" />
-        // <Button onClick={()=>setShowDeleteModal(true)} preset={Preset.cancel} disabled={sending} text="Eliminar Nota" />
-        }
         <Button onClick={onClose} preset={Preset.close} disabled={deleting} />
         </div>
       </Modal.Footer>

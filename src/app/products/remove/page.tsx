@@ -5,6 +5,7 @@ import { Pagination } from "@/components/Pagination";
 import { ChangeLotModal } from "@/components/products/remove/ChangeLotModal";
 import { LastRegistersTable } from "@/components/products/remove/LastRegistersTable";
 import { LotDetailsModal } from "@/components/products/remove/LotDetailsModal";
+import { OpenRegistersNotice } from "@/components/products/remove/OpenRegistersNotice";
 import { ProductsRegistersTable } from "@/components/products/remove/ProductsRegistersTable";
 import { RemoveInitialForm } from "@/components/products/remove/RemoveInitialForm";
 import { RemoveProductsForm } from "@/components/products/remove/RemoveProductsForm";
@@ -32,6 +33,7 @@ export default function Page() {
       <div className="md:col-span-4 md:border-r md:border-primary">
           <ViewTitle text="Descontar Producto" />
           <div className="p-4 space-y-6">
+            <OpenRegistersNotice />
             <RemoveInitialForm  />
             <RemoveProductsForm />
             <RemoveProductsSearch />

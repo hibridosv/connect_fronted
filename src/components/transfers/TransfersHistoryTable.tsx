@@ -56,7 +56,7 @@ export function TransfersHistoryTable({ records, onRowClick, onGetProductsOnline
       <td className="px-3 py-2 text-center">
         {sending ? (
           <FaSpinner size={18} className="text-primary animate-spin" />
-        ) : (record?.status === 3 || record?.status === 5) && record?.is_online === 1 ? (
+        ) : (record?.status === 3 || record?.status === 5) && record?.is_online === 1 && record?.from_tenant_id === tenant ? (
           <IoMdAlert
             size={22}
             className="clickeable text-warning"

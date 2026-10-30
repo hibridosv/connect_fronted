@@ -19,7 +19,7 @@ interface AccountPayableStoreStateI {
   createPayment: (url: string, data: any) => Promise<boolean>;
   deletePayment: (url: string) => Promise<void>;
   createCreditNote: (url: string, data: any) => Promise<boolean>;
-  deleteCreditNote: (url: string) => Promise<void>;
+  deleteCreditNote: (url: string) => Promise<boolean>;
 }
 
 const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
@@ -155,12 +155,14 @@ const useAccountPayableStore = create<AccountPayableStoreStateI>((set) => ({
     try {
       const response = await deleteService(url); 
       useToastMessageStore.getState().setMessage(response);
+      // el modal queda abierto: la cuenta puede tener mas notas
       useTempStorage.getState().setElement("paymentPayableAdd", response.data.data);
-      useModalStore.getState().closeModal("creditNoteAdd");
       set({ error: false });
+      return true;
     } catch (error) {
       useToastMessageStore.getState().setError(error);
       set({ error: true });
+      return false;
     } finally {
       set({ deleting: false });
     }

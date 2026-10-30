@@ -42,13 +42,12 @@ const { loadProduct, product } = useProductStore();
     }, [product, setValue])
 
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (formData: any) => {
     openLoading("productForm");
-      data.product_type = product?.product_type;
-      if (data.product_type != 1) {
-        data.quantity = 1;
-        data.minimum_stock = 1;
-      }
+      // el codigo, el stock y el tipo no se editan aqui; el costo solo en servicios
+      const { cod, quantity, product_type, ...data } = formData;
+      if (product?.product_type != 2) delete data.unit_cost;
+      if (product?.product_type != 1) data.minimum_stock = 1;
       if (data.expiration) data.expires = 1;
     data.taxes = getCountryProperty(parseInt(system?.country)).taxes;
     try {

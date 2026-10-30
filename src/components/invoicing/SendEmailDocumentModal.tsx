@@ -33,7 +33,6 @@ export function SendEmailDocumentModal(props: SendEmailDocumentModalProps) {
 
     const sendMail = async (email: string | null) => { 
             let payload = {
-                clientId: document?.client_id,
                 codigo: document?.codigo_generacion,
                 email
             }

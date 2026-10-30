@@ -36,8 +36,12 @@ export function ChangeQuantityModal(props: ChangeQuantityModalI) {
   if (!isShow || !order) return null;
 
  const onSubmit = async(data: any) => {
-    if (product.quantity == data.quantity || data.quantity == null) onClose();
-    
+    // sin cambios no se manda nada: antes seguia y restaba una unidad (quantity 0 se tomaba como 1)
+    if (product.quantity == data.quantity || !data.quantity) {
+      onClose();
+      return;
+    }
+
     let quantity = 0;
     let addOrSubtract = 0;
     if(product.quantity < data.quantity) {

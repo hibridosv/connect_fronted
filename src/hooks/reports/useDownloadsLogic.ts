@@ -1,6 +1,5 @@
 import { DateRangeValues } from '@/components/button/DateRange';
 import { createService, getServices } from '@/services/services';
-import useConfigStore from '@/stores/configStore';
 import useStateStore from '@/stores/stateStorage';
 import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
@@ -9,7 +8,6 @@ import { useDownloadLink } from '../useDownloadLink';
 export function useDownloadsLogic(url: string) {
     const [ history, setHistory ] = useState(null) as any;
     const { openLoading, closeLoading, loading } = useStateStore()
-    const { system } = useConfigStore();
   const { links, addLink} = useDownloadLink();
 
 
@@ -30,7 +28,6 @@ export function useDownloadsLogic(url: string) {
       const handleGenerateDocuments = async (type: 'pdf' | 'json', months?: number) => {
             openLoading("creating");
             const data = {
-              client_id: system?.client_id,
               type,
               ...(months !== undefined && { months }),
             }

@@ -123,6 +123,9 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     } else if (hasActiveReturns) {
                       // el MH no permite invalidar el documento con un Evento de Retorno validado
                       setError({ message: "Primero anule los retornos del documento" });
+                    } else if (creditNotesTotal > 0) {
+                      // con notas activas connect no anula: devolveria otra vez su inventario
+                      setError({ message: "Primero anule las notas de crédito del documento" });
                     } else {
                       openModal('invalidateOrder');
                     }
