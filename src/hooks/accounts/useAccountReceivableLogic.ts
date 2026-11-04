@@ -16,7 +16,7 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
   const selectedOption = getElement("optionSelected");
   const contactSelected = getElement('clientSelectedBySearch');
   const receivableRecord = getElement('paymentReceivableAdd');
-  const { putRequest, responseData, loading } = usePutRequest() as any;
+  const { putRequest, loading } = usePutRequest() as any;
   const { links, addLink } = useDownloadLink();
 
   const { activeConfig, system, permission } = useConfigStore();
@@ -45,10 +45,10 @@ export function useAccountReceivableLogic(currentPage?: any, initialLoad: boolea
 
   const isPrint = async () => {
     try {
-      await putRequest(`accounts/payment/${receivableRecord?.id}/print`, {});
-      if (responseData && responseData?.type == "successful") {
+      const response = await putRequest(`accounts/payment/${receivableRecord?.id}/print`, {});
+      if (response?.type == "successful") {
           if (activeConfig && activeConfig.includes("print-local")) {
-            const printResponse = await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', responseData.data);
+            await postForPrint(system?.local_url_print ?? 'http://127.0.0.1/impresiones/', 'POST', response.data);
           }
       }
     } catch (error) {

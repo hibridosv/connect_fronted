@@ -17,9 +17,11 @@ export function usePutRequest() {
       const response = await put(url, data);
       setResponseData(response.data);
       if (showMessage) setMessage(response);
+      return response.data; // el estado se actualiza en el siguiente render; quien lo necesite enseguida usa este valor
     } catch (err: any) {
       setResponseData(null);
       if (showMessage) setErrorMessage(err);
+      return null;
     } finally {
       setLoading(false);
     }
