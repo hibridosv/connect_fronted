@@ -9,6 +9,7 @@ interface ChatbotSettingsStoreI {
   saving: boolean;
   loadSettings: () => Promise<void>;
   updateSettings: (data: Partial<ChatbotSettings>) => Promise<boolean>;
+  updateProductWhatsapp: (productId: string, enabled: boolean) => Promise<boolean>;
 }
 
 const chatbotSettingsStore = create<ChatbotSettingsStoreI>((set) => ({
@@ -33,6 +34,21 @@ const chatbotSettingsStore = create<ChatbotSettingsStoreI>((set) => ({
     try {
       const response = await updateService('chatbot/settings', data);
       set({ settings: response.data.data });
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
+
+  // restaurante: "Ofrecer en WhatsApp" de un producto del menu
+  updateProductWhatsapp: async (productId: string, enabled: boolean) => {
+    set({ saving: true });
+    try {
+      const response = await updateService(`chatbot/products/${productId}/whatsapp`, { whatsapp_enabled: enabled });
       useToastMessageStore.getState().setMessage(response);
       return true;
     } catch (error) {
