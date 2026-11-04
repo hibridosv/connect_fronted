@@ -23,7 +23,6 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
   const { system, activeConfig } = useConfigStore();
   const { deletePayment, deleting } = accountReceivableStore();
   const { isPrint } = useAccountReceivableLogic();
-  const today = formatDateAsDMY(new Date());
 
   
   if (!records || records.length === 0) {
@@ -52,9 +51,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
       </td>
       <td className={`px-2 flex justify-start whitespace-nowrap`}>
         <DeleteButton id={record.id} 
-        disabled={record?.status == 0 ||
-                  formatDateAsDMY(record?.created_at) != today ||
-                  deleting }
+        disabled={record?.status == 0 || deleting }
         url="accounts/payment" 
         onDeleteConfirm={deletePayment} />
         {
