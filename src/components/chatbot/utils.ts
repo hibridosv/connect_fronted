@@ -1,20 +1,36 @@
-export const ORDER_STATUS: Record<number, { label: string; style: string }> = {
-  0: { label: 'Cancelado', style: 'bg-danger/10 text-danger' },
-  1: { label: 'Pendiente', style: 'bg-warning/10 text-warning' },
-  2: { label: 'En venta', style: 'bg-info/10 text-info' },
-  3: { label: 'Listo', style: 'bg-info/10 text-info' },
-  4: { label: 'Cobrado', style: 'bg-success/10 text-success' },
+const STATUS_STYLE: Record<number, string> = {
+  0: 'bg-danger/10 text-danger',
+  1: 'bg-warning/10 text-warning',
+  2: 'bg-info/10 text-info',
+  3: 'bg-info/10 text-info',
+  4: 'bg-success/10 text-success',
 };
 
-export const DELIVERY_TYPE: Record<number, string> = {
-  2: 'Domicilio',
-  3: 'Retira en tienda',
+const STATUS_LABEL: Record<number, string> = { 0: 'Cancelado', 1: 'Pendiente', 2: 'En venta', 3: 'Listo', 4: 'Cobrado' };
+const RESTAURANT_STATUS_LABEL: Record<number, string> = { ...STATUS_LABEL, 2: 'En preparación', 3: 'Listo / en camino' };
+
+export const orderStatus = (status: number, restaurant = false) => ({
+  label: (restaurant ? RESTAURANT_STATUS_LABEL : STATUS_LABEL)[status] ?? '',
+  style: STATUS_STYLE[status] ?? '',
+});
+
+// mismos valores en los dos bots: 2 a domicilio, 3 retira en tienda / para llevar
+export const deliveryLabel = (type: number | null, restaurant = false): string => {
+  if (type === 2) return 'A domicilio';
+  if (type === 3) return restaurant ? 'Para llevar' : 'Retira en tienda';
+  return '';
 };
 
 export const INVOICE_TYPE: Record<number, string> = {
   1: 'Ticket',
   2: 'Factura',
   3: 'Crédito fiscal',
+};
+
+export const PAYMENT_METHOD: Record<number, string> = {
+  1: 'Efectivo',
+  2: 'Tarjeta',
+  3: 'Transferencia',
 };
 
 export const ORIGIN_LABEL: Record<number, string> = {

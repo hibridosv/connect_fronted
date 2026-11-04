@@ -3,12 +3,14 @@ import useReverb from '@/hooks/useReverb';
 import chatbotOrdersStore from '@/stores/chatbot/chatbotOrdersStore';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
+import { isRestaurant } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 
 export function useChatbotOrdersLogic(currentPage: string, searchTerm: string, status: string) {
   const { tenant } = useConfigStore();
-  const { orders, order, checks, loading, loadingOrder, sending, disabled, loadOrders, loadOrder, chargeOrder, cancelOrder, clearOrder } = chatbotOrdersStore();
+  const { orders, order, checks, loading, loadingOrder, sending, disabled, loadOrders, loadOrder, chargeOrder, cancelOrder, readyOrder, clearOrder } = chatbotOrdersStore();
+  const restaurant = isRestaurant(tenant?.system);
   const { openModal, closeModal } = useModalStore();
   const router = useRouter();
   const lastQuery = useRef<string | null>(null);
@@ -42,10 +44,19 @@ export function useChatbotOrdersLogic(currentPage: string, searchTerm: string, s
     clearOrder();
   };
 
+  // productos: se abre como orden en ventas; restaurante: queda en las ordenes de delivery y va a cocina
   const charge = async (id: string) => {
     if (await chargeOrder(id)) {
       closeOrder();
-      router.push('/orders');
+      if (restaurant) refresh(currentPage);
+      else router.push('/orders');
+    }
+  };
+
+  const ready = async (id: string) => {
+    if (await readyOrder(id)) {
+      closeOrder();
+      refresh(currentPage);
     }
   };
 
@@ -56,5 +67,5 @@ export function useChatbotOrdersLogic(currentPage: string, searchTerm: string, s
     }
   };
 
-  return { orders, order, checks, loading, loadingOrder, sending, disabled, showOrder, closeOrder, charge, cancel };
+  return { orders, order, checks, loading, loadingOrder, sending, disabled, restaurant, showOrder, closeOrder, charge, cancel, ready };
 }

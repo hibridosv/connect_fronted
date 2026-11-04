@@ -4,7 +4,7 @@ import manageRestaurantStore from '@/stores/restaurant/manageRestaurantStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useRestaurantMenuProductLogic() {
-  const { updateProduct, updateProductStatus, sending } = manageRestaurantStore();
+  const { updateProduct, updateProductStatus, updateProductWhatsapp, sending } = manageRestaurantStore();
   const { openModal } = useModalStore();
   const { setElement } = useTempStorage();
 
@@ -49,6 +49,10 @@ export function useRestaurantMenuProductLogic() {
     await updateProductStatus(product.id, newStatus);
   };
 
+  const handleToggleWhatsapp = async (product: any) => {
+    await updateProductWhatsapp(product.id, product.restaurant?.whatsapp_enabled !== 1);
+  };
+
   const handleToggleSpecial = async (product: any) => {
     const newSpecial = product.menu_order?.special === 0 ? 1 : 0;
     await updateProduct(product.id, { field: 'special', data: newSpecial });
@@ -64,6 +68,7 @@ export function useRestaurantMenuProductLogic() {
     handleOpenLinkedModal,
     handleOpenDeleteModal,
     handleToggleStatus,
+    handleToggleWhatsapp,
     handleToggleSpecial,
   };
 }

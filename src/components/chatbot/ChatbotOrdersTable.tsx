@@ -2,10 +2,10 @@
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { isRestaurant, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { RiListRadio } from "react-icons/ri";
-import { DELIVERY_TYPE, ORDER_STATUS } from "./utils";
+import { deliveryLabel, orderStatus } from "./utils";
 
 export interface ChatbotOrdersTableI {
   records: any[];
@@ -14,7 +14,8 @@ export interface ChatbotOrdersTableI {
 }
 
 export function ChatbotOrdersTable({ records, isLoading, onShow }: ChatbotOrdersTableI) {
-  const { system } = useConfigStore();
+  const { system, tenant } = useConfigStore();
+  const restaurant = isRestaurant(tenant?.system);
 
   if (isLoading) return <SkeletonTable rows={5} columns={7} />;
   if (!records || records.length === 0) return <NothingHere text="No hay pedidos de WhatsApp" />;
@@ -23,11 +24,11 @@ export function ChatbotOrdersTable({ records, isLoading, onShow }: ChatbotOrders
     <tr key={record.id} className="transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
       <td className="px-3 py-2 whitespace-nowrap text-primary text-center">{record.order_number}</td>
       <td className="px-3 py-2 text-left whitespace-nowrap font-medium">{record.client_name ?? `+${record.phone}`}</td>
-      <td className="px-3 py-2 text-center whitespace-nowrap">{DELIVERY_TYPE[record.delivery_type] ?? ''}</td>
+      <td className="px-3 py-2 text-center whitespace-nowrap">{deliveryLabel(record.delivery_type, restaurant)}</td>
       <td className="px-3 py-2 text-center whitespace-nowrap">{formatDateAsDMY(record.created_at)} {formatHourAsHM(record.created_at)}</td>
       <td className="px-3 py-2 text-center whitespace-nowrap">{numberToMoney(record.total, system)}</td>
       <td className="px-3 py-2 text-center whitespace-nowrap">
-        <span className={`px-2 py-0.5 rounded text-xs ${ORDER_STATUS[record.status]?.style}`}>{ORDER_STATUS[record.status]?.label}</span>
+        <span className={`px-2 py-0.5 rounded text-xs ${orderStatus(record.status, restaurant).style}`}>{orderStatus(record.status, restaurant).label}</span>
       </td>
       <td className="px-3 py-2 text-center whitespace-nowrap">
         <RiListRadio size={24} title="Ver detalles" className="text-cyan-600 clickeable mx-auto" onClick={() => onShow(record.id)} />

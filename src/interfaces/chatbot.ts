@@ -65,8 +65,11 @@ export interface ChatbotThread {
 
 export interface ChatbotSettings {
   enabled: boolean;
+  is_restaurant: boolean;
   business_info: string | null;
   global_bot_enabled: boolean;
+  accepting_orders: boolean;
+  orders_to_kitchen: number; // 1 requiere aceptacion, 2 directo a cocina
   limit_reached: boolean;
   whatsapp_connected: boolean;
 }

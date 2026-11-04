@@ -32,6 +32,7 @@ interface manageRestaurantStoreI {
   addOption: (url: string, data: any) => Promise<boolean>;
   updateProduct: (id: string, data: any) => Promise<boolean>;
   updateProductStatus: (id: string, status: number) => Promise<boolean>;
+  updateProductWhatsapp: (id: string, enabled: boolean) => Promise<boolean>;
   deleteRestaurantProduct: (id: string) => Promise<boolean>;
   updateCategory: (id: string, data: any) => Promise<boolean>;
   updateOption: (id: string, data: any) => Promise<boolean>;
@@ -210,6 +211,20 @@ const manageRestaurantStore = create<manageRestaurantStoreI>((set) => ({
       const response = await updateService(`restaurant/products/${id}/status`, { status });
       useToastMessageStore.getState().setMessage(response);
       restauranMenuStore.getState().clearConfig()
+      await manageRestaurantStore.getState().reloadProducts();
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+  updateProductWhatsapp: async (id, enabled) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`chatbot/products/${id}/whatsapp`, { whatsapp_enabled: enabled });
+      useToastMessageStore.getState().setMessage(response);
       await manageRestaurantStore.getState().reloadProducts();
       return true;
     } catch (error) {

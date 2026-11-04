@@ -14,6 +14,7 @@ interface ChatbotOrdersStoreI {
   loadOrder: (id: string) => Promise<void>;
   chargeOrder: (id: string) => Promise<boolean>;
   cancelOrder: (id: string, reason: string) => Promise<boolean>;
+  readyOrder: (id: string) => Promise<boolean>;
   clearOrder: () => void;
 }
 
@@ -72,6 +73,20 @@ const chatbotOrdersStore = create<ChatbotOrdersStoreI>((set) => ({
     set({ sending: true });
     try {
       const response = await updateService(`chatbot/orders/${id}/cancel`, { reason: reason || null });
+      useToastMessageStore.getState().setMessage(response);
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      return false;
+    } finally {
+      set({ sending: false });
+    }
+  },
+
+  readyOrder: async (id: string) => {
+    set({ sending: true });
+    try {
+      const response = await updateService(`chatbot/orders/${id}/ready`, {});
       useToastMessageStore.getState().setMessage(response);
       return true;
     } catch (error) {

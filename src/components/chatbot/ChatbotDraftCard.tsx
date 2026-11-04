@@ -1,13 +1,14 @@
 'use client';
 import { ChatbotDraft, ChatbotOrderSummary } from "@/interfaces/chatbot";
 import { formatDateAsDMY } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { isRestaurant, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import Link from "next/link";
-import { DELIVERY_TYPE, INVOICE_TYPE, ORDER_STATUS } from "./utils";
+import { deliveryLabel, INVOICE_TYPE, orderStatus } from "./utils";
 
 export function ChatbotDraftCard({ draft, orders }: { draft: ChatbotDraft | null; orders: ChatbotOrderSummary[] }) {
-  const { system } = useConfigStore();
+  const { system, tenant } = useConfigStore();
+  const restaurant = isRestaurant(tenant?.system);
   if (!draft && !orders.length) return null;
 
   return (
@@ -28,7 +29,7 @@ export function ChatbotDraftCard({ draft, orders }: { draft: ChatbotDraft | null
           <div className="flex justify-between font-semibold mt-1"><span>Total</span><span>{numberToMoney(draft.total, system)}</span></div>
           <div className="text-text-muted mt-1">
             {draft.customer_name && <div>Cliente: {draft.customer_name}</div>}
-            {draft.delivery_type && <div>Entrega: {DELIVERY_TYPE[draft.delivery_type]}{draft.address ? ` — ${draft.address}` : ''}{draft.has_location ? ' 📍' : ''}</div>}
+            {draft.delivery_type && <div>Entrega: {deliveryLabel(draft.delivery_type, restaurant)}{draft.address ? ` — ${draft.address}` : ''}{draft.has_location ? ' 📍' : ''}</div>}
             {draft.invoice_type && <div>Documento: {INVOICE_TYPE[draft.invoice_type]}</div>}
             {draft.missing.length > 0 && <div className="text-warning">Falta: {draft.missing.join(', ')}</div>}
           </div>
@@ -43,7 +44,7 @@ export function ChatbotDraftCard({ draft, orders }: { draft: ChatbotDraft | null
                 <Link href="/chatbot/orders" className="text-primary underline">#{order.order_number}</Link>
                 <span className="text-text-muted">{formatDateAsDMY(order.created_at)}</span>
                 <span>{numberToMoney(order.total, system)}</span>
-                <span className={`px-2 rounded text-xs ${ORDER_STATUS[order.status]?.style}`}>{ORDER_STATUS[order.status]?.label}</span>
+                <span className={`px-2 rounded text-xs ${orderStatus(order.status, restaurant).style}`}>{orderStatus(order.status, restaurant).label}</span>
               </li>
             ))}
           </ul>
