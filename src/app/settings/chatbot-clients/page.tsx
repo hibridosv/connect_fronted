@@ -7,12 +7,36 @@ import { ViewTitle } from '@/components/ViewTitle';
 import chatbotSettingsStore from '@/stores/chatbot/chatbotSettingsStore';
 import { useEffect, useState } from 'react';
 
+type ProfileField = 'schedule' | 'delivery_info' | 'payment_info' | 'faq' | 'business_info';
+
+// campos guiados del prompt: cada negocio los llena con sus datos; el bot solo responde con lo que hay aqui
+const PROFILE_FIELDS: { key: ProfileField; label: string; max: number; rows: number; example: string; restaurantExample?: string }[] = [
+  { key: 'schedule', label: 'Horario de atención', max: 500, rows: 2, example: 'Lunes a viernes de 8:00 a 18:00, sábados de 8:00 a 13:00. Domingos cerrado.' },
+  { key: 'delivery_info', label: 'Entregas', max: 1000, rows: 3, example: 'Entregamos en San Salvador y Antiguo Cuscatlán. Envío $2.50, gratis en compras mayores a $30. Llega el mismo día si pides antes de las 3 pm.', restaurantExample: 'Delivery en un radio de 5 km. El costo de envío se suma al pedido. Tiempo aproximado: 40 minutos.' },
+  { key: 'payment_info', label: 'Formas de pago', max: 500, rows: 2, example: 'Efectivo, tarjeta de crédito o débito y transferencia a Banco Agrícola.' },
+  { key: 'faq', label: 'Preguntas frecuentes', max: 3000, rows: 5, example: '¿Hacen factura? Sí, ticket, factura o crédito fiscal. ¿Tienen garantía? 30 días en herramientas eléctricas.', restaurantExample: '¿Tienen opciones vegetarianas? Sí, pregunta por el menú. ¿Hacen pedidos para eventos? Sí, con 2 días de anticipación.' },
+  { key: 'business_info', label: 'Otros datos', max: 2000, rows: 3, example: 'Cualquier otra cosa que el bot deba saber del negocio.' },
+];
+
+const emptyProfile: Record<ProfileField, string> = { schedule: '', delivery_info: '', payment_info: '', faq: '', business_info: '' };
+
 export default function Page() {
   const { settings, loading, saving, loadSettings, updateSettings } = chatbotSettingsStore();
-  const [businessInfo, setBusinessInfo] = useState('');
+  const [profile, setProfile] = useState<Record<ProfileField, string>>(emptyProfile);
+  const [tone, setTone] = useState(1);
 
   useEffect(() => { loadSettings(); }, [loadSettings]);
-  useEffect(() => { setBusinessInfo(settings?.business_info ?? ''); }, [settings?.business_info]);
+  useEffect(() => {
+    if (!settings) return;
+    setProfile({
+      schedule: settings.schedule ?? '',
+      delivery_info: settings.delivery_info ?? '',
+      payment_info: settings.payment_info ?? '',
+      faq: settings.faq ?? '',
+      business_info: settings.business_info ?? '',
+    });
+    setTone(settings.tone ?? 1);
+  }, [settings]);
 
   if (loading && !settings) return <div className="flex justify-center mt-10"><Loader size="35" /></div>;
   if (!settings) return <div className="p-4"><Alert type="danger" text="No se pudo cargar la configuración del chatbot." /></div>;
@@ -69,12 +93,40 @@ export default function Page() {
             </div>
           )}
 
-          <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 space-y-2">
-            <label className="input-label">Información del negocio para el bot</label>
-            <p className="text-sm text-text-muted">Horario, zonas y costo de entrega, formas de pago, dirección. El bot la usa para responder; no puede cambiar sus reglas (no inventa precios ni existencias).</p>
-            <textarea className="input w-full" rows={8} maxLength={4000} value={businessInfo} onChange={(e) => setBusinessInfo(e.target.value)} />
+          <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle p-4 space-y-4">
+            <div>
+              <div className="font-semibold">Lo que el bot sabe del negocio</div>
+              <p className="text-sm text-text-muted">El bot solo responde con estos datos: si un campo está vacío, ofrece que un asesor responda en lugar de inventar. Son solo datos; no cambian sus reglas (no hace descuentos ni inventa precios o existencias).</p>
+            </div>
+
+            <div className="text-sm rounded-lg bg-bg-subtle/40 p-3">
+              <div><span className="font-semibold">Nombre:</span> {settings.business?.name || 'Sin nombre'}</div>
+              <div><span className="font-semibold">Dirección:</span> {settings.business?.address || 'Sin dirección'}</div>
+              <div><span className="font-semibold">Teléfono:</span> {settings.business?.phone || 'Sin teléfono'}</div>
+              <div className="text-xs text-text-muted mt-1">Se toman de los datos del negocio; para cambiarlos pide a Hibrido que los actualice.</div>
+            </div>
+
+            <div>
+              <label className="input-label">Tono de las respuestas</label>
+              <select className="input-select w-full" value={tone} onChange={(e) => setTone(Number(e.target.value))}>
+                <option value={1}>Cercano: tutea al cliente y usa algún emoji</option>
+                <option value={2}>Formal: trata al cliente de usted, sin emojis</option>
+              </select>
+            </div>
+
+            {PROFILE_FIELDS.map((field) => (
+              <div key={field.key}>
+                <label className="input-label">{field.label}</label>
+                <textarea className="input w-full" rows={field.rows} maxLength={field.max}
+                  placeholder={`Ej.: ${settings.is_restaurant && field.restaurantExample ? field.restaurantExample : field.example}`}
+                  value={profile[field.key]} onChange={(e) => setProfile({ ...profile, [field.key]: e.target.value })} />
+                <div className="text-xs text-text-muted text-right">{profile[field.key].length}/{field.max}</div>
+              </div>
+            ))}
+
             <div className="flex justify-end">
-              <Button preset={saving ? Preset.saving : Preset.save} disabled={saving} onClick={() => updateSettings({ business_info: businessInfo })} />
+              <Button preset={saving ? Preset.saving : Preset.save} disabled={saving}
+                onClick={() => updateSettings({ ...profile, tone })} />
             </div>
           </div>
         </div>

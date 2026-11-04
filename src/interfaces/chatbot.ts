@@ -63,10 +63,22 @@ export interface ChatbotThread {
   next_cursor: string | null;
 }
 
+export interface ChatbotBusiness {
+  name: string | null;
+  address: string | null;
+  phone: string | null;
+}
+
 export interface ChatbotSettings {
   enabled: boolean;
   is_restaurant: boolean;
-  business_info: string | null;
+  business: ChatbotBusiness; // de data_systems (Configuraciones > Principal), el bot los usa sin que se repitan
+  schedule: string | null;
+  delivery_info: string | null;
+  payment_info: string | null;
+  faq: string | null;
+  business_info: string | null; // otros datos
+  tone: number; // 1 cercano (tutea), 2 formal (usted)
   global_bot_enabled: boolean;
   accepting_orders: boolean;
   orders_to_kitchen: number; // 1 requiere aceptacion, 2 directo a cocina
