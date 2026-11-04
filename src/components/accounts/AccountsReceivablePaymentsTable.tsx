@@ -23,7 +23,6 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
   const { system, activeConfig } = useConfigStore();
   const { deletePayment, deleting } = accountReceivableStore();
   const { isPrint } = useAccountReceivableLogic();
-  const isDisabled = false;
 
   
   if (!records || records.length === 0) {
@@ -52,11 +51,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
       </td>
       <td className={`px-2 flex justify-start whitespace-nowrap`}>
         <DeleteButton id={record.id} 
-        disabled={record.payment_type == 0 ||
-                  record?.status == 0 || 
-                  isDisabled || 
-                  getFirstElement(reversed, "account_type", record?.account_type)?.id != record.id ||
-                  deleting }
+        disabled={record?.status == 0 || deleting }
         url="accounts/payment" 
         onDeleteConfirm={deletePayment} />
         {
