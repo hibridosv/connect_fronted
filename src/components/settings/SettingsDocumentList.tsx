@@ -1,6 +1,9 @@
+import { Button, Preset } from '@/components/button/button';
 import { Switch } from '@/components/button/Switch';
 import { Indicator, IndicatorType } from '@/components/Indicators';
+import SettingsInvoiceTypeModal from '@/components/settings/SettingsInvoiceTypeModal';
 import { getServices, updateService } from '@/services/services';
+import useConfigStore from '@/stores/configStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useState } from 'react';
 
@@ -10,18 +13,24 @@ interface SettingsDocumentListProps {
 
 function getDocumentStatus(status: number): { label: string; type: IndicatorType } {
   const map: Record<number, { label: string; type: IndicatorType }> = {
-    0: { label: 'Inactivo',      type: 'inactive' },
-    1: { label: 'Activo',        type: 'success' },
-    2: { label: 'Terminado',     type: 'warning' },
-    3: { label: 'Deshabilitado', type: 'danger' },
+    0: { label: 'Disponible',             type: 'inactive' },
+    1: { label: 'Predeterminado general', type: 'success' },
+    2: { label: 'Terminado',              type: 'warning' },
+    3: { label: 'Deshabilitado',          type: 'danger' },
   };
   return map[status] ?? { label: 'Desconocido', type: 'inactive' };
+}
+
+// el modal de la orden usa los documentos disponibles (0 y 1) sin el temporal (9), como los manda el config
+function syncConfigInvoiceTypes(invoiceTypes: any[]) {
+  useConfigStore.setState({ invoiceTypes: invoiceTypes.filter((t: any) => t.type != 9 && [0, 1].includes(t.status)) });
 }
 
 export default function SettingsDocumentList({ changes }: SettingsDocumentListProps) {
   const [invoiceTypes, setInvoiceTypes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<any>(null);
 
   const loadData = async () => {
     setLoading(true);
@@ -40,16 +49,21 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleSaved = (list: any[]) => {
+    setInvoiceTypes(list);
+    syncConfigInvoiceTypes(list);
+  };
+
   const handleToggle = async (item: any, field: string) => {
     setUpdatingId(item.id);
     try {
       let data: any = {};
       if (field === 'is_electronic') data.is_electronic = item.is_electronic === 1 ? 0 : 1;
       if (field === 'is_printable') data.is_printable = item.is_printable === 1 ? 0 : 1;
-      if (field === 'status') data.status = item.status === 0 ? 3 : 0;
+      if (field === 'status') data.status = item.status === 0 ? 3 : 0; // habilitado (0) <-> deshabilitado (3)
       const response = await updateService(`invoice/type/${item.id}`, data);
       useToastMessageStore.getState().setMessage(response);
-      await loadData();
+      handleSaved(response.data.data ?? []);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
@@ -57,7 +71,7 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
     }
   };
 
-  if (invoiceTypes.length === 0) return <div className="p-8 text-center text-text-muted text-sm">No hay documentos</div>;
+  if (invoiceTypes.length === 0) return <div className="p-8 text-center text-text-muted text-sm">{loading ? 'Cargando...' : 'No hay documentos'}</div>;
 
   return (
     <div className="p-4">
@@ -73,44 +87,57 @@ export default function SettingsDocumentList({ changes }: SettingsDocumentListPr
               <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Nombre</th>
               <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Electrónico</th>
               <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Imprimible</th>
-              <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Deshabilitar</th>
-              <th className="px-6 py-3 font-bold tracking-wider whitespace-nowrap">Estado</th>
+              <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Habilitado</th>
+              <th className="px-6 py-3 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Estado</th>
+              {changes && <th className="px-6 py-3 font-bold tracking-wider whitespace-nowrap"></th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-bg-subtle/50">
-            {invoiceTypes.map((item: any) => (
-              <tr key={item.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${updatingId === item.id ? 'opacity-60' : ''}`}>
-                <td className="px-3 py-2 whitespace-nowrap">{item.type}</td>
-                <td className="px-3 py-2 whitespace-nowrap">{item.name}</td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  {changes ? (
-                    <Switch checked={item.is_electronic === 1} onChange={() => handleToggle(item, 'is_electronic')} label="" sizing="sm" disabled={updatingId === item.id} />
-                  ) : (
-                    <span className={`text-xs font-medium ${item.is_electronic === 1 ? 'text-success' : 'text-text-muted'}`}>{item.is_electronic === 1 ? 'Sí' : 'No'}</span>
+            {invoiceTypes.map((item: any) => {
+              const enabled = item.status === 0 || item.status === 1;
+              // el general (1) no se deshabilita y uno terminado (2) no se reactiva
+              const canToggleStatus = item.status === 0 || item.status === 3;
+              return (
+                <tr key={item.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${updatingId === item.id ? 'opacity-60' : ''}`}>
+                  <td className="px-3 py-2 whitespace-nowrap">{item.type}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{item.name}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {changes ? (
+                      <Switch checked={item.is_electronic === 1} onChange={() => handleToggle(item, 'is_electronic')} label="" sizing="sm" disabled={updatingId === item.id} />
+                    ) : (
+                      <span className={`text-xs font-medium ${item.is_electronic === 1 ? 'text-success' : 'text-text-muted'}`}>{item.is_electronic === 1 ? 'Sí' : 'No'}</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {changes ? (
+                      <Switch checked={item.is_printable === 1} onChange={() => handleToggle(item, 'is_printable')} label="" sizing="sm" disabled={updatingId === item.id} />
+                    ) : (
+                      <span className={`text-xs font-medium ${item.is_printable === 1 ? 'text-success' : 'text-text-muted'}`}>{item.is_printable === 1 ? 'Sí' : 'No'}</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    {changes ? (
+                      <Switch checked={enabled} onChange={() => handleToggle(item, 'status')} label="" sizing="sm" disabled={updatingId === item.id || !canToggleStatus} />
+                    ) : (
+                      <span className={`text-xs font-medium ${enabled ? 'text-success' : 'text-text-muted'}`}>{enabled ? 'Sí' : 'No'}</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    <Indicator type={getDocumentStatus(item.status).type} text={getDocumentStatus(item.status).label} coloredText />
+                  </td>
+                  {changes && (
+                    <td className="px-3 py-2 whitespace-nowrap text-center">
+                      <Button preset={Preset.smallEdit} onClick={() => setEditing(item)} disabled={updatingId === item.id} />
+                    </td>
                   )}
-                </td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  {changes ? (
-                    <Switch checked={item.is_printable === 1} onChange={() => handleToggle(item, 'is_printable')} label="" sizing="sm" disabled={updatingId === item.id} />
-                  ) : (
-                    <span className={`text-xs font-medium ${item.is_printable === 1 ? 'text-success' : 'text-text-muted'}`}>{item.is_printable === 1 ? 'Sí' : 'No'}</span>
-                  )}
-                </td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  {changes ? (
-                    <Switch checked={item.status === 0} onChange={() => handleToggle(item, 'status')} label="" sizing="sm" disabled={updatingId === item.id} />
-                  ) : (
-                    <span className={`text-xs font-medium ${item.status === 0 ? 'text-danger' : 'text-text-muted'}`}>{item.status === 0 ? 'Deshabilitado' : 'Habilitado'}</span>
-                  )}
-                </td>
-                <td className="px-3 py-2 whitespace-nowrap">
-                  <Indicator type={getDocumentStatus(item.status).type} text={getDocumentStatus(item.status).label} coloredText />
-                </td>
-              </tr>
-            ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+
+      <SettingsInvoiceTypeModal isShow={!!editing} invoiceType={editing} onClose={() => setEditing(null)} onSaved={handleSaved} />
     </div>
   );
 }
