@@ -2,7 +2,7 @@
 
 import { Cut } from "@/interfaces/Cuts";
 import { formatDateAsDMY, formatTime } from "@/lib/date-formats";
-import { numberToMoney } from "@/lib/utils";
+import { numberToMoney, permissionExists } from "@/lib/utils";
 import useCutStore from "@/stores/cashdrawer/cutStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -17,7 +17,9 @@ export interface ShowCutsTableProps {
 
 export function ShowCutsTable(props: ShowCutsTableProps) {
   const { records } = props;
-  const { system } = useConfigStore();
+  const { system, permission } = useConfigStore();
+  // sin cut-delete el backend responde 403: el botón no se muestra
+  const canDelete = permissionExists(permission, "cut-delete");
   const { modals, openModal, closeModal } = useModalStore();
   const { deleteCut, deleting } = useCutStore();
   const { getElement, setElement} = useTempStorage();
@@ -50,7 +52,7 @@ export function ShowCutsTable(props: ShowCutsTableProps) {
         {numberToMoney(cashDifference, system)}
       </td>
       <td className="px-3 py-2 flex justify-center">
-        <DeleteButton id={record.id} url="cuts" disabled={!(firstRecord.id === record?.id && record.status === 2) || deleting} text="¿Estas seguro de eliminar este corte?" onDeleteConfirm={deleteCut} />
+        {canDelete && <DeleteButton id={record.id} url="cuts" disabled={!(firstRecord.id === record?.id && record.status === 2) || deleting} text="¿Estas seguro de eliminar este corte?" onDeleteConfirm={deleteCut} />}
       </td>
     </tr>
   )});
