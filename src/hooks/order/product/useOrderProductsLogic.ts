@@ -1,7 +1,6 @@
 'use client'
 import { groupInvoiceProductsByCodSpecial } from '@/components/orders/utils';
 import useReverb from '@/hooks/useReverb';
-import { getFirstElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersProductsStore from '@/stores/orders/ordersProductsStore';
@@ -16,12 +15,11 @@ import { useEffect, useRef } from 'react';
  */
 
 export function useOrderProductsLogic(initialLoad: boolean = false) {
-  const { activeConfig, invoiceTypes, user, tenant, configurations } = useConfigStore();
+  const { activeConfig, user, tenant, configurations } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
   const typeOfSearch = getElement('typeOfSearch'); // tipo de busqueda
   const { loadOrder, loadOrders, setOrders } = ordersProductsStore();
   const { order } = ordersStore();
-  const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   const orderLoaded = useRef(false);
@@ -41,7 +39,7 @@ export function useOrderProductsLogic(initialLoad: boolean = false) {
            setElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, setElement, typeOfSearch])
+  }, [initialLoad, activeConfig, setElement, typeOfSearch])
 
 
   useEffect(() => {

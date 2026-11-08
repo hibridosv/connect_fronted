@@ -1,7 +1,7 @@
 'use client'
 import { groupInvoiceProductsByCodSpecial } from '@/components/orders/utils';
 import useReverb from '@/hooks/useReverb';
-import { getFirstElement, getLastElement } from '@/lib/utils';
+import { getLastElement } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
 import useModalStore from '@/stores/modalStorage';
 import ordersRestaurantsStore from '@/stores/orders/ordersRestaurantsStore';
@@ -16,7 +16,7 @@ import { useEffect, useRef } from 'react';
  */
 
 export function useOrderRestaurantLogic(initialLoad: boolean = false) {
-  const { activeConfig, invoiceTypes, user, tenant } = useConfigStore();
+  const { activeConfig, user, tenant } = useConfigStore();
   const { getElement, setElement } = useTempStorage();
   const serviceType = getElement('serviceType'); // 1 aqui, 2 mesas, 3 delivery
   const deliveryType = getElement('deliveryType'); // aqui, llevar, delivery
@@ -26,7 +26,6 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
 
   const { loadOrder, loadOrders, setOrders, loadTables } = ordersRestaurantsStore();
   const { order } = ordersStore();
-  const invoiceSelected = getFirstElement(invoiceTypes, 'status', 1); // selecciona el tipo de factura predeterminada
   const { openModal } = useModalStore();
   const isRealTime = activeConfig && activeConfig.includes('realtime-orders');
   const orderLoaded = useRef(false);
@@ -54,7 +53,7 @@ export function useOrderRestaurantLogic(initialLoad: boolean = false) {
            setElement('typeOfPrice', 1); // tipo de precio
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialLoad, activeConfig, invoiceSelected, setElement, serviceType])
+  }, [initialLoad, activeConfig, setElement, serviceType])
 
 
   useEffect(() => {
