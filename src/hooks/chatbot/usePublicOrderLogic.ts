@@ -12,6 +12,8 @@ export interface PublicOrderData {
   accepting_orders: boolean;
   shipping_amount: number;
   customer_name: string | null;
+  customer_address: string | null; // la del ultimo pedido a domicilio o la del cliente registrado
+  customer_reference: string | null;
   seconds_left: number;
   menu: PublicDish[];
 }

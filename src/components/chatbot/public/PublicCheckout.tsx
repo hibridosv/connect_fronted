@@ -9,6 +9,8 @@ export interface PublicCheckoutI {
   itemsTotal: number;
   shippingAmount: number;
   customerName: string | null;
+  customerAddress: string | null;
+  customerReference: string | null;
   money: any;
   sending: boolean;
   error: string;
@@ -19,9 +21,10 @@ export interface PublicCheckoutI {
 }
 
 export function PublicCheckout(props: PublicCheckoutI) {
-  const { cart, itemsTotal, shippingAmount, customerName, money, sending, error, acceptingOrders, onBack, onChangeQuantity, onConfirm } = props;
+  const { cart, itemsTotal, shippingAmount, customerName, customerAddress, customerReference, money, sending, error, acceptingOrders, onBack, onChangeQuantity, onConfirm } = props;
+  // a domicilio por defecto, con la ultima direccion que dio el cliente
   const [form, setForm] = useState<CheckoutData>({
-    customer_name: customerName ?? '', delivery_type: 3, address: '', reference: '', latitude: null, longitude: null,
+    customer_name: customerName ?? '', delivery_type: 2, address: customerAddress ?? '', reference: customerReference ?? '', latitude: null, longitude: null,
     payment_method: 1, cash_amount: '', notes: '',
   });
   const [locating, setLocating] = useState(false);
@@ -80,7 +83,7 @@ export function PublicCheckout(props: PublicCheckoutI) {
         </div>
 
         <div className="grid grid-cols-2 gap-2">
-          {[{ value: 3, label: 'Para llevar' }, { value: 2, label: 'A domicilio' }].map((option) => (
+          {[{ value: 2, label: 'A domicilio' }, { value: 3, label: 'Para llevar' }].map((option) => (
             <button key={option.value} onClick={() => setForm({ ...form, delivery_type: option.value })}
               className={`py-2 rounded-lg border ${form.delivery_type === option.value ? 'border-primary bg-primary text-text-inverted' : 'border-bg-subtle bg-bg-content'}`}>
               {option.label}
