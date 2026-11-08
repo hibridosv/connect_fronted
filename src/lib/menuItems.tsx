@@ -12,6 +12,7 @@ export interface MenuItem {
   permission?: string;
   children?: MenuItem[];
   permissions?: string[];
+  feature?: string; // solo se muestra con esta configuracion principal activa (activeConfig)
 }
 
 export const menuItems: MenuItem[] = [
@@ -110,6 +111,7 @@ export const menuItems: MenuItem[] = [
   {
     label: "WhatsApp", icon: <FaWhatsapp size={15} />,
     permissions: ["chatbot-conversations"],
+    feature: "chatbot-clients",
     children: [
       { label: "Conversaciones", href: "/chatbot/conversations", permission: "chatbot-conversations" },
       { label: "Pedidos de WhatsApp", href: "/chatbot/orders", permission: "chatbot-conversations" },
@@ -178,7 +180,7 @@ export const menuItems: MenuItem[] = [
       { label: "Sucursales", href: "/settings/branches", permission: "config-transfers" },
       { label: "Pagos", href: "/settings/payments" },
       { label: "Chatbot", href: "/settings/chatbot", permission: "config-chatbot" },
-      { label: "Chatbot para clientes", href: "/settings/chatbot-clients", permission: "chatbot-settings" },
+      { label: "Chatbot para clientes", href: "/settings/chatbot-clients", permission: "chatbot-settings", feature: "chatbot-clients" },
     ],
   },
   { label: "Ayuda", href: "/help", icon: <BiHelpCircle size={15} /> },

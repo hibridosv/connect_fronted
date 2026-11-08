@@ -43,8 +43,13 @@ const config: Config = {
         'scale-in': 'scaleIn 0.5s ease-out both',
         'orbit': 'orbit 20s linear infinite',
         'orbit-reverse': 'orbit 25s linear infinite reverse',
+        'bump': 'bump 0.35s ease-out',
       },
       keyframes: {
+        bump: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '40%': { transform: 'scale(1.06)' },
+        },
         shimmer: {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
