@@ -8,7 +8,7 @@ export interface PublicDish { id: string; name: string; description: string | nu
 export interface ChosenOption { assigment_id: string; variant_id: string; option: string; name: string; price: number }
 export interface CartItem { key: string; product_id: string; name: string; price: number; quantity: number; options: ChosenOption[] }
 export interface PublicOrderData {
-  business: { name: string | null; logo_url: string | null; country: string | null };
+  business: { name: string | null; logo_url: string | null; country: string | null; whatsapp_phone: string | null };
   accepting_orders: boolean;
   shipping_amount: number;
   customer_name: string | null;
