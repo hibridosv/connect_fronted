@@ -15,7 +15,7 @@ export function useChatbotOrdersLogic(currentPage: string, searchTerm: string, s
   const router = useRouter();
   const lastQuery = useRef<string | null>(null);
 
-  const { random } = useReverb(`${tenant?.id}-channel-chatbot`, 'ChatbotEvent', !!tenant?.id);
+  const { data: event, random } = useReverb(`${tenant?.id}-channel-chatbot`, 'ChatbotEvent', !!tenant?.id);
 
   const refresh = useCallback((page: string) => {
     const statusFilter = status !== '' ? `&filterWhere[status]==${status}` : '';
@@ -30,8 +30,9 @@ export function useChatbotOrdersLogic(currentPage: string, searchTerm: string, s
     refresh(page);
   }, [refresh, currentPage, status, searchTerm]);
 
+  // solo los eventos de pedidos cambian esta lista; los de mensajes y conversaciones no
   useEffect(() => {
-    if (random) refresh(currentPage);
+    if (random && event?.kind === 'order') refresh(currentPage);
   }, [random]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const showOrder = (id: string) => {

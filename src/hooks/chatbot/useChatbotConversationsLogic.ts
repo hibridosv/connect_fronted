@@ -26,11 +26,14 @@ export function useChatbotConversationsLogic() {
     if (selectedId) loadThread(selectedId);
   }, [selectedId, loadThread, clearThread]);
 
-  // el evento no trae datos: se vuelve a pedir la lista y, si es del hilo abierto, el hilo
+  // el evento no trae datos: se vuelve a pedir la lista y, si es del hilo abierto, el hilo.
+  // La lista no muestra pedidos: un evento de pedido solo recarga el hilo que tiene ese pedido
   useEffect(() => {
     if (!random) return;
-    refreshList();
-    if (selectedId && (event?.id === selectedId || event?.kind === 'settings')) loadThread(selectedId, true);
+    if (event?.kind !== 'order') refreshList();
+    if (!selectedId) return;
+    const threadOrder = event?.kind === 'order' && thread?.orders?.some((order) => order.id === event?.id);
+    if (event?.id === selectedId || event?.kind === 'settings' || threadOrder) loadThread(selectedId, true);
   }, [random]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleHandoff = async (take: boolean) => {
