@@ -41,9 +41,14 @@ export interface ChatbotDraft {
   delivery_type: number | null;
   address: string | null;
   has_location: boolean;
-  invoice_type: number | null;
+  invoice_type?: number | null;
   notes: string | null;
   missing: string[];
+  // restaurante, pedido armado por chat
+  shipping?: number;
+  reference?: string | null;
+  payment?: string | null; // efectivo, tarjeta o transferencia
+  cash_amount?: number | null;
 }
 
 export interface ChatbotOrderSummary {

@@ -18,18 +18,20 @@ export function ChatbotDraftCard({ draft, orders }: { draft: ChatbotDraft | null
           <div className="font-semibold uppercase text-text-base mb-1">Pedido en preparación</div>
           {draft.items.length ? (
             <ul className="divide-y divide-bg-subtle">
-              {draft.items.map((item) => (
-                <li key={item.product_id} className={`flex justify-between py-1 ${item.can_order ? '' : 'text-danger'}`}>
+              {draft.items.map((item, index) => (
+                <li key={`${item.product_id}-${index}`} className={`flex justify-between py-1 ${item.can_order ? '' : 'text-danger'}`}>
                   <span>{item.quantity} × {item.name}</span>
                   <span>{numberToMoney(item.total, system)}</span>
                 </li>
               ))}
             </ul>
           ) : <div className="text-text-muted">Sin productos</div>}
+          {!!draft.shipping && <div className="flex justify-between text-text-muted mt-1"><span>Envío</span><span>{numberToMoney(draft.shipping, system)}</span></div>}
           <div className="flex justify-between font-semibold mt-1"><span>Total</span><span>{numberToMoney(draft.total, system)}</span></div>
           <div className="text-text-muted mt-1">
             {draft.customer_name && <div>Cliente: {draft.customer_name}</div>}
-            {draft.delivery_type && <div>Entrega: {deliveryLabel(draft.delivery_type, restaurant)}{draft.address ? ` — ${draft.address}` : ''}{draft.has_location ? ' 📍' : ''}</div>}
+            {draft.delivery_type && <div>Entrega: {deliveryLabel(draft.delivery_type, restaurant)}{draft.address ? ` — ${draft.address}` : ''}{draft.reference ? ` (${draft.reference})` : ''}{draft.has_location ? ' 📍' : ''}</div>}
+            {draft.payment && <div>Pago: {draft.payment}{draft.cash_amount ? `, con ${numberToMoney(draft.cash_amount, system)}` : ''}</div>}
             {draft.invoice_type && <div>Documento: {INVOICE_TYPE[draft.invoice_type]}</div>}
             {draft.missing.length > 0 && <div className="text-warning">Falta: {draft.missing.join(', ')}</div>}
           </div>
