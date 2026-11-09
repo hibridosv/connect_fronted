@@ -2,6 +2,9 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
+// Estados de billing que muestran un aviso con "Continuar"; Suspended no esta porque bloquea el sistema
+const DISMISSIBLE_STATUSES = ['Info', 'Expiring', 'Overdue'];
+
 async function refreshAccessToken(token: any) {
   try {
     const res = await fetch(`${token.url}/oauth/token`, {
@@ -78,7 +81,10 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user, session, trigger }: any) {
       if (trigger === "update" && session?.tenantStatus !== undefined) {
-        token.tenantStatus = session.tenantStatus;
+        // El cliente solo puede descartar un aviso; la suspension no se quita desde el navegador
+        if (session.tenantStatus === 'Active' && DISMISSIBLE_STATUSES.includes(token.tenantStatus)) {
+          token.tenantStatus = 'Active';
+        }
         return token;
       }
 
@@ -101,8 +107,6 @@ const handler = NextAuth({
     },
     async session({ session, token }: any) {
       session.accessToken = token.accessToken;
-      session.refreshToken = token.refreshToken;
-      session.expiresAt = token.expiresAt;
       session.url = token.url;
       session.status = token.status;
       session.redirect = token.redirect;
