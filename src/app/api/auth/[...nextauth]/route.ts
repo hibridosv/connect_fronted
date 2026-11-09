@@ -41,12 +41,11 @@ const handler = NextAuth({
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
-        tenantUrl: { label: "Tenant URL", type: "text" },
         change: { label: "Change URL", type: "text" },
       },
       async authorize(credentials) {
-        const baseUrl = credentials?.tenantUrl ?? process.env.NEXT_PUBLIC_URL_API;
-        const res = await fetch(`${baseUrl}oauth2`, {
+        // La URL nunca sale de lo que manda el cliente: aqui viajan el client_id y el client_secret
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL_API}oauth2`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
