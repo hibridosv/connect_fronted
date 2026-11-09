@@ -18,6 +18,11 @@ const QUESTIONS: Question[] = [
   { key: 'business_info', label: 'Otros datos', max: 2000, rows: 2, example: 'Cualquier otra cosa que el bot deba saber del negocio.' },
 ];
 
+const TONES = [
+  { value: 1, label: 'Cercano', description: 'Tutea al cliente y usa algún emoji' },
+  { value: 2, label: 'Formal', description: 'Trata al cliente de usted, sin emojis' },
+];
+
 export interface ChatbotQuestionnaireI {
   questionnaire: Record<string, string | null>;
   tone: number;
@@ -36,25 +41,36 @@ export function ChatbotQuestionnaire({ questionnaire, tone, isRestaurant, saving
   }, [questionnaire, tone]);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4 animate-fade-in">
       <div>
         <label className="input-label">Tono de las respuestas</label>
-        <select className="input-select w-full" value={selectedTone} onChange={(e) => setSelectedTone(Number(e.target.value))}>
-          <option value={1}>Cercano: tutea al cliente y usa algún emoji</option>
-          <option value={2}>Formal: trata al cliente de usted, sin emojis</option>
-        </select>
-      </div>
-      {QUESTIONS.map((question) => (
-        <div key={question.key}>
-          <label className="input-label">{question.label}</label>
-          <textarea className="input w-full" rows={question.rows} maxLength={question.max}
-            placeholder={`Ej.: ${isRestaurant && question.restaurantExample ? question.restaurantExample : question.example}`}
-            value={answers[question.key] ?? ''} onChange={(e) => setAnswers({ ...answers, [question.key]: e.target.value })} />
-          <div className="text-xs text-text-muted text-right">{(answers[question.key] ?? '').length}/{question.max}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {TONES.map((option) => {
+            const active = selectedTone === option.value;
+            return (
+              <button key={option.value} type="button" onClick={() => setSelectedTone(option.value)}
+                className={`text-left rounded-lg border p-3 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${active ? 'border-primary bg-primary/10 shadow-sm' : 'border-bg-subtle bg-bg-content hover:border-primary/40'}`}>
+                <div className={`text-sm font-semibold ${active ? 'text-primary' : 'text-text-base'}`}>{option.label}</div>
+                <div className="text-xs text-text-muted mt-0.5">{option.description}</div>
+              </button>
+            );
+          })}
         </div>
-      ))}
-      <div className="flex justify-end">
-        <Button preset={saving ? Preset.saving : Preset.save} text="Guardar respuestas" disabled={saving}
+      </div>
+      {QUESTIONS.map((question) => {
+        const length = (answers[question.key] ?? '').length;
+        return (
+          <div key={question.key}>
+            <label className="input-label">{question.label}</label>
+            <textarea className="input w-full" rows={question.rows} maxLength={question.max}
+              placeholder={`Ej.: ${isRestaurant && question.restaurantExample ? question.restaurantExample : question.example}`}
+              value={answers[question.key] ?? ''} onChange={(e) => setAnswers({ ...answers, [question.key]: e.target.value })} />
+            <div className={`text-xs text-right ${length >= question.max ? 'text-danger' : 'text-text-muted'}`}>{length}/{question.max}</div>
+          </div>
+        );
+      })}
+      <div className="flex justify-end pt-2 border-t border-bg-subtle">
+        <Button preset={saving ? Preset.saving : Preset.save} text={saving ? undefined : 'Guardar respuestas'} disabled={saving}
           onClick={() => onSave({ ...answers, tone: selectedTone })} />
       </div>
     </div>
