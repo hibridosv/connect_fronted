@@ -6,7 +6,7 @@ export interface PublicVariant { id: string; name: string; price: number; image_
 export interface PublicOptionGroup { assigment_id: string; option_id: string; name: string; variants: PublicVariant[] }
 export interface PublicDish { id: string; name: string; description: string | null; category: string; price: number; image_url: string | null; options: PublicOptionGroup[] }
 export interface ChosenOption { assigment_id: string; variant_id: string; option: string; name: string; price: number }
-export interface CartItem { key: string; product_id: string; name: string; price: number; quantity: number; options: ChosenOption[] }
+export interface CartItem { key: string; product_id: string; name: string; price: number; quantity: number; options: ChosenOption[]; image_url?: string | null }
 export interface PublicOrderData {
   business: { name: string | null; logo_url: string | null; country: string | null; whatsapp_phone: string | null };
   accepting_orders: boolean;
@@ -16,6 +16,7 @@ export interface PublicOrderData {
   customer_reference: string | null;
   seconds_left: number;
   menu: PublicDish[];
+  main_category: string | null; // categoria principal del restaurante: la que abre la pantalla
 }
 export interface CheckoutData {
   customer_name: string;
@@ -108,7 +109,7 @@ export function usePublicOrderLogic(token: string) {
     const existing = cart.find((item) => item.key === key);
     saveCart(existing
       ? cart.map((item) => item.key === key ? { ...item, quantity: item.quantity + quantity } : item)
-      : [...cart, { key, product_id: dish.id, name: dish.name, price: dish.price, quantity, options }]);
+      : [...cart, { key, product_id: dish.id, name: dish.name, price: dish.price, quantity, options, image_url: dish.image_url }]);
   };
 
   const changeQuantity = (key: string, delta: number) => {

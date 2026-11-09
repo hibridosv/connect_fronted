@@ -31,8 +31,12 @@ export default function Page({ params }: { params: { token: string } }) {
 
   const money = data?.business?.country ? { country: data.business.country } : null;
   const categories = useMemo(() => Array.from(new Set((data?.menu ?? []).map((dish) => dish.category))), [data]);
-  const activeCategory = category ?? categories[0] ?? null;
+  // abre en la categoria principal del restaurante; si no tiene platillos en WhatsApp, en la primera
+  const mainCategory = data?.main_category && categories.includes(data.main_category) ? data.main_category : categories[0] ?? null;
+  const activeCategory = category ?? mainCategory;
+  const dishes = (data?.menu ?? []).filter((dish) => dish.category === activeCategory);
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const inCart = (id: string) => cart.filter((item) => item.product_id === id).reduce((sum, item) => sum + item.quantity, 0);
 
   const add = (dish: PublicDish, options: ChosenOption[], quantity = 1) => {
     addToCart(dish, options, quantity);
@@ -111,10 +115,10 @@ export default function Page({ params }: { params: { token: string } }) {
             <div className="text-xs text-text-muted">Tu enlace vence en <Countdown expiresAt={expiresAt} /> sin actividad</div>
           </div>
         </div>
-        <div className="flex gap-2 overflow-x-auto px-4 pb-2 custom-scrollbar">
+        <div className="flex gap-2 overflow-x-auto px-4 pb-3 custom-scrollbar snap-x">
           {categories.map((name) => (
             <button key={name} onClick={() => setCategory(name)}
-              className={`px-3 py-1 rounded-full text-sm whitespace-nowrap border ${activeCategory === name ? 'bg-primary text-text-inverted border-primary' : 'bg-bg-content border-bg-subtle'}`}>
+              className={`snap-start px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap border transition-all duration-200 ${activeCategory === name ? 'bg-primary text-text-inverted border-primary shadow-md' : 'bg-bg-content border-bg-subtle text-text-muted hover:border-primary/40'}`}>
               {name}
             </button>
           ))}
@@ -125,25 +129,51 @@ export default function Page({ params }: { params: { token: string } }) {
         <div className="mx-4 mt-3 p-3 rounded-lg bg-warning/10 text-warning text-sm">El negocio no está recibiendo pedidos en este momento. Puedes ver el menú.</div>
       )}
 
-      <div className="p-4 grid grid-cols-1 gap-3">
-        {(data?.menu ?? []).filter((dish) => dish.category === activeCategory).map((dish) => (
-          <button key={dish.id} onClick={() => choose(dish)}
-            className={`flex gap-3 text-left rounded-xl border p-3 shadow-sm transition-all duration-300 active:scale-[0.98] ${added?.id === dish.id ? 'border-primary bg-primary/10 ring-2 ring-primary/40' : 'bg-bg-content border-bg-subtle'}`}>
-            {dish.image_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={dish.image_url} alt={dish.name} className="h-20 w-20 rounded-lg object-cover shrink-0" />
-            )}
-            <div className="flex-1 min-w-0">
-              <div className="font-semibold">{dish.name}</div>
-              {dish.description && <div className="text-sm text-text-muted line-clamp-2">{dish.description}</div>}
-              <div className="mt-1 font-medium">{numberToMoney(dish.price, money)}</div>
-            </div>
-            <span className={`self-center flex items-center justify-center h-9 w-9 rounded-full text-xl shrink-0 transition-all duration-300 ${added?.id === dish.id ? 'bg-primary text-text-inverted scale-110' : 'text-primary'}`}>
-              {added?.id === dish.id ? '✓' : '+'}
-            </span>
-          </button>
-        ))}
-        {data?.menu.length === 0 && <div className="text-center text-text-muted">El menú no tiene platillos disponibles por ahora.</div>}
+      <div key={activeCategory ?? ''} className="p-4">
+        {activeCategory && (
+          <div className="flex items-baseline justify-between mb-3 animate-fade-in">
+            <h2 className="text-lg font-bold text-text-base">{activeCategory}</h2>
+            <span className="text-xs text-text-muted">{dishes.length} {dishes.length === 1 ? 'platillo' : 'platillos'}</span>
+          </div>
+        )}
+        <div className="grid grid-cols-1 gap-3">
+          {dishes.map((dish, index) => {
+            const quantity = inCart(dish.id);
+            const justAdded = added?.id === dish.id;
+            return (
+              <button key={dish.id} onClick={() => choose(dish)} style={{ animationDelay: `${Math.min(index, 10) * 40}ms` }}
+                className={`group relative flex gap-3 text-left rounded-2xl border p-2.5 shadow-sm transition-all duration-300 hover:shadow-md active:scale-[0.98] animate-slide-up ${justAdded ? 'border-primary bg-primary/10 ring-2 ring-primary/40' : 'bg-bg-content border-bg-subtle'}`}>
+                <div className="relative shrink-0">
+                  {dish.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={dish.image_url} alt={dish.name} className="h-24 w-24 rounded-xl object-cover bg-bg-subtle" />
+                  ) : (
+                    <div className="h-24 w-24 rounded-xl bg-bg-subtle flex items-center justify-center text-3xl">🍽️</div>
+                  )}
+                  {quantity > 0 && (
+                    <span className="absolute -top-1.5 -left-1.5 min-w-[1.5rem] h-6 px-1.5 rounded-full bg-primary text-text-inverted text-xs font-bold flex items-center justify-center shadow-md">
+                      {quantity}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0 flex flex-col py-0.5">
+                  <div className="font-semibold text-text-base leading-tight">{dish.name}</div>
+                  {dish.description && <div className="text-xs text-text-muted mt-1 line-clamp-2 leading-snug">{dish.description}</div>}
+                  <div className="mt-auto pt-2 flex items-center gap-2">
+                    <span className="font-bold text-primary">{numberToMoney(dish.price, money)}</span>
+                    {dish.options.length > 0 && (
+                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-bg-subtle text-text-muted">Personalizable</span>
+                    )}
+                  </div>
+                </div>
+                <span className={`self-end flex items-center justify-center h-9 w-9 rounded-full text-xl font-semibold shrink-0 shadow-sm transition-all duration-300 ${justAdded ? 'bg-success text-text-inverted scale-110' : 'bg-primary text-text-inverted group-hover:scale-105'}`}>
+                  {justAdded ? '✓' : '+'}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        {data?.menu.length === 0 && <div className="text-center text-text-muted py-10">El menú no tiene platillos disponibles por ahora.</div>}
       </div>
 
       {count > 0 && (
