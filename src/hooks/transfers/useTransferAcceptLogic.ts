@@ -1,10 +1,5 @@
-import transferAcceptStore from '@/stores/transfers/transferAcceptStore';
+import transferAcceptStore, { hasUnregistered } from '@/stores/transfers/transferAcceptStore';
 import { useEffect } from 'react';
-
-const checkCodReceive = (products: any[]) => {
-  if (!products) return false;
-  return products.some((p: any) => p.status === 1 && p.cod_receive === '');
-};
 
 export const useTransferAcceptLogic = () => {
   const {
@@ -14,7 +9,7 @@ export const useTransferAcceptLogic = () => {
     loadingDetail,
     sending,
     loadTransfers,
-    checkTransfer,
+    loadTransfer,
     rejectProduct,
     createProductRegister,
     acceptAll,
@@ -29,11 +24,9 @@ export const useTransferAcceptLogic = () => {
   }, []);
 
   const handleShowTransfer = (transfer: any) => {
+    // Se muestra el de la lista mientras llega el del servidor, que puede haber cambiado de estado
     setSelectedTransfer(transfer);
-    const needsCheck = checkCodReceive(transfer.products);
-    if (needsCheck) {
-      checkTransfer(transfer.id);
-    }
+    loadTransfer(transfer.id);
   };
 
   const handleBack = () => {
@@ -42,7 +35,7 @@ export const useTransferAcceptLogic = () => {
   };
 
   const hasUnregisteredProducts = selectedTransfer?.products
-    ? checkCodReceive(selectedTransfer.products)
+    ? hasUnregistered(selectedTransfer.products)
     : false;
 
   return {
