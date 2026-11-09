@@ -97,6 +97,7 @@ export default function Page({ params }: { params: { token: string } }) {
     return (
       <PublicCheckout cart={cart} itemsTotal={itemsTotal} shippingAmount={data!.shipping_amount} customerName={data!.customer_name}
         customerAddress={data!.customer_address} customerReference={data!.customer_reference}
+        images={Object.fromEntries((data?.menu ?? []).map((dish) => [dish.id, dish.image_url]))}
         money={money} sending={sending} error={error} acceptingOrders={data!.accepting_orders}
         onBack={() => setCheckout(false)} onChangeQuantity={changeQuantity} onConfirm={confirm} />
     );

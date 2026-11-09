@@ -11,6 +11,7 @@ export interface PublicCheckoutI {
   customerName: string | null;
   customerAddress: string | null;
   customerReference: string | null;
+  images: Record<string, string | null>; // foto de cada platillo del menu, por id (el carrito guardado puede no traerla)
   money: any;
   sending: boolean;
   error: string;
@@ -21,7 +22,7 @@ export interface PublicCheckoutI {
 }
 
 export function PublicCheckout(props: PublicCheckoutI) {
-  const { cart, itemsTotal, shippingAmount, customerName, customerAddress, customerReference, money, sending, error, acceptingOrders, onBack, onChangeQuantity, onConfirm } = props;
+  const { cart, itemsTotal, shippingAmount, customerName, customerAddress, customerReference, images, money, sending, error, acceptingOrders, onBack, onChangeQuantity, onConfirm } = props;
   // a domicilio por defecto, con la ultima direccion que dio el cliente
   const [form, setForm] = useState<CheckoutData>({
     customer_name: customerName ?? '', delivery_type: 2, address: customerAddress ?? '', reference: customerReference ?? '', latitude: null, longitude: null,
@@ -67,11 +68,12 @@ export function PublicCheckout(props: PublicCheckoutI) {
         <div className="divide-y divide-bg-subtle">
           {cart.map((item, index) => {
             const unit = item.price + item.options.reduce((sum, option) => sum + option.price, 0);
+            const image = images[item.product_id] ?? item.image_url;
             return (
               <div key={item.key} className="p-3 flex gap-3 animate-slide-up" style={{ animationDelay: `${Math.min(index, 10) * 40}ms` }}>
-                {item.image_url ? (
+                {image ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.image_url} alt={item.name} className="h-16 w-16 rounded-xl object-cover bg-bg-subtle shrink-0" />
+                  <img src={image} alt={item.name} className="h-16 w-16 rounded-xl object-cover bg-bg-subtle shrink-0" />
                 ) : (
                   <div className="h-16 w-16 rounded-xl bg-bg-subtle flex items-center justify-center text-2xl shrink-0">🍽️</div>
                 )}
