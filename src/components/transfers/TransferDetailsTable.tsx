@@ -146,7 +146,7 @@ export function TransferDetailsTable({
                 text="Aceptar todo"
                 onClick={() => onAcceptAll(transfer.id)}
                 preset={sending ? Preset.saving : Preset.save}
-                disabled={hasUnregisteredProducts}
+                disabled={hasUnregisteredProducts || sending}
               />
             </>
           ) : (

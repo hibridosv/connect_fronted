@@ -3,6 +3,12 @@ import { create } from 'zustand';
 import useConfigStore from '../configStore';
 import useToastMessageStore from '../toastMessageStore';
 
+// Productos activos sin registro en esta sucursal
+export const hasUnregistered = (products: any[]) => {
+  if (!products) return false;
+  return products.some((p: any) => p.status === 1 && !p.cod_receive);
+};
+
 interface TransferAcceptStoreI {
   transfers: any;
   selectedTransfer: any;
@@ -10,7 +16,9 @@ interface TransferAcceptStoreI {
   loadingDetail: boolean;
   sending: boolean;
   loadTransfers: () => Promise<void>;
+  loadTransfer: (id: string) => Promise<void>;
   checkTransfer: (id: string) => Promise<void>;
+  reloadSelected: () => Promise<void>;
   rejectProduct: (id: string) => Promise<void>;
   createProductRegister: (id: string) => Promise<void>;
   acceptAll: (id: string) => Promise<void>;
@@ -37,6 +45,24 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
       useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
+    }
+  },
+
+  // Trae la transferencia del servidor: los botones dependen de su estado real, no del de la lista
+  loadTransfer: async (id: string) => {
+    set({ loadingDetail: true });
+    try {
+      const response = await getServices(`transfers/${id}`);
+      const transfer = response.data.data;
+      set({ selectedTransfer: transfer });
+      // check solo responde con la transferencia enviada (2)
+      if (transfer?.status === 2 && hasUnregistered(transfer.products)) {
+        await get().checkTransfer(transfer.id);
+      }
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loadingDetail: false });
     }
   },
 
@@ -85,11 +111,11 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
     try {
       await updateService(`transfers/accept/${id}`, { is_online: 0, status: 4 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Transferencia aceptada' } });
-      const selected = get().selectedTransfer;
-      if (selected) await get().checkTransfer(selected.id);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
+      // Con show y no con check: ya no esta en 2 (check fallaba y dejaba el boton activo)
+      await get().reloadSelected();
       set({ sending: false });
     }
   },
@@ -99,12 +125,23 @@ const transferAcceptStore = create<TransferAcceptStoreI>((set, get) => ({
     try {
       await updateService(`transfers/cancel/${id}`, { status: 5 });
       useToastMessageStore.getState().setMessage({ data: { message: 'Transferencia rechazada' } });
-      const selected = get().selectedTransfer;
-      if (selected) await get().checkTransfer(selected.id);
     } catch (error) {
       useToastMessageStore.getState().setError(error);
     } finally {
+      await get().reloadSelected();
       set({ sending: false });
+    }
+  },
+
+  // Recarga el detalle sin mostrar errores: el toast ya dice si la accion se hizo o no
+  reloadSelected: async () => {
+    const selected = get().selectedTransfer;
+    if (!selected) return;
+    try {
+      const response = await getServices(`transfers/${selected.id}`);
+      set({ selectedTransfer: response.data.data });
+    } catch {
+      // se queda el detalle anterior
     }
   },
 
