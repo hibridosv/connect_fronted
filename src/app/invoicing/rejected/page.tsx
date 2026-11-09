@@ -3,7 +3,6 @@ import { DocumentErrorsModal } from "@/components/invoicing/DocumentErrorsModal"
 import { DocumentsElectronicTable } from "@/components/invoicing/DocumentsElectronicTable";
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoicingElectronicLogic } from "@/hooks/invoicing/useInvoicingElectronicLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -34,7 +33,6 @@ export default function Page() {
     </div> 
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.codigo_generacion} />
     <DocumentErrorsModal isShow={modals.documentErrors} onClose={() => closeModal('documentErrors')} document={documentSelected} />
-    <ToasterMessage />
 </div>
   );
 }

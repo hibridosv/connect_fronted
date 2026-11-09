@@ -8,7 +8,6 @@ import { EditUserModal } from '@/components/settings/EditUserModal';
 import { EditUserPasswordModal } from '@/components/settings/EditUserPasswordModal';
 import { EditUserRoleModal } from '@/components/settings/EditUserRoleModal';
 import { DeleteModal } from '@/components/DeleteModal';
-import { ToasterMessage } from '@/components/toaster-message';
 import { useUsersLogic } from '@/hooks/settings/useUsersLogic';
 import { buildPhoneNumber, PHONE_COUNTRY_CODES } from '@/lib/phone';
 import useModalStore from '@/stores/modalStorage';
@@ -190,7 +189,6 @@ export default function Page() {
         onClose={() => closeModal('deleteUser')}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { LinksList } from "@/components/button/LinkList";
 import { HistoryByProductTable } from "@/components/history/HistoryByProductTable";
 import { ProductLotSearch } from "@/components/search/ProductLotSearch";
 import { ProductsSearch } from "@/components/search/ProductsSearch";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 import { isRestaurant } from "@/lib/utils";
@@ -72,7 +71,6 @@ export default function Page() {
           <LinksList links={links} text="DESCARGAS" />
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

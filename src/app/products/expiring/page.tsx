@@ -3,7 +3,6 @@
 import { ExpiredStatistics } from "@/components/products/expired/ExpiredStatistics";
 import { ShowProductsExpiredTable } from "@/components/products/expired/ShowProductsExpiredTable";
 import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductExpiresLogic } from "@/hooks/products/useProductsExpiresLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -29,7 +28,6 @@ export default function Page() {
         <ExpiredStatistics statics={expired} isLoading={isLoading} />
     </div> 
     <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement("productDetails")} /> 
-    <ToasterMessage />
 </div>
   );
 }

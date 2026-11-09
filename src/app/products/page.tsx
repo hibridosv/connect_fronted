@@ -6,7 +6,6 @@ import { ProductDetailsModal } from "@/components/products/ProductDetailsModal";
 import { ShowProductsStatistics } from "@/components/products/ShowProductsStatistics";
 import { ShowProductsTable } from "@/components/products/ShowProductsTable";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductLogic } from "@/hooks/products/useProductsLogic";
 import { useSetLinkLogic } from "@/hooks/products/useSetLinksLogic";
@@ -73,7 +72,6 @@ export default function Page() {
         </div>
     </div> 
     <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement('productDetails')} /> 
-    <ToasterMessage />
 </div>
   );
 }

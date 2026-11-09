@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import sessionStore from '@/stores/sessionStore';
 import { safeSignOut } from '@/lib/safeSignOut';
 import { clearTenantStorage, isSwitchingTenant } from '@/lib/clearTenantStorage';
+import { ToasterMessage } from '@/components/toaster-message';
 
 const SESSION_RETRY_ATTEMPTS = 2;
 const SESSION_RETRY_DELAY_MS = 1500;
@@ -85,6 +86,8 @@ export default function Providers({ children }: Props) {
   return (
     <SessionProvider>
       <SessionSyncer />
+      {/* Unico Toaster de la app: si una pagina monta otro, cada toast sale dos veces */}
+      <ToasterMessage />
       <ThemeManager>{children}</ThemeManager>
     </SessionProvider>
   );

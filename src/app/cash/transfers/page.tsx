@@ -2,7 +2,6 @@
 import { TransfersForm } from "@/components/cash/transfers/TransfersForm";
 import { TransfersTable } from "@/components/cash/transfers/TransfersTable";
 import { Pagination } from "@/components/Pagination";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useCashTransfersLogic } from "@/hooks/cash/useCashTransfersLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -31,7 +30,6 @@ export default function Page() {
         </div>
         <Pagination records={transfers} handlePageNumber={handlePageNumber } />
     </div> 
-    <ToasterMessage />
 </div>
   );
 }

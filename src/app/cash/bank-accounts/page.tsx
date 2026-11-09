@@ -3,7 +3,6 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { AccountForm } from "@/components/cash/accounts/AccountForm";
 import { AccountsTable } from "@/components/cash/accounts/AccountsTable";
 import { AccountsTransfersModal } from "@/components/cash/accounts/AccountsTransfersModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useCashAccountLogic } from "@/hooks/cash/useCashAccountLogic";
 import useModalStore from "@/stores/modalStorage";
 import { MdCurrencyExchange } from "react-icons/md";
@@ -33,7 +32,6 @@ export default function Page() {
         </div>
     </div> 
     <AccountsTransfersModal isShow={modals.AccountsTransfers} onClose={()=>{ closeModal("AccountsTransfers")}} />
-    <ToasterMessage />
 </div>
   );
 }

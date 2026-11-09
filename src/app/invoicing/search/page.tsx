@@ -4,7 +4,6 @@ import { InvoicingSearchTable } from "@/components/invoicing/InvoicingSearchTabl
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useSearchDocumentLogic } from "@/hooks/invoicing/useSearchDocumentLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -43,7 +42,6 @@ export default function Page() {
         </div>
     </div> 
         <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} onElectronic={true} />
-        <ToasterMessage />
 </div>
   );
 }

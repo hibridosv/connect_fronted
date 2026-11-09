@@ -12,7 +12,6 @@ import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import { SkeletonProductNewForm } from "@/components/skeleton/SkeletonProductNewForm";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
@@ -243,7 +242,6 @@ export default function Page() {
         <AddContactModal isShow={modals.contactAdd} onClose={()=>{closeModal('contactAdd'); clearElement('isFromProducts');}} />
         <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
         <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
-        <ToasterMessage />
     </div>
   );
 }

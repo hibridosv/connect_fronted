@@ -24,7 +24,6 @@ import { SplitClient } from "@/components/orders/restaurant/split/SplitClient";
 import { SplitProductsAdded } from "@/components/orders/restaurant/split/SplitProductsAdded";
 import { SplitSelectProduct } from "@/components/orders/restaurant/split/SplitSelectProduct";
 import { filterInvoiceProductsByClientNumber } from "@/components/orders/utils";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -97,7 +96,6 @@ export default function Page() {
           <DeliveryTypeModal isShow={modals.deliveryType} onClose={()=>{ closeModal('deliveryType')}} />
           <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
-          <ToasterMessage />
     </div>
   );
 }

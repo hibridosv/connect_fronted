@@ -53,6 +53,9 @@ const res = await fetch(`${baseUrl}oauth2`, { body: JSON.stringify({ client_id: 
 ### SEC2 · Alto · El cliente puede poner `tenantStatus: 'Active'` y saltarse la suspensión
 `src/app/api/auth/[...nextauth]/route.ts:81` · `src/middleware.ts` · `src/app/redirects/*`
 
+> **Estado (2026-11-09):** arreglo de pulse aplicado: el `update` solo cambia a `Active` desde `Info`, `Expiring` u
+> `Overdue` (`DISMISSIBLE_STATUSES`). **Pendiente [connect]:** responder 403 a un negocio suspendido.
+
 ```ts
 if (trigger === "update" && session?.tenantStatus !== undefined) {
   token.tenantStatus = session.tenantStatus;
@@ -61,20 +64,39 @@ if (trigger === "update" && session?.tenantStatus !== undefined) {
 - Las pantallas `overdue`, `expiring` e `info` llaman `update({ tenantStatus: 'Active' })` para ocultar el aviso, y el
   callback acepta cualquier valor. Un usuario de un negocio **suspendido** puede hacer lo mismo desde la consola
   (`useSession().update({ tenantStatus: 'Active' })`) y el middleware lo deja pasar.
-- En billing, `LoginChecker::getSystemStatus` devuelve `Suspended` para `status = 2` con `type` temporal, y connect
-  sigue atendiendo a los tenants con status 1 y 2, así que hoy la suspensión total solo la aplica pulse. **[connect]**
-- Además, `tenantStatus` solo se calcula al iniciar sesión: si suspenden al negocio con la sesión abierta, sigue
-  trabajando hasta que salga.
-- **Arreglo en pulse:** en el callback `jwt` ignorar el `update` cuando `token.tenantStatus === 'Suspended'` y aceptar
-  solo `'Active'` (nunca otro valor que mande el cliente). **Arreglo de fondo [connect/billing]:** que el backend
-  rechace las peticiones de un tenant suspendido, y que el refresh del token vuelva a traer el estado.
+- En billing, `LoginChecker::getSystemStatus` devuelve `Suspended` para `status = 2` con `type` temporal. connect no
+  filtra por estado (`DomainTenantFinder` no lo revisa y `SystemValidate` solo valida la licencia), así que hoy la
+  suspensión total solo la aplica pulse. **[connect]**
+- **Cómo se suspende (dicho por el usuario el 2026-11-09):** a los negocios suspendidos se les borran los access
+  tokens, lo que obliga a volver a iniciar sesión. Lo hace en connect el command `token:purge --2`
+  (`app/Console/Commands/PurgeAllTokens.php`, Kernel `dailyAt('01:00')`), que borra los tokens de todos los tenants
+  con `status = 2`. El login **debe seguir permitido** para un negocio suspendido, porque es como el usuario llega a la
+  pantalla de suspensión (es obligatoria). Por eso no hace falta recalcular el estado a media sesión: cada sesión de
+  un negocio suspendido nace con `Suspended`. Como mucho, una sesión abierta antes de la suspensión dura hasta la
+  01:00 siguiente.
+- El hueco que queda: con esa sesión nueva, el usuario cambia `tenantStatus` a `Active` desde el navegador y usa todo
+  el sistema con un token válido.
+- **Arreglo en pulse:** en el callback `jwt`, aceptar el `update` solo con el valor `'Active'` y solo si el estado
+  actual es `Info`, `Expiring` u `Overdue`. Con `Suspended` se ignora y el middleware sigue redirigiendo.
+- **Arreglo de fondo [connect]:** como el token del negocio suspendido es válido, también sirve para llamar la API
+  directo sin pasar por pulse. connect debería responder 403 a un negocio suspendido en todo salvo lo que usa la
+  pantalla de pago (`/payments`: facturas pendientes, la configuración que lea y el pago).
 
-### SEC3 · Medio · El `refreshToken` está disponible en el JavaScript del cliente
+### SEC3 · Bajo · El `refreshToken` está disponible en el JavaScript del cliente
 `src/app/api/auth/[...nextauth]/route.ts:105`
 
+> **Estado (2026-11-09):** aplicado: el callback `session` ya no copia `refreshToken` ni `expiresAt`, y se quitaron de
+> `interface Session` en `src/types/next-auth.d.ts` (siguen en `interface JWT`, del servidor).
+
 `session.refreshToken = token.refreshToken` lo expone en `/api/auth/session` y en `useSession()`. pulse no lo usa en el
-cliente (el refresco ocurre en el callback `jwt`, en el servidor). Con cualquier XSS se roba un token de larga duración.
-- **Arreglo:** no copiarlo a la sesión (ni `expiresAt` si no se usa). Quitarlo también de `src/types/next-auth.d.ts`.
+cliente (el refresco ocurre en el callback `jwt`, en el servidor). Con cualquier XSS se roba también el token para renovar.
+- **Por qué es Bajo:** el token lo emite connect y el access token dura 6 meses (`Passport::tokensExpireIn(now()->addMonths(6))`
+  en `connect/app/Providers/AuthServiceProvider.php`). Ese token tiene que estar en el navegador (`httpService` llama
+  directo a connect), así que robarlo ya da 6 meses de acceso. El `refreshToken` solo suma poder renovarlo, hasta que
+  `token:purge` lo borre.
+- **Propuesta [connect], por decidir:** bajar la duración del access token a horas o días (billing usa 12 h). pulse ya
+  renueva solo con el `refreshToken`, así que el usuario no tendría que volver a iniciar sesión. Antes hay que revisar
+  cómo renuevan connect-app, connect-app-kitchen y el facturador (que usa la cuenta Root).
 
 ### SEC4 · Medio · HTML de las notificaciones sin sanear
 `src/components/notifications/NotificationBell.tsx:133`
@@ -190,6 +212,12 @@ Hoy el flujo es: el store llama `useToastMessageStore.getState().setMessage(resp
 `useToastMessage()` (dentro de `<ToasterMessage />`) los muestra y limpia.
 
 ### T1 · Alto · 41 páginas no montan `<ToasterMessage />`: los avisos se pierden o salen en otra pantalla
+
+> **Estado (2026-11-09):** aplicado: un único `<ToasterMessage />` en `src/providers/providers.tsx` y se quitaron las 57
+> copias (y su import) de 55 páginas. En `main` eran 40 páginas sin Toaster. Ahora las páginas que callaban errores
+> los muestran (p. ej. `dashboardStore`, `productAddStore`): hacer T2 enseguida para que los 404 de listas vacías no
+> salgan en rojo. **Regla:** ninguna página ni componente debe montar otro `<ToasterMessage />` o `<Toaster>`, porque
+> cada toast saldría dos veces.
 `src/components/toaster-message.tsx` se monta página por página (60 páginas). Las que no lo tienen y sí hacen
 operaciones con toast:
 
@@ -204,6 +232,11 @@ operaciones con toast:
   `LAYOUT_CONSOLIDATION_PLAN.md`) y quitar las 60 copias. Con eso también se arreglan los toasts directos.
 
 ### T2 · Alto · Una lista vacía muestra un toast rojo y deja los datos anteriores
+
+> **Estado (2026-11-09):** en espera. El usuario quiere revisar connect antes (cómo responde las listas vacías) y decidir
+> si se arregla allá, en pulse o en los dos. Ojo: con T1 aplicado, la pantalla de cocina (`screenOrdersStore`) ya
+> muestra el toast "No se encuentran ordenes" al quedar sin órdenes. En esta rama hay 53 cargas que muestran el toast
+> y no vacían los datos: unas 45 listas, unas 8 de detalle, más `loadConfig` y `loadWidgets`.
 connect responde `errorJson('No se encontraron registros', [], 404)` cuando no hay resultados. Casi todos los
 `load*` hacen:
 

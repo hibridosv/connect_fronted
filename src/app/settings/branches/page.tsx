@@ -3,7 +3,6 @@
 import { ViewTitle } from '@/components/ViewTitle';
 import { ChangeTenantModal } from '@/components/settings/ChangeTenantModal';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
-import { ToasterMessage } from '@/components/toaster-message';
 import { useBranchesLogic } from '@/hooks/settings/useBranchesLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
@@ -100,7 +99,6 @@ export default function Page() {
 
       <ChangeTenantModal isShow={!!modals.changeTenant} onClose={() => closeModal('changeTenant')} tenantSelect={getElement('changeTenant')} />
 
-      <ToasterMessage />
     </div>
   );
 }

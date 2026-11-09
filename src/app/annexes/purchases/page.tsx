@@ -5,7 +5,6 @@ import { PurchasesDetailsModal } from "@/components/reports/PurchasesDetailsModa
 import { PurchasesDuplicateReviewModal } from "@/components/reports/PurchasesDuplicateReviewModal";
 import { PurchasesImportSection } from "@/components/reports/PurchasesImportSection";
 import { ReportPurchasesTable } from "@/components/reports/ReportPurchasesTable";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { usePurchasesLogic } from "@/hooks/reports/usePurchasesLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -128,7 +127,6 @@ export default function Page() {
 
       <PurchasesDetailsModal isShow={modals.purchasesDetailsModal} onClose={() => closeModal('purchasesDetailsModal')} />
       <PurchasesDuplicateReviewModal isShow={modals.purchasesDuplicateReviewModal} onClose={() => closeModal('purchasesDuplicateReviewModal')} />
-      <ToasterMessage />
     </div>
   );
 }

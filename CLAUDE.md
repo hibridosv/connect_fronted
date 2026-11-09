@@ -318,7 +318,7 @@ deleteDato(url)             // DELETE → toast éxito/error
 1. **Un store por dominio funcional** — Cada módulo (productos, contactos, caja, etc.) tiene su propio store.
 2. **Loading/error combinados** — Cada store maneja sus propios estados de carga y error.
 3. **Las acciones llaman servicios** — Las acciones del store invocan `getServices`, `createService`, etc. del servicio centralizado.
-4. **Toast en acciones** — Tras operaciones exitosas o fallidas, se muestra un toast vía `toastMessageStore`.
+4. **Toast en acciones** — Tras operaciones exitosas o fallidas, se muestra un toast vía `toastMessageStore`. El único `<ToasterMessage />` está en `src/providers/providers.tsx`: las páginas y componentes no montan otro (ni un `<Toaster>`), porque cada toast saldría dos veces.
 5. **Modales separados** — El estado de visibilidad de modales se gestiona en `modalStorage.ts`, no en los stores de dominio.
 6. **Selecciones temporales** — Para pasar datos a modales de detalle se usa `tempSelectedElementStore`.
 

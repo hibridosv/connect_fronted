@@ -3,7 +3,6 @@ import { Button, Preset } from "@/components/button/button";
 import { RestaurantCategoryAddModal } from "@/components/restaurant/RestaurantCategoryAddModal";
 import { RestaurantOptionsAddModal } from "@/components/restaurant/RestaurantOptionsAddModal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { URL } from '@/constants';
 import { useRestaurantAddProductLogic } from "@/hooks/restaurant/useRestaurantAddProductLogic";
@@ -133,7 +132,6 @@ export default function Page() {
         <RestaurantCategoryAddModal isShow={modals.restaurantCategory} onClose={() => closeModal("restaurantCategory")} />
         <ShowImagesModal isShow={modals.showImagesCategoryModal} onClose={() => closeModal("showImagesCategoryModal")} nameImage="productImageCategory" />
         <ShowImagesModal isShow={modals.showImagesModal} onClose={() => closeModal("showImagesModal")} />
-        <ToasterMessage />
     </div>
   );
 }

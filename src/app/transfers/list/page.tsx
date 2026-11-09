@@ -2,7 +2,6 @@
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
 import { HistoryTransfersTable } from "@/components/history/HistoryTransfersTable";
-import { ToasterMessage } from "@/components/toaster-message";
 import { TransferDetailsModal } from "@/components/transfers/TransferDetailsModal";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
@@ -108,7 +107,6 @@ const filteredTransfers = (history ?? []).filter((transfer: any) => {
       transfer={getElement('historySelectedTransfer')}
       onClose={() => closeModal('historyTransferDetails')}
     />
-    <ToasterMessage />
 </div>
   );
 }

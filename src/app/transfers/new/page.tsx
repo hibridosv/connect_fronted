@@ -4,7 +4,6 @@ import { ButtonDownloadGet } from '@/components/button/button-download-get';
 import { Pagination } from '@/components/Pagination';
 import { ProductsSearch } from '@/components/search/ProductsSearch';
 import { ShowProductSearched } from '@/components/search/ShowProductSearched';
-import { ToasterMessage } from '@/components/toaster-message';
 import { SelectBranch } from '@/components/transfers/SelectBranch';
 import { TransferProductsTable } from '@/components/transfers/TransferProductsTable';
 import { TransfersHistoryTable } from '@/components/transfers/TransfersHistoryTable';
@@ -156,7 +155,6 @@ export default function Page() {
           </div>
         )}
       </div>
-      <ToasterMessage />
     </div>
   );
 }

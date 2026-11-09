@@ -1,7 +1,6 @@
 'use client';
 import { ChatbotCapabilitiesList } from '@/components/settings/ChatbotCapabilitiesList';
 import { ChatbotPhoneCard } from '@/components/settings/ChatbotPhoneCard';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useChatbotLogic } from '@/hooks/settings/useChatbotLogic';
 import { permissionExists } from '@/lib/utils';
@@ -35,7 +34,6 @@ export default function Page() {
         </div>
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }

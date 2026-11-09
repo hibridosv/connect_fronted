@@ -12,7 +12,6 @@ import { ContactSearch } from "@/components/search/ContactSearch";
 import SettingsAddBrandModal from "@/components/settings/SettingsAddBrandModal";
 import SettingsAddLocationModal from "@/components/settings/SettingsAddLocationModal";
 import { SkeletonProductEditForm } from "@/components/skeleton/SkeletonProductEditForm";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductEditLogic } from "@/hooks/products/useProductEditLogic";
 import { useProductNewLogic } from "@/hooks/products/useProductNewLogic";
@@ -229,7 +228,6 @@ export default function Page({ params }: { params: { id: string } }) {
         <SettingsAddBrandModal show={modals.brandAdd} onClose={() => closeModal('brandAdd')} />
         <SettingsAddLocationModal show={modals.locationAdd} onClose={() => closeModal('locationAdd')} />
         <ProductImageAddModal isShow={modals['productImageAdd'] ?? false} onClose={() => closeModal('productImageAdd')} productId={id} />
-        <ToasterMessage />
     </div>
   );
 }

@@ -13,7 +13,6 @@ import { ViewContactModal } from "@/components/contacs/ViewContactModal";
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useContactDetailsLogic } from "@/hooks/contacts/useContactDetailsLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
@@ -43,7 +42,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <NothingHere text="No se encontró el contacto" />
-        <ToasterMessage />
       </div>
     );
   }
@@ -52,7 +50,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <SkeletonTable rows={8} columns={4} />
-        <ToasterMessage />
       </div>
     );
   }
@@ -106,7 +103,6 @@ export default function Page() {
 
       <ViewContactModal isShow={!!modals.contactDetails} onClose={() => closeModal('contactDetails')} record={contact} />
       <InvoiceDetailsModal isShow={!!modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
-      <ToasterMessage />
     </div>
   );
 }
