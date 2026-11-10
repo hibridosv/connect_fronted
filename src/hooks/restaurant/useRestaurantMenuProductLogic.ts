@@ -1,10 +1,12 @@
 'use client'
 import useModalStore from '@/stores/modalStorage';
+import chatbotSettingsStore from '@/stores/chatbot/chatbotSettingsStore';
 import manageRestaurantStore from '@/stores/restaurant/manageRestaurantStore';
 import useTempStorage from '@/stores/useTempStorage';
 
 export function useRestaurantMenuProductLogic() {
-  const { updateProduct, updateProductStatus, sending } = manageRestaurantStore();
+  const { updateProduct, updateProductStatus, reloadProducts, sending } = manageRestaurantStore();
+  const { updateProductWhatsapp } = chatbotSettingsStore();
   const { openModal } = useModalStore();
   const { setElement } = useTempStorage();
 
@@ -49,6 +51,10 @@ export function useRestaurantMenuProductLogic() {
     await updateProductStatus(product.id, newStatus);
   };
 
+  const handleToggleWhatsapp = async (product: any) => {
+    if (await updateProductWhatsapp(product.id, product.restaurant?.whatsapp_enabled !== 1)) await reloadProducts();
+  };
+
   const handleToggleSpecial = async (product: any) => {
     const newSpecial = product.menu_order?.special === 0 ? 1 : 0;
     await updateProduct(product.id, { field: 'special', data: newSpecial });
@@ -64,6 +70,7 @@ export function useRestaurantMenuProductLogic() {
     handleOpenLinkedModal,
     handleOpenDeleteModal,
     handleToggleStatus,
+    handleToggleWhatsapp,
     handleToggleSpecial,
   };
 }

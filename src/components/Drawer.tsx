@@ -50,17 +50,22 @@ const DRAWER_KEYFRAMES = `
   }
 `;
 
+// la entrada sin feature siempre se muestra; con feature, solo si esa configuracion principal esta activa
+const featureEnabled = (activeConfig: string[] | null, feature?: string) =>
+  !feature || (Array.isArray(activeConfig) && activeConfig.includes(feature));
+
 const SubMenu: FC<{
   item: MenuItem;
   onClose: () => void;
   permissions: any;
+  activeConfig: string[] | null;
   index: number;
-}> = ({ item, onClose, permissions, index }) => {
+}> = ({ item, onClose, permissions, activeConfig, index }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const visibleChildren = item.children?.filter(
-    (child) => !child.permission || permissionExists(permissions, child.permission)
+    (child) => (!child.permission || permissionExists(permissions, child.permission)) && featureEnabled(activeConfig, child.feature)
   );
 
   if (!visibleChildren || visibleChildren.length === 0) return null;
@@ -135,7 +140,7 @@ interface DrawerProps {
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
   const { setTheme } = useThemeStore();
-  const { tenant, permission } = useConfigStore();
+  const { tenant, permission, activeConfig } = useConfigStore();
   const { resetInitialized } = useNotificationStore();
   const pathname = usePathname();
 
@@ -202,6 +207,8 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                 .map((item) => {
                   const currentIndex = itemIndex++;
 
+                  if (!featureEnabled(activeConfig, item.feature)) return null;
+
                   if (item.children) {
                     if (item.permissions && !hasAnyPermission(item.permissions)) return null;
                     return (
@@ -210,6 +217,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
                         item={item}
                         onClose={onClose}
                         permissions={permission}
+                        activeConfig={activeConfig}
                         index={currentIndex}
                       />
                     );

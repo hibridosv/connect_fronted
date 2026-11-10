@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { BiDownload, BiFingerprint, BiHelpCircle, BiHistory, BiMoney, BiMoneyWithdraw, BiUserPin } from "react-icons/bi";
-import { FaCashRegister, FaFileInvoice, FaTools, FaWrench } from "react-icons/fa";
+import { FaCashRegister, FaFileInvoice, FaTools, FaWhatsapp, FaWrench } from "react-icons/fa";
 import { GrConfigure } from "react-icons/gr";
 import { LuUtensilsCrossed } from "react-icons/lu";
 import { MdInventory, MdReport, MdTransferWithinAStation } from "react-icons/md";
@@ -12,6 +12,7 @@ export interface MenuItem {
   permission?: string;
   children?: MenuItem[];
   permissions?: string[];
+  feature?: string; // solo se muestra con esta configuracion principal activa (activeConfig)
 }
 
 export const menuItems: MenuItem[] = [
@@ -108,6 +109,15 @@ export const menuItems: MenuItem[] = [
     ],
   },
   {
+    label: "WhatsApp", icon: <FaWhatsapp size={15} />,
+    permissions: ["chatbot-conversations"],
+    feature: "chatbot-clients",
+    children: [
+      { label: "Conversaciones", href: "/chatbot/conversations", permission: "chatbot-conversations" },
+      { label: "Pedidos de WhatsApp", href: "/chatbot/orders", permission: "chatbot-conversations" },
+    ],
+  },
+  {
     label: "Mantenimientos", icon: <FaWrench size={15} />,
     permissions: ["maintenance", "maintenance-show", "maintenance-new", "maintenance-types"],
     children: [
@@ -161,7 +171,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Configuraciones", icon: <GrConfigure size={15} />,
-    permissions: ["config", "config-products", "config-user", "config-permissions", "config-transfers"],
+    permissions: ["config", "config-products", "config-user", "config-permissions", "config-transfers", "config-chatbot", "chatbot-settings"],
     children: [
       { label: "Principal", href: "/settings/general", permission: "config" },
       { label: "Productos", href: "/settings/products", permission: "config-products" },
@@ -170,6 +180,7 @@ export const menuItems: MenuItem[] = [
       { label: "Sucursales", href: "/settings/branches", permission: "config-transfers" },
       { label: "Pagos", href: "/settings/payments" },
       { label: "Chatbot", href: "/settings/chatbot", permission: "config-chatbot" },
+      { label: "Chatbot para clientes", href: "/settings/chatbot-clients", permission: "chatbot-settings", feature: "chatbot-clients" },
     ],
   },
   { label: "Ayuda", href: "/help", icon: <BiHelpCircle size={15} /> },

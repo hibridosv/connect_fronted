@@ -9,7 +9,7 @@ import useConfigStore from "@/stores/configStore";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
 import Image from "next/image";
 import { BiCategory, BiRename } from "react-icons/bi";
-import { FaCheckCircle, FaImages, FaSolarPanel, FaStar } from "react-icons/fa";
+import { FaCheckCircle, FaImages, FaSolarPanel, FaStar, FaWhatsapp } from "react-icons/fa";
 import { IoMdCloseCircleOutline, IoMdOptions } from "react-icons/io";
 import { MdAttachMoney, MdDelete, MdOutlinePriceCheck, MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { RiMenuSearchFill } from "react-icons/ri";
@@ -30,6 +30,7 @@ export function RestaurantMenuTable() {
     handleOpenLinkedModal,
     handleOpenDeleteModal,
     handleToggleStatus,
+    handleToggleWhatsapp,
   } = useRestaurantMenuProductLogic();
 
   const { system } = useConfigStore();
@@ -55,6 +56,7 @@ export function RestaurantMenuTable() {
         <div className="flex"> 
           <span>{ record?.description }</span> 
           <span className="mt-1 ml-2">{record.menu_order?.special === 1 && <FaStar size={8} color="#009eff" /> }</span>
+          { record.restaurant?.whatsapp_enabled === 1 && <span className="mt-0.5 ml-2 text-success" title="Disponible en WhatsApp"><FaWhatsapp size={14} /></span> }
         </div>
         { record.menu_order?.status === 0 && <div className="uppercase text-red-700">Inhabilitado</div> }
       </td>
@@ -121,6 +123,12 @@ export function RestaurantMenuTable() {
             <span className="flex justify-items-start">
               <span className="mt-1"><MdOutlineProductionQuantityLimits /></span>
               <span className="ml-2">Productos a descontar</span>
+            </span>
+          </DropdownItem>
+          <DropdownItem onClick={() => handleToggleWhatsapp(record)}>
+            <span className="flex justify-items-start">
+              <span className="mt-1"><FaWhatsapp /></span>
+              <span className="ml-2">{record.restaurant?.whatsapp_enabled === 1 ? 'Quitar de WhatsApp' : 'Ofrecer en WhatsApp'}</span>
             </span>
           </DropdownItem>
           <DropdownDivider />
