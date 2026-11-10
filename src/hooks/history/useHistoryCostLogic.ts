@@ -1,4 +1,6 @@
 import { getServices } from '@/services/services';
+import { notifyEmpty } from '@/lib/httpError';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import useStateStore from '@/stores/stateStorage';
 import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
@@ -15,9 +17,10 @@ export function useHistoryCostLogic(url: string, linkUrl: string, params: any | 
         try {
             const response = await getServices(url);
             setHistory(response.data.data);
-            addLink({}, linkUrl, params);
+            if (!notifyEmpty(response)) addLink({}, linkUrl, params);
         } catch (error) {
-            console.error(error);
+            setHistory(null);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

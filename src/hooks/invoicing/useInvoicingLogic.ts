@@ -1,6 +1,8 @@
 import { DateRangeValues } from '@/components/button/DateRange';
 import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices } from '@/services/services';
+import { notifyEmpty } from '@/lib/httpError';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
@@ -19,10 +21,10 @@ export function useInvoicingLogic(url: string, linkUrl: string, loadAtStart: boo
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
-            addLink(data, linkUrl, params);
+            if (!notifyEmpty(response)) addLink(data, linkUrl, params);
         } catch (error) {
-            console.error(error);
             setHistory(null);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

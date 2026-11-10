@@ -59,8 +59,15 @@ export function PurchasesImportSection({ bookName, bookId, onUploadingChange, ha
       } else {
         setError({ message: response?.message ?? 'Error al importar los archivos' });
       }
-    } catch (error) {
-      setError({ message: 'Error al importar los archivos' });
+    } catch (error: any) {
+      // "No se procesaron facturas" trae el resumen con el error de cada archivo
+      const summary = error?.response?.data?.data;
+      if (summary?.errors) {
+        setResult(summary);
+        setFiles([]);
+      } else {
+        setError(error);
+      }
     } finally {
       setIsUploading(false);
       onUploadingChange(false);

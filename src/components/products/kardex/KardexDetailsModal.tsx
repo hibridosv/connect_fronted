@@ -55,7 +55,7 @@ export function KardexDetailsModal(props: KardexDetailsModalProps) {
             <div className="h-4 bg-bg-subtle rounded w-4/6" />
             <div className="h-4 bg-bg-subtle rounded w-full" />
           </div>
-        ) : kardexDetails?.type === "error" ? (
+        ) : !kardexDetails ? (
           <NothingHere text="No se encuentran registros de esta transacción" />
         ) : (
           <div>

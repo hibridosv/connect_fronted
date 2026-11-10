@@ -59,8 +59,8 @@ const cashExpensesStore = create<cashExpensesStoreProps>((set, get) => ({
             const response = await getServices(url);
             set({ expensesCategories: response.data.data, error: false });
         } catch (error) {
-            console.error('Error fetching data:', error);
             set({ error: true });
+            useToastMessageStore.getState().setError(error);
         } finally {
             set({ loading: false });
         }

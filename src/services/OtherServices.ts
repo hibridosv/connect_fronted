@@ -18,7 +18,14 @@ export async function postFormData(endpoint: string, formData: FormData) {
     },
   });
 
-  return response.json();
+  const body = await response.json().catch(() => null);
+  // fetch no falla con 4xx/5xx: se lanza con la forma de axios para que el catch lea error.response.data.message
+  if (!response.ok) {
+    throw Object.assign(new Error(body?.message ?? `Error ${response.status}`), {
+      response: { status: response.status, data: body },
+    });
+  }
+  return body;
 }
 
 export async function postForPrint(url = '', method = 'POST', data = {}) {

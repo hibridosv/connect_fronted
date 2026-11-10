@@ -1,6 +1,7 @@
 import { AdditionalField } from '@/components/button/DateRange';
 import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useMemo, useState } from 'react'; // Import useMemo
 
 
@@ -15,7 +16,7 @@ export function useInvoiceTypesLogic(url: string) {
                 const response = await getServices(url);
                 setInvoiceTypes(response.data.data);
             } catch (error) {
-                console.error(error);
+                useToastMessageStore.getState().setError(error);
             } finally {
                 closeLoading("invoiceTypes");
             }

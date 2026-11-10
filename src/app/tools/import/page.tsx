@@ -6,6 +6,7 @@ import { Alert } from "@/components/Alert/Alert";
 import { FaSpinner } from "react-icons/fa";
 import { ViewTitle } from "@/components/ViewTitle"
 import { postFormData } from "@/services/OtherServices"
+import { getErrorMessage } from "@/lib/httpError"
 
 export default function Page() {
 
@@ -28,14 +29,14 @@ export default function Page() {
       const formData = new FormData()
       formData.append("file", file)
       const response = await postFormData(`imports/products`, formData);
-      if (response.type == "error") {
-        setMessage("Error al importar archivo")
+      if (!response || response.type == "error") {
+        setMessage(response?.message ?? "Error al importar archivo")
       } else {
         setUploads(response)
         setLoading(false)
       }
     } catch (error) {
-      setMessage("Error al importar archivo")
+      setMessage(getErrorMessage(error, "Error al importar archivo") ?? "Error al importar archivo")
     } finally {
       setLoading(false)
     }

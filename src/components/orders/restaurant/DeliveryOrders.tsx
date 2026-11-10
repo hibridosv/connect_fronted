@@ -15,7 +15,7 @@ export function DeliveryOrders() {
 
   if (serviceType != 3 || clientOrder) return <></>;
   if (loading) return <DeliveryOrdersSkeleton />;
-  if (!orders) return <NothingHere text="No hay pedidos pendientes"/>;
+  if (!orders || orders.length === 0) return <NothingHere text="No hay pedidos pendientes"/>;
 
   return (
     <div className="w-full px-3 py-2 animate-fade-in">

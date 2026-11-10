@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Product } from '@/interfaces/products';
 import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
+import useToastMessageStore from '@/stores/toastMessageStore';
 
 
 
@@ -16,7 +17,7 @@ export function useLotAssignLogic(product: Product, isShow: boolean) {
                 const response = await getServices(url);
                 setLots(response.data.data);
             } catch (error) {
-                console.error('Error fetching data');
+                useToastMessageStore.getState().setError(error);
             } finally {
                 closeLoading("lotAssign");
             }
