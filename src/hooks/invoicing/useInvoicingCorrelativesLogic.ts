@@ -1,6 +1,8 @@
 import { DateRangeValues } from '@/components/button/DateRange';
 import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices } from '@/services/services';
+import { notifyEmpty } from '@/lib/httpError';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
@@ -19,12 +21,13 @@ export function useInvoicingCorrelativesLogic(url: string, loadAtStart: boolean 
             let urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
-            if (response.status === 200) {
+            if (!notifyEmpty(response)) {
                 addLink(data, 'download.excel.invoices.correlatives', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar Excel");
                 addLink(data, 'download.pdf.invoices.correlatives', [{name: "invoiceId", value: data.invoiceId}, {name: "year", value: data.year}, {name: "month", value: data.month}], 2, "Descargar PDF");
             }
         } catch (error) {
-            console.error(error);
+            setHistory(null);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

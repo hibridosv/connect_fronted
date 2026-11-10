@@ -3,6 +3,7 @@ import { createService, getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
 import { useCallback, useEffect, useState } from 'react';
 import { useDownloadLink } from '../useDownloadLink';
+import useToastMessageStore from '@/stores/toastMessageStore';
 
 
 export function useDownloadsLogic(url: string) {
@@ -17,7 +18,7 @@ export function useDownloadsLogic(url: string) {
             const response = await getServices(url);
             setHistory(response.data.data);
         } catch (error) {
-            console.error(error);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("downloads");
         }
@@ -37,7 +38,7 @@ export function useDownloadsLogic(url: string) {
                 handleGet(url);
               }
             } catch (error) {
-              console.error(error);
+              useToastMessageStore.getState().setError(error);
             } finally {
               closeLoading("creating");
             }

@@ -15,7 +15,7 @@ export function useProductPricesEditLogic(ProductId?: string, isShow?: boolean, 
             const response = await getServices(url);
             setPrices(response.data.data);
         } catch (error) {
-                console.error('Error fetching data:', error);
+                useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("productPrices");
         }

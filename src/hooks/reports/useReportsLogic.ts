@@ -1,6 +1,8 @@
 import { DateRangeValues } from '@/components/button/DateRange';
 import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices } from '@/services/services';
+import { notifyEmpty } from '@/lib/httpError';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useState } from 'react';
@@ -22,10 +24,10 @@ export function useReportsLogic(url: string, linkUrl: string, loadAtStart: boole
             const response = await getServices(urlScoped);
             const responseData = response.data;
             setHistory(Array.isArray(responseData) ? responseData : (responseData?.data ?? []));
-            addLink(data, linkUrl, params);
+            if (!notifyEmpty(response)) addLink(data, linkUrl, params);
         } catch (error) {
             setHistory(null);
-            console.error(error);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

@@ -32,7 +32,7 @@ const chatbotConversationsStore = create<ChatbotConversationsStoreI>((set, get) 
       const response = await getServices(url);
       set({ conversations: response.data.data, disabled: false });
     } catch (error: any) {
-      // 404 = sin conversaciones; 403 = chatbot apagado o sin permiso
+      // 403 = chatbot apagado o sin permiso (sin conversaciones llega 200 con type empty)
       if (error?.response?.status === 403) set({ disabled: true });
       set({ conversations: null });
     } finally {

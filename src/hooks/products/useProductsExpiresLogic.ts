@@ -1,6 +1,7 @@
 'use client'
 import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
+import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useState } from 'react'
 
 interface ExpiredStats {
@@ -23,7 +24,7 @@ export function useProductExpiresLogic() {
                 const exp = await getServices(`expired`);
                 setExpired(exp.data.data);
             } catch (error) {
-                console.error('Error fetching products:', error);
+                useToastMessageStore.getState().setError(error);
             } finally {
                 closeLoading("Expirations");
             }

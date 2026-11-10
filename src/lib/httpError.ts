@@ -1,4 +1,19 @@
 import axios from 'axios';
+import useToastMessageStore from '@/stores/toastMessageStore';
+
+/** connect responde 200 con type 'empty' cuando una lista o reporte no tiene resultados */
+export const isEmptyResponse = (response: any): boolean => response?.data?.type === 'empty';
+
+/**
+ * Para los loaders que dispara el usuario (rango de fechas, filtros): con type 'empty' muestra el
+ * mensaje como aviso neutro y devuelve true, para que el hook no agregue enlaces de descarga.
+ * Las recargas automaticas no lo llaman.
+ */
+export function notifyEmpty(response: any): boolean {
+  if (!isEmptyResponse(response)) return false;
+  useToastMessageStore.getState().setInfo(response.data.message || 'No se encontraron registros');
+  return true;
+}
 
 /**
  * Mensaje para mostrar de un error de la API. Usa el message que manda connect; si no hay

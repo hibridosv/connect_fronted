@@ -25,7 +25,7 @@ export function useProductLinkedLogic(currentPage: any, searchTerm: string, sort
                 const response = await getServices(url);
                 setProducts(response.data.data);
             } catch (error) {
-                    console.error('Error fetching data:', error);
+                    useToastMessageStore.getState().setError(error);
             } finally {
                 closeLoading("productSearch");
             }
