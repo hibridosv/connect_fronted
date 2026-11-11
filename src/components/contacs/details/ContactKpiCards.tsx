@@ -9,6 +9,7 @@ import { FiCalendar, FiClock, FiDollarSign, FiPackage, FiRepeat, FiShoppingBag, 
 export interface ContactKpiCardsProps {
   summary: ContactSummary | null;
   loading: boolean;
+  compact?: boolean; // siempre 2 columnas, para una columna lateral (p. ej. contacts/[id]/edit)
 }
 
 const lastPurchaseText = (days: number | null) => {
@@ -18,12 +19,13 @@ const lastPurchaseText = (days: number | null) => {
   return `Hace ${days} días`;
 };
 
-export function ContactKpiCards({ summary, loading }: ContactKpiCardsProps) {
+export function ContactKpiCards({ summary, loading, compact = false }: ContactKpiCardsProps) {
   const { system } = useConfigStore();
+  const gridClass = compact ? 'grid grid-cols-2 gap-2.5' : 'grid grid-cols-2 lg:grid-cols-4 gap-2.5';
 
   if (loading && !summary) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+      <div className={gridClass}>
         {[...Array(8)].map((_, i) => (
           <div key={i} className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle px-3.5 py-3 flex items-center gap-3 animate-pulse">
             <div className="w-9 h-9 rounded-lg bg-bg-subtle shrink-0" />
@@ -75,7 +77,7 @@ export function ContactKpiCards({ summary, loading }: ContactKpiCardsProps) {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+    <div className={gridClass}>
       {cards.map((card, index) => (
         <div
           key={card.title}
