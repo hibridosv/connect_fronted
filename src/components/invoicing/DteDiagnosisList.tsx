@@ -32,24 +32,45 @@ function safeParse(value: string) {
   try { return JSON.parse(value); } catch { return null; }
 }
 
-// campos del formulario de contacto (ContactAddSV) que corresponden a cada diagnostico, con la indicacion que se
-// muestra debajo del campo marcado en contacts/[id]/edit?dte=
-const CONTACT_FIELDS: Record<string, { fields: string[]; hint: string }> = {
-  receptor_nit_formato: { fields: ['document'], hint: 'Debe tener 14 dígitos, o 9 si es un DUI homologado.' },
-  receptor_nit_no_existe: { fields: ['document'], hint: 'Hacienda no tiene registrado este NIT.' },
-  receptor_nrc_no_corresponde: { fields: ['register', 'document'], hint: 'El NRC no corresponde a este NIT.' },
-  receptor_documento: { fields: ['id_number', 'document'], hint: 'El documento no es válido o está vacío.' },
-  sujeto_excluido_documento: { fields: ['id_number', 'document'], hint: 'El DUI o NIT del sujeto excluido no es válido.' },
-  receptor_actividad: { fields: ['activity_code', 'roar'], hint: 'La actividad económica no es válida o está incompleta.' },
-  receptor_direccion: { fields: ['departament_doc', 'town_doc', 'address_doc'], hint: 'Revisa el departamento, el municipio y la dirección.' },
+// campos del formulario de contacto (ContactAddSV) que corresponden a cada diagnostico, cada uno con su propia
+// indicacion (se muestra debajo del campo marcado en contacts/[id]/edit?dte=)
+const CONTACT_FIELDS: Record<string, Record<string, string>> = {
+  receptor_nit_formato: {
+    document: 'Debe tener 14 dígitos, o 9 si es un DUI homologado.',
+  },
+  receptor_nit_no_existe: {
+    document: 'Hacienda no tiene registrado este NIT: revisa que esté bien escrito.',
+  },
+  receptor_nrc_no_corresponde: {
+    register: 'Este NRC no corresponde al NIT del cliente.',
+    document: 'Revisa que este NIT sea el del cliente: Hacienda no lo relaciona con el NRC.',
+  },
+  receptor_documento: {
+    id_number: 'El documento no es válido o está vacío.',
+    document: 'Revisa también el NIT o DUI del cliente.',
+  },
+  sujeto_excluido_documento: {
+    id_number: 'El DUI o NIT del sujeto excluido no es válido.',
+    document: 'Revisa también el NIT o DUI del sujeto excluido.',
+  },
+  receptor_actividad: {
+    activity_code: 'Elige la actividad económica del catálogo de Hacienda.',
+    roar: 'El giro debe corresponder a la actividad económica.',
+  },
+  receptor_direccion: {
+    departament_doc: 'Revisa el departamento.',
+    town_doc: 'Revisa el municipio.',
+    address_doc: 'Escribe la dirección completa.',
+  },
 };
 
-/** { campo: indicacion } de los campos del contacto que hay que corregir segun el diagnostico */
+/** { campo: indicacion } de los campos del contacto que hay que corregir; si dos diagnosticos marcan el mismo campo, se juntan */
 export function contactFieldHints(items: DteDiagnosisItem[]): Record<string, string> {
   const hints: Record<string, string> = {};
   items.forEach((item) => {
-    const entry = CONTACT_FIELDS[item.code];
-    entry?.fields.forEach((field) => { hints[field] ??= entry.hint; });
+    Object.entries(CONTACT_FIELDS[item.code] ?? {}).forEach(([field, hint]) => {
+      hints[field] = hints[field] ? `${hints[field]} ${hint}` : hint;
+    });
   });
   return hints;
 }
