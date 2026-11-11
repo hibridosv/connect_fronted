@@ -9,7 +9,7 @@ export interface DocumentErrorsModalProps {
   onClose: () => void;
   isShow: boolean;
   document: any | null;
-  onResend?: (codigoGeneracion: string) => void; // boton "Reenviar documento" del diagnostico
+  onResend?: (codigoGeneracion: string) => void; // boton "Reenviar" del pie
 }
 
 // Helper para decodificar caracteres unicode, ej: \u00f3 -> ó
@@ -67,7 +67,10 @@ export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
   const { onClose, isShow, document, onResend } = props;
   const errors = useDocumentErrors(document);
   // con un diagnostico conocido, el mensaje del MH queda plegado debajo de la causa y que hacer
-  const hasDiagnosis = knownDiagnosis(document?.diagnosis).length > 0;
+  const diagnosis = knownDiagnosis(document?.diagnosis);
+  const hasDiagnosis = diagnosis.length > 0;
+  // se reenvia si el diagnostico no dice que no se puede (resend 'no' lo resuelve soporte)
+  const canResend = !!onResend && hasDiagnosis && diagnosis.every((item) => item.resend !== 'no');
 
   return (
     <Modal show={isShow} onClose={onClose} size="lg" headerTitle="Errores del Documento">
@@ -77,7 +80,7 @@ export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
             <Alert text="No se encontraron errores para este documento." type="success" />
           ) : (
             <div className="space-y-3">
-              {hasDiagnosis && <DteDiagnosisList document={document} onResend={onResend} />}
+              {hasDiagnosis && <DteDiagnosisList document={document} />}
               <details open={!hasDiagnosis}>
                 <summary className="text-text-muted text-sm cursor-pointer">
                   {hasDiagnosis ? 'Ver mensaje de Hacienda' : 'Se encontraron los siguientes problemas que impidieron el procesamiento del documento:'}
@@ -93,7 +96,8 @@ export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end gap-2 w-full">
+          {canResend && <Button onClick={() => onResend?.(document?.codigo_generacion)} preset={Preset.primary} text="Reenviar" />}
           <Button onClick={onClose} preset={Preset.close} text="Cerrar" />
         </div>
       </Modal.Footer>

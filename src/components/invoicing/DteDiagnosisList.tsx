@@ -5,7 +5,6 @@ import useConfigStore from "@/stores/configStore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FiTool } from "react-icons/fi";
-import { Button, Preset } from "../button/button";
 
 /**
  * Diagnostico de un DTE rechazado (docs/pending/plan-diagnostico-dte.md de connect): causa, que hacer y un
@@ -43,10 +42,9 @@ const TARGETS: Record<string, { label: string; permission: string; href: (id?: s
 
 interface DteDiagnosisListProps {
   document: any;
-  onResend?: (codigoGeneracion: string) => void;
 }
 
-export function DteDiagnosisList({ document, onResend }: DteDiagnosisListProps) {
+export function DteDiagnosisList({ document }: DteDiagnosisListProps) {
   const { permission } = useConfigStore();
   const [detail, setDetail] = useState<any>(null);
 
@@ -60,7 +58,6 @@ export function DteDiagnosisList({ document, onResend }: DteDiagnosisListProps) 
 
   const items = knownDiagnosis(detail?.diagnosis ?? document?.diagnosis);
   if (items.length === 0) return null;
-  const canResend = !!onResend && items.every((item) => item.resend !== 'no');
 
   return (
     <div className="space-y-3">
@@ -80,11 +77,6 @@ export function DteDiagnosisList({ document, onResend }: DteDiagnosisListProps) 
           </div>
         );
       })}
-      {canResend && (
-        <div className="flex justify-end">
-          <Button preset={Preset.primary} text="Reenviar documento" onClick={() => onResend?.(document?.codigo_generacion)} />
-        </div>
-      )}
     </div>
   );
 }
