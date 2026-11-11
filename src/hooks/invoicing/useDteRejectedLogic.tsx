@@ -1,10 +1,12 @@
 'use client'
+import { isAutomatic, knownDiagnosis } from '@/components/invoicing/DteDiagnosisList'
 import useReverb from '@/hooks/useReverb'
 import { getServices } from '@/services/services'
 import useConfigStore from '@/stores/configStore'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { FiInfo } from 'react-icons/fi'
 
 /**
  * Aviso de DTE rechazado (docs/pending/plan-diagnostico-dte.md de connect, fase 2).
@@ -24,8 +26,19 @@ export function useDteRejectedLogic() {
       .then((response: any) => {
         const document = response?.data?.data
         if (!document || document.charged_by !== user.id) return
-        const cause = document.diagnosis?.find((item: any) => item.code !== 'unknown')?.cause
-          ?? 'Hacienda rechazó el documento.'
+        const known = knownDiagnosis(document.diagnosis)
+        // problema de Hacienda que el sistema reenvia solo: aviso informativo, el usuario no tiene que hacer nada
+        if (known.length > 0 && known.every(isAutomatic)) {
+          toast(
+            <div className="text-sm">
+              <p className="font-semibold">{known[0].cause}</p>
+              <p>{known[0].action}</p>
+            </div>,
+            { id: `dte-rejected-${documentId}`, duration: 10000, icon: <FiInfo className="text-info shrink-0" size={20} /> }
+          )
+          return
+        }
+        const cause = known[0]?.cause ?? 'Hacienda rechazó el documento.'
         toast.error(
           <div className="text-sm">
             <p className="font-semibold">Documento rechazado {document.numero_control ?? ''}</p>

@@ -4,7 +4,7 @@ import { getServices } from "@/services/services";
 import useConfigStore from "@/stores/configStore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FiTool } from "react-icons/fi";
+import { FiClock, FiTool } from "react-icons/fi";
 
 /**
  * Diagnostico de un DTE rechazado (docs/pending/plan-diagnostico-dte.md de connect): causa, que hacer y un
@@ -19,8 +19,11 @@ export interface DteDiagnosisItem {
   target?: 'contact' | 'product' | 'business' | 'none';
   target_id?: string | null;
   line?: number | null;
-  resend?: 'after_fix' | 'as_is' | 'no';
+  resend?: 'after_fix' | 'as_is' | 'no' | 'auto'; // auto: problema de Hacienda que el sistema reenvia solo
 }
+
+/** el sistema lo resuelve solo (problema de Hacienda): aviso informativo, sin Reenviar */
+export const isAutomatic = (item: DteDiagnosisItem) => item.resend === 'auto';
 
 /** diagnosticos con causa conocida (sin los "unknown") */
 export function knownDiagnosis(diagnosis: any): DteDiagnosisItem[] {
@@ -107,9 +110,10 @@ export function DteDiagnosisList({ document }: DteDiagnosisListProps) {
       {items.map((item) => {
         const target = item.target ? TARGETS[item.target] : undefined;
         const href = target && permissionExists(permission, target.permission) ? target.href(item.target_id, document?.id) : null;
+        const Icon = isAutomatic(item) ? FiClock : FiTool;
         return (
-          <div key={item.code} className="flex items-start gap-3 p-3 bg-warning/10 rounded-md">
-            <FiTool className="text-warning flex-shrink-0 mt-1" size={18} />
+          <div key={item.code} className={`flex items-start gap-3 p-3 rounded-md ${isAutomatic(item) ? 'bg-info/10' : 'bg-warning/10'}`}>
+            <Icon className={`${isAutomatic(item) ? 'text-info' : 'text-warning'} flex-shrink-0 mt-1`} size={18} />
             <div className="text-sm space-y-1">
               <p className="font-semibold text-text-base">{item.cause}</p>
               <p className="text-text-muted">{item.action}</p>
