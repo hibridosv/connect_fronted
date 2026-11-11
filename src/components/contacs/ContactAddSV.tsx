@@ -33,7 +33,7 @@ function FieldHint({ hint }: { hint?: string }) {
 
 // orden del formulario: se hace scroll al primero que este marcado
 const MARK_ORDER: [string, string][] = [
-  ['id_number', 'id_number'], ['document', 'document'], ['register', 'register'], ['activity_code', 'activity_code_search'],
+  ['id_number', 'id_number'], ['email', 'email'], ['document', 'document'], ['register', 'register'], ['activity_code', 'activity_code_search'],
   ['roar', 'roar'], ['address_doc', 'address_doc'], ['departament_doc', 'departament_doc'], ['town_doc', 'town_doc'],
 ];
 
@@ -141,7 +141,8 @@ export function ContactAddSV(props: ContactAddSVPropd) {
 
             <div className="w-full md:w-full px-3 mb-2">
                 <label htmlFor="email" className="input-label">Email</label>
-                <input type="email" id="email" {...register("email")} className="input" />
+                <input type="email" id="email" {...register("email")} className={`input${markClass(highlight?.email)}`} />
+                <FieldHint hint={highlight?.email} />
             </div>
 
                             

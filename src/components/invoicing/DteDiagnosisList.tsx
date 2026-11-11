@@ -60,6 +60,9 @@ const CONTACT_FIELDS: Record<string, Record<string, string>> = {
     activity_code: 'Elige la actividad económica del catálogo de Hacienda.',
     roar: 'El giro debe corresponder a la actividad económica.',
   },
+  receptor_correo: {
+    email: 'El correo no tiene un formato válido (ejemplo: nombre@dominio.com). Corrígelo o déjalo vacío.',
+  },
   receptor_direccion: {
     departament_doc: 'Revisa el departamento.',
     town_doc: 'Revisa el municipio.',
