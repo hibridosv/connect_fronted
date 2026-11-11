@@ -354,13 +354,7 @@ deleteDato(url)             // DELETE → toast éxito/error
 
 ### IDs de Modales en Uso
 
-```
-contactAdd, contactDetails, deleteContact,
-paymentPayableAdd, paymentReceivableAdd, creditNoteAdd,
-cashDrawerOpen, cashDrawerDetails,
-productDetails, productAdd,
-paymentSuccess
-```
+Hay más de 60 y cambian seguido: búscalos con `grep -rn "openModal('" src` en lugar de mantener una lista aquí.
 
 ### Mapa de Stores por Dominio
 
