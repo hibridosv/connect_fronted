@@ -99,7 +99,7 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
             <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Productos vinculados</span>
           </div>
           {productsLinked && productsLinked.length > 0 ? (
-            <div className="overflow-y-auto max-h-40 custom-scrollbar">
+            <div className="overflow-auto max-h-40 custom-scrollbar">
               <table className="w-full text-sm text-left">
                 <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b border-bg-subtle sticky top-0">
                   <tr>

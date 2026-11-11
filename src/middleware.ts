@@ -30,8 +30,6 @@ export async function middleware(req: NextRequest) {
     "/settings", 
     "/tools", 
     "/transfers", 
-    "/protected", 
-    "/protected-ssr",
     "/help",
   ];
 
@@ -103,8 +101,6 @@ export const config = {
     "/settings/:path*",
     "/tools/:path*",
     "/transfers/:path*",
-    "/protected/:path*",
-    "/protected-ssr/:path*",
     "/help/:path*",
   ],
 };

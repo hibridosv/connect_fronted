@@ -34,7 +34,7 @@ export function ShowOrders() {
 
     const showProducts = (products: any) =>{
     return (
-        <div className="w-8/10">
+        <div className="overflow-x-auto">
         <table className="w-full text-sm text-left">
             <thead className="text-xs text-text-base uppercase bg-bg-subtle/60">
             <tr>

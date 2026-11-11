@@ -35,7 +35,7 @@ Documento de referencia técnica, convenciones y patrones del proyecto.
 - **Callbacks**: `jwt` y `session` almacenan y exponen el `accessToken`, `refreshToken`, `expiresAt` y `url` obtenidos de Laravel.
 - **Extensión de sesión**: Definida en `src/types/next-auth.d.ts`.
 - **Página de login**: Configurada en la ruta raíz (`/`) vía la opción `pages: { signIn: '/' }`.
-- **Middleware**: `src/middleware.ts` protege rutas específicas (`/dashboard`, `/protected`, `/products`) redirigiendo usuarios no autenticados al login.
+- **Middleware**: `src/middleware.ts` protege rutas específicas (`/dashboard`, `/products`, `/settings`...) redirigiendo usuarios no autenticados al login.
 
 ---
 

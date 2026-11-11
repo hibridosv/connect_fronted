@@ -2,7 +2,7 @@
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
 Estado: en curso en `feature/mejoras-estilos`. Hecho: E1, E2, E3 (salvo los `.button-*` de color, ver E3), A2, C1, C2,
-C3 (sin L5) y C4.
+C3 (sin L5), C4, P1, P2, P4 y P6. P3 descartado.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
 `THEME_GUIDE.md`. El patrón: colores solo con tokens del tema (`bg-bg-content`, `text-text-base`, `text-primary`,
@@ -177,20 +177,36 @@ hover:text-blue-800` y un SVG pegado a mano. Es el único de la columna que no u
 → Meterlo en el `LinksList` con `LiComponent` (`onClick`) y un spinner, y pedir confirmación (es una sincronización
 que borra y recrea precios desde la casa matriz).
 
+**Hecho (2026-11-11):** `LinksList` acepta `children` (ítems extra al final de la lista; se muestra aunque no haya
+enlaces). "Actualizar precios" es un `LiComponent` dentro de "DESCARGAS", con `Spinner` mientras envía, y abre un
+`DeleteModal` de confirmación ("Sí, actualizar") antes de llamar `POST transactions/products/prices`.
+
 ### P2 · Detalle del corte (`src/components/cuts/CutDetailsModal.tsx`)
 La pantalla con más colores fijos (34). Tarjetas `bg-gray-50` que no son las tarjetas del patrón y pastillas a mano.
 → Tarjetas del patrón, `StatusBadge` y `text-danger`/`text-success` para la diferencia de efectivo. Lo mismo en
 `CashDrawerDetails.tsx`.
+
+**Hecho (2026-11-11):** los dos usan la tarjeta del patrón (`bg-bg-content rounded-lg shadow-sm border
+border-bg-subtle`) y tokens (`text-text-base`/`text-text-muted`, `text-danger`/`text-success` en salidas y entradas);
+las pastillas ya eran `Badge` (C1). La diferencia de efectivo conserva el criterio que tenía el corte: sobrante en
+`text-info`, faltante en `text-danger` y cero en `text-text-base`; `CashDrawerDetails` lo sigue ahora (antes era azul
+también en cero).
 
 ### P3 · Pantallas sin `ViewTitle`
 `dashboard`, `orders/products`, `orders/restaurant`, `orders/restaurant/split`, `restaurant/screen` y `help` no lo
 usan. En las de venta y pantalla de cocina tiene sentido (se aprovecha el alto), pero `dashboard` y `help` deberían
 tenerlo para ser iguales al resto. Las de `redirects/*`, login y `pedido/[token]` son pantallas aparte y están bien.
 
+**Descartado por el usuario (2026-11-11).**
+
 ### P4 · Tablas sin scroll horizontal en móvil
 `src/components/dashboard/widgets/WidgetList.tsx`, `orders/products/ShowOrders.tsx`,
 `products/new/ProductsLinkedModal.tsx` y `products/ProductAvailabilityModal.tsx` no tienen el contenedor
 `overflow-x-auto`: en celular se salen del ancho. Envolverlas como las otras 104 tablas.
+
+**Hecho (2026-11-11):** `WidgetList` y `ProductsLinkedModal` pasan de `overflow-y-auto` a `overflow-auto`,
+`ProductAvailabilityModal` de `overflow-hidden` a `overflow-x-auto` y `ShowOrders` cambia `w-8/10` (clase que no
+existe en Tailwind) por `overflow-x-auto`.
 
 ### P5 · Inputs y selects fuera del patrón
 16 `<input>` (sin contar checkbox, radio y file) y 9 de 66 `<select>` no usan `.input` / `.input-select`, y 21 archivos
@@ -201,6 +217,9 @@ con inputs no tienen `<label>` ni `.input-label`. Revisar con:
 `src/app/protected` y `src/app/protected-ssr` tienen textos en inglés ("Protected Page", "Loading...") y son las de
 ejemplo de NextAuth: borrarlas (también están en el `matcher` del middleware). En `PayModal.tsx:63` hay un label
 `sr-only` "Search" con `dark:text-white`: pasarlo a "Buscar" sin `dark:`.
+
+**Hecho (2026-11-11):** páginas borradas y quitadas de `protectedRoutes` y del `matcher` de `src/middleware.ts`; el
+label de `PayModal` es `sr-only` "Buscar".
 
 ### P7 · Selector de tema del Drawer
 `Drawer.tsx:266` muestra los cuatro temas, pero `useConfigLogic` vuelve a poner `navy` o `green` según el sistema cada

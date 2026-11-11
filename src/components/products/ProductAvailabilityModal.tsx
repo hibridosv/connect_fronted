@@ -53,7 +53,7 @@ export function ProductAvailabilityModal({ isShow, onClose, cod, description }: 
               <p className="text-sm">Sin información de disponibilidad.</p>
             </div>
           ) : (
-            <div className="relative overflow-hidden bg-bg-content rounded-lg border border-bg-subtle">
+            <div className="relative overflow-x-auto bg-bg-content rounded-lg border border-bg-subtle">
               <table className="w-full text-sm text-left">
                 <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
                   <tr>

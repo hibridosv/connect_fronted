@@ -60,7 +60,7 @@ export function PayModal(props: PayModalI) {
                 <form onSubmit={handleSubmit(pay)} className="w-full">
                 { (payMethod === 1 || payMethod === 7 ) ? (
                   <div>
-                      <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white" >Search</label>
+                      <label htmlFor="default-search" className="sr-only">Buscar</label>
                       <div className="relative">
                         <input
                           type={`${order?.invoice_assigned?.type == 8 ? "hidden" : "number"}`}
