@@ -290,7 +290,7 @@ Inputs: `.input` en formularios, `.input-select` en `<select>` (`.input` les qui
 
 Tamaños de letra menores que `text-xs` (12px): `text-xxs` (11px), `text-2xs` (10px) y `text-3xs` (9px), definidos en `tailwind.config.ts`. No uses `text-[Npx]`.
 
-`.clickeable` (encoge al 75 %) es para botones, íconos y tarjetas; filas de listas o buscadores y labels a lo ancho usan `.clickeable-table` (95 %).
+`.clickeable` (encoge al 75 %) es para botones pequeños, íconos y tarjetas; filas de listas o buscadores, labels a lo ancho y los botones de acción de la venta (Opciones, Guardar, Cobrar, Cancelar, Precuenta, los selectores de arriba, descuentos, propinas y los ítems de `.button-options-sales`) usan `.clickeable-table` (95 %), para que no se muevan tanto.
 
 ### 9. Sistema de Botones
 

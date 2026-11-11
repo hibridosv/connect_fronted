@@ -280,6 +280,12 @@ sucursales, conversaciones del chatbot, historial, roles, categorías, filas de 
 pedido público, `SelectBranch`, descargas) y los 10 labels "(Click para agregar)". Los ítems de `.button-options-sales`,
 el resumen de venta cobrada y el selector de imagen de restaurante/nuevo se quedan con `.clickeable`.
 
+**Ajuste (2026-11-11), pedido por el usuario:** los botones de acción de la venta también pasan a `.clickeable-table`
+porque se movían demasiado: `OrderButtons` (Opciones, Guardar, Cobrar, Cancelar), `PayButton`, `SaveButton`,
+`PrintOrderButton`, Opciones y el campo de efectivo con teclado de `RestaurantButtons`, los tres selectores de
+`OptionsSelect`, las opciones de `DiscountsModal` y `TipsModal`, y los ítems de `.button-options-sales`. Siguen con
+`.clickeable` los íconos, las tarjetas (mesas, delivery, clientes, imágenes) y el resumen de venta cobrada.
+
 ### A3 · Botones nativos con estilos sueltos
 156 `<button>` nativos en 91 archivos frente a 280 `<Button>`. Muchos son correctos (tabs, chips, ítems de menú), pero
 los de acción (guardar, cobrar, cancelar) deberían ir con `Button` + preset para tener el mismo tamaño, el estado

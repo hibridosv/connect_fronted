@@ -12,7 +12,7 @@ export function PrintOrderButton() {
   if (!order) return <></>
 
     return (
-        <div className={`button-lime relative ${isBlock ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`} title="Imprimir Precuenta" 
+        <div className={`button-lime relative ${isBlock ? 'opacity-50 cursor-not-allowed' : 'clickeable-table'}`} title="Imprimir Precuenta" 
         onClick={ isBlock ? ()=>{} : () => save(order.id, true)} >
           { saving ? <Spinner size={22} color="current" /> : <BsPrinterFill size={22} /> }
         </div>

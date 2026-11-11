@@ -80,9 +80,9 @@ export function DiscountsModal(props: DiscountsModalI) {
       <Modal.Body>
         <div className="p-4 space-y-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 divide-y divide-bg-subtle flex justify-between">
-              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 1 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable'}`} 
+              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 1 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable-table'}`} 
               onClick={()=> { setElement('typeOfDiscount', 1)}}>Cantidad</div>
-              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 2 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable'}`} 
+              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfDiscount == 2 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable-table'}`} 
               onClick={()=> { setElement('typeOfDiscount', 2)}}>Porcentaje</div>
           </div>
           <form className="w-full" onSubmit={handleSubmit(onSubmit)} >

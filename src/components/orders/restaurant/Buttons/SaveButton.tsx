@@ -14,7 +14,7 @@ export function SaveButton() {
   if (!order) return <></>
 
     return (
-        <div className={`button-lime relative ${isBlock ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`} title="Guardar" onClick={ isBlock ? ()=>{} : () => save(order.id, false)} >
+        <div className={`button-lime relative ${isBlock ? 'opacity-50 cursor-not-allowed' : 'clickeable-table'}`} title="Guardar" onClick={ isBlock ? ()=>{} : () => save(order.id, false)} >
           { saving ? <Spinner size={22} color="current" /> : <AiFillSave size={22} /> }
           { isPrintable &&
             <span className="absolute -top-0 -right-0 flex h-3 w-3">
