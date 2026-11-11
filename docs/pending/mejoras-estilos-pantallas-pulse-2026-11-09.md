@@ -1,7 +1,7 @@
 # Mejoras de estilos y pantallas en pulse
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
-Estado: en curso en `develop`. Hecho: E1, E2, E3 (salvo los `.button-*` de color, ver E3), A2, C1, C2,
+Estado: en curso en `develop`. Hecho: E1, E2, E3, A2, C1, C2,
 C3 (sin L5), C4, P1, P2, P4 y P6. P3 y P7 descartados.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
@@ -70,6 +70,12 @@ tokens; se borraron `.button-green-dark` y `.button-disabled` (sin uso). **Pendi
 siguen con colores fijos. Se usan en los botones de acción de venta (`OrderButtons`, `RestaurantButtons`, `PayButton`,
 `SaveButton`, `PrintOrderButton`), en `ChatbotThread` y en 4 páginas con `button-green`; pasarlos a `Button` con preset
 junto con A3, revisando cómo queda la pantalla de venta.
+
+**Hecho (2026-11-11), solo colores:** las cinco clases usan tokens, como eligió el usuario: `.button-grey` → `secondary`,
+`.button-cyan` → `info`, `.button-lime` y `.button-green` → `success`, `.button-red` → `danger` (`bg-x hover:bg-x/90
+focus:ring-x`). No se tocaron sus usos. Pasarlos a `Button` queda para A3, por módulo y junto con A1 (decisión del
+usuario): antes hay que ampliar `Button` con `icon`, un `size` `sm` y `disabled` como `<button disabled>` (hoy renderiza
+un `<div>`).
 
 ---
 

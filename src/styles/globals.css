@@ -177,19 +177,19 @@ body {
 /* Botones*/
 
 .button-grey {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-zinc-600 hover:bg-zinc-800 focus:ring-zinc-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-secondary hover:bg-secondary/90 focus:ring-secondary
 }
 .button-lime {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-lime-600 hover:bg-lime-700 focus:ring-lime-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-success hover:bg-success/90 focus:ring-success
 }
 .button-cyan {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-cyan-600 hover:bg-cyan-700 focus:ring-cyan-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-info hover:bg-info/90 focus:ring-info
 }
 .button-green {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-success hover:bg-success/90 focus:ring-success
 }
 .button-red {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-red-600 hover:bg-red-800 focus:ring-red-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-danger hover:bg-danger/90 focus:ring-danger
 }
 .button-options-sales {
   @apply w-full uppercase text-text-base py-2 px-4 hover:bg-bg-subtle clickeable text-xs font-medium
