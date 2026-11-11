@@ -39,13 +39,15 @@ export function useDteRejectedLogic() {
           return
         }
         const cause = known[0]?.cause ?? 'Hacienda rechazó el documento.'
+        const toastId = `dte-rejected-${documentId}`
         toast.error(
           <div className="text-sm">
             <p className="font-semibold">Documento rechazado {document.numero_control ?? ''}</p>
             <p>{cause}</p>
-            <Link href="/invoicing/rejected" className="underline text-primary">Ver qué hacer</Link>
+            {/* se cierra al navegar: el store de toasts es global y el Toaster de la otra pagina lo volvia a mostrar */}
+            <Link href="/invoicing/rejected" onClick={() => toast.dismiss(toastId)} className="underline text-primary">Ver qué hacer</Link>
           </div>,
-          { id: `dte-rejected-${documentId}`, duration: 15000 }
+          { id: toastId, duration: 15000 }
         )
       })
       .catch(() => {}) // es solo un aviso: si falla, el rechazo sigue en Documentos
