@@ -34,8 +34,9 @@ function safeParse(value: string) {
 }
 
 // pantalla para corregir cada tipo de registro y el permiso del menu que la abre
-const TARGETS: Record<string, { label: string; permission: string; href: (id?: string | null) => string | null }> = {
-  contact: { label: 'Editar contacto', permission: 'directory', href: (id) => id ? `/contacts/${id}` : '/contacts/search' },
+// el contacto se edita en contacts/[id]/edit, que con ?dte= muestra la causa y el boton para volver a reenviar
+const TARGETS: Record<string, { label: string; permission: string; href: (id?: string | null, documentId?: string) => string | null }> = {
+  contact: { label: 'Editar contacto', permission: 'directory', href: (id, documentId) => id ? `/contacts/${id}/edit${documentId ? `?dte=${documentId}` : ''}` : '/contacts/search' },
   product: { label: 'Editar producto', permission: 'inventory-edit', href: (id) => id ? `/products/${id}/edit` : null },
   business: { label: 'Datos del negocio', permission: 'config', href: () => '/settings/general' },
 };
@@ -65,7 +66,7 @@ export function DteDiagnosisList({ document, onResend }: DteDiagnosisListProps) 
     <div className="space-y-3">
       {items.map((item) => {
         const target = item.target ? TARGETS[item.target] : undefined;
-        const href = target && permissionExists(permission, target.permission) ? target.href(item.target_id) : null;
+        const href = target && permissionExists(permission, target.permission) ? target.href(item.target_id, document?.id) : null;
         return (
           <div key={item.code} className="flex items-start gap-3 p-3 bg-warning/10 rounded-md">
             <FiTool className="text-warning flex-shrink-0 mt-1" size={18} />
