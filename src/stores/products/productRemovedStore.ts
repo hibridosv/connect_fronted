@@ -45,9 +45,10 @@ const productRemovedStore = create<ProductRemovedStoreState>((set) => ({
         try {
             const response = await getServices(url);
             set({ product: response.data.data, error: false });
-        } catch (error) {
-            set({ error: true });
-            console.error('Error fetching data:', error);
+        } catch (error: any) {
+            // 404: no hay un registro de salida abierto; se limpia para no mostrar el anterior
+            set({ product: null, error: true });
+            if (error?.response?.status !== 404) useToastMessageStore.getState().setError(error);
         } finally {
             set({ loading: false });
         }

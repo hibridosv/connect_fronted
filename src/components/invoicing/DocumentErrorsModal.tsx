@@ -3,11 +3,13 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { Alert } from "../Alert/Alert";
 import { Button, Preset } from "../button/button";
 import Modal from "../modal/Modal";
+import { DteDiagnosisList, knownDiagnosis } from "./DteDiagnosisList";
 
 export interface DocumentErrorsModalProps {
   onClose: () => void;
   isShow: boolean;
   document: any | null;
+  onResend?: (codigoGeneracion: string) => void; // boton "Reenviar documento" del diagnostico
 }
 
 // Helper para decodificar caracteres unicode, ej: \u00f3 -> ó
@@ -62,8 +64,10 @@ const ErrorItem = ({ error }: { error: string }) => (
 );
 
 export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
-  const { onClose, isShow, document } = props;
+  const { onClose, isShow, document, onResend } = props;
   const errors = useDocumentErrors(document);
+  // con un diagnostico conocido, el mensaje del MH queda plegado debajo de la causa y que hacer
+  const hasDiagnosis = knownDiagnosis(document?.diagnosis).length > 0;
 
   return (
     <Modal show={isShow} onClose={onClose} size="lg" headerTitle="Errores del Documento">
@@ -73,14 +77,17 @@ export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
             <Alert text="No se encontraron errores para este documento." type="success" />
           ) : (
             <div className="space-y-3">
-              <p className="text-text-muted text-sm">
-                Se encontraron los siguientes problemas que impidieron el procesamiento del documento:
-              </p>
-              <div className="max-h-96 overflow-y-auto space-y-3 p-3 bg-bg-subtle rounded-lg">
-                {errors.map((error, idx) => (
-                  <ErrorItem key={idx} error={error} />
-                ))}
-              </div>
+              {hasDiagnosis && <DteDiagnosisList document={document} onResend={onResend} />}
+              <details open={!hasDiagnosis}>
+                <summary className="text-text-muted text-sm cursor-pointer">
+                  {hasDiagnosis ? 'Ver mensaje de Hacienda' : 'Se encontraron los siguientes problemas que impidieron el procesamiento del documento:'}
+                </summary>
+                <div className="max-h-96 overflow-y-auto space-y-3 p-3 mt-2 bg-bg-subtle rounded-lg">
+                  {errors.map((error, idx) => (
+                    <ErrorItem key={idx} error={error} />
+                  ))}
+                </div>
+              </details>
             </div>
           )}
         </div>

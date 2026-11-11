@@ -1,6 +1,7 @@
 import { DateRangeValues } from '@/components/button/DateRange';
 import { urlConstructor } from '@/lib/urlConstructor';
 import { getServices, updateService } from '@/services/services';
+import { notifyEmpty } from '@/lib/httpError';
 import useStateStore from '@/stores/stateStorage';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import useTempStorage from '@/stores/useTempStorage';
@@ -25,11 +26,11 @@ export function useInvoicingElectronicLogic(url: string, linkUrl: string, loadAt
             const urlScoped = urlConstructor(data, url);
             const response = await getServices(urlScoped);
             setHistory(response.data.data);
-            addLink(data, linkUrl, params, 1, "Descargar Documento Excel");
+            if (!notifyEmpty(response)) addLink(data, linkUrl, params, 1, "Descargar Documento Excel");
             setLastUrl(urlScoped);
         } catch (error) {
-            console.error(error);
             setHistory([]);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

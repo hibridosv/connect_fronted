@@ -5,6 +5,7 @@ import { getServices } from '@/services/services';
 import useStateStore from '@/stores/stateStorage';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import useToastMessageStore from '@/stores/toastMessageStore';
 
 // Historial de acciones: filtros (modulo, accion, usuario) en el DateRange y paginado
 export function useHistoryActivityLogic(currentPage: string) {
@@ -19,7 +20,7 @@ export function useHistoryActivityLogic(currentPage: string) {
                 const response = await getServices('histories/activity/filters');
                 setFilters(response.data.data);
             } catch (error) {
-                console.error(error);
+                useToastMessageStore.getState().setError(error);
             }
         })();
     }, []);
@@ -30,8 +31,8 @@ export function useHistoryActivityLogic(currentPage: string) {
             const response = await getServices(`${urlConstructor(data, 'histories/activity')}${page}`);
             setHistory(response.data.data);
         } catch (error) {
-            console.error(error);
             setHistory(null);
+            useToastMessageStore.getState().setError(error);
         } finally {
             closeLoading("history");
         }

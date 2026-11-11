@@ -112,9 +112,10 @@ const useProductStore = create<ProductStoreState>((set) => ({
     try {
       const response = await getServices(url);
       set({ kardexDetails: response.data.data, error: false });
-    } catch (error) {
-      set({ error: true });
-      useToastMessageStore.getState().setError(error);
+    } catch (error: any) {
+      // 404: el movimiento no tiene detalles; el modal lo muestra sin toast
+      set({ kardexDetails: null, error: true });
+      if (error?.response?.status !== 404) useToastMessageStore.getState().setError(error);
     } finally {
       set({ loading: false });
     }
