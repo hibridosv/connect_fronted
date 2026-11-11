@@ -33,7 +33,8 @@ export default function Page() {
         </div>
     </div> 
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.codigo_generacion} />
-    <DocumentErrorsModal isShow={modals.documentErrors} onClose={() => closeModal('documentErrors')} document={documentSelected} />
+    <DocumentErrorsModal isShow={modals.documentErrors} onClose={() => closeModal('documentErrors')} document={documentSelected}
+      onResend={(codigo) => { closeModal('documentErrors'); resendDocument(codigo); }} />
     <ToasterMessage />
 </div>
   );
