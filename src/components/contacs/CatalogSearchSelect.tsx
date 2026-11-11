@@ -55,7 +55,7 @@ export function CatalogSearchSelect(props: CatalogSearchSelectProps) {
       <input
         type="text"
         id={id}
-        className="input pr-10"
+        className="input !pr-10"
         autoComplete="off"
         placeholder={placeholder}
         value={isOpen ? search : selected ? `${selected.code} - ${selected.name}` : ""}

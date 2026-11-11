@@ -26,7 +26,7 @@ export function TransfersForm() {
 
               <div className="w-full md:w-full px-3 mb-2">
                     <label htmlFor="transaction_type" className="input-label"> Tipo de gasto *</label>
-                    <select defaultValue={0} id="transaction_type" {...register("transaction_type", { required: true })} className="input" >
+                    <select defaultValue={0} id="transaction_type" {...register("transaction_type", { required: true })} className="input-select" >
                         <option value="1">Ingreso de efectivo</option>
                         <option value="0">Salida de efectivo</option>
                     </select>

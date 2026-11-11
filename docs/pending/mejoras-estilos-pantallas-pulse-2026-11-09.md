@@ -1,8 +1,8 @@
 # Mejoras de estilos y pantallas en pulse
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
-Estado: en curso en `feature/mejoras-estilos`. Hecho: E1, E2, E3 (salvo los `.button-*` de color, ver E3), A2, C1, C2,
-C3 (sin L5), C4, P1, P2, P4 y P6. P3 descartado.
+Estado: en curso en `develop`. Hecho: E1, E2, E3 (salvo los `.button-*` de color, ver E3), A2, C1, C2,
+C3 (sin L5), C4, P1, P2, P4 y P6. P3 y P7 descartados.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
 `THEME_GUIDE.md`. El patrón: colores solo con tokens del tema (`bg-bg-content`, `text-text-base`, `text-primary`,
@@ -213,6 +213,20 @@ existe en Tailwind) por `overflow-x-auto`.
 con inputs no tienen `<label>` ni `.input-label`. Revisar con:
 `grep -rnE '<input[^>]*className="[^"]*"' src | grep -v 'input'`.
 
+**Corrección y hecho en parte (2026-11-11):** revisando las etiquetas completas (también las de varias líneas), eran 7
+inputs y 1 select. Decisiones del usuario:
+- `TransfersForm` ("Tipo de gasto") usaba `.input` en un select y no mostraba la flecha: pasa a `.input-select`.
+- `ContactSearch` copiaba `.input` a mano: pasa a `input !pl-10 !pr-8`.
+- Inputs de cantidad y precio en las tablas de `CreateCreditNoteModal` (2) y `CreateReturnModal` (1): clase nueva
+  `.input-sm` en `globals.css` (compacta, sin ancho ni padding); el borde rojo de la devolución usa `!border-danger`.
+- Se dejan como están: `OrderProductsSearchByCode` (colores de Flowbite, decisión del usuario), `SearchInput`
+  (`Search.tsx`, estilo propio de los buscadores) y el campo de `FieldOptionsTagsInput` (va dentro de la caja de
+  etiquetas).
+- **Ojo:** las clases de `globals.css` no están en `@layer`, así que se generan después de las utilidades y les ganan.
+  Para cambiar algo que define `.input` (padding, borde) hay que usar `!` (`!pl-10`). Por eso `CatalogSearchSelect` y
+  `EconomicActivitySelect` (`input pr-10`) no aplicaban su `pr-10`; se corrigieron con `!pr-10`.
+- Pendiente: los 21 archivos con inputs sin `<label>`.
+
 ### P6 · Páginas de ejemplo
 `src/app/protected` y `src/app/protected-ssr` tienen textos en inglés ("Protected Page", "Loading...") y son las de
 ejemplo de NextAuth: borrarlas (también están en el `matcher` del middleware). En `PayModal.tsx:63` hay un label
@@ -225,6 +239,10 @@ label de `PayModal` es `sr-only` "Buscar".
 `Drawer.tsx:266` muestra los cuatro temas, pero `useConfigLogic` vuelve a poner `navy` o `green` según el sistema cada
 vez que se recarga la configuración (R4 de la auditoría). Decidir si se quita el selector o se respeta la elección
 del usuario. El `CLAUDE.md` y `THEME_GUIDE.md` describen el selector como funcional.
+
+**Descartado por el usuario (2026-11-11): se deja sin cambios.** El selector está comentado a propósito en `Drawer.tsx`
+(no se ve), así que el tema lo define el sistema (1/2 → `navy`, resto → `green`) y no se pierde ninguna elección. No se
+tocan el bloque comentado, el `setTheme` sin uso del Drawer, el default `mdb` del store ni la documentación del tema.
 
 ---
 

@@ -284,6 +284,8 @@ Indicador de carga: siempre `<Spinner />` (`src/components/Spinner.tsx`, `LuLoad
 
 Pastillas de estado, etiquetas y contadores: siempre `<Badge>` (`src/components/Badge.tsx`), con `variant` (`primary` por defecto, `success`, `danger`, `warning`, `info`, `accent`, `muted`) y `size` (`md` = `text-xs`, por defecto; `sm` = 10px en mayúsculas para tarjetas densas). No armes pastillas con `rounded-full px-2 bg-x/10` a mano. `Indicator` (punto de color + texto, sin fondo) sigue siendo el de los estados en columnas de tablas.
 
+Inputs: `.input` en formularios, `.input-select` en `<select>` (`.input` les quita la flecha) e `.input-sm` para inputs compactos dentro de celdas de tablas (el ancho y la alineación van en cada uso). Las clases de `globals.css` no están en `@layer` y les ganan a las utilidades: para cambiar algo que ya definen (padding, borde) usa `!` (`input !pl-10`, `input-sm !border-danger`).
+
 Tamaños de letra menores que `text-xs` (12px): `text-xxs` (11px), `text-2xs` (10px) y `text-3xs` (9px), definidos en `tailwind.config.ts`. No uses `text-[Npx]`.
 
 `.clickeable` (encoge al 75 %) es para botones, íconos y tarjetas; filas de listas o buscadores y labels a lo ancho usan `.clickeable-table` (95 %).

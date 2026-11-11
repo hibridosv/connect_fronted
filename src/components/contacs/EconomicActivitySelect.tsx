@@ -53,7 +53,7 @@ export function EconomicActivitySelect(props: EconomicActivitySelectProps) {
       <input
         type="text"
         id="activity_code_search"
-        className="input pr-10"
+        className="input !pr-10"
         autoComplete="off"
         placeholder="Buscar por código o actividad"
         value={isOpen ? search : selected ? `${selected.code} - ${selected.activity}` : ""}

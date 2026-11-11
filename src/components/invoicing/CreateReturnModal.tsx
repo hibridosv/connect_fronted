@@ -126,7 +126,7 @@ export function CreateReturnModal(props: CreateReturnModalI) {
                           placeholder="0"
                           disabled={product.available <= 0}
                           onChange={(e) => setQuantities({ ...quantities, [product.id]: e.target.value })}
-                          className={`w-20 bg-bg-content border rounded-md shadow-sm text-center focus:ring-primary focus:border-primary sm:text-sm disabled:opacity-50 ${excede ? "border-danger" : "border-bg-subtle"}`}
+                          className={`input-sm w-20 text-center disabled:opacity-50 ${excede ? "!border-danger" : ""}`}
                         />
                       </td>
                       <td className="px-4 py-2 text-center">{product.available}</td>

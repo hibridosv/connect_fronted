@@ -144,6 +144,10 @@ body {
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
 }
+/* Input compacto para celdas de tablas (cantidad, precio); el ancho y la alineación van en cada uso */
+.input-sm {
+  @apply bg-bg-content border border-bg-subtle rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm
+}
 .input-label {
   @apply truncate block text-text-base text-sm font-bold
 }
