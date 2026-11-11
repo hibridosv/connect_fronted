@@ -69,8 +69,8 @@ export function DocumentErrorsModal(props: DocumentErrorsModalProps) {
   // con un diagnostico conocido, el mensaje del MH queda plegado debajo de la causa y que hacer
   const diagnosis = knownDiagnosis(document?.diagnosis);
   const hasDiagnosis = diagnosis.length > 0;
-  // se reenvia si el diagnostico no dice que no se puede (resend 'no' lo resuelve soporte)
-  const canResend = !!onResend && hasDiagnosis && diagnosis.every((item) => item.resend !== 'no');
+  // se reenvia a mano si el diagnostico lo permite: 'no' lo resuelve soporte y 'auto' el sistema (problema de Hacienda)
+  const canResend = !!onResend && hasDiagnosis && diagnosis.every((item) => item.resend === 'after_fix' || item.resend === 'as_is');
 
   return (
     <Modal show={isShow} onClose={onClose} size="lg" headerTitle="Errores del Documento">
