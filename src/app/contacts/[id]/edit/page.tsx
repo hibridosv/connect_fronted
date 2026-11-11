@@ -9,7 +9,6 @@ import { contactFieldHints, DteDiagnosisItem, knownDiagnosis } from "@/component
 import { tipoDTE } from "@/components/invoicing/utils";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useContactDetailsLogic } from "@/hooks/contacts/useContactDetailsLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
@@ -78,7 +77,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <NothingHere text="No se encontró el contacto" />
-        <ToasterMessage />
       </div>
     );
   }
@@ -87,7 +85,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <SkeletonTable rows={8} columns={4} />
-        <ToasterMessage />
       </div>
     );
   }
@@ -195,7 +192,6 @@ export default function Page() {
         )}
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }

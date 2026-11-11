@@ -35,7 +35,6 @@ import { ShippingModal } from "@/components/orders/restaurant/ShippingModal";
 import { SpecialSaleProductsModal } from "@/components/orders/restaurant/SpecialSaleProductsModal";
 import { SpecialSalesRestaurantModal } from "@/components/orders/restaurant/SpecialSalesRestaurantModal";
 import { TipsModal } from "@/components/orders/restaurant/TipsModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useMenuLogic } from "@/hooks/order/restaurant/useMenuLogic";
 import { useOrderRestaurantLogic } from "@/hooks/order/restaurant/useOrderRestaurantLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -93,7 +92,6 @@ export default function Page() {
           <DeliveryTypeModal isShow={modals.deliveryType} onClose={()=>{ closeModal('deliveryType')}} />
           <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
           <CategoryMenuModal isShow={modals.categoryMenu} onClose={()=>{ closeModal('categoryMenu')}} />
-          <ToasterMessage />
     </div>
   );
 }

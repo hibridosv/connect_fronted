@@ -5,7 +5,6 @@ import { ChatbotQuestionnaire } from '@/components/chatbot/profile/ChatbotQuesti
 import { ChatbotSettingsCard } from '@/components/chatbot/settings/ChatbotSettingsCard';
 import { ChatbotSettingSwitch } from '@/components/chatbot/settings/ChatbotSettingSwitch';
 import { ChatbotSettingsSkeleton } from '@/components/skeleton/ChatbotSettingsSkeleton';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useChatbotProfileLogic } from '@/hooks/chatbot/useChatbotProfileLogic';
 import { ChatbotSettings } from '@/interfaces/chatbot';
@@ -146,7 +145,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

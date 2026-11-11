@@ -5,7 +5,6 @@ import { MaintenanceDynamicFieldsForm } from "@/components/maintenance/Maintenan
 import { MaintenanceStatusBadge } from "@/components/maintenance/MaintenanceStatusBadge";
 import { MaintenanceTypeSelectCards } from "@/components/maintenance/new/MaintenanceTypeSelectCards";
 import { ContactSearch } from "@/components/search/ContactSearch";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useMaintenanceContactHistoryLogic } from "@/hooks/maintenance/useMaintenanceContactHistoryLogic";
 import { useMaintenanceEmployeesLogic } from "@/hooks/maintenance/useMaintenanceEmployeesLogic";
@@ -180,7 +179,6 @@ export default function Page() {
         </div>
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import { ButtonDownloadGet } from "@/components/button/button-download-get";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountAgingLogic } from "@/hooks/accounts/useAccountAgingLogic";
 
@@ -37,7 +36,6 @@ export default function Page() {
           </ButtonDownloadGet>
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

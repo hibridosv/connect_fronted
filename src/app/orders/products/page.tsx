@@ -22,7 +22,6 @@ import { ShowOrders } from "@/components/orders/products/ShowOrders";
 import { ShowTotal } from "@/components/orders/products/ShowTotal";
 import { SpecialSalesModal } from "@/components/orders/products/SpecialSalesModal";
 import { ProductDetailsGetModal } from "@/components/products/ProductDetailsGetModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useOrderProductsLogic } from "@/hooks/order/product/useOrderProductsLogic";
 import useModalStore from "@/stores/modalStorage";
 import ordersStore from "@/stores/orders/ordersStore";
@@ -68,7 +67,6 @@ export default function Page() {
         <InvoiceTypesModal isShow={modals.invoiceType} onClose={()=>{ closeModal('invoiceType')}} />
         <PayedModal isShow={modals.paymentSuccess} onClose={()=>{ closeModal('paymentSuccess')}} />
         <PayModal isShow={modals.payOrder} onClose={()=>{ closeModal('payOrder')}} />
-        <ToasterMessage />
     </div>
   );
 }

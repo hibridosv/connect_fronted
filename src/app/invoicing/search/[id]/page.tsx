@@ -5,7 +5,6 @@ import { CreateCreditNoteModal } from "@/components/invoicing/CreateCreditNoteMo
 import { CreateReturnModal } from "@/components/invoicing/CreateReturnModal";
 import { DocumentCancelledAlert, InvoiceDetails } from "@/components/invoicing/InvoiceDetails";
 import { InvoiceDetailsButtons } from "@/components/invoicing/InvoiceDetailsButtons";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceDetailsLogic } from "@/hooks/invoicing/useInvoiceDetailsLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -41,7 +40,6 @@ export default function Page({ params }: { params: { id: string } }) {
       </div> 
       <CreateCreditNoteModal isShow={modals.createCreditNote} onClose={() => closeModal('createCreditNote')} record={order} />
       <CreateReturnModal isShow={modals.createReturn} onClose={() => closeModal('createReturn')} record={order} />
-      <ToasterMessage />
     </div>
   );
 }

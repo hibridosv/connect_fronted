@@ -5,7 +5,6 @@ import { HistoryByCustomerTable } from "@/components/history/HistoryByCustomerTa
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 import useModalStore from "@/stores/modalStorage";
@@ -55,7 +54,6 @@ export default function Page() {
           </div>
     </div> 
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
-    <ToasterMessage />
 </div>
   );
 }

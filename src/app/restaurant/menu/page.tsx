@@ -14,7 +14,6 @@ import { RestaurantProductModifiersModal } from "@/components/restaurant/Restaur
 import { RestaurantProductPanelModal } from "@/components/restaurant/RestaurantProductPanelModal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useRestaurantAddProductLogic } from "@/hooks/restaurant/useRestaurantAddProductLogic";
 import { useRestaurantMenuLogic } from "@/hooks/restaurant/useRestaurantMenuLogic";
@@ -82,7 +81,6 @@ export default function Page() {
     <ProductsLinkedModal isShow={modals.menuProductLinked} onClose={() => closeModal("menuProductLinked")} product={getElement('menuProduct')} requiredLink={false} />
     <RestaurantProductDeleteModal isShow={modals.menuProductDelete} onClose={() => closeModal("menuProductDelete")} />
     <ShowImagesModal isShow={modals.menuProductImage} onClose={() => closeModal("menuProductImage")} nameImage="menuProductImage" onSelect={handleSelectProductImage} />
-    <ToasterMessage />
 </div>
   );
 }

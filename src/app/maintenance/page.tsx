@@ -4,7 +4,6 @@ import { MaintenanceStatusTabs } from "@/components/maintenance/MaintenanceStatu
 import { ShowMaintenancesTable } from "@/components/maintenance/ShowMaintenancesTable";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useMaintenanceTypesLogic } from "@/hooks/maintenance/useMaintenanceTypesLogic";
 import { useMaintenancesLogic } from "@/hooks/maintenance/useMaintenancesLogic";
@@ -61,7 +60,6 @@ export default function Page() {
           </Link>
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

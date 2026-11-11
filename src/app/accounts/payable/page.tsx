@@ -8,7 +8,6 @@ import { Pagination } from "@/components/Pagination";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountPayableLogic } from "@/hooks/accounts/useAccountPayableLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -62,7 +61,6 @@ export default function Page() {
     <AddPayableModal onClose={() => closeModal('payableAdd')} isShow={modals.payableAdd} />
     <AddPayableAddModal onClose={() => closeModal('paymentPayableAdd')} isShow={modals.paymentPayableAdd} />
     <AddPayableCreditNoteModal onClose={() =>closeModal('creditNoteAdd')} isShow={modals.creditNoteAdd} />
-    <ToasterMessage />
 </div>
   );
 }

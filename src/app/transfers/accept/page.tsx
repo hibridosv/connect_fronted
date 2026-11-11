@@ -1,5 +1,4 @@
 'use client';
-import { ToasterMessage } from '@/components/toaster-message';
 import { TransferDetailsTable } from '@/components/transfers/TransferDetailsTable';
 import { TransfersReceiveTable } from '@/components/transfers/TransfersReceiveTable';
 import { TransferSummary } from '@/components/transfers/TransferSummary';
@@ -53,7 +52,6 @@ export default function Page() {
         <ViewTitle text="Transferencias" />
         <TransferSummary records={transfers} loading={loading} />
       </div>
-          <ToasterMessage />
     </div>
   );
 }

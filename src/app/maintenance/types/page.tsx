@@ -3,7 +3,6 @@
 import { MaintenanceTypeFormModal } from "@/components/maintenance/types/MaintenanceTypeFormModal";
 import { MaintenanceTypesList } from "@/components/maintenance/types/MaintenanceTypesList";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useMaintenanceTypesLogic } from "@/hooks/maintenance/useMaintenanceTypesLogic";
 import { useSearchTerm } from "@/hooks/useSearchTerm";
@@ -52,7 +51,6 @@ export default function Page() {
         record={getElement('maintenanceTypeForm')}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

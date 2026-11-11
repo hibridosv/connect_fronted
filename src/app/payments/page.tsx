@@ -4,7 +4,6 @@ import { ViewTitle } from '@/components/ViewTitle';
 import { Button, Preset } from '@/components/button/button';
 import { InvoicePayDetailsModal } from '@/components/settings/InvoicePayDetailsModal';
 import { InvoiceSystemTable } from '@/components/settings/InvoiceSystemTable';
-import { ToasterMessage } from '@/components/toaster-message';
 import { useInvoicesLogic } from '@/hooks/settings/useInvoicesLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
@@ -145,7 +144,6 @@ export default function Page() {
         record={getElement('invoicePayDetails')}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

@@ -6,7 +6,6 @@ import { ShowLowStockStatistics } from "@/components/products/ShowLowStockStatis
 import { ShowProductsTable } from "@/components/products/ShowProductsTable";
 import { SearchInput } from "@/components/Search";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useLowStockLogic } from "@/hooks/products/useLowStockLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -45,7 +44,6 @@ export default function Page() {
         </div>
     </div> 
     <ProductDetailsModal isShow={modals.productDetails} onClose={() => closeModal('productDetails')} record={getElement("productDetails")} /> 
-    <ToasterMessage />
 </div>
   );
 }

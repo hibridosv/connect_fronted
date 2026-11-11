@@ -4,7 +4,6 @@ import { Pagination } from '@/components/Pagination';
 import { OrderDetailsModal } from '@/components/restaurant/OrderDetailsModal';
 import { RestaurantOrdersTable } from '@/components/restaurant/RestaurantOrdersTable';
 import { ShowTotal } from '@/components/ShowTotal';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useRestaurantOrdersLogic } from '@/hooks/restaurant/useRestaurantOrdersLogic';
 import { usePagination } from '@/hooks/usePagination';
@@ -38,7 +37,6 @@ export default function Page() {
       </div>
 
       <OrderDetailsModal isShow={modals.restaurantOrderDetail} onClose={() => closeModal('restaurantOrderDetail')} order={elements.restaurantOrderDetail}/>
-      <ToasterMessage />
     </div>
   );
 }

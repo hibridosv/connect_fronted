@@ -1,5 +1,4 @@
 'use client';
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useSettingsPermissionLogic } from "@/hooks/settings/useSettingsPermissionLogic";
 import { permissionExists } from "@/lib/utils";
@@ -116,7 +115,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-          <ToasterMessage />
     </div>
   );
 }

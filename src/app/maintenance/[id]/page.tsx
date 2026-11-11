@@ -9,7 +9,6 @@ import { MaintenanceEditForm } from "@/components/maintenance/details/Maintenanc
 import { MaintenanceImagesSection } from "@/components/maintenance/details/MaintenanceImagesSection";
 import { MaintenanceStatusHistoryTimeline } from "@/components/maintenance/details/MaintenanceStatusHistoryTimeline";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useMaintenanceDetailsLogic } from "@/hooks/maintenance/useMaintenanceDetailsLogic";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
@@ -132,7 +131,6 @@ export default function Page() {
         saving={saving}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { Alert } from '@/components/Alert/Alert';
 import { Button, Preset } from '@/components/button/button';
 import { ReorderCategoriesList } from '@/components/restaurant/ReorderCategoriesList';
 import { ReorderIconsGrid } from '@/components/restaurant/ReorderIconsGrid';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useMenuReorderLogic } from '@/hooks/restaurant/useMenuReorderLogic';
 import { useRouter } from 'next/navigation';
@@ -57,7 +56,6 @@ export default function Page() {
           }
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

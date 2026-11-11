@@ -4,7 +4,6 @@ import { LinksList } from "@/components/button/LinkList";
 import { HistoryCommisionsTable } from "@/components/history/HistoryCommisionsTable";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useHistorySalesLogic } from "@/hooks/history/useHistorySalesLogic";
 import useTempStorage from "@/stores/useTempStorage";
@@ -49,7 +48,6 @@ export default function Page() {
             <LinksList links={links} text="DESCARGAS EN PDF" />
           </div>
     </div> 
-    <ToasterMessage />
 </div>
   );
 }
