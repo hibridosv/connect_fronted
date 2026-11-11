@@ -5,7 +5,7 @@ import { ContactAddGT } from "@/components/contacs/ContactAddGT";
 import { ContactAddHN } from "@/components/contacs/ContactAddHN";
 import { ContactAddSV } from "@/components/contacs/ContactAddSV";
 import { ContactDefaultForm } from "@/components/contacs/ContactDefaultForm";
-import { DteDiagnosisItem, knownDiagnosis } from "@/components/invoicing/DteDiagnosisList";
+import { contactFieldHints, DteDiagnosisItem, knownDiagnosis } from "@/components/invoicing/DteDiagnosisList";
 import { tipoDTE } from "@/components/invoicing/utils";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -19,7 +19,7 @@ import useContactStore from "@/stores/ContactStore";
 import useModalStore from "@/stores/modalStorage";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FiAlertTriangle, FiCheckCircle, FiFileText } from "react-icons/fi";
 import { LuLoader } from "react-icons/lu";
@@ -27,7 +27,7 @@ import { LuLoader } from "react-icons/lu";
 /**
  * Editar un contacto en su propia pagina (el mismo formulario del modal de Contactos).
  * Desde Documentos rechazados se llega con ?dte={id del documento}: al lado del formulario se muestra el documento
- * y lo que hay que corregir del contacto y, al guardar, el boton para volver a reenviarlo
+ * y lo que hay que corregir del contacto (con los campos marcados en el formulario) y, al guardar, el boton para volver a reenviarlo
  * (docs/pending/plan-diagnostico-dte.md de connect).
  */
 
@@ -53,6 +53,9 @@ export default function Page() {
   const [document, setDocument] = useState<DocumentDiagnosis | null>(null);
   const [saved, setSaved] = useState(false);
   const wasSaving = useRef(false);
+  // solo lo que se corrige en el contacto, y los campos del formulario que hay que marcar
+  const causes = useMemo(() => knownDiagnosis(document?.diagnosis).filter((item) => item.target === 'contact'), [document]);
+  const fieldHints = useMemo(() => (causes.length ? contactFieldHints(causes) : undefined), [causes]);
 
   // documento rechazado que trajo al usuario aqui
   useEffect(() => {
@@ -91,8 +94,6 @@ export default function Page() {
 
   const contact = summary.contact;
   const backHref = dteId ? '/invoicing/rejected' : `/contacts/${id}`;
-  // solo lo que se corrige en el contacto
-  const causes = knownDiagnosis(document?.diagnosis).filter((item) => item.target === 'contact');
   const showPanel = !!dteId;
 
   return (
@@ -110,7 +111,7 @@ export default function Page() {
           <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-2">
             {contact.is_default == 1 ?
               <ContactDefaultForm isShow={true} record={contact} /> : <>
-              {system?.country == 1 && <ContactAddSV isShow={true} record={contact} />}
+              {system?.country == 1 && <ContactAddSV isShow={true} record={contact} highlight={fieldHints} />}
               {system?.country == 2 && <ContactAddHN isShow={true} record={contact} />}
               {system?.country == 3 && <ContactAddGT isShow={true} record={contact} />}
             </>}

@@ -10,21 +10,41 @@ import useConfigStore from "@/stores/configStore";
 import useContactStore from "@/stores/ContactStore";
 import useUserStore from "@/stores/UserStore";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Preset } from "../button/button";
 import { SkeletonContactAddSV } from "../skeleton/SkeletonContactAddSV";
 import { CatalogSearchSelect } from "./CatalogSearchSelect";
 import { EconomicActivitySelect } from "./EconomicActivitySelect";
 import { getParamString } from "./utils";
+import { FiAlertTriangle } from "react-icons/fi";
+
+// marca de un campo que Hacienda rechazo (contacts/[id]/edit?dte=, contactFieldHints de DteDiagnosisList)
+const markClass = (hint?: string) => hint ? ' border-danger ring-2 ring-danger/30' : '';
+
+function FieldHint({ hint }: { hint?: string }) {
+  if (!hint) return null;
+  return (
+    <p className="text-xs text-danger mt-1 flex items-start gap-1">
+      <FiAlertTriangle size={12} className="shrink-0 mt-0.5" /> {hint}
+    </p>
+  );
+}
+
+// orden del formulario: se hace scroll al primero que este marcado
+const MARK_ORDER: [string, string][] = [
+  ['id_number', 'id_number'], ['document', 'document'], ['register', 'register'], ['activity_code', 'activity_code_search'],
+  ['roar', 'roar'], ['address_doc', 'address_doc'], ['departament_doc', 'departament_doc'], ['town_doc', 'town_doc'],
+];
 
 export interface ContactAddSVPropd {
   isShow: boolean;
   record: Contact;
+  highlight?: Record<string, string>; // campos a marcar con su indicacion (solo la pagina de editar contacto)
 }
 
 export function ContactAddSV(props: ContactAddSVPropd) {
-  const { isShow, record } = props;
+  const { isShow, record, highlight } = props;
   const { system, activeConfig } = useConfigStore();
   const searchParams = useSearchParams();
   const pageParam = searchParams.get('page');
@@ -55,6 +75,18 @@ export function ContactAddSV(props: ContactAddSVPropd) {
   const isContactCodeActive = activeConfig &&  activeConfig.includes("contact-code");
 
   const isLoading = !departaments || !countries || !activities || !townsExtracted.length || (isSellerActive && loadingUsers);
+
+  // con campos marcados, al terminar de cargar se lleva al primero (una sola vez, no mientras se escribe)
+  const scrolledToMark = useRef(false);
+  useEffect(() => {
+    if (isLoading || !highlight || scrolledToMark.current) return;
+    const first = MARK_ORDER.find(([field]) => highlight[field]);
+    const element = first ? window.document.getElementById(first[1]) : null;
+    if (!element) return;
+    scrolledToMark.current = true;
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (element as HTMLElement).focus({ preventScroll: true });
+  }, [isLoading, highlight]);
 
   if (!isShow) return null;
 
@@ -92,7 +124,8 @@ export function ContactAddSV(props: ContactAddSVPropd) {
             <div className="w-full md:w-1/2 px-3 mb-2">
                 <label htmlFor="id_number" className="input-label">Numero de documento</label>
                 <input type="text" id="id_number" {...register("id_number")} 
-                 onBlur={(e) => setValue('document', e.target.value)} placeholder="0207-210690-102-9" pattern={regex} className="input" />
+                 onBlur={(e) => setValue('document', e.target.value)} placeholder="0207-210690-102-9" pattern={regex} className={`input${markClass(highlight?.id_number)}`} />
+                <FieldHint hint={highlight?.id_number} />
             </div> 
 
             <div className="w-full md:w-1/2 px-3 mb-2">
@@ -131,32 +164,39 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                 
                     <div className="w-full md:w-1/2 px-3 mb-2">
                         <label htmlFor="document" className="input-label">Documento</label>
-                        <input type="text" id="document" {...register("document")} placeholder="0207-210690-102-9" pattern={regex} className="input" />
+                        <input type="text" id="document" {...register("document")} placeholder="0207-210690-102-9" pattern={regex} className={`input${markClass(highlight?.document)}`} />
+                        <FieldHint hint={highlight?.document} />
                     </div>
 
                     <div className="w-full md:w-1/2 px-3 mb-2">
                         <label htmlFor="register" className="input-label">Registro</label>
-                        <input type="text" id="register" {...register("register")} placeholder="021545-9" pattern="^[0-9]{1,6}-[0-9]{1}?$" className="input" />
+                        <input type="text" id="register" {...register("register")} placeholder="021545-9" pattern="^[0-9]{1,6}-[0-9]{1}?$" className={`input${markClass(highlight?.register)}`} />
+                        <FieldHint hint={highlight?.register} />
                     </div>
 
                     <div className="w-full md:w-full px-3 mb-2">
                         <label htmlFor="activity_code_search" className="input-label">Actividad económica (MH)</label>
                         <input type="hidden" {...register("activity_code")} />
+                        <div className={highlight?.activity_code ? 'rounded-lg ring-2 ring-danger/30' : ''}>
                         <EconomicActivitySelect activities={activities ?? []} value={watch("activity_code")}
                           onChange={(activity) => {
                             setValue("activity_code", activity ? activity.code : null);
                             if (activity) setValue("roar", activity.activity); // el giro toma la descripcion del CAT-019
                           }} />
+                        </div>
+                        <FieldHint hint={highlight?.activity_code} />
                     </div>
 
                     <div className="w-full md:w-full px-3 mb-2">
                         <label htmlFor="roar" className="input-label">Giro</label>
-                        <input type="text" id="roar" {...register("roar")} maxLength={150} className="input" />
+                        <input type="text" id="roar" {...register("roar")} maxLength={150} className={`input${markClass(highlight?.roar)}`} />
+                        <FieldHint hint={highlight?.roar} />
                     </div>
 
                     <div className="w-full md:w-full px-3 mb-2">
                         <label htmlFor="address_doc" className="input-label">Dirección</label>
-                        <input type="text" id="address_doc" {...register("address_doc")} className="input" />
+                        <input type="text" id="address_doc" {...register("address_doc")} className={`input${markClass(highlight?.address_doc)}`} />
+                        <FieldHint hint={highlight?.address_doc} />
                     </div>
 
                     {!showExportFields && (
@@ -203,20 +243,22 @@ export function ContactAddSV(props: ContactAddSVPropd) {
 
                     <div className="w-full md:w-1/2 px-3 mb-2">
                     <label htmlFor="departament_doc" className="input-label"> Departamento </label>
-                    <select defaultValue={departaments && departaments.departamentos[0].id } id="departament_doc" {...register("departament_doc")} className="input-select">
+                    <select defaultValue={departaments && departaments.departamentos[0].id } id="departament_doc" {...register("departament_doc")} className={`input-select${markClass(highlight?.departament_doc)}`}>
                         {departaments && departaments?.departamentos?.map((value: any) => {
                             return (<option key={value.id} value={value.id}> {value.nombre}</option>)
                         })}
                     </select>
+                    <FieldHint hint={highlight?.departament_doc} />
                     </div>
 
                     <div className="w-full md:w-1/2 px-3 mb-2">
                     <label htmlFor="town_doc" className="input-label"> Municipio </label>
-                    <select id="town_doc" {...register("town_doc")} className="input-select">
+                    <select id="town_doc" {...register("town_doc")} className={`input-select${markClass(highlight?.town_doc)}`}>
                         {townsExtracted && townsExtracted?.map((value: any) => {
                             return (<option key={value.id_mun} value={value.id_mun}> {value.nombre}</option>)
                         })}
                     </select>
+                    <FieldHint hint={highlight?.town_doc} />
                     </div>
 
                     <div className={`w-full ${ isContactExcluded ? 'md:w-1/2' : 'md:w-full'} px-3 mb-2`}>

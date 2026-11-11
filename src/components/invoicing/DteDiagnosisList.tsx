@@ -32,6 +32,28 @@ function safeParse(value: string) {
   try { return JSON.parse(value); } catch { return null; }
 }
 
+// campos del formulario de contacto (ContactAddSV) que corresponden a cada diagnostico, con la indicacion que se
+// muestra debajo del campo marcado en contacts/[id]/edit?dte=
+const CONTACT_FIELDS: Record<string, { fields: string[]; hint: string }> = {
+  receptor_nit_formato: { fields: ['document'], hint: 'Debe tener 14 dígitos, o 9 si es un DUI homologado.' },
+  receptor_nit_no_existe: { fields: ['document'], hint: 'Hacienda no tiene registrado este NIT.' },
+  receptor_nrc_no_corresponde: { fields: ['register', 'document'], hint: 'El NRC no corresponde a este NIT.' },
+  receptor_documento: { fields: ['id_number', 'document'], hint: 'El documento no es válido o está vacío.' },
+  sujeto_excluido_documento: { fields: ['id_number', 'document'], hint: 'El DUI o NIT del sujeto excluido no es válido.' },
+  receptor_actividad: { fields: ['activity_code', 'roar'], hint: 'La actividad económica no es válida o está incompleta.' },
+  receptor_direccion: { fields: ['departament_doc', 'town_doc', 'address_doc'], hint: 'Revisa el departamento, el municipio y la dirección.' },
+};
+
+/** { campo: indicacion } de los campos del contacto que hay que corregir segun el diagnostico */
+export function contactFieldHints(items: DteDiagnosisItem[]): Record<string, string> {
+  const hints: Record<string, string> = {};
+  items.forEach((item) => {
+    const entry = CONTACT_FIELDS[item.code];
+    entry?.fields.forEach((field) => { hints[field] ??= entry.hint; });
+  });
+  return hints;
+}
+
 // pantalla para corregir cada tipo de registro y el permiso del menu que la abre
 // el contacto se edita en contacts/[id]/edit, que con ?dte= muestra la causa y el boton para volver a reenviar
 const TARGETS: Record<string, { label: string; permission: string; href: (id?: string | null, documentId?: string) => string | null }> = {
