@@ -11,6 +11,7 @@ import { FaEdit, FaSpinner } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
 import { status, tipoDTE } from "./utils";
+import { knownDiagnosis } from "./DteDiagnosisList";
 
 
 export interface DocumentsElectronicTableI {
@@ -44,6 +45,8 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
     const isDownloader =  (record?.status == 4 || record?.status == 5) ? true : false;
     const createdAt = record?.created_at ? DateTime.fromISO(record.created_at) : null;
     const isWithinTwoMonths = createdAt ? createdAt >= DateTime.now().minus({ months: 2 }) : false;
+    // causa del rechazo (diagnostico de billing) o, si no hay, el mensaje del MH
+    const statusTitle = (isRejected && knownDiagnosis(record?.diagnosis)[0]?.cause) || record?.descripcion_msg;
 
 
     return (
@@ -67,7 +70,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       <td className={`px-3 py-2 text-left`}>
         { record?.receptor_nombre ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable-table'}`} title={record?.descripcion_msg} 
+      <td className={`px-3 py-2 text-left whitespace-nowrap ${isRejected && 'clickeable-table'}`} title={statusTitle} 
         onClick={ isRejected ? ()=>{ setElement('documentSelected', record); openModal('documentErrors')  } : ()=>{} }>
         { status(record?.status) }
       </td>

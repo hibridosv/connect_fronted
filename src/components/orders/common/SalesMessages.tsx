@@ -5,6 +5,7 @@ import { requiredFieldsCCF, validateInvoiceFields } from "@/lib/validator-functi
 import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
+import { DteWarnings } from "./DteWarnings";
 import { sumarSubtotal, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
 
 
@@ -84,6 +85,8 @@ export function SalesMessages() {
             <span className="ml-1 font-semibold text-danger">{`${fieldsRequired.join(', ')}.`}</span>
           </div>
         }
+
+        <DteWarnings />
     </div>
   );
 }

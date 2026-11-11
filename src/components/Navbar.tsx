@@ -1,6 +1,7 @@
 'use client';
 
 import { useConfigLogic } from '@/hooks/config/useConfigLogic';
+import { useDteRejectedLogic } from '@/hooks/invoicing/useDteRejectedLogic';
 import { useMenuSyncLogic } from '@/hooks/order/restaurant/useMenuSyncLogic';
 import { isProducts } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -20,6 +21,7 @@ export const Navbar = () => {
   const { user, client, tenant, invoiceExist } = useConfigStore();
   const { configFailed } = useConfigLogic();
   useMenuSyncLogic();
+  useDteRejectedLogic(); // aviso al cajero cuando Hacienda rechaza su DTE
   const { modals, closeModal, openModal } = useModalStore();
   const redirect = isProducts(tenant?.system) ? "/orders/products" : "/orders/restaurant";
 
