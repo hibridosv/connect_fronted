@@ -38,7 +38,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
             <li key={product.cod}>
               <div className="flex items-baseline justify-between gap-3 text-sm">
                 <div className="min-w-0 flex items-baseline gap-2">
-                  <span className={`shrink-0 w-5 text-xs font-bold ${index === 0 ? 'text-orange-500' : 'text-text-muted'}`}>{index + 1}</span>
+                  <span className={`shrink-0 w-5 text-xs font-bold ${index === 0 ? 'text-warning' : 'text-text-muted'}`}>{index + 1}</span>
                   {product.product_id ? (
                     <Link href={`/products/${product.product_id}/kardex`} className="truncate font-medium text-text-base hover:text-primary hover:underline" title={product.product}>
                       {product.product}

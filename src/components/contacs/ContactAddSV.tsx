@@ -98,13 +98,13 @@ export function ContactAddSV(props: ContactAddSVPropd) {
               <div className="flex flex-wrap -mx-3">
 
             <div className="w-full md:w-full px-3 mb-2 flex justify-between">
-                <div><input className="bg-lime-600 rounded-full" type="checkbox" {...register("is_client", {})} /> 
+                <div><input className="accent-primary rounded-full" type="checkbox" {...register("is_client", {})} /> 
                 <span className="ml-2 font-medium">Cliente</span></div>
-                <div><input className="bg-lime-600 rounded-full" type="checkbox" {...register("is_provider", {})} /> 
+                <div><input className="accent-primary rounded-full" type="checkbox" {...register("is_provider", {})} /> 
                 <span className="ml-2 font-medium">Proveedor</span></div>
-                <div><input className="bg-lime-600 rounded-full" type="checkbox" {...register("is_employee", {})} /> 
+                <div><input className="accent-primary rounded-full" type="checkbox" {...register("is_employee", {})} /> 
                 <span className="ml-2 font-medium">Repartidor</span></div>
-                <div><input className="bg-lime-600 rounded-full" type="checkbox" {...register("is_referred", {})} /> 
+                <div><input className="accent-primary rounded-full" type="checkbox" {...register("is_referred", {})} /> 
                 <span className="ml-2 font-medium">Referido</span></div>
             </div>
 
@@ -273,14 +273,14 @@ export function ContactAddSV(props: ContactAddSVPropd) {
                   { isContactExcluded && 
                     <div className="w-full md:w-1/2 px-3 mb-2 flex justify-between">
                       <div>
-                    <input className="bg-lime-600 rounded-full" type="checkbox" {...register("excluded", {})} /> 
+                    <input className="accent-primary rounded-full" type="checkbox" {...register("excluded", {})} /> 
                       <span className="ml-2 font-medium">Cliente Exento</span></div>
                     </div>
                   }
                     
                   { watch("is_client") == 1 &&
                     <div className="w-full md:w-1/2 px-3 mb-2 flex justify-between">
-                      <div><input className="bg-lime-600 rounded-full" type="checkbox" {...register("is_credit_block", {})} /> 
+                      <div><input className="accent-primary rounded-full" type="checkbox" {...register("is_credit_block", {})} /> 
                       <span className="ml-2 font-medium">Bloquear Credito al cliente</span></div>
                     </div>
                   }

@@ -43,7 +43,7 @@ export function AdjustmentsDetailsModal(props: AdjustmentsDetailsModalI) {
               <td className={`px-3 py-2 text-center whitespace-nowrap`}>
                 { record?.stablished }
               </td>
-              <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${record?.difference == 0 ? "text-black" : record?.difference > 0 ? "text-lime-600" : "text-red-600" }`}>
+              <td className={`px-3 py-2 text-center whitespace-nowrap font-bold ${record?.difference == 0 ? "text-text-base" : record?.difference > 0 ? "text-success" : "text-danger" }`}>
                 { record?.difference }
               </td>
             </tr>

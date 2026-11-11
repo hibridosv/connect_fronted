@@ -2,7 +2,7 @@
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
 Estado: en curso en `develop`. Hecho: E1, E2, E3, A2, C1, C2,
-C3 (sin L5), C4, P1, P2, P4 y P6; E4 en la venta. P3 y P7 descartados.
+C3 (sin L5), C4, E4, P1, P2, P4 y P6. P3 y P7 descartados.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
 `THEME_GUIDE.md`. El patrón: colores solo con tokens del tema (`bg-bg-content`, `text-text-base`, `text-primary`,
@@ -120,6 +120,16 @@ o un `grep` en el pre-commit que avise de nuevos `-(gray|red|blue|green)-[0-9]`.
  text-text-inverted`, `sky-200` → `bg-info/20`); íconos de `InitialButtons` a `success`/`info`; los divisores
 `md:border-sky-600` a `md:border-primary` (como las columnas 7/3). Se cambiaron 21 archivos; en la venta solo quedan los
 dos excluidos. Sin aviso en el lint hasta terminar E4 (decisión del usuario). Pendiente: los demás módulos (~45 archivos).
+
+**Hecho (2026-11-11), resto de módulos:** 58 archivos. Filas anuladas `!bg-red-200` → `!bg-danger/20` (historial, cuentas,
+reportes) y las de abonos `bg-red-50` → `!bg-danger/10` (sin `!` la zebra les ganaba); íconos de los presets pequeños de
+`Button` (`smallClose` → `danger`, `smallPlus`/`smallMinus`/`smallEdit` → `success`, `smallInfo`/`smallPrint` → `info`) y
+los demás `color=` a `className`; checkboxes de contacto `bg-lime-600` (no hacía nada) → `accent-primary`; cajas de
+cliente y producto buscado a la tarjeta del patrón; `annexes/purchases` a `info`; `<html>` a `bg-bg-base`; el aviso de
+factura en 0 de `AddPayableModal` a `!bg-danger/20` (no se veía); switches apagados `bg-gray-300` → `bg-text-muted/40`;
+`text-black` → `text-text-base`. Solo quedan las excepciones: `PercentSalesType`, `ContactKpiCards`, `redirects/info`,
+`AutomationFlowIllustration`, `styles/svg.tsx`, `OrderProductsSearchByCode` y un comentario en `button-link.tsx`. Sin
+aviso en el lint (decisión del usuario).
 
 ---
 

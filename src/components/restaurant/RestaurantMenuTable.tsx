@@ -55,7 +55,7 @@ export function RestaurantMenuTable() {
       <td className="px-3 py-2 whitespace-nowrap font-medium">
         <div className="flex"> 
           <span>{ record?.description }</span> 
-          <span className="mt-1 ml-2">{record.menu_order?.special === 1 && <FaStar size={8} color="#009eff" /> }</span>
+          <span className="mt-1 ml-2">{record.menu_order?.special === 1 && <FaStar size={8} className="text-info" /> }</span>
           { record.restaurant?.whatsapp_enabled === 1 && <span className="mt-0.5 ml-2 text-success" title="Disponible en WhatsApp"><FaWhatsapp size={14} /></span> }
         </div>
         { record.menu_order?.status === 0 && <div className="uppercase text-danger">Inhabilitado</div> }

@@ -68,25 +68,25 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="relative rounded-xl border border-cyan-400/30 p-5 overflow-hidden bg-gradient-to-br from-cyan-500/8 via-blue-500/8 to-primary/8">
+            <div className="relative rounded-xl border border-info/30 p-5 overflow-hidden bg-gradient-to-br from-info/10 to-primary/10">
               <div className="flex items-center gap-2 mb-4">
                 <span className="relative flex h-5 w-5 items-center justify-center">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-cyan-400/40 animate-ping opacity-75" />
-                  <LuZap size={14} className="relative text-cyan-500" />
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-info/40 animate-ping opacity-75" />
+                  <LuZap size={14} className="relative text-info" />
                 </span>
-                <span className="text-xs font-bold uppercase tracking-widest text-cyan-600">Automatización inteligente</span>
+                <span className="text-xs font-bold uppercase tracking-widest text-info">Automatización inteligente</span>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/15 border border-cyan-400/30 flex items-center justify-center shrink-0">
-                  <LuMail size={18} className="text-cyan-500" />
+                <div className="w-10 h-10 rounded-lg bg-info/15 border border-info/30 flex items-center justify-center shrink-0">
+                  <LuMail size={18} className="text-info" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-text-base mb-1">Procesamiento automático desde su correo</p>
                   <p className="text-sm text-text-muted leading-relaxed">
                     Olvídese de importar archivos manualmente. Nuestro sistema lee directamente el email que su proveedor le envía, extrae el JSON adjunto, lo procesa y lo registra en su libro de compras de forma automática — sin intervención de su parte.
                   </p>
-                  <div className="mt-3 relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-400/40 text-xs font-semibold text-cyan-600 overflow-hidden cursor-default select-none">
-                    <span className="absolute inset-0 rounded-full animate-pulse bg-cyan-400/10" />
+                  <div className="mt-3 relative inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-info/15 border border-info/40 text-xs font-semibold text-info overflow-hidden cursor-default select-none">
+                    <span className="absolute inset-0 rounded-full animate-pulse bg-info/10" />
                     <LuZap size={11} className="relative z-10 animate-bounce" style={{ animationDuration: '1s' }} />
                     <span className="relative z-10">Función premium — consulte con su asesor</span>
                   </div>

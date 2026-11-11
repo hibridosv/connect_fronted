@@ -76,7 +76,7 @@ export function AddPayableModal({ onClose, isShow }: AddPayableModal) {
                 <div className="w-full md:w-1/2 px-3 mb-2">
                     <label htmlFor="invoice_number" className="input-label">Numero de Documento</label>
                     <input type="number" id="invoice_number" {...register("invoice_number", {disabled: watch("invoice") == 0})}
-                          className={` ${watch("invoice") == 0 && "bg-red-200"} input`}
+                          className={` ${watch("invoice") == 0 && "!bg-danger/20"} input`}
                           step="any"
                           min={0}
                         />

@@ -139,7 +139,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
                         </span>
                       )}
                     </div>
-                    <p className="w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-black font-medium p-1 h-9 bg-bg-subtle"
+                    <p className="w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-text-base font-medium p-1 h-9 bg-bg-subtle"
                       style={{ maxWidth: '96px', wordBreak: 'keep-all', lineHeight: '1.2em' }}>
                       {variant.name}
                     </p>

@@ -78,7 +78,7 @@ export function ImageMenu(props: ImageMenuI) {
               <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
             </div>
           ) : (
-            <p className={`w-full text-center text-xs font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'}`}>
+            <p className={`w-full text-center text-xs font-semibold uppercase leading-tight line-clamp-2 text-text-base`}>
               {label}
             </p>
           )}

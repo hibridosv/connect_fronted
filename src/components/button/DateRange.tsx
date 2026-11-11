@@ -167,7 +167,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
        <Button text='Aplicar' type="submit" preset={loading ? Preset.saving : Preset.save} disabled={loading} />
       </div>
 
-      <div className="mt-3 text-red-600 flex items-center justify-center h-full font-semibold">
+      <div className="mt-3 text-danger flex items-center justify-center h-full font-semibold">
           {
             Object.keys(dateValues).length != 0 ? dateValues.option == '1' ? `Fecha establecida ${formatDate(dateValues.initialDate)}` : `Fechas de ${formatDate(dateValues.initialDate)} a ${formatDate(dateValues.finalDate)}` : ""
           }

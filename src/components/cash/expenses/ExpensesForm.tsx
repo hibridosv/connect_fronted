@@ -93,7 +93,7 @@ export function ExpensesForm({ showAll, currentPage }: ExpensesFormProps) {
 
           <div className="w-full md:w-1/2 px-3 mb-2">
             <label htmlFor="cash_bills_categories_id" className="input-label clickeable-table" title="Agregar categoria de gasto" onClick={()=> openModal("NewCategory")}>
-              <span className="flex items-center"><span>Categoria de gasto</span> <FaPlus className="ml-2" color="green" size={12} /></span>
+              <span className="flex items-center"><span>Categoria de gasto</span> <FaPlus className="ml-2 text-success" size={12} /></span>
             </label>
             <select defaultValue={ categories && categories?.length > 0 ? categories[0].id : 0 } id="cash_bills_categories_id" {...register("cash_bills_categories_id")} className="input-select" >
               {categories &&

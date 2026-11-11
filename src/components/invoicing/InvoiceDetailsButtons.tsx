@@ -46,7 +46,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                   <ButtonDownloadGet
                     autoclass={false} 
                     href={`id=${order?.id}&route=download.pdf.invoice`}
-                    style="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-blue-600 transition-colors duration-200 clickeable"
+                    style="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-info transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <FaPrint size={28} />
@@ -58,7 +58,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     title="Imprimir"
                     disabled={isSending}
                     onClick={() => printOrder(order?.id)}
-                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-blue-600 transition-colors duration-200 clickeable"
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-info transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <FaPrint size={28} />
@@ -72,7 +72,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     href={`${API_URL}documents/download/pdf/${order?.id}/${client?.id}`}
                     target="_blank"
                     title="Descargar PDF electrónico"
-                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-red-600 transition-colors duration-200 clickeable"
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-danger transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <FaFilePdf size={28} />
@@ -92,7 +92,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                       }
                     }}
                     disabled={isDeleted || isSending || hasCreditNote}
-                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-sky-600 disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-info disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <MdCreditScore size={28} />
@@ -106,7 +106,7 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
                     title="Crear retorno de productos"
                     onClick={() => openModal('createReturn')}
                     disabled={isSending}
-                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-amber-600 disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
+                    className="flex flex-col items-center justify-center gap-1 text-text-muted hover:text-warning disabled:text-text-muted/50 disabled:cursor-not-allowed transition-colors duration-200 clickeable"
                   >
                     <div className="p-3 bg-bg-subtle rounded-full">
                       <MdAssignmentReturn size={28} />

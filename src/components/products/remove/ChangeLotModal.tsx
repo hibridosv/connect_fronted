@@ -45,12 +45,12 @@ export function ChangeLotModal(props: ChangeLotModalProps) {
             <span className="flex justify-between">
                 {
                 lotSelected?.id === record.id ? 
-                    <RiCloseCircleFill size={20} className="text-red-600 clickeable" 
+                    <RiCloseCircleFill size={20} className="text-danger clickeable" 
                         onClick={()=> clearElement("lotSelected") } /> :
                 record.actual_stock < lotSelected?.quantity ? 
-                    <FaRegSave size={20} className="text-gray-700 clickeable" 
+                    <FaRegSave size={20} className="text-text-muted clickeable" 
                         onClick={()=> useToastMessageStore.getState().setError({ message : "No existen cantidades suficientes en este lote"})} /> : 
-                    <FaRegSave size={20} className="text-lime-700 clickeable" 
+                    <FaRegSave size={20} className="text-success clickeable" 
                         onClick={()=> setElement("lotSelected", record)} />
                 }
             </span>
@@ -82,7 +82,7 @@ export function ChangeLotModal(props: ChangeLotModalProps) {
                     </table>
                 </div>
             ) : (
-                <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
+                <div className="p-3 text-center bg-info/10 text-info rounded-lg">
                     <p>No hay registros para este item.</p>
                 </div>
             )}

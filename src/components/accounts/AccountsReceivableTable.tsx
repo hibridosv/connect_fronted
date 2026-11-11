@@ -29,7 +29,7 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
   }
 
   const listItems = records.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-red-200'}`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-danger/20'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary" title={`Fecha otorgado: ${formatDateAsDMY(record.created_at)}`}>
         { record?.client?.name ?? "N/A" }
       </td>
@@ -55,7 +55,7 @@ export function AccountsReceivableTable(props: AccountsReceivableTableI) {
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-left whitespace-nowrap`}>
-        <MdAddchart size={28} className="text-lime-600 clickeable" onClick={()=>{ setElement('paymentReceivableAdd', record); openModal('paymentReceivableAdd'); }} />
+        <MdAddchart size={28} className="text-success clickeable" onClick={()=>{ setElement('paymentReceivableAdd', record); openModal('paymentReceivableAdd'); }} />
       </td>
     </tr>
   ));

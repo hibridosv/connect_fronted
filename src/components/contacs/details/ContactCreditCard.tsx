@@ -26,7 +26,7 @@ export function ContactCreditCard({ credit }: ContactCreditCardProps) {
           <h3 className="text-sm font-bold text-text-base">Crédito</h3>
         </div>
         {credit.is_credit_block == 1 && (
-          <span className="text-2xs font-bold uppercase px-2 py-0.5 rounded-full bg-red-50 text-danger border border-red-100">Bloqueado</span>
+          <span className="text-2xs font-bold uppercase px-2 py-0.5 rounded-full bg-danger/10 text-danger border border-danger/20">Bloqueado</span>
         )}
       </div>
 
@@ -61,7 +61,7 @@ export function ContactCreditCard({ credit }: ContactCreditCardProps) {
       )}
 
       {credit.overdue > 0 && (
-        <div className="mt-3 flex items-center gap-2 text-xs text-danger bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+        <div className="mt-3 flex items-center gap-2 text-xs text-danger bg-danger/10 border border-danger/20 rounded-lg px-3 py-2">
           <FiAlertTriangle className="shrink-0" />
           <span>El cliente tiene saldo vencido</span>
         </div>

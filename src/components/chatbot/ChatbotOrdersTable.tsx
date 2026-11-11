@@ -31,7 +31,7 @@ export function ChatbotOrdersTable({ records, isLoading, onShow }: ChatbotOrders
         <span className={`px-2 py-0.5 rounded text-xs ${orderStatus(record.status, restaurant).style}`}>{orderStatus(record.status, restaurant).label}</span>
       </td>
       <td className="px-3 py-2 text-center whitespace-nowrap">
-        <RiListRadio size={24} title="Ver detalles" className="text-cyan-600 clickeable mx-auto" onClick={() => onShow(record.id)} />
+        <RiListRadio size={24} title="Ver detalles" className="text-info clickeable mx-auto" onClick={() => onShow(record.id)} />
       </td>
     </tr>
   ));

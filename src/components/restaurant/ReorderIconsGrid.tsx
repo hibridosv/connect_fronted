@@ -58,7 +58,7 @@ export function ReorderIconsGrid({ items, loading, isDragging, dragSourceIndex, 
             </div>
           </div>
           <div className={`flex h-10 items-center justify-center px-1.5 ${isProduct ? 'bg-bg-subtle/80' : 'bg-bg-subtle'}`}>
-            <p className={`w-full text-center text-xs font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'}`}>
+            <p className={`w-full text-center text-xs font-semibold uppercase leading-tight line-clamp-2 text-text-base`}>
               {label}
             </p>
           </div>

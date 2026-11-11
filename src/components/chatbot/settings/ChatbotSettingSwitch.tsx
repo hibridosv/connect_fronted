@@ -27,7 +27,7 @@ export function ChatbotSettingSwitch({ title, description, checked, updating, di
           </span>
         )}
         <button type="button" disabled={locked} onClick={() => onChange(!checked)}
-          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 ${locked ? 'cursor-not-allowed' : 'cursor-pointer'} ${checked ? 'bg-success' : 'bg-gray-300'}`}>
+          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 ${locked ? 'cursor-not-allowed' : 'cursor-pointer'} ${checked ? 'bg-success' : 'bg-text-muted/40'}`}>
           {updating && (
             <span className="absolute inset-0 flex items-center justify-center">
               <span className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin" />

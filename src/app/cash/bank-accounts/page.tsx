@@ -25,7 +25,7 @@ export default function Page() {
     <div className="md:col-span-6">
         <div className="flex justify-between items-center">
           <ViewTitle text="Listado de cuentas" />
-          <MdCurrencyExchange size={28} className="clickeable mr-4 animate-pulse" color="red" onClick={()=> openModal("AccountsTransfers")} />
+          <MdCurrencyExchange size={28} className="clickeable mr-4 animate-pulse text-danger" onClick={()=> openModal("AccountsTransfers")} />
         </div>
         <div className="p-4">
           <AccountsTable />
