@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { NothingHere } from "@/components/NothingHere";
 import { Button, Preset } from "@/components/button/button";
@@ -7,7 +8,6 @@ import useModalStore from "@/stores/modalStorage";
 import manageRestaurantStore from "@/stores/restaurant/manageRestaurantStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
-import { AiOutlineLoading } from "react-icons/ai";
 import { DeleteButton } from "../button/DeleteButton";
 
 
@@ -58,7 +58,7 @@ export function ManageOptions() {
                 onChange={(e) => setEditedName(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') handleAcceptName(record);
-                  if (e.key === 'Escape') { setEditingNameId(null); setEditedName(''); }
+                  if (e.key === 'Escape') { e.stopPropagation(); setEditingNameId(null); setEditedName(''); }
                 }}
                 disabled={sending}
                 autoFocus
@@ -69,7 +69,7 @@ export function ManageOptions() {
             <div className="flex items-center justify-end gap-2 px-4 py-3 bg-primary/5 border-t border-primary/20">
               {sending ? (
                 <div className="flex items-center gap-2 text-text-muted text-sm">
-                  <AiOutlineLoading size={16} className="animate-spin" />
+                  <Spinner size={16} color="current" />
                   <span>Guardando...</span>
                 </div>
               ) : (
@@ -91,7 +91,7 @@ export function ManageOptions() {
         </div>
         <span className="flex items-center gap-1 shrink-0">
           {deleting || sending ? (
-            <AiOutlineLoading size={18} className="animate-spin text-text-muted" />
+            <Spinner size={18} color="muted" />
           ) : (
             <>
               <Button preset={Preset.smallEdit} onClick={() => handleStartEditName(record)} disabled={deleting} />

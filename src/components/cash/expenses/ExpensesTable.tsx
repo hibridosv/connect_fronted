@@ -1,3 +1,4 @@
+import { Spinner } from "@/components/Spinner";
 import { DeleteButton } from "@/components/button/DeleteButton";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -7,7 +8,6 @@ import cashExpensesStore from "@/stores/cash/cashExpensesStore";
 import useConfigStore from "@/stores/configStore";
 import useModalStore from "@/stores/modalStorage";
 import useTempStorage from "@/stores/useTempStorage";
-import { FaSpinner } from "react-icons/fa";
 import { MdImage } from "react-icons/md";
 
 
@@ -59,7 +59,7 @@ export function ExpensesTable({ showAll }: ExpensesTableProps) {
               >
                 <MdImage size={23} className={record.image ? "text-info" : "text-text-muted"} />
               </button>
-              { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
+              { deleting ? <Spinner size={20} /> :
                 <DeleteButton id={record.id} url="cash/expenses" onDeleteConfirm={deleteExpense} disabled={record.status === 0 || deleting} />
               }
             </td>

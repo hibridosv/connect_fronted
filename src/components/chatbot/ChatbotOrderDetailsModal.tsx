@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { formatDate } from "@/lib/date-formats";
@@ -6,7 +7,6 @@ import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import { useEffect, useState } from "react";
 import { Alert } from "../Alert/Alert";
-import { Loader } from "../Loader";
 import { deliveryLabel, INVOICE_TYPE, mapsUrl, orderStatus, PAYMENT_METHOD } from "./utils";
 
 export interface ChatbotOrderDetailsModalI {
@@ -39,7 +39,7 @@ export function ChatbotOrderDetailsModal({ isShow, order, checks, isLoading, sen
     <Modal show={isShow} onClose={onClose} size="xl4" headerTitle={order ? `Pedido de WhatsApp #${order.order_number}` : 'Pedido de WhatsApp'} removeTitle={true}>
       <Modal.Body>
         {isLoading || !order ? (
-          <div className="flex justify-center my-10"><Loader size="35" /></div>
+          <div className="flex justify-center my-10"><Spinner size={35} /></div>
         ) : (
           <div className="mx-1 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-base">

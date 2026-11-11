@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import { DashboardInsight, DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
 import useDashBoardStore from '@/stores/dashboardStore';
@@ -34,18 +35,18 @@ function InsightItem({ insight, onUpdate }: { insight: DashboardInsight; onUpdat
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${style.chip}`}>{style.label}</span>
-          {insight.source === 'ai' && <span className="text-[9px] font-bold uppercase tracking-wider bg-accent/15 text-accent px-1.5 py-0.5 rounded">IA</span>}
+          <span className={`text-3xs font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${style.chip}`}>{style.label}</span>
+          {insight.source === 'ai' && <Badge variant="accent" size="sm">IA</Badge>}
         </div>
         <p className="text-sm font-semibold text-text-base leading-snug mt-1">{insight.title}</p>
         <p className="text-xs text-text-muted leading-relaxed mt-0.5">{insight.body}</p>
         <div className="flex flex-wrap items-center gap-1.5 mt-2">
           {insight.action && (
-            <Link href={insight.action} className="flex items-center gap-0.5 text-[11px] font-semibold px-2 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
+            <Link href={insight.action} className="flex items-center gap-0.5 text-xxs font-semibold px-2 py-1 rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors">
               Revisar <FiChevronRight />
             </Link>
           )}
-          <button type="button" onClick={() => onUpdate(insight.id, 'done')} className="flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md bg-success/10 text-success hover:bg-success/20 transition-colors">
+          <button type="button" onClick={() => onUpdate(insight.id, 'done')} className="flex items-center gap-1 text-xxs font-semibold px-2 py-1 rounded-md bg-success/10 text-success hover:bg-success/20 transition-colors">
             <FiCheck /> Hecho
           </button>
         </div>
@@ -67,9 +68,9 @@ export function WidgetInsights({ widget }: WidgetInsightsProps) {
       widget={widget}
       loading={insights === null && insightsLoading}
       badge={list.length > 0 && (
-        <span className={`shrink-0 text-[11px] font-bold px-2 py-1 rounded-full ${urgent > 0 ? 'bg-danger/10 text-danger' : 'bg-bg-subtle/60 text-text-muted'}`}>
+        <Badge variant={urgent > 0 ? 'danger' : 'muted'} size="sm" className="shrink-0">
           {urgent > 0 ? `${urgent} urgentes de ${list.length}` : list.length}
-        </span>
+        </Badge>
       )}
     >
       {list.length === 0 ? (

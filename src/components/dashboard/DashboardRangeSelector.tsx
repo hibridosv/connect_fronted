@@ -64,7 +64,7 @@ export function DashboardRangeSelector({ range, period, loading, onChange, onRef
         </div>
       )}
 
-      <div className="lg:ml-auto flex items-center gap-2 text-[11px] text-text-muted font-medium">
+      <div className="lg:ml-auto flex items-center gap-2 text-xxs text-text-muted font-medium">
         {period && (
           <span>
             {period.from === period.to ? asDate(period.from) : `${asDate(period.from)} – ${asDate(period.to)}`}

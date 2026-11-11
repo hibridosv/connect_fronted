@@ -1,11 +1,11 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import manageRestaurantStore from '@/stores/restaurant/manageRestaurantStore';
 import useTempStorage from '@/stores/useTempStorage';
 import { useEffect, useState } from 'react';
-import { AiOutlineLoading } from 'react-icons/ai';
 import { FaPlus } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 
@@ -46,7 +46,7 @@ export function RestaurantProductModifiersModal({ isShow, onClose }: Props) {
     <li key={opt.id} className="flex justify-between items-center px-4 py-2.5 hover:bg-bg-subtle text-text-base text-sm transition-colors">
       <span>{opt.name}</span>
       {toggling
-        ? <AiOutlineLoading size={18} className="animate-spin text-text-muted" />
+        ? <Spinner size={18} color="muted" />
         : <FaPlus size={16} className="text-success clickeable" onClick={() => handleAdd(opt.id)} />
       }
     </li>
@@ -57,7 +57,7 @@ export function RestaurantProductModifiersModal({ isShow, onClose }: Props) {
     <li key={assigment.id} className="flex justify-between items-center px-4 py-2.5 hover:bg-danger/5 text-text-base text-sm transition-colors">
       <span>{assigment.option?.name}</span>
       {toggling
-        ? <AiOutlineLoading size={18} className="animate-spin text-text-muted" />
+        ? <Spinner size={18} color="muted" />
         : <MdDelete size={18} className="text-danger clickeable" onClick={() => handleRemove(assigment.id)} />
       }
     </li>

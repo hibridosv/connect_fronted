@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { NothingHere } from "@/components/NothingHere";
@@ -61,9 +62,9 @@ export function KardexDetailsModal(props: KardexDetailsModalProps) {
           <div>
             <div className="flex items-center gap-2 px-4 py-2.5 bg-bg-subtle/60 border-b border-bg-subtle">
               <span className="text-xs font-bold uppercase tracking-wider text-text-muted">Tipo de movimiento</span>
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">
+              <Badge>
                 {record?.description}
-              </span>
+              </Badge>
             </div>
             <div className="p-4">
               {getTemplate(record?.description)}

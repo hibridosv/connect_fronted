@@ -29,7 +29,7 @@ export function ChatbotConversationsList({ records, isLoading, selectedId, onSel
       {records.map((record) => (
         <li key={record.id}
           onClick={() => onSelect(record.id)}
-          className={`flex gap-3 px-3 py-2.5 clickeable transition-colors duration-150 hover:bg-bg-subtle ${selectedId === record.id ? 'bg-bg-subtle' : ''}`}>
+          className={`flex gap-3 px-3 py-2.5 clickeable-table transition-colors duration-150 hover:bg-bg-subtle ${selectedId === record.id ? 'bg-bg-subtle' : ''}`}>
           <div className="w-10 h-10 shrink-0 rounded-full bg-primary text-text-inverted flex items-center justify-center text-sm font-semibold">
             {initials(record.name)}
           </div>

@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { ShowImagesModal } from "@/components/restaurant/ShowImagesModal";
@@ -9,7 +10,6 @@ import useConfigStore from "@/stores/configStore";
 import useTempStorage from "@/stores/useTempStorage";
 import Image from "next/image";
 import { useState } from "react";
-import { AiOutlineLoading } from "react-icons/ai";
 import { DeleteButton } from "../button/DeleteButton";
 
 
@@ -60,7 +60,7 @@ export function OptionsVariantsModal(props: OptionsVariantsModalI) {
       </div>
       <span className="flex justify-center">
         {deleting || sending
-          ? <AiOutlineLoading size={18} className="animate-spin text-text-muted" />
+          ? <Spinner size={18} color="muted" />
           : <DeleteButton id={variant.id} urlFull={`restaurant/options/${variant.id}/variants`} disabled={deleting || sending || !canDelete} text="¿Estas seguro de eliminar esta variante?" onDeleteConfirm={deleteOption} onDelete={() => { onClose(); clearElement('optionSelected'); }} />
         }
       </span>

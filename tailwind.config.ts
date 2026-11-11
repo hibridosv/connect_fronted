@@ -9,6 +9,12 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Tamaños menores que text-xs (12px) para pantallas densas; solo cambian el font-size
+      fontSize: {
+        xxs: '11px',
+        '2xs': '10px',
+        '3xs': '9px',
+      },
       colors: {
         primary: 'rgb(var(--color-primary) / <alpha-value>)',
         secondary: 'rgb(var(--color-secondary) / <alpha-value>)',

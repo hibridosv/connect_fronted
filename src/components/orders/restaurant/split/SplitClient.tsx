@@ -17,7 +17,7 @@ export function SplitClient() {
           <div className="relative shrink-0 w-9 h-9 rounded-full flex items-center justify-center bg-primary text-text-inverted">
             <HiUser className="w-5 h-5" />
             <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-accent flex items-center justify-center ring-2 ring-bg-content">
-              <span className="text-[10px] font-bold text-text-inverted tabular-nums">{clientActive}</span>
+              <span className="text-2xs font-bold text-text-inverted tabular-nums">{clientActive}</span>
             </div>
           </div>
 

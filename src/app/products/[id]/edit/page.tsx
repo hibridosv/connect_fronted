@@ -99,7 +99,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
               { product && product.product_type == 1 && (<>
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="category_id" className="input-label clickeable" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
+                <label htmlFor="category_id" className="input-label clickeable-table" onClick={() => openModal('productCategories')}>Categoria (Click para agregar)</label>
                 <select id="category_id" {...register("category_id")} className="input-select">
                   {subCategories && subCategories.map((value: any) => {
                     return (
@@ -125,7 +125,7 @@ export default function Page({ params }: { params: { id: string } }) {
               </div>
 
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label className="input-label clickeable" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
+                <label className="input-label clickeable-table" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
                 <input type="hidden" {...register("provider_id")} />
                 <ContactSearch
                   param="suppliers"
@@ -138,7 +138,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             { activeConfig && activeConfig.includes('product-locations') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="location_id" className="input-label clickeable" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
+                <label htmlFor="location_id" className="input-label clickeable-table" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
                 <select id="location_id" {...register("location_id")} className="input-select">
                   {locations && locations.map((value: any) => {
                     return (
@@ -152,7 +152,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             { activeConfig && activeConfig.includes('product-brand') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                <label htmlFor="brand_id" className="input-label clickeable" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
+                <label htmlFor="brand_id" className="input-label clickeable-table" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
                 <select  id="brand_id" {...register("brand_id")} className="input-select">
                   {brands && brands.map((value: any) => {
                     return (

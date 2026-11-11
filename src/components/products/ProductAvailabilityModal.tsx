@@ -1,9 +1,9 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
 import { useGetRequest } from '@/hooks/request/useGetRequest';
 import { useEffect } from 'react';
-import { LuLoader } from 'react-icons/lu';
 import { MdStorefront } from 'react-icons/md';
 
 interface ProductAvailabilityModalProps {
@@ -44,7 +44,7 @@ export function ProductAvailabilityModal({ isShow, onClose, cod, description }: 
 
           {loading ? (
             <div className="flex flex-col items-center justify-center py-10 gap-3 text-text-muted">
-              <LuLoader size={28} className="animate-spin text-primary" />
+              <Spinner size={28} />
               <p className="text-sm">Consultando disponibilidad...</p>
             </div>
           ) : stock.length === 0 ? (

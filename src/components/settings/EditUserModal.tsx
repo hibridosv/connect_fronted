@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
 import { buildPhoneNumber, formatPhoneDisplay, PHONE_COUNTRY_CODES } from '@/lib/phone';
@@ -66,10 +67,10 @@ export function EditUserModal({ isShow, onClose, user, onSubmit }: EditUserModal
                     <FaWhatsapp size={16} />
                     {formatPhoneDisplay(currentPhone)}
                   </div>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-info/10 text-info text-[10px] font-semibold uppercase tracking-wide">
+                  <Badge variant="info" size="sm">
                     <FaRobot size={10} />
                     Usuario del chatbot
-                  </span>
+                  </Badge>
                 </div>
               ) : (
                 <div className="text-xs text-text-muted mb-2">Sin número de WhatsApp registrado</div>

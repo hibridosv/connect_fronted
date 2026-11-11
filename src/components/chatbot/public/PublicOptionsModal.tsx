@@ -43,7 +43,7 @@ export function PublicOptionsModal({ dish, money, onClose, onAdd }: PublicOption
               <div className="font-semibold mb-2">{group.name} {dish.options.filter((g) => g.name === group.name).length > 1 ? index + 1 : ''} <span className="text-xs text-danger">(elige una)</span></div>
               <div className="space-y-1">
                 {group.variants.map((variant) => (
-                  <label key={variant.id} className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg border clickeable ${chosen[group.assigment_id] === variant.id ? 'border-primary bg-primary/5' : 'border-bg-subtle'}`}>
+                  <label key={variant.id} className={`flex items-center justify-between gap-2 px-3 py-2 rounded-lg border clickeable-table ${chosen[group.assigment_id] === variant.id ? 'border-primary bg-primary/5' : 'border-bg-subtle'}`}>
                     <span className="flex items-center gap-2">
                       <input type="radio" name={group.assigment_id} checked={chosen[group.assigment_id] === variant.id}
                         onChange={() => setChosen({ ...chosen, [group.assigment_id]: variant.id })} />

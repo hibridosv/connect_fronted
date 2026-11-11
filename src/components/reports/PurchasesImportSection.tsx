@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { PurchasesImportResultModal } from "@/components/reports/PurchasesImportResultModal";
 import { postFormData } from "@/services/OtherServices";
 import purchasesStore from "@/stores/reports/purchasesStore";
@@ -145,9 +146,9 @@ export function PurchasesImportSection({ bookName, bookId, onUploadingChange, ha
             </p>
             <p className="text-xs text-text-muted mt-0.5">o haga clic para seleccionar</p>
           </div>
-          <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium transition-colors ${showCallToAction ? 'bg-primary/15 text-primary animate-pulse' : 'bg-bg-subtle text-text-muted'}`}>
+          <Badge variant={showCallToAction ? 'primary' : 'muted'} className={`transition-colors ${showCallToAction ? 'animate-pulse' : ''}`}>
             Solo archivos .json
-          </span>
+          </Badge>
           <input
             ref={fileInputRef}
             type="file"

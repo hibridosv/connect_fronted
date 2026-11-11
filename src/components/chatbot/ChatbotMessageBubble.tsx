@@ -17,7 +17,7 @@ export function ChatbotMessageBubble({ message }: { message: ChatbotMessage }) {
   return (
     <div className={`flex ${inbound ? 'justify-start' : 'justify-end'}`}>
       <div className={`max-w-[85%] md:max-w-[70%] rounded-lg px-3 py-2 shadow-sm ${bubbleStyle}`}>
-        {!inbound && <div className="text-[11px] font-semibold opacity-80 mb-0.5">{author}</div>}
+        {!inbound && <div className="text-xxs font-semibold opacity-80 mb-0.5">{author}</div>}
 
         {message.type === 2 && message.media_url && (
           <audio controls src={message.media_url} className="max-w-full mb-1" />
@@ -41,7 +41,7 @@ export function ChatbotMessageBubble({ message }: { message: ChatbotMessage }) {
             {message.body}
           </div>
         )}
-        <div className="text-[10px] opacity-70 text-right mt-1">{formatDateAsDMY(message.created_at)} {formatHourAsHM(message.created_at)}</div>
+        <div className="text-2xs opacity-70 text-right mt-1">{formatDateAsDMY(message.created_at)} {formatHourAsHM(message.created_at)}</div>
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ export function EconomicActivitySelect(props: EconomicActivitySelectProps) {
         onFocus={() => setIsOpen(true)}
         onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
         onKeyDown={(e) => {
-          if (e.key === "Escape") { setIsOpen(false); setSearch(""); }
+          if (e.key === "Escape") { e.stopPropagation(); setIsOpen(false); setSearch(""); }
           if (e.key === "Enter") { e.preventDefault(); if (results.length) handleSelect(results[0]); }
         }}
       />

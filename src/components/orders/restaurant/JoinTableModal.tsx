@@ -121,7 +121,7 @@ export function JoinTableModal(props: JoinTableModalI) {
                   <div className="flex justify-center pt-2">
                     <MdTableRestaurant className="w-7 h-7 text-secondary" />
                   </div>
-                  <p className="text-[11px] font-semibold text-text-base uppercase truncate text-center px-2 py-1.5" title={table.name}>
+                  <p className="text-xxs font-semibold text-text-base uppercase truncate text-center px-2 py-1.5" title={table.name}>
                     {table.name}
                   </p>
                 </div>

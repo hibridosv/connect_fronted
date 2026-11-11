@@ -74,7 +74,7 @@ export function AddDetailsModal(props: AddDetailsModalProps) {
                     {listItems}
                 </tbody>
                 </table>
-                <div className="font-bold uppercase text-right ml-4 text-subtle p-4">Total ingresado: {numberToMoney(total, system)}</div>
+                <div className="font-bold uppercase text-right ml-4 text-text-muted p-4">Total ingresado: {numberToMoney(total, system)}</div>
             </div>
       </Modal.Body>
       <Modal.Footer>

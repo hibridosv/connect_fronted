@@ -18,7 +18,7 @@ export function AutomationFlowIllustration() {
         }
       `}</style>
 
-      <p className="text-[10px] font-bold uppercase tracking-widest text-cyan-600/60 mb-4">
+      <p className="text-2xs font-bold uppercase tracking-widest text-cyan-600/60 mb-4">
         Flujo de procesamiento
       </p>
 
@@ -31,8 +31,8 @@ export function AutomationFlowIllustration() {
               style={{ background: 'rgb(148 163 184 / 0.2)', animation: 'softPing 2.8s ease-in-out infinite', animationDelay: '0s' }} />
             <LuBuilding2 size={19} style={{ color: 'rgb(100 116 139)' }} />
           </div>
-          <span className="text-[10px] font-bold text-slate-500 text-center leading-tight">Proveedor</span>
-          <span className="text-[9px] text-slate-400 text-center leading-tight">Emite factura</span>
+          <span className="text-2xs font-bold text-slate-500 text-center leading-tight">Proveedor</span>
+          <span className="text-3xs text-slate-400 text-center leading-tight">Emite factura</span>
         </div>
 
         <div className="flex-1 relative mx-1 mt-5 h-0.5 overflow-hidden"
@@ -50,8 +50,8 @@ export function AutomationFlowIllustration() {
               style={{ background: 'rgb(34 211 238 / 0.2)', animation: 'softPing 2.8s ease-in-out infinite', animationDelay: '0.6s' }} />
             <LuMail size={19} style={{ color: 'rgb(6 182 212)' }} />
           </div>
-          <span className="text-[10px] font-bold text-cyan-600 text-center leading-tight">Email</span>
-          <span className="text-[9px] text-cyan-500/70 text-center leading-tight">JSON adjunto</span>
+          <span className="text-2xs font-bold text-cyan-600 text-center leading-tight">Email</span>
+          <span className="text-3xs text-cyan-500/70 text-center leading-tight">JSON adjunto</span>
         </div>
 
         <div className="flex-1 relative mx-1 mt-5 h-0.5 overflow-hidden"
@@ -69,8 +69,8 @@ export function AutomationFlowIllustration() {
               style={{ background: 'rgb(96 165 250 / 0.2)', animation: 'softPing 2.8s ease-in-out infinite', animationDelay: '1.2s' }} />
             <LuFileJson size={19} style={{ color: 'rgb(59 130 246)' }} />
           </div>
-          <span className="text-[10px] font-bold text-blue-600 text-center leading-tight">Extracción</span>
-          <span className="text-[9px] text-blue-500/70 text-center leading-tight">Procesamiento</span>
+          <span className="text-2xs font-bold text-blue-600 text-center leading-tight">Extracción</span>
+          <span className="text-3xs text-blue-500/70 text-center leading-tight">Procesamiento</span>
         </div>
 
         <div className="flex-1 relative mx-1 mt-5 h-0.5 overflow-hidden"
@@ -88,8 +88,8 @@ export function AutomationFlowIllustration() {
               style={{ background: 'rgb(129 140 248 / 0.2)', animation: 'softPing 2.8s ease-in-out infinite', animationDelay: '1.8s' }} />
             <LuShieldCheck size={19} style={{ color: 'rgb(99 102 241)' }} />
           </div>
-          <span className="text-[10px] font-bold text-indigo-600 text-center leading-tight">Validación</span>
-          <span className="text-[9px] text-indigo-500/70 text-center leading-tight">Sin errores</span>
+          <span className="text-2xs font-bold text-indigo-600 text-center leading-tight">Validación</span>
+          <span className="text-3xs text-indigo-500/70 text-center leading-tight">Sin errores</span>
         </div>
 
         <div className="flex-1 relative mx-1 mt-5 h-0.5 overflow-hidden"
@@ -107,8 +107,8 @@ export function AutomationFlowIllustration() {
               style={{ background: 'rgb(52 211 153 / 0.2)', animation: 'softPing 2.8s ease-in-out infinite', animationDelay: '2.4s' }} />
             <LuBookOpen size={19} style={{ color: 'rgb(16 185 129)' }} />
           </div>
-          <span className="text-[10px] font-bold text-emerald-600 text-center leading-tight">Libro</span>
-          <span className="text-[9px] text-emerald-500/70 text-center leading-tight">Actualizado</span>
+          <span className="text-2xs font-bold text-emerald-600 text-center leading-tight">Libro</span>
+          <span className="text-3xs text-emerald-500/70 text-center leading-tight">Actualizado</span>
         </div>
 
       </div>
@@ -118,7 +118,7 @@ export function AutomationFlowIllustration() {
           <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 animate-ping opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
         </span>
-        <span className="text-[10px] text-text-muted">Sistema monitoreando su correo en tiempo real</span>
+        <span className="text-2xs text-text-muted">Sistema monitoreando su correo en tiempo real</span>
       </div>
     </div>
   );

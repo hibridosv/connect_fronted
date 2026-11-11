@@ -278,6 +278,16 @@ El componente `Modal` (`src/components/modal/Modal.tsx`) acepta un prop `size` p
 
 Subcomponentes: `Modal.Header`, `Modal.Body`, `Modal.Footer`.
 
+Mientras está abierto, `Modal` (igual que `DeleteModal`) usa `useModalBehavior` (`src/hooks/useModalBehavior.ts`): Escape cierra solo el modal de arriba y sigue la regla de `closeOnOverlayClick` (si el fondo no lo cierra, Escape tampoco; `DeleteModal` no se cierra mientras `isSending`), bloquea el scroll de la página, mueve el foco al modal (respeta un campo con `autoFocus`) y lo devuelve al cerrar. Un componente dentro de un modal que use Escape para lo suyo (cerrar un desplegable, cancelar una edición) llama `e.stopPropagation()` para no cerrar el modal.
+
+Indicador de carga: siempre `<Spinner />` (`src/components/Spinner.tsx`, `LuLoaderCircle` que gira). Props: `size` (número; por defecto `1em`), `color` (`primary` por defecto, `muted`, `info`, `danger`, `inverted` o `current` para heredar el color del texto, p. ej. dentro de un botón) y `className` para espaciado. No uses otros íconos de `react-icons` con `animate-spin`.
+
+Pastillas de estado, etiquetas y contadores: siempre `<Badge>` (`src/components/Badge.tsx`), con `variant` (`primary` por defecto, `success`, `danger`, `warning`, `info`, `accent`, `muted`) y `size` (`md` = `text-xs`, por defecto; `sm` = 10px en mayúsculas para tarjetas densas). No armes pastillas con `rounded-full px-2 bg-x/10` a mano. `Indicator` (punto de color + texto, sin fondo) sigue siendo el de los estados en columnas de tablas.
+
+Tamaños de letra menores que `text-xs` (12px): `text-xxs` (11px), `text-2xs` (10px) y `text-3xs` (9px), definidos en `tailwind.config.ts`. No uses `text-[Npx]`.
+
+`.clickeable` (encoge al 75 %) es para botones, íconos y tarjetas; filas de listas o buscadores y labels a lo ancho usan `.clickeable-table` (95 %).
+
 ### 9. Sistema de Botones
 
 El componente `Button` (`src/components/button/`) utiliza un sistema de **presets** con 30+ variantes predefinidas:

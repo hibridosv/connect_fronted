@@ -1,7 +1,8 @@
 # Mejoras de estilos y pantallas en pulse
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
-Estado: por implementar
+Estado: en curso en `feature/mejoras-estilos`. Hecho: E1, E2, E3 (salvo los `.button-*` de color, ver E3), A2, C1, C2,
+C3 (sin L5) y C4.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
 `THEME_GUIDE.md`. El patrón: colores solo con tokens del tema (`bg-bg-content`, `text-text-base`, `text-primary`,
@@ -64,6 +65,12 @@ Tailwind las ignora, así que el elemento queda sin color:
 - `.input-radio` tiene `dark:` y `#3b71ca` fijo (heredado de TW Elements); la app no tiene modo oscuro. Simplificar con
   `border-bg-subtle checked:border-primary checked:after:bg-primary`.
 
+**Hecho (2026-11-11):** `.input-label`, `.status-*`, `.button-href`, `.button-options-sales` e `.input-radio` usan
+tokens; se borraron `.button-green-dark` y `.button-disabled` (sin uso). **Pendiente:** `.button-grey/lime/cyan/green/red`
+siguen con colores fijos. Se usan en los botones de acción de venta (`OrderButtons`, `RestaurantButtons`, `PayButton`,
+`SaveButton`, `PrintOrderButton`), en `ChatbotThread` y en 4 páginas con `button-green`; pasarlos a `Button` con preset
+junto con A3, revisando cómo queda la pantalla de venta.
+
 ---
 
 ## 2. Colores fijos en componentes (E4)
@@ -111,11 +118,28 @@ Hay 26 pastillas de estado armadas a mano en 20 archivos (`rounded-full px-2 py-
 → Un `src/components/StatusBadge.tsx` genérico (`variant: success | danger | warning | info | muted`, con
 `bg-{variant}/10 text-{variant}`) y usarlo en cortes, cajas, documentos, transferencias, créditos y órdenes.
 
+**Hecho (2026-11-11):** se llamó `Badge` (`src/components/Badge.tsx`) porque cubre estados, etiquetas y contadores
+(decisión del usuario). `variant`: `primary`/`success`/`danger`/`warning`/`info`/`accent`/`muted`; `size`: `md`
+(`text-xs`, por defecto) y `sm` (10px en mayúsculas), las dos que eligió el usuario. Se reemplazaron 24 pastillas en
+19 archivos, entre ellas las de estado del corte (`CutDetailsModal`, antes con `bg-red-100`...), "Exento" del
+contacto (antes `amber` fijo, ahora `warning`), "IA" y urgentes del dashboard, la variación % de `WidgetSeries`, el
+ajuste de inventario y las de compras. Fuera quedan los avisos en caja (`div p-3 bg-warning/10`), los botones con
+fondo tenue, los chips con botón de quitar (`FieldOptionsTagsInput`) y los chips con ícono de
+`AddProductForm`/`RemoveProductsForm`. `Indicator` (punto + texto) se mantiene para columnas de tablas.
+
 ### C2 · Un solo spinner
 Hay seis variantes: `FaSpinner` (27), `LuLoader` (25), `LuLoaderCircle` (18), `AiOutlineLoading` (11),
 `ImSpinner5` (8) y `react-loader-spinner` (`Loader.tsx`, una dependencia solo para eso).
 → Un `<Spinner size />` con `LuLoaderCircle animate-spin text-primary`, y quitar `react-loader-spinner` del
 `package.json` si `Loader.tsx` pasa a usarlo.
+
+**Hecho (2026-11-11):** `src/components/Spinner.tsx` (`size`, `color`: `primary`/`muted`/`info`/`danger`/`inverted`/
+`current`, `className`). Se reemplazaron los usos con `animate-spin` de las 5 variantes de `react-icons`, incluidos los
+presets de `Button` (`color="current"`). Decisiones del usuario: el spinner de borrar en las tablas de caja y de
+ingreso/descargo pasa del rojo fijo a `primary`; `Loader.tsx` se borró (sus 5 usos usan `Spinner`) y se quitó
+`react-loader-spinner` (con `styled-components` y `@emotion/*`, que solo traía esa dependencia). En
+`annexes/downloads` quedan `FaSpinner` (ícono fijo del estado "Procesando") y `LuLoader` sin giro: no son indicadores
+de carga.
 
 ### C3 · `Modal` y `DeleteModal`
 - `DeleteModal` (`src/components/DeleteModal.tsx:18,25`) usa `z-10`: el Navbar (`sticky z-50`) queda por encima del
@@ -125,10 +149,23 @@ Hay seis variantes: `FaSpinner` (27), `LuLoader` (25), `LuLoaderCircle` (18), `A
   scroll del fondo. Agregar las cuatro cosas en el componente base.
 - Ver L5 de la auditoría: el default `closeOnOverlayClick = true` hace perder formularios.
 
+**Hecho (2026-11-11):** hook `src/hooks/useModalBehavior.ts`, usado por `Modal` y `DeleteModal`: Escape cierra solo el
+modal de arriba y sigue `closeOnOverlayClick` (decisión del usuario), bloqueo del scroll, foco al abrir y devolución al
+cerrar. `Modal` lleva `role="dialog"`, `aria-modal` y `aria-label`. `DeleteModal` pasa a `z-50`, enfoca "No, Cancelar"
+y no se cierra con Escape mientras `isSending`. Los 4 componentes con su propio Escape (`CatalogSearchSelect`,
+`EconomicActivitySelect`, `ManageCategories`, `ManageOptions`) llaman `stopPropagation`. L5 queda para la auditoría
+(decisión del usuario); `DeleteModal` no se rehízo sobre `Modal`.
+
 ### C4 · Tamaños de letra arbitrarios
 119 usos de `text-[Npx]` (`text-[11px]`, `text-[12px]`, `text-[13px]`...). La mayoría equivalen a `text-xs` (12 px)
 o `text-sm` (14 px). Dejar `text-[11px]` solo donde haga falta (pantallas densas como la de despacho) y unificar el
 resto.
+
+**Corrección y hecho (2026-11-11):** la mayoría no equivalía a `text-xs`: eran 63 `[10px]`, 40 `[11px]`, 12 `[9px]`,
+3 `[12px]` y 1 `[13px]`. Por decisión del usuario se agregaron a `tailwind.config.ts` `text-xxs` (11px), `text-2xs`
+(10px) y `text-3xs` (9px), que solo fijan el `font-size` y se ven igual, y se reemplazaron todos los usos (también en
+`.button-options-sales`). `[12px]` pasó a `text-xs` y el `[13px]` del nombre de la mesa (`TableCard`) también a
+`text-xs`. Quedan `text-[7rem]`/`[9rem]` de las páginas de error.
 
 ---
 
@@ -184,6 +221,13 @@ teclado ni los anuncia un lector de pantalla. Ejemplos: el menú "Opciones" de v
 ### A2 · `.clickeable` reduce el elemento al 75 %
 `src/styles/globals.css:128` (`active:scale-75`) se aplica a botones grandes (p. ej. "Opciones" en venta) y el salto se
 nota mucho. `.clickeable-table` usa `scale-95`. Bajar `.clickeable` a `active:scale-95`.
+
+**Hecho (2026-11-11), distinto a lo propuesto:** el usuario decidió conservar `.clickeable` (75 %) en botones, íconos y
+tarjetas (incluidas mesas, delivery, imágenes de opciones y avatares de clientes, y los botones de venta). Se pasaron a
+`.clickeable-table` solo las filas de listas y buscadores (búsqueda de productos, `LinksList`/`LiComponent`,
+sucursales, conversaciones del chatbot, historial, roles, categorías, filas de la pantalla de cocina, opciones del
+pedido público, `SelectBranch`, descargas) y los 10 labels "(Click para agregar)". Los ítems de `.button-options-sales`,
+el resumen de venta cobrada y el selector de imagen de restaurante/nuevo se quedan con `.clickeable`.
 
 ### A3 · Botones nativos con estilos sueltos
 156 `<button>` nativos en 91 archivos frente a 280 `<Button>`. Muchos son correctos (tabs, chips, ítems de menú), pero

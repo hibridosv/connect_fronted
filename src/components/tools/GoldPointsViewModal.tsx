@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -8,7 +9,6 @@ import useConfigStore from '@/stores/configStore';
 import goldPointsStore from '@/stores/tools/goldPointsStore';
 import { useEffect } from 'react';
 import { FaDownload } from 'react-icons/fa';
-import { LuLoaderCircle } from 'react-icons/lu';
 import { ButtonDownloadGet } from '../button/button-download-get';
 import { commissionTypeMap } from './utils';
 
@@ -56,7 +56,7 @@ export function GoldPointsViewModal({ isShow, onClose, record, onAction }: GoldP
       <Modal.Body>
         {saving ? (
           <div className="flex justify-center py-10">
-            <LuLoaderCircle className="animate-spin text-primary" size={48} />
+            <Spinner size={48} />
           </div>
         ) : (
           <div>

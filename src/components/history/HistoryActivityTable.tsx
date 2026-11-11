@@ -24,7 +24,7 @@ export function HistoryActivityTable(props: HistoryActivityTableI) {
   }
 
   const listItems = records.map((record: ActivityLog) => (
-    <tr key={record.id} onClick={() => setSelected(record)} className="clickeable transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
+    <tr key={record.id} onClick={() => setSelected(record)} className="clickeable-table transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base">
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary hover:underline">
         { formatDate(record.created_at) } { formatHourAsHM(record.created_at) }
       </td>

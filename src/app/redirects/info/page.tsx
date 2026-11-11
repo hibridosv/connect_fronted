@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -238,7 +239,7 @@ export default function InfoPage() {
           <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-info/10 border border-info/25 mb-3 transition-all duration-500 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
             <span className="w-1.5 h-1.5 rounded-full bg-info animate-pulse" />
             <span className="text-xs font-semibold text-info tracking-widest uppercase">Novedades del sistema</span>
-            <span className="ml-1 text-[10px] font-bold text-info/60 bg-info/10 rounded-full px-1.5 py-0.5">{newFeatures.length}</span>
+            <Badge variant="info" size="sm" className="ml-1">{newFeatures.length}</Badge>
           </div>
 
           <div className={`mx-auto mb-2 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}>
@@ -318,7 +319,7 @@ export default function InfoPage() {
           </div>
         </div>
 
-        <p className={`mt-4 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`mt-4 text-2xs font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           Estado &middot; Informativo &middot; Actualización disponible
         </p>
       </div>

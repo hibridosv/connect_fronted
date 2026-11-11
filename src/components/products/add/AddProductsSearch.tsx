@@ -38,7 +38,7 @@ export function AddProductsSearch() {
                         return (
                           <li 
                             key={item.id} onClick={() => handleSelectProduct(item)} >
-                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
+                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable-table`}>
                                 <span className="text-text-base">
                                 {item.cod} | 
                                 {item.description} 

@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -8,7 +9,6 @@ import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { LuLoaderCircle } from 'react-icons/lu';
 
 interface ChangeTenantModalProps {
   isShow: boolean;
@@ -65,7 +65,7 @@ export function ChangeTenantModal({ isShow, onClose, tenantSelect }: ChangeTenan
       <Modal.Body>
         {redirecting ? (
           <div className="flex flex-col items-center justify-center py-8">
-            <LuLoaderCircle className="animate-spin text-primary" size={40} />
+            <Spinner size={40} />
             <p className="mt-3 text-text-muted text-sm">Cargando datos...</p>
           </div>
         ) : (

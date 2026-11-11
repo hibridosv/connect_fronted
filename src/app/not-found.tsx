@@ -260,7 +260,7 @@ export default function NotFound() {
         </div>
 
         {/* Footer */}
-        <p className={`mt-8 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`mt-8 text-2xs font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           HTTP 404 &middot; Resource not found
         </p>
       </div>

@@ -30,18 +30,18 @@ export function WidgetForecast({ widget, data, loading, currency }: WidgetForeca
     <WidgetCard widget={widget} loading={loading || !data} error={data?.error}>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Vendido en el mes</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Vendido en el mes</p>
           <p className="text-xl font-extrabold text-text-base tabular-nums mt-1">{money(data?.value)}</p>
-          <div className="text-[11px] font-semibold mt-1">{trend(data?.percent, 'vs los mismos días del mes pasado')}</div>
+          <div className="text-xxs font-semibold mt-1">{trend(data?.percent, 'vs los mismos días del mes pasado')}</div>
         </div>
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Cierre estimado</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Cierre estimado</p>
           <p className="text-xl font-extrabold text-text-base tabular-nums mt-1">{money(extra.projected)}</p>
-          <div className="text-[11px] font-semibold mt-1">{trend(extra.projected_percent, `vs ${money(extra.last_month)} del mes pasado`)}</div>
+          <div className="text-xxs font-semibold mt-1">{trend(extra.projected_percent, `vs ${money(extra.last_month)} del mes pasado`)}</div>
         </div>
       </div>
       <div className="mt-4">
-        <div className="flex justify-between text-[11px] text-text-muted font-medium mb-1">
+        <div className="flex justify-between text-xxs text-text-muted font-medium mb-1">
           <span>Día {extra.days_elapsed ?? 0} de {extra.days_in_month ?? 0}</span>
           <span>{progress}%</span>
         </div>

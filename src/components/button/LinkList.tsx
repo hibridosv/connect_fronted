@@ -1,8 +1,9 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { get } from '@/services/httpService';
 import { useState } from 'react';
-import { LuDownload, LuLoader } from 'react-icons/lu';
+import { LuDownload } from 'react-icons/lu';
 
 export interface LinkUrls {
   name: string;
@@ -33,13 +34,13 @@ function LinkItem({ item }: { item: LinkUrls }) {
     }
   };
 
-  const commonClasses = 'flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 w-full text-left clickeable';
+  const commonClasses = 'flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 w-full text-left clickeable-table';
 
   return (
     <li>
       <button type="button" onClick={handleClick} disabled={loading} className={commonClasses}>
         <span className="font-medium text-text-base">{item.name}</span>
-        {loading ? <LuLoader className="animate-spin text-text-muted" size={16} /> : <LuDownload className="text-text-muted" size={16} />}
+        {loading ? <Spinner size={16} color="muted" /> : <LuDownload className="text-text-muted" size={16} />}
       </button>
     </li>
   );
@@ -61,7 +62,7 @@ export function LinksList(props: LinksListProps) {
             return (
               <li key={key} className="flex justify-between items-center p-3">
                 <span className="font-medium text-text-muted">{item.name}</span>
-                <LuLoader className="animate-spin text-text-muted" size={16} />
+                <Spinner size={16} color="muted" />
               </li>
             );
           }

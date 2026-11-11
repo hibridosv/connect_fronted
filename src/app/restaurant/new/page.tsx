@@ -60,7 +60,7 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="category_id" className="input-label clickeable" onClick={() => { openModal("restaurantCategory") }}>Categoria (Click para agregar)</label>
+                  <label htmlFor="category_id" className="input-label clickeable-table" onClick={() => { openModal("restaurantCategory") }}>Categoria (Click para agregar)</label>
                   {categories && categories.length > 0 ?
                   <select defaultValue={categories[0] ? categories[0].id : []} id="category_id" {...register("category_id")} className="input-select">
                     {categories?.map((value: any) => {
@@ -73,7 +73,7 @@ export default function Page() {
 
                 {options?.length > 0 ?
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="options" className="input-label clickeable" onClick={() => { openModal("restaurantOptionsAdd") }}>Modificadores (Click para agregar)</label>
+                  <label htmlFor="options" className="input-label clickeable-table" onClick={() => { openModal("restaurantOptionsAdd") }}>Modificadores (Click para agregar)</label>
                   {options?.map((value: any) => {
                     return (
                       <div key={value.id} className="flex items-center gap-2 uppercase mt-2">

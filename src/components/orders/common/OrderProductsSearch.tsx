@@ -46,7 +46,7 @@ export function OrderProductsSearch() {
                     {products.data.map((item: any) => {
                         return (
                            <li key={item.id} onClick={sending ? undefined : () => handleSelectProduct(item)}>
-                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 ${ !sending ? 'clickeable' : '' }`}>
+                            <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 ${ !sending ? 'clickeable-table' : '' }`}>
                               <span className="text-text-base">
                                 {item.cod} | 
                                 {item.description} 

@@ -1,3 +1,6 @@
+import { useModalBehavior } from "@/hooks/useModalBehavior";
+import { useRef } from "react";
+
 export interface DeleteModalProps {
   text?: string;
   onDelete: (id: any) => void;
@@ -11,18 +14,22 @@ export interface DeleteModalProps {
 export function DeleteModal(props: DeleteModalProps) {
   const { onDelete,  onClose, text = "Esta seguro que desea eliminar este elemento?", textDelete = "Si, Eliminar", isShow, isSending = false, header = "Eliminar Elemento" } = props;
 
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  // Escape equivale a "No, Cancelar"; mientras borra no se cierra
+  useModalBehavior(isShow, onClose, !isSending, cancelRef);
+
   if (!isShow) return null;
-  
+
   return (
     <div
-      className="relative z-10"
+      className="relative z-50"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
     >
       <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
 
-      <div className="fixed inset-0 z-10 overflow-y-auto">
+      <div className="fixed inset-0 z-50 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <div className="relative transform overflow-hidden rounded-lg bg-bg-content text-left shadow-lg transition-all sm:my-8 sm:w-full sm:max-w-lg">
             <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -60,6 +67,7 @@ export function DeleteModal(props: DeleteModalProps) {
               </button>
 
               <button
+                ref={cancelRef}
                 type="button"
                 className="mt-3 inline-flex w-full justify-center rounded-md border border-bg-subtle bg-bg-content px-4 py-2 text-sm font-medium text-text-muted shadow-sm hover:bg-bg-subtle focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 sm:mt-0 sm:w-auto"
                 onClick={onClose} disabled={isSending} > No, Cancelar

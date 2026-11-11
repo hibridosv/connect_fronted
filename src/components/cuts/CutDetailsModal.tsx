@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@/components/Badge";
 import { formatDate, formatTime } from "@/lib/date-formats";
 import { isRestaurant, numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
@@ -24,10 +25,10 @@ export function CutDetailsModal(props: CutDetailsModalProps) {
 
     const setStatus =(status: number)=> {
       switch (status) {
-        case 0: return <span className="px-2 py-1 rounded-full bg-red-100 text-red-800 text-xs font-medium">Eliminado</span>;
-        case 1: return <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium">Abierto</span>;
-        case 2: return <span className="px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">Cerrado</span>;
-        default: return <span className="px-2 py-1 rounded-full bg-gray-100 text-gray-800 text-xs font-medium">Desconocido</span>;
+        case 0: return <Badge variant="danger">Eliminado</Badge>;
+        case 1: return <Badge variant="info">Abierto</Badge>;
+        case 2: return <Badge variant="success">Cerrado</Badge>;
+        default: return <Badge variant="muted">Desconocido</Badge>;
       }
     }
 

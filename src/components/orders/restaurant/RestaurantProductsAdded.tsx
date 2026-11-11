@@ -84,7 +84,7 @@ export function RestaurantProductsAdded({ order } : any) {
                 {
                   isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? (
                     <CodeRequestGuard permission="code-request-delete-product" onAuthorized={() => del(order.id, record.cod)}>
-                      <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-grey-800 clickeable"/>
+                      <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-text-muted hover:text-danger clickeable"/>
                     </CodeRequestGuard>) : (
                     <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-red-800 clickeable"/>
                   )

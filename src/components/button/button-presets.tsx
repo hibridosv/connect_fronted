@@ -1,7 +1,7 @@
+import { Spinner } from "@/components/Spinner";
 import { AiFillPrinter, AiFillSave, AiOutlineClose, AiOutlineSend } from "react-icons/ai"
 import { GiCancel } from "react-icons/gi"
 import { RiCheckDoubleFill } from "react-icons/ri"
-import { ImSpinner5 } from "react-icons/im"
 import { AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
 import { IoMdAddCircle } from "react-icons/io"
 import { FaEdit, FaInfoCircle } from "react-icons/fa";
@@ -98,9 +98,9 @@ export const iconPresets = {
   add: <IoMdAddCircle className="mr-3"/>,
   send: <AiOutlineSend className="mr-3"/>,
 
-  saving: <ImSpinner5 className="mr-3 animate-spin" />,
-  submitting: <ImSpinner5 className="mr-3 animate-spin" />,
-  loading: <ImSpinner5 className="mr-3 animate-spin" />,
+  saving: <Spinner color="current" className="mr-3" />,
+  submitting: <Spinner color="current" className="mr-3" />,
+  loading: <Spinner color="current" className="mr-3" />,
 
   link: "",
   smallClose: <AiOutlineCloseCircle color="red" size={25} />,

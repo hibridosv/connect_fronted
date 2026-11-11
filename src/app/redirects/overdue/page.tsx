@@ -218,7 +218,7 @@ export default function OverduePage() {
           </div>
         </div>
 
-        <p className={`mt-8 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`mt-8 text-2xs font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           Estado &middot; Pendiente &middot; Facturación electrónica
         </p>
       </div>

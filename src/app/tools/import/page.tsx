@@ -1,9 +1,9 @@
 "use client"
+import { Spinner } from "@/components/Spinner";
 
 import { useState } from "react"
 import { Button, Preset } from "@/components/button/button";
 import { Alert } from "@/components/Alert/Alert";
-import { FaSpinner } from "react-icons/fa";
 import { ViewTitle } from "@/components/ViewTitle"
 import { postFormData } from "@/services/OtherServices"
 import { getErrorMessage } from "@/lib/httpError"
@@ -50,7 +50,7 @@ export default function Page() {
             loading &&
             <div className="flex flex-col items-center">
             <Alert type="info" text="En este momento se estan importanto los productos, por favor no salga de esta pagina y espere que el proceso haya finalizado, es probable que esto tarde unos pocos minutos"  className="m-4"  />
-            <FaSpinner size={24} className="animate-spin" />
+            <Spinner size={24} color="current" />
             </div>
           }
           {

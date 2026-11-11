@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import { clearTenantStorage } from "@/lib/clearTenantStorage";
@@ -10,7 +11,6 @@ import { useEffect, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
-import { LuLoader } from "react-icons/lu";
 
 export default function Home() {
   const router = useRouter();
@@ -216,7 +216,7 @@ export default function Home() {
                 <div className="text-center animate-slide-up">
                   <p className="text-lg font-semibold text-text-base">{message}</p>
                   <div className="flex items-center justify-center gap-2 mt-3">
-                    <LuLoader className="animate-spin text-primary" size={14} />
+                    <Spinner size={14} />
                     <p className="text-sm text-text-muted">Preparando tu espacio de trabajo...</p>
                   </div>
                 </div>
@@ -287,12 +287,12 @@ export default function Home() {
                   className={`group w-full flex justify-center items-center gap-2.5 py-3.5 px-4 rounded-xl text-sm font-semibold text-text-inverted shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-xl ${!custom ? 'bg-primary hover:bg-primary/90 focus:ring-primary shadow-primary/25 hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-offset-2' : ''}`}
                   style={custom ? { backgroundColor: c.panel, boxShadow: `0 10px 25px ${c.panel}40` } : undefined}
                 >
-                  {loading ? <LuLoader className="animate-spin" size={18} /> : <BiSave size={18} className="transition-transform duration-300 group-hover:scale-110" />}
+                  {loading ? <Spinner size={18} color="current" /> : <BiSave size={18} className="transition-transform duration-300 group-hover:scale-110" />}
                   {loading ? 'Verificando...' : 'Iniciar Sesión'}
                 </button>
                 {message && !redirecting && (
                   <div className="flex items-center justify-center gap-2 mt-4 animate-fade-in">
-                    <LuLoader className="animate-spin text-primary" size={14} />
+                    <Spinner size={14} />
                     <span className="text-sm text-text-muted">{message}</span>
                   </div>
                 )}

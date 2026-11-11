@@ -45,7 +45,7 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
                             {products.data.map((item: any) => {
                                 return (
                                     <li key={item.id} onClick={() => handleSelected(item)}>
-                                        <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
+                                        <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable-table`}>
                                             <span className="text-text-base text-left">
                                                 {item.cod} | 
                                                 {item.description} 

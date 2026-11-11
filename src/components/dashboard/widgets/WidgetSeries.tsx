@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import { formatDashboardValue } from '@/hooks/dashboard/useDashboardWidgetsLogic';
 import { DashboardWidget, DashboardWidgetData } from '@/interfaces/dashboard';
@@ -90,12 +91,12 @@ export function WidgetSeries({ widget, data, loading, currency }: WidgetSeriesPr
         <div className="flex items-end justify-between gap-2 mb-2">
           <div className="min-w-0">
             <p className="text-xl font-black text-text-base leading-none">{formatDashboardValue(total, widget.format, currency)}</p>
-            {previousTotal !== null && <p className="text-[11px] text-text-muted font-medium mt-1">Período anterior: {formatDashboardValue(previousTotal, widget.format, currency)}</p>}
+            {previousTotal !== null && <p className="text-xxs text-text-muted font-medium mt-1">Período anterior: {formatDashboardValue(previousTotal, widget.format, currency)}</p>}
           </div>
           {percent !== null && (
-            <span className={`shrink-0 text-[11px] font-bold px-2 py-0.5 rounded-full ${percent >= 0 ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}`}>
+            <Badge variant={percent >= 0 ? 'success' : 'danger'} size="sm" className="shrink-0">
               {percent >= 0 ? '+' : ''}{percent.toFixed(1)}%
-            </span>
+            </Badge>
           )}
         </div>
       )}

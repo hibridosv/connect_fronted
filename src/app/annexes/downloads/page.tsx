@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useDownloadsLogic } from "@/hooks/reports/useDownloadsLogic";
 import { DateTime } from "luxon";
@@ -153,7 +154,7 @@ export default function Page() {
                           href={`${API_URL}zip/download/${download.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-bg-subtle/60 transition-colors clickeable group"
+                          className="flex items-center gap-3 px-4 py-3 hover:bg-bg-subtle/60 transition-colors clickeable-table group"
                         >
                           <div className="shrink-0 w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                             <LuFileJson size={18} className="text-primary/70" />
@@ -175,10 +176,10 @@ export default function Page() {
                       <li key={download.id}>
                         <button
                           onClick={creating ? undefined : () => handleGet('downloads')}
-                          className="w-full flex justify-between items-center px-4 py-3 hover:bg-warning/5 text-warning text-sm transition-colors clickeable"
+                          className="w-full flex justify-between items-center px-4 py-3 hover:bg-warning/5 text-warning text-sm transition-colors clickeable-table"
                         >
                           <span>Se está procesando el archivo (click para actualizar)</span>
-                          <FaSpinner className="animate-spin" size={18} />
+                          <Spinner size={18} color="current" />
                         </button>
                       </li>
                     )

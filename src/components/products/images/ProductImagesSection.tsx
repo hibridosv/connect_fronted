@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { DeleteModal } from '@/components/DeleteModal';
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -8,7 +9,6 @@ import productImagesStore from '@/stores/products/productImagesStore';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { LuLoader } from 'react-icons/lu';
 import { MdAddPhotoAlternate, MdDeleteOutline, MdZoomIn } from 'react-icons/md';
 
 interface ProductImagesSectionProps {
@@ -59,7 +59,7 @@ export function ProductImagesSection({ productId }: ProductImagesSectionProps) {
 
         {loading ? (
           <div className="flex items-center justify-center py-6 gap-2 text-text-muted">
-            <LuLoader className="animate-spin" size={18} />
+            <Spinner size={18} color="current" />
             <span className="text-sm">Cargando imágenes...</span>
           </div>
         ) : images.length === 0 ? (
@@ -101,7 +101,7 @@ export function ProductImagesSection({ productId }: ProductImagesSectionProps) {
                 </div>
                 {image.description && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-1.5 py-0.5">
-                    <p className="text-white text-[10px] truncate">{image.description}</p>
+                    <p className="text-white text-2xs truncate">{image.description}</p>
                   </div>
                 )}
               </div>

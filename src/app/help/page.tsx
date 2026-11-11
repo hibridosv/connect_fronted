@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import { isProducts, isRestaurant } from '@/lib/utils';
 import useConfigStore from '@/stores/configStore';
@@ -67,7 +68,7 @@ function GuideSteps({ guide }: { guide: HelpGuide }) {
       <ol className="space-y-2">
         {guide.steps.map((step, i) => (
           <li key={i} className="flex items-start gap-2.5 text-sm text-text-base">
-            <span className="shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary text-[11px] font-bold flex items-center justify-center mt-0.5">
+            <span className="shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary text-xxs font-bold flex items-center justify-center mt-0.5">
               {i + 1}
             </span>
             <span className="leading-relaxed">{step}</span>
@@ -93,9 +94,9 @@ function SubsectionCard({ sub, defaultOpen }: { sub: HelpSubsection; defaultOpen
           <span className="text-primary shrink-0">{sub.icon}</span>
           <span className="font-bold text-text-base text-sm">{sub.title}</span>
           {sub.guides && sub.guides.length > 0 && (
-            <span className="hidden sm:inline text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full shrink-0">
+            <Badge size="sm" className="hidden sm:inline-flex shrink-0">
               {sub.guides.length} {sub.guides.length === 1 ? 'guía' : 'guías'}
-            </span>
+            </Badge>
           )}
         </div>
         <LuChevronDown
@@ -148,7 +149,7 @@ function SubsectionCard({ sub, defaultOpen }: { sub: HelpSubsection; defaultOpen
 
           {sub.tips && sub.tips.length > 0 && (
             <div className="bg-warning/5 border border-warning/20 rounded-lg px-3 py-2.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-warning mb-1.5 flex items-center gap-1.5">
+              <p className="text-2xs font-bold uppercase tracking-wider text-warning mb-1.5 flex items-center gap-1.5">
                 <LuLightbulb size={11} /> Consejos
               </p>
               <ul className="space-y-1">
@@ -161,7 +162,7 @@ function SubsectionCard({ sub, defaultOpen }: { sub: HelpSubsection; defaultOpen
 
           {sub.warnings && sub.warnings.length > 0 && (
             <div className="bg-danger/5 border border-danger/20 rounded-lg px-3 py-2.5">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-danger mb-1.5 flex items-center gap-1.5">
+              <p className="text-2xs font-bold uppercase tracking-wider text-danger mb-1.5 flex items-center gap-1.5">
                 <LuCircleAlert size={11} /> Advertencias
               </p>
               <ul className="space-y-1">
@@ -279,7 +280,7 @@ export default function HelpPage() {
         >
           <div className="md:sticky md:top-16 bg-bg-content border border-bg-subtle rounded-lg overflow-hidden">
             <div className="px-3 py-2.5 border-b border-bg-subtle flex items-center justify-between">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Módulos</p>
+              <p className="text-2xs font-bold uppercase tracking-widest text-text-muted">Módulos</p>
               <button
                 className="md:hidden text-text-muted hover:text-danger"
                 onClick={() => setSidebarOpen(false)}

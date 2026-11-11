@@ -44,7 +44,7 @@ export function WidgetKpi({ widget, data, loading, currency }: WidgetKpiProps) {
           <Icon className="text-primary" style={{ width: '18px', height: '18px' }} />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none mb-1 truncate">{widget.title}</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest leading-none mb-1 truncate">{widget.title}</p>
           {loading || !data ? (
             <div className="h-5 bg-bg-subtle rounded w-4/5 animate-pulse" />
           ) : data.error ? (
@@ -57,7 +57,7 @@ export function WidgetKpi({ widget, data, loading, currency }: WidgetKpiProps) {
         </div>
       </div>
       {!loading && data && !data.error && (
-        <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold min-h-[1rem]">
+        <div className="mt-2 flex items-center gap-1.5 text-xxs font-semibold min-h-[1rem]">
           {hasPercent && (
             <span className={`flex items-center gap-0.5 ${good ? 'text-success' : 'text-danger'}`}>
               {data.upward ? <FiArrowUpRight /> : <FiArrowDownRight />}

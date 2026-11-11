@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { NothingHere } from '@/components/NothingHere';
 import qrReaderStore from '@/stores/annexes/qrReaderStore';
 import { useEffect, useRef, useState } from 'react';
@@ -153,7 +154,7 @@ export function QrInvoiceView() {
             </div>
             <button
               onClick={clearInvoice}
-              className="shrink-0 flex items-center gap-1 text-[10px] font-semibold text-text-muted hover:text-danger transition-colors clickeable"
+              className="shrink-0 flex items-center gap-1 text-2xs font-semibold text-text-muted hover:text-danger transition-colors clickeable"
               title="Limpiar factura actual"
             >
               <LuX size={12} />
@@ -169,9 +170,9 @@ export function QrInvoiceView() {
             <span className="text-xs font-bold uppercase text-text-muted tracking-widest">Tipo de documento</span>
             <p className="text-base font-extrabold text-primary mt-1">{dteLabel}</p>
             {!isProduccion && (
-              <span className="inline-flex items-center mt-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-danger/10 text-danger">
+              <Badge variant="danger" className="mt-1">
                 {ambienteLabel}
-              </span>
+              </Badge>
             )}
           </div>
           <div className="flex flex-col gap-1 sm:items-end text-xs">

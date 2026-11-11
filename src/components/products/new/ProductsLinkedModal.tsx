@@ -1,3 +1,4 @@
+import { Badge } from "@/components/Badge";
 import { Button, Preset } from "@/components/button/button";
 import { LiComponent } from "@/components/button/LiComponent";
 import Modal from "@/components/modal/Modal";
@@ -88,9 +89,9 @@ export function ProductsLinkedModal(props: ProductsLinkedModalProps) {
             <span className="text-xs font-mono text-text-muted shrink-0">{product?.cod}</span>
             <span className="text-sm font-semibold text-text-base truncate">{product?.description}</span>
           </div>
-          <span className="shrink-0 text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold ml-3">
+          <Badge className="shrink-0 ml-3">
             Stock: {product?.quantity}
-          </span>
+          </Badge>
         </div>
 
         <div className="bg-bg-content rounded-lg border border-bg-subtle overflow-hidden mb-3">

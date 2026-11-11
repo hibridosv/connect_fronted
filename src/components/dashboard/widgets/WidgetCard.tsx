@@ -19,7 +19,7 @@ export function WidgetCard({ widget, loading, error, empty, badge, children }: W
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="min-w-0">
           <h3 className="text-sm font-bold text-text-base truncate">{widget.title}</h3>
-          <p className="text-[11px] text-text-muted mt-0.5 font-medium">{widget.description}</p>
+          <p className="text-xxs text-text-muted mt-0.5 font-medium">{widget.description}</p>
         </div>
         {!loading && !error && badge}
       </div>

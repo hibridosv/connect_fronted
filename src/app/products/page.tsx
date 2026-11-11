@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { LinksList } from "@/components/button/LinkList";
 import { Pagination } from "@/components/Pagination";
@@ -18,7 +19,6 @@ import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { useState } from "react";
-import { FaSpinner } from "react-icons/fa";
 
 export default function Page() {
   const {currentPage, handlePageNumber} = usePagination("&page=1");
@@ -57,7 +57,7 @@ export default function Page() {
                 <div onClick={loadingRequest ? ()=>{} : ()=>postRequest('transactions/products/prices', {})} >
                     {loadingRequest ? <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
                       ACTUALIZANDO...
-                      <FaSpinner className="animate-spin" />
+                      <Spinner color="current" />
                       </li> : <li className="flex justify-between p-3 hover:bg-blue-200 hover:text-blue-800 cursor-pointer" >
                         ACTUALIZAR PRECIOS
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24"

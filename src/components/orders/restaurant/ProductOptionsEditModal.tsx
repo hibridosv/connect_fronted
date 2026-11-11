@@ -1,6 +1,6 @@
 "use client";
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
-import { Loader } from "@/components/Loader";
 import Modal from "@/components/modal/Modal";
 import { NothingHere } from "@/components/NothingHere";
 import { URL } from "@/constants";
@@ -73,7 +73,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
     products.length === 0 ? <NothingHere width="150" height="150" text="No hay productos en la orden" /> :
     <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle overflow-hidden divide-y divide-bg-subtle">
       { products.map((record: any) => (
-        <div key={record.id} className="p-3 clickeable hover:bg-bg-subtle" onClick={() => setProductId(record.id)}>
+        <div key={record.id} className="p-3 clickeable-table hover:bg-bg-subtle" onClick={() => setProductId(record.id)}>
           <div className="flex items-center text-base font-medium text-text-base">
             <span className="font-bold text-lg mr-3">{record.quantity}x</span>
             <span className="uppercase flex-grow">{record.product}</span>
@@ -122,7 +122,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
       </div>
       { hasPendingOptions ?
         <p className="text-sm text-red-500">Primero seleccione las opciones pendientes del producto.</p> :
-        loadingOptions ? <Loader size="60" /> :
+        loadingOptions ? <Spinner size={60} /> :
         !options || options.length === 0 ? <NothingHere width="150" height="150" text="No hay opciones registradas" /> :
         options.map((group: any) => group.variants?.length > 0 && (
           <div key={group.id} className="mb-3">
@@ -134,7 +134,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
                     <div className="relative">
                       <Image loader={imageLoader} src={variant.image} alt="Icono" width={96} height={96} className="rounded-t-md" />
                       {variant.price > 0 && (
-                        <span className="absolute top-1 right-1 bg-black/50 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                        <span className="absolute top-1 right-1 bg-black/50 text-white text-2xs leading-none px-1.5 py-0.5 rounded-full">
                           +{numberToMoney(variant.price, system)}
                         </span>
                       )}

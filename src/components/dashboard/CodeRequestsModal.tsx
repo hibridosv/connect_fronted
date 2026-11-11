@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -10,7 +11,6 @@ import useConfigStore from '@/stores/configStore';
 import useToastMessageStore from '@/stores/toastMessageStore';
 import { useEffect, useState } from 'react';
 import { FiCheck, FiClipboard, FiClock } from 'react-icons/fi';
-import { ImSpinner5 } from 'react-icons/im';
 
 export interface CodeRequestsModalI {
   onClose: () => void;
@@ -49,7 +49,7 @@ const CodeRequestRow = ({ request, onCancel, onExtend }: CodeRequestRowProps) =>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-text-base truncate">{request.user?.name ?? 'Usuario'}</p>
         <p className="text-xs text-text-muted truncate">{request.permission_description ?? request.permission}</p>
-        <p className="text-[11px] text-warning">
+        <p className="text-xxs text-warning">
           Vence en {label}
           {request.reusable && <span className="ml-2 text-success">Reutilizable</span>}
         </p>
@@ -60,7 +60,7 @@ const CodeRequestRow = ({ request, onCancel, onExtend }: CodeRequestRowProps) =>
         className="flex items-center gap-1 px-2 py-2 rounded-lg bg-bg-subtle text-xs font-semibold text-primary hover:bg-primary/10 disabled:opacity-60"
         title="Extender 15 minutos (el código se podrá usar varias veces)"
       >
-        {extending ? <ImSpinner5 className="animate-spin" /> : <FiClock />}
+        {extending ? <Spinner color="current" /> : <FiClock />}
         +15 min
       </button>
       <button

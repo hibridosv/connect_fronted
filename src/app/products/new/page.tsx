@@ -140,7 +140,7 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label className="input-label clickeable" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
+                  <label className="input-label clickeable-table" onClick={() => { openModal('contactAdd'); setElement('isFromProducts', true) }}>Proveedor (Click para agregar)</label>
                   <ContactSearch
                     param="suppliers"
                     placeholder="Buscar Proveedor"
@@ -151,7 +151,7 @@ export default function Page() {
 
               { activeConfig && activeConfig.includes('product-locations') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="location_id" className="input-label clickeable" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
+                  <label htmlFor="location_id" className="input-label clickeable-table" onClick={() => openModal('locationAdd')} >Ubicación (Click para agregar)</label>
                   <select id="location_id" {...register("location_id")} className="input-select">
                     {locations && locations.map((value: any) => {
                       return (
@@ -166,7 +166,7 @@ export default function Page() {
 
                { activeConfig && activeConfig.includes('product-brand') && (
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="brand_id" className="input-label clickeable" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
+                  <label htmlFor="brand_id" className="input-label clickeable-table" onClick={()=>openModal('brandAdd')}>Marca (Click para agregar)</label>
                   <select  id="brand_id" {...register("brand_id")} className="input-select">
                     {brands && brands.map((value: any) => {
                       return (

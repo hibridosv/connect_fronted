@@ -1,11 +1,11 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { NothingHere } from '@/components/NothingHere';
 import SkeletonTable from '@/components/skeleton/skeleton-table';
 import { statusOfTransfer } from '@/components/transfers/utils';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import useConfigStore from '@/stores/configStore';
-import { FaSpinner } from 'react-icons/fa';
 import { IoMdAlert } from 'react-icons/io';
 import { MdCheck } from 'react-icons/md';
 
@@ -55,7 +55,7 @@ export function TransfersHistoryTable({ records, onRowClick, onGetProductsOnline
       <td className="px-3 py-2 whitespace-nowrap">{statusOfTransfer(record?.status)}</td>
       <td className="px-3 py-2 text-center">
         {sending ? (
-          <FaSpinner size={18} className="text-primary animate-spin" />
+          <Spinner size={18} />
         ) : (record?.status === 3 || record?.status === 5) && record?.is_online === 1 && record?.from_tenant_id === tenant ? (
           <IoMdAlert
             size={22}

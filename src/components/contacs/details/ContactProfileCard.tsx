@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import { Contact } from '@/interfaces/contact';
 import { formatDateAsDMY } from '@/lib/date-formats';
@@ -49,10 +50,10 @@ export function ContactProfileCard({ contact, onShowDetails }: ContactProfileCar
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mt-3">
           {tags.map((tag) => (
-            <span key={tag.label} className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-primary/10 text-primary">{tag.label}</span>
+            <Badge key={tag.label} size="sm">{tag.label}</Badge>
           ))}
           {contact.excluded == 1 && (
-            <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">Exento</span>
+            <Badge variant="warning" size="sm">Exento</Badge>
           )}
         </div>
       )}
@@ -60,30 +61,30 @@ export function ContactProfileCard({ contact, onShowDetails }: ContactProfileCar
       <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
         {contact.code && (
           <div>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">{system?.system?.contact_search ?? 'Código'}</p>
+            <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">{system?.system?.contact_search ?? 'Código'}</p>
             <p className="font-semibold text-text-base break-words">{contact.code}</p>
           </div>
         )}
         {contact.id_number && (
           <div>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Documento</p>
+            <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Documento</p>
             <p className="font-semibold text-text-base break-words">{formatDuiWithAll(contact.id_number)}</p>
           </div>
         )}
         {contact.register && (
           <div>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Registro</p>
+            <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Registro</p>
             <p className="font-semibold text-text-base break-words">{formatDuiWithAll(contact.register)}</p>
           </div>
         )}
         {contact.birthday && (
           <div>
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Cumpleaños</p>
+            <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Cumpleaños</p>
             <p className="font-semibold text-text-base">{formatDateAsDMY(contact.birthday)}</p>
           </div>
         )}
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Registrado</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Registrado</p>
           <p className="font-semibold text-text-base">{formatDateAsDMY(contact.created_at)}</p>
         </div>
       </div>

@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { ViewTitle } from '@/components/ViewTitle';
 import { ChangeTenantModal } from '@/components/settings/ChangeTenantModal';
@@ -8,7 +9,6 @@ import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import { useSession } from 'next-auth/react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
-import { LuLoaderCircle } from 'react-icons/lu';
 
 export default function Page() {
   const { data: session } = useSession();
@@ -40,7 +40,7 @@ export default function Page() {
                     className={`flex items-center gap-3 px-4 py-3 border-b border-bg-subtle last:border-b-0 transition-colors duration-150 ${
                       isCurrent
                         ? 'bg-danger/10 text-danger cursor-default'
-                        : 'hover:bg-bg-subtle cursor-pointer clickeable text-text-base'
+                        : 'hover:bg-bg-subtle cursor-pointer clickeable-table text-text-base'
                     }`}
                   >
                     <AiOutlineArrowRight size={16} />
@@ -60,7 +60,7 @@ export default function Page() {
               <div className="bg-bg-content rounded-lg shadow-sm border border-bg-subtle overflow-hidden mt-2">
                 {sending ? (
                   <div className="flex items-center justify-center gap-2 py-4">
-                    <LuLoaderCircle className="animate-spin text-primary" size={20} />
+                    <Spinner size={20} />
                     <span className="text-text-muted text-sm">Agregando Dirección</span>
                   </div>
                 ) : (
@@ -68,7 +68,7 @@ export default function Page() {
                     <div
                       key={index}
                       onClick={() => handleLinkTenant(record.id)}
-                      className="flex items-center gap-3 px-4 py-3 border-b border-bg-subtle last:border-b-0 hover:bg-bg-subtle cursor-pointer clickeable text-text-base transition-colors duration-150"
+                      className="flex items-center gap-3 px-4 py-3 border-b border-bg-subtle last:border-b-0 hover:bg-bg-subtle cursor-pointer clickeable-table text-text-base transition-colors duration-150"
                     >
                       <AiOutlineArrowRight size={16} />
                       <span className="text-lg font-semibold uppercase">{record.description}</span>

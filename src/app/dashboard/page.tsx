@@ -59,7 +59,7 @@ export default function DashboardPage() {
                 <BiPlusCircle size={15} />
                 <span className="hidden sm:inline">Código</span>
                 {pendingCodes > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none shadow ring-2 ring-primary">
+                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 flex items-center justify-center bg-danger text-white text-2xs font-bold rounded-full leading-none shadow ring-2 ring-primary">
                     {pendingCodes > 9 ? '9+' : pendingCodes}
                   </span>
                 )}

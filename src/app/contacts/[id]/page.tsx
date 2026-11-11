@@ -1,4 +1,6 @@
 'use client';
+import { Badge } from "@/components/Badge";
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from "@/components/button/button";
 import { DateRange } from "@/components/button/DateRange";
@@ -21,7 +23,6 @@ import useTempStorage from "@/stores/useTempStorage";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
-import { LuLoader } from "react-icons/lu";
 
 export default function Page() {
   const params = useParams();
@@ -63,14 +64,14 @@ export default function Page() {
           <FaArrowLeft size={16} />
         </Link>
         <ViewTitle text={contact.name} />
-        {(loading || loadingSales) && <LuLoader className="animate-spin text-text-muted shrink-0" size={16} />}
+        {(loading || loadingSales) && <Spinner size={16} color="muted" className="shrink-0" />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-10 gap-4 px-2 sm:px-4 mt-2">
         <div className="md:col-span-7 space-y-4 min-w-0">
           <div className="flex flex-wrap items-center gap-2 text-xs text-text-muted">
             <span className="font-semibold uppercase tracking-wider">Período:</span>
-            <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-semibold">{periodText}</span>
+            <Badge>{periodText}</Badge>
           </div>
 
           <ContactKpiCards summary={summary} loading={loading} />

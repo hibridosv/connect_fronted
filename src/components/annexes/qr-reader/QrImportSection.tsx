@@ -58,7 +58,7 @@ function TransmissionAnimation() {
         {DATA_TOKENS.map((token, i) => (
           <span
             key={i}
-            className="absolute text-[9px] font-mono text-primary/40 whitespace-nowrap"
+            className="absolute text-3xs font-mono text-primary/40 whitespace-nowrap"
             style={{
               left: `${8 + (i * 13) % 76}%`,
               bottom: `${10 + (i * 17) % 50}%`,

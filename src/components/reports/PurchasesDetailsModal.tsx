@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 
 import useTempStorage from "@/stores/useTempStorage";
 import { Button, Preset } from "../button/button";
@@ -110,9 +111,9 @@ export function PurchasesDetailsModal(props: PurchasesDetailsModal) {
               <span className="text-xs font-bold uppercase text-text-muted tracking-widest">Tipo de documento</span>
               <p className="text-base font-extrabold text-primary mt-1">{dteLabel}</p>
               {!isProduccion && (
-                <span className="inline-flex items-center mt-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-danger/10 text-danger">
+                <Badge variant="danger" className="mt-1">
                   {ambienteLabel}
-                </span>
+                </Badge>
               )}
             </div>
             <div className="flex flex-col gap-1 sm:items-end text-xs">

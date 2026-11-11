@@ -61,7 +61,7 @@ export default function SettingsCategoryList() {
             return (
               <div key={cat.id}>
                 <div className="flex items-center justify-between py-2 px-2 hover:bg-bg-subtle/30 transition-colors">
-                  <div className="flex items-center gap-2 clickeable" onClick={() => hasSubs && toggleExpand(cat.id)}>
+                  <div className="flex items-center gap-2 clickeable-table" onClick={() => hasSubs && toggleExpand(cat.id)}>
                     <div className={`text-text-muted text-xs w-5 ${hasSubs ? 'hover:text-text-base' : 'invisible'}`} >
                       {isExpanded ? '▼' : '▶'}
                     </div>

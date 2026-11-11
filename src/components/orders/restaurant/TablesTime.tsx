@@ -16,7 +16,7 @@ export function TablesTime(props: TablesTimeI) {
   if (!isShow) return <></>;
 
   return (
-    <div className="flex w-full h-full text-center text-[12px] text-danger font-medium">
+    <div className="flex w-full h-full text-center text-xs text-danger font-medium">
       {relativeTime}
     </div>
   );

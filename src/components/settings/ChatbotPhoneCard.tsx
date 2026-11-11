@@ -114,7 +114,7 @@ export function ChatbotPhoneCard({ phoneNumber, loadingPhone, saving, canManageP
       <p className="text-xs text-text-muted">
         Escanea el código desde tu celular
       </p>
-      <p className="text-[11px] text-text-muted/70 mb-3">
+      <p className="text-xxs text-text-muted/70 mb-3">
         ¿No puedes escanear? Escríbele directo al{' '}
         <a
           href={WHATSAPP_LINK}
