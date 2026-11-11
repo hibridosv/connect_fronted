@@ -19,7 +19,7 @@ export function OrderTotal() {
     <div className="relative w-full overflow-hidden rounded-lg bg-bg-subtle/30 py-4">
       <div className={`absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent transition-opacity duration-500 ${sending ? 'opacity-100' : 'opacity-0'}`} />
 
-      <div className={`text-center text-[11px] font-semibold uppercase tracking-[0.15em] transition-colors duration-300 ${sending ? 'text-primary' : 'text-text-muted'}`}>
+      <div className={`text-center text-xxs font-semibold uppercase tracking-[0.15em] transition-colors duration-300 ${sending ? 'text-primary' : 'text-text-muted'}`}>
         Total
       </div>
 

@@ -1,3 +1,4 @@
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -5,7 +6,6 @@ import { formatDateAsDMY } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
 import productAddStore from "@/stores/products/productAddStore";
-import { FaSpinner } from "react-icons/fa";
 
 
 export function RegistersProductsTable() {
@@ -45,7 +45,7 @@ export function RegistersProductsTable() {
                 { formatDateAsDMY(record.created_at) }
             </td>
             <td className="px-3 py-2 text-center">
-              { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
+              { deleting ? <Spinner size={20} /> :
                 <Button preset={Preset.smallClose} style="clickeable" noText onClick={()=> deleteProduct(`registers/${record.id}`)} disabled={deleting} />
               }
             </td>
@@ -72,7 +72,7 @@ export function RegistersProductsTable() {
             {listItems}
           </tbody>
         </table>
-        <div className="font-bold uppercase text-right ml-4 text-subtle p-4">Total ingresado: {numberToMoney(total, system)}</div>
+        <div className="font-bold uppercase text-right ml-4 text-text-muted p-4">Total ingresado: {numberToMoney(total, system)}</div>
       </div>
   );
 }

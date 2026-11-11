@@ -56,7 +56,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
           isDeleting
             ? 'opacity-50'
             : needReview
-            ? '!bg-red-200 hover:bg-red-400'
+            ? '!bg-danger/20 hover:!bg-danger/30'
             : 'odd:bg-bg-subtle/40 hover:bg-bg-subtle'
         }`}
       >
@@ -83,7 +83,7 @@ export function ReportPurchasesTable(props: ReportPurchasesTableI) {
               {json?.emisor?.nombreComercial ?? 'N/A'}
             </span>
             {needReview && (
-              <span className="text-xs px-1.5 py-0.5 rounded bg-red-600 text-white font-semibold leading-none">
+              <span className="text-xs px-1.5 py-0.5 rounded bg-danger text-text-inverted font-semibold leading-none">
                 Revisar
               </span>
             )}

@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -8,7 +9,6 @@ import { formatDuiWithAll, getTotalPercentage, numberToMoney } from '@/lib/utils
 import useConfigStore from '@/stores/configStore';
 import commissionsStore from '@/stores/tools/commissionsStore';
 import { FaDownload } from 'react-icons/fa';
-import { LuLoaderCircle } from 'react-icons/lu';
 import { ButtonDownloadGet } from '../button/button-download-get';
 import { commissionStatusMap } from './utils';
 
@@ -63,7 +63,7 @@ export function CommissionViewModal({ isShow, onClose, record }: CommissionViewM
       <Modal.Body>
         {saving ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <LuLoaderCircle className="animate-spin text-primary" size={48} />
+            <Spinner size={48} />
             <span className="text-sm text-text-muted">Procesando...</span>
           </div>
         ) : (

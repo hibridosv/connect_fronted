@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
@@ -7,7 +8,6 @@ import { useCountdown } from '@/hooks/useCountdown';
 import { cloneElement, isValidElement, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import toast from 'react-hot-toast';
-import { ImSpinner5 } from 'react-icons/im';
 import { IoKeyOutline } from 'react-icons/io5';
 
 interface CodeRequestGuardProps {
@@ -128,7 +128,7 @@ export default function CodeRequestGuard({ permission, onAuthorized, children }:
                 disabled={loading}
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-text-inverted shadow-sm transition-all duration-200 hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {loading ? <ImSpinner5 className="animate-spin" /> : <IoKeyOutline size={16} />}
+                {loading ? <Spinner color="current" /> : <IoKeyOutline size={16} />}
                 {loading ? 'Consultando...' : 'Solicitar código'}
               </button>
             </>

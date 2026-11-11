@@ -2,7 +2,6 @@
 import { Alert } from "@/components/Alert/Alert";
 import { ChatbotConversationsList } from "@/components/chatbot/ChatbotConversationsList";
 import { ChatbotThread } from "@/components/chatbot/ChatbotThread";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useChatbotConversationsLogic } from "@/hooks/chatbot/useChatbotConversationsLogic";
 import { ChatbotConversation } from "@/interfaces/chatbot";
@@ -54,7 +53,6 @@ export default function Page() {
           onLoadOlder={loadOlder}
         />
       </div>
-      <ToasterMessage />
     </div>
   );
 }

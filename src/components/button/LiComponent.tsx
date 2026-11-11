@@ -12,7 +12,7 @@ export interface LiComponentI {
 }
 
 export const iconSvg = (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-text-subtle" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
   </svg>
 );
@@ -26,7 +26,7 @@ export function LiComponent(props: LiComponentI) {
   if (href) {
     return (
       <li>
-        <a href={href} className={`${commonClasses} clickeable ${style}`} target={target}>
+        <a href={href} className={`${commonClasses} clickeable-table ${style}`} target={target}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </a>
@@ -37,7 +37,7 @@ export function LiComponent(props: LiComponentI) {
   if (link) {
     return (
       <li>
-        <Link href={link} className={`${commonClasses} clickeable ${style}`}>
+        <Link href={link} className={`${commonClasses} clickeable-table ${style}`}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </Link>
@@ -48,7 +48,7 @@ export function LiComponent(props: LiComponentI) {
   if (onClick) {
     return (
       <li>
-        <button type="button" onClick={onClick} className={`${commonClasses} w-full text-left clickeable ${style}`}>
+        <button type="button" onClick={onClick} className={`${commonClasses} w-full text-left clickeable-table ${style}`}>
           <span className="font-medium text-text-base">{text}{content}</span>
           {iconSvg}
         </button>

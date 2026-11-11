@@ -1,8 +1,9 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { get } from '@/services/httpService';
-import { useState } from 'react';
-import { LuDownload, LuLoader } from 'react-icons/lu';
+import { ReactNode, useState } from 'react';
+import { LuDownload } from 'react-icons/lu';
 
 export interface LinkUrls {
   name: string;
@@ -16,6 +17,7 @@ export interface LinkUrls {
 export interface LinksListProps {
   links: LinkUrls[];
   text?: string;
+  children?: ReactNode; // ítems extra (p. ej. LiComponent con onClick) al final de la lista
 }
 
 function LinkItem({ item }: { item: LinkUrls }) {
@@ -33,22 +35,22 @@ function LinkItem({ item }: { item: LinkUrls }) {
     }
   };
 
-  const commonClasses = 'flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 w-full text-left clickeable';
+  const commonClasses = 'flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 w-full text-left clickeable-table';
 
   return (
     <li>
       <button type="button" onClick={handleClick} disabled={loading} className={commonClasses}>
         <span className="font-medium text-text-base">{item.name}</span>
-        {loading ? <LuLoader className="animate-spin text-text-muted" size={16} /> : <LuDownload className="text-text-muted" size={16} />}
+        {loading ? <Spinner size={16} color="muted" /> : <LuDownload className="text-text-muted" size={16} />}
       </button>
     </li>
   );
 }
 
 export function LinksList(props: LinksListProps) {
-  const { links, text = "Descargas" } = props;
+  const { links, text = "Descargas", children } = props;
 
-  if (!links || links.length === 0) return null;
+  if ((!links || links.length === 0) && !children) return null;
 
   return (
     <div className='my-5 bg-bg-content rounded-lg shadow-sm border border-bg-subtle/50'>
@@ -56,12 +58,12 @@ export function LinksList(props: LinksListProps) {
         <h3 className="text-base font-semibold text-text-base">{text}</h3>
       </div>
       <ul className="divide-y divide-bg-subtle">
-        {links.map((item, key) => {
+        {links?.map((item, key) => {
           if (item.loading) {
             return (
               <li key={key} className="flex justify-between items-center p-3">
                 <span className="font-medium text-text-muted">{item.name}</span>
-                <LuLoader className="animate-spin text-text-muted" size={16} />
+                <Spinner size={16} color="muted" />
               </li>
             );
           }
@@ -70,6 +72,7 @@ export function LinksList(props: LinksListProps) {
           }
           return null;
         })}
+        {children}
       </ul>
     </div>
   );

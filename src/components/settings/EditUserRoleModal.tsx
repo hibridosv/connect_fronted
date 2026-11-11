@@ -49,7 +49,7 @@ export function EditUserRoleModal({ isShow, onClose, user, onSubmit }: EditUserR
                 <li
                   key={role.id}
                   onClick={() => handleSelectRole(role.name)}
-                  className="flex justify-between items-center px-3 py-3 hover:bg-bg-subtle text-text-base clickeable transition-colors"
+                  className="flex justify-between items-center px-3 py-3 hover:bg-bg-subtle text-text-base clickeable-table transition-colors"
                 >
                   <span>{role.name}</span>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor">

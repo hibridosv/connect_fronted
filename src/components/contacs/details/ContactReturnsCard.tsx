@@ -32,11 +32,11 @@ export function ContactReturnsCard({ returns, totalPurchased }: ContactReturnsCa
 
       <div className="flex items-end justify-between mb-3">
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Monto devuelto</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Monto devuelto</p>
           <p className={`text-lg font-extrabold tabular-nums ${returned > 0 ? 'text-danger' : 'text-text-base'}`}>{numberToMoney(returned, system)}</p>
         </div>
         <div className="text-right">
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Tasa</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Tasa</p>
           <p className="text-sm font-semibold text-text-base tabular-nums">{rate.toFixed(1)}%</p>
         </div>
       </div>

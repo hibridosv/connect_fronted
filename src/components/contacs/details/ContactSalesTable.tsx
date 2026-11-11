@@ -65,7 +65,7 @@ export function ContactSalesTable({ sales, loading, handlePageNumber }: ContactS
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-sm font-bold text-text-base">Historial de compras</h3>
-          <p className="text-[11px] text-text-muted mt-0.5 font-medium">Haz clic en el documento para ver el detalle</p>
+          <p className="text-xxs text-text-muted mt-0.5 font-medium">Haz clic en el documento para ver el detalle</p>
         </div>
         {sales?.total > 0 && <span className="text-xs font-semibold text-text-muted">{sales.total} compra(s)</span>}
       </div>

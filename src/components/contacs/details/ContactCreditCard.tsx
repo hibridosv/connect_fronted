@@ -26,25 +26,25 @@ export function ContactCreditCard({ credit }: ContactCreditCardProps) {
           <h3 className="text-sm font-bold text-text-base">Crédito</h3>
         </div>
         {credit.is_credit_block == 1 && (
-          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-red-50 text-danger border border-red-100">Bloqueado</span>
+          <span className="text-2xs font-bold uppercase px-2 py-0.5 rounded-full bg-danger/10 text-danger border border-danger/20">Bloqueado</span>
         )}
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Saldo pendiente</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Saldo pendiente</p>
           <p className="text-lg font-extrabold text-text-base tabular-nums">{numberToMoney(credit.balance, system)}</p>
         </div>
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Vencido</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Vencido</p>
           <p className={`text-lg font-extrabold tabular-nums ${credit.overdue > 0 ? 'text-danger' : 'text-text-base'}`}>{numberToMoney(credit.overdue, system)}</p>
         </div>
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Límite</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Límite</p>
           <p className="text-sm font-semibold text-text-base tabular-nums">{credit.credit_limit !== null ? numberToMoney(credit.credit_limit, system) : 'Sin límite'}</p>
         </div>
         <div>
-          <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Disponible</p>
+          <p className="text-2xs font-bold text-text-muted uppercase tracking-widest">Disponible</p>
           <p className={`text-sm font-semibold tabular-nums ${credit.available !== null && credit.available < 0 ? 'text-danger' : 'text-text-base'}`}>
             {credit.available !== null ? numberToMoney(credit.available, system) : '--'}
           </p>
@@ -56,12 +56,12 @@ export function ContactCreditCard({ credit }: ContactCreditCardProps) {
           <div className="h-2 rounded-full bg-bg-subtle overflow-hidden">
             <div className={`h-full rounded-full ${barColor}`} style={{ width: `${used}%` }} />
           </div>
-          <p className="text-[11px] text-text-muted mt-1">{used.toFixed(0)}% del límite utilizado</p>
+          <p className="text-xxs text-text-muted mt-1">{used.toFixed(0)}% del límite utilizado</p>
         </div>
       )}
 
       {credit.overdue > 0 && (
-        <div className="mt-3 flex items-center gap-2 text-xs text-danger bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+        <div className="mt-3 flex items-center gap-2 text-xs text-danger bg-danger/10 border border-danger/20 rounded-lg px-3 py-2">
           <FiAlertTriangle className="shrink-0" />
           <span>El cliente tiene saldo vencido</span>
         </div>

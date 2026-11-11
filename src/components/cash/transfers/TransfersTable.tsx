@@ -1,9 +1,9 @@
+import { Spinner } from "@/components/Spinner";
 import { DeleteButton } from "@/components/button/DeleteButton";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { numberToMoney } from "@/lib/utils";
 import useConfigStore from "@/stores/configStore";
-import { FaSpinner } from "react-icons/fa";
 import cashTransferStore from "@/stores/cash/cashTransferStore";
 import { Indicator } from "@/components/Indicators";
 
@@ -42,7 +42,7 @@ export function TransfersTable() {
                 { numberToMoney(record.quantity ? record.quantity : 0, system) }
             </td>
             <td className="px-3 py-2 flex justify-center">
-              { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
+              { deleting ? <Spinner size={20} /> :
                 <DeleteButton id={record.id} url="cash/transfers" onDeleteConfirm={deleteTransfer} disabled={(record.status == 0 ? true : false) || deleting} />
               }
             </td>

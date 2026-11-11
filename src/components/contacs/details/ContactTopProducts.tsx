@@ -19,7 +19,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
     <div className="bg-bg-content rounded-xl shadow-sm border border-bg-subtle p-5 animate-fade-in">
       <div className="mb-4">
         <h3 className="text-sm font-bold text-text-base">Productos más comprados</h3>
-        <p className="text-[11px] text-text-muted mt-0.5 font-medium">Top 10 por unidades compradas</p>
+        <p className="text-xxs text-text-muted mt-0.5 font-medium">Top 10 por unidades compradas</p>
       </div>
 
       {loading && !products && (
@@ -38,7 +38,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
             <li key={product.cod}>
               <div className="flex items-baseline justify-between gap-3 text-sm">
                 <div className="min-w-0 flex items-baseline gap-2">
-                  <span className={`shrink-0 w-5 text-xs font-bold ${index === 0 ? 'text-orange-500' : 'text-text-muted'}`}>{index + 1}</span>
+                  <span className={`shrink-0 w-5 text-xs font-bold ${index === 0 ? 'text-warning' : 'text-text-muted'}`}>{index + 1}</span>
                   {product.product_id ? (
                     <Link href={`/products/${product.product_id}/kardex`} className="truncate font-medium text-text-base hover:text-primary hover:underline" title={product.product}>
                       {product.product}
@@ -52,7 +52,7 @@ export function ContactTopProducts({ products, loading }: ContactTopProductsProp
               <div className="ml-7 mt-1 h-1.5 rounded-full bg-bg-subtle overflow-hidden">
                 <div className="h-full rounded-full bg-primary/70" style={{ width: `${max ? (product.quantity_sum / max) * 100 : 0}%` }} />
               </div>
-              <div className="ml-7 mt-1 flex flex-wrap gap-x-3 text-[11px] text-text-muted">
+              <div className="ml-7 mt-1 flex flex-wrap gap-x-3 text-xxs text-text-muted">
                 <span>{product.quantity_sum.toLocaleString()} unidades compradas</span>
                 <span>{product.orders_count} compra(s)</span>
                 <span>Última: {formatDateAsDMY(product.last_bought_at)}</span>

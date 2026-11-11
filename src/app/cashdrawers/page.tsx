@@ -7,7 +7,6 @@ import { Drawers } from "@/components/cuts/Drawers";
 import { ShowCutsTable } from "@/components/cuts/ShowCutsTable";
 import { Pagination } from "@/components/Pagination";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useCashDrawersLogic } from "@/hooks/cuts/useCashDrawersLogic";
 import { useCutsLogic } from "@/hooks/cuts/useCutsLogic";
@@ -68,7 +67,6 @@ export default function Page() {
 
       <CashdrawerModal isShow={modals.cashDrawerOpen} onClose={() => closeModal('cashDrawerOpen')} drawer={selectDrawer} />
       <CashdrawerDetails isShow={modals.cashDrawerDetails} onClose={() => closeModal('cashDrawerDetails')} />
-      <ToasterMessage />
     </div>
   );
 }

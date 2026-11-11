@@ -5,7 +5,6 @@ import { MaintenanceDynamicFieldsForm } from "@/components/maintenance/Maintenan
 import { MaintenanceStatusBadge } from "@/components/maintenance/MaintenanceStatusBadge";
 import { MaintenanceTypeSelectCards } from "@/components/maintenance/new/MaintenanceTypeSelectCards";
 import { ContactSearch } from "@/components/search/ContactSearch";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useMaintenanceContactHistoryLogic } from "@/hooks/maintenance/useMaintenanceContactHistoryLogic";
 import { useMaintenanceEmployeesLogic } from "@/hooks/maintenance/useMaintenanceEmployeesLogic";
@@ -180,7 +179,6 @@ export default function Page() {
         </div>
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }
@@ -188,7 +186,7 @@ export default function Page() {
 function StepDot({ active, done, label, number }: { active: boolean; done: boolean; label: string; number: number }) {
   return (
     <div className={`flex items-center gap-1.5 text-xs font-semibold ${active ? 'text-primary' : done ? 'text-success' : 'text-text-muted'}`}>
-      <span className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center text-[10px] ${active ? 'bg-primary text-text-inverted' : done ? 'bg-success text-white' : 'bg-bg-subtle'}`}>
+      <span className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center text-2xs ${active ? 'bg-primary text-text-inverted' : done ? 'bg-success text-white' : 'bg-bg-subtle'}`}>
         {done ? '✓' : number}
       </span>
       <span className="hidden sm:inline">{label}</span>

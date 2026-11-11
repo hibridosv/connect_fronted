@@ -17,7 +17,7 @@ const importanceStyles: Record<Notification['importance'], { label: string; pane
 
 const NotificationRelativeTime = ({ timestamp }: { timestamp: string }) => {
   const relativeTime = useRelativeTime(timestamp);
-  return <span className="text-[11px] text-text-muted shrink-0">{relativeTime}</span>;
+  return <span className="text-xxs text-text-muted shrink-0">{relativeTime}</span>;
 };
 
 export const NotificationBell = () => {
@@ -49,7 +49,7 @@ export const NotificationBell = () => {
           : <IoNotificationsOutline size={22} className="sm:w-7 sm:h-7" />
         }
         {hasUnread && (
-          <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 flex items-center justify-center bg-danger text-white text-[10px] font-bold rounded-full leading-none">
+          <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 flex items-center justify-center bg-danger text-white text-2xs font-bold rounded-full leading-none">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -106,7 +106,7 @@ export const NotificationBell = () => {
                       </span>
                     </div>
                     <div className="flex items-center justify-between pl-4">
-                      <span className="text-[10px] uppercase font-medium text-text-muted tracking-wide">
+                      <span className="text-2xs uppercase font-medium text-text-muted tracking-wide">
                         {style.label}
                       </span>
                       <NotificationRelativeTime timestamp={notification.created_at} />

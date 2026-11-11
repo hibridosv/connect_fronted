@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@/components/Badge";
 
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 
@@ -30,9 +31,9 @@ export function AjusteInventario(props: AjusteInventarioProps) {
           <Row label="Inicio">{formatDateAsDMY(request?.adjustment?.initial_date)} {formatHourAsHM(request?.adjustment?.initial_date)}</Row>
           <Row label="Finalizado">{formatDateAsDMY(request?.adjustment?.final_date)} {formatHourAsHM(request?.adjustment?.final_date)}</Row>
           <Row label="Estado">
-            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${request?.adjustment?.status == 1 ? 'bg-success/15 text-success' : 'bg-danger/15 text-danger'}`}>
+            <Badge variant={request?.adjustment?.status == 1 ? 'success' : 'danger'}>
               {request?.adjustment?.status == 1 ? 'Activo' : 'Finalizado'}
-            </span>
+            </Badge>
           </Row>
           <Row label="Cantidad"><span className="font-semibold">{request?.quantity}</span></Row>
           <Row label="Establecido"><span className="font-semibold">{request?.stablished}</span></Row>

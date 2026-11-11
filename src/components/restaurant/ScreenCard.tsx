@@ -79,7 +79,7 @@ export function ScreenCard({ order, activeStation, processData }: ScreenCardProp
         {groupedProducts.map((product: any) => (
           <div key={product.id}>
             <div
-              className="p-3 cursor-pointer clickeable hover:bg-bg-subtle/50 transition-colors"
+              className="p-3 cursor-pointer clickeable-table hover:bg-bg-subtle/50 transition-colors"
               onClick={() => handleProcessProduct(product.id)}
             >
               <div className="flex items-center text-base font-medium text-text-base">

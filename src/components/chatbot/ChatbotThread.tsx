@@ -1,9 +1,9 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { ChatbotThread as ChatbotThreadI } from "@/interfaces/chatbot";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import { useEffect, useRef, useState } from "react";
 import { IoArrowBack, IoAttach, IoClose, IoSend } from "react-icons/io5";
-import { Loader } from "../Loader";
 import { ChatbotDraftCard } from "./ChatbotDraftCard";
 import { ChatbotMessageBubble } from "./ChatbotMessageBubble";
 
@@ -29,7 +29,7 @@ export function ChatbotThread({ thread, isLoading, sending, globalOff, onBack, o
     endRef.current?.scrollIntoView({ block: 'end' });
   }, [lastMessageId]);
 
-  if (isLoading) return <div className="flex justify-center mt-10"><Loader size="35" /></div>;
+  if (isLoading) return <div className="flex justify-center mt-10"><Spinner size={35} /></div>;
   if (!thread) return <div className="text-center text-text-muted mt-10">Selecciona una conversación</div>;
 
   const { conversation } = thread;
@@ -106,7 +106,7 @@ export function ChatbotThread({ thread, isLoading, sending, globalOff, onBack, o
                 placeholder="Escribe un mensaje"
                 className="input flex-1 resize-none"
               />
-              {sending ? <Loader size="24" /> : <IoSend size={24} className="clickeable text-primary shrink-0 mb-2" onClick={submit} />}
+              {sending ? <Spinner size={24} /> : <IoSend size={24} className="clickeable text-primary shrink-0 mb-2" onClick={submit} />}
             </div>
           </>
         ) : (

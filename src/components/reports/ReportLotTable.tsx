@@ -41,7 +41,7 @@ export function ReportLotTable(props: ReportLotTableI) {
       <td className={`px-3 py-2 text-center whitespace-nowrap font-bold`}>
         { record?.quantity ?? "--" }
       </td>
-      <td className={`px-3 py-2 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`}>
+      <td className={`px-3 py-2 text-center whitespace-nowrap  font-bold ${record?.actual_stock <= 0 ? 'text-danger' : 'text-text-base'}`}>
         { record?.actual_stock ?? "--" }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>

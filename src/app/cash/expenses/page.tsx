@@ -7,7 +7,6 @@ import { ExpenseImagePreviewModal } from "@/components/cash/expenses/ExpenseImag
 import { ExpensesForm } from "@/components/cash/expenses/ExpensesForm";
 import { ExpensesTable } from "@/components/cash/expenses/ExpensesTable";
 import { NewCategoryModal } from "@/components/cash/NewCategoryModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { usePagination } from "@/hooks/usePagination";
 import cashExpensesStore from "@/stores/cash/cashExpensesStore";
@@ -59,6 +58,5 @@ export default function Page() {
     <ExpenseImageModal isShow={modals.expenseImage} onClose={() => closeModal("expenseImage")} />
     <ExpenseImageDeleteModal isShow={modals.expenseImageDelete} onClose={() => closeModal("expenseImageDelete")} />
     <ExpenseImagePreviewModal isShow={modals.expenseImagePreview} onClose={() => closeModal("expenseImagePreview")} />
-    <ToasterMessage />
   </div>
   )}

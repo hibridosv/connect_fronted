@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { LuBookOpen, LuLock, LuDownload } from "react-icons/lu";
 import { useSession } from 'next-auth/react';
 import { ButtonDownloadGet } from "../button/button-download-get";
@@ -84,9 +85,9 @@ export function PurchasesBooksList({ purchases, invoicesCount = 0, selectedId, o
                     )}
                   </div>
                 </div>
-                <span className="shrink-0 text-xs px-2 py-0.5 rounded-full font-semibold bg-primary/15 text-primary">
+                <Badge className="shrink-0">
                   {isActive ? 'Activo' : 'En cierre'}
-                </span>
+                </Badge>
               </div>
               <div className={`border-t px-4 py-2 flex items-center justify-end transition-colors duration-200 ${isSelected ? 'border-primary/20 bg-primary/10' : 'border-primary/20 bg-primary/5'}`}>
                 {downloadButtons}

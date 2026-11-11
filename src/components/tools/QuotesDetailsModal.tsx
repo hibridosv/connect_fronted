@@ -1,3 +1,4 @@
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import { useQuoteCheckLogic } from "@/hooks/tools/useQuoteCheckLogic";
@@ -9,7 +10,6 @@ import useTempStorage from "@/stores/useTempStorage";
 import { FaDownload } from "react-icons/fa";
 import { Alert } from "../Alert/Alert";
 import { ButtonDownloadGet } from "../button/button-download-get";
-import { Loader } from "../Loader";
 
 export interface QuotesDetailsModalI {
   onClose: () => void;
@@ -103,7 +103,7 @@ export function QuotesDetailsModal({ onClose, isShow }: QuotesDetailsModalI) {
               {
                 loading["checkAvailables"] ? (
                   <div className="mt-4 text-center text-text-base">
-                    <Loader size="35" />
+                    <Spinner size={35} />
                   </div>
                 ) : (
                 <div className="mt-4 text-center text-text-base">

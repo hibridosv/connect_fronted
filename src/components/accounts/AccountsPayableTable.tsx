@@ -29,7 +29,7 @@ export function AccountsPayableTable(props: AccountsPayableTableI) {
   }
 
   const listItems = records.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-red-200'}`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-danger/20'}`}>
       <td className="px-3 py-2 whitespace-nowrap font-medium text-primary">
         { record?.name }
       </td>
@@ -52,7 +52,7 @@ export function AccountsPayableTable(props: AccountsPayableTableI) {
         { status(record?.status) }
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
-        <MdAddchart size={28} className="text-lime-600 clickeable" onClick={()=>{ setElement('paymentPayableAdd', record); openModal('paymentPayableAdd'); }} />
+        <MdAddchart size={28} className="text-success clickeable" onClick={()=>{ setElement('paymentPayableAdd', record); openModal('paymentPayableAdd'); }} />
       </td>
     </tr>
   ));

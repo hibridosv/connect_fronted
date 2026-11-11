@@ -33,7 +33,7 @@ export function SpecialSaleProductsModal(props: SpecialSaleProductsModalI) {
       <td className="px-3 py-2 font-semibold">
         { record.product }
         { record.options?.length > 0 && (
-          <span className="block text-[10px] font-normal normal-case text-text-muted">
+          <span className="block text-2xs font-normal normal-case text-text-muted">
             { record.options.map((option: any) => option.option?.name).join(', ') }
           </span>
         )}

@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { CartItem, CheckoutData } from "@/hooks/chatbot/usePublicOrderLogic";
 import { numberToMoney } from "@/lib/utils";
 import { useState } from "react";
@@ -85,9 +86,9 @@ export function PublicCheckout(props: PublicCheckoutI) {
                   {item.options.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-1">
                       {item.options.map((option) => (
-                        <span key={option.variant_id} className="text-[11px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                        <Badge key={option.variant_id}>
                           {option.name}{option.price > 0 ? ` +${numberToMoney(option.price, money)}` : ''}
-                        </span>
+                        </Badge>
                       ))}
                     </div>
                   )}

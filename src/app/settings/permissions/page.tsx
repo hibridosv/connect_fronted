@@ -1,5 +1,4 @@
 'use client';
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useSettingsPermissionLogic } from "@/hooks/settings/useSettingsPermissionLogic";
 import { permissionExists } from "@/lib/utils";
@@ -94,7 +93,7 @@ export default function Page() {
                           onClick={() => handleChangePermission(isChecked, item.uuid)}
                           className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 ${
                             isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-                          } ${isChecked ? 'bg-success' : 'bg-gray-300'}`}
+                          } ${isChecked ? 'bg-success' : 'bg-text-muted/40'}`}
                         >
                           {isUpdating && (
                             <span className="absolute inset-0 flex items-center justify-center">
@@ -116,7 +115,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-          <ToasterMessage />
     </div>
   );
 }

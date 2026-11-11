@@ -46,12 +46,12 @@ export function OrderButtons(props: OrderButtonsI) {
         <SalesMessages />
         
         <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
-          <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
+          <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable-table w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
           </Popper>
-        <div className={`button-cyan rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${saving || sending ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={saving || sending ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />} Guardar</div>
-        <div className={`button-lime rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${payDisabled ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar</div>
-        <div className={`button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-xs sm:text-sm py-2.5 sm:py-2 ${sending ? 'cursor-not-allowed opacity-60' : 'clickeable'}`} onClick={sending ? ()=>{} : ()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar</div>
+        <div className={`button-cyan rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${saving || sending ? 'cursor-not-allowed opacity-60' : 'clickeable-table'}`} onClick={saving || sending ? ()=>{} : ()=>save(order.id)}>{ saving ? <LoaderIcon className='mr-1' /> : <AiFillSave className='mr-1' />} Guardar</div>
+        <div className={`button-lime rounded-lg sm:rounded-none text-xs sm:text-sm py-2.5 sm:py-2 ${payDisabled ? 'cursor-not-allowed opacity-60' : 'clickeable-table'}`} onClick={payDisabled ? ()=>{} : ()=>{ openModal('payOrder') }}> <FaRegMoneyBillAlt className='mr-1' /> Cobrar</div>
+        <div className={`button-red rounded-lg sm:rounded-r-lg sm:rounded-l-none text-xs sm:text-sm py-2.5 sm:py-2 ${sending ? 'cursor-not-allowed opacity-60' : 'clickeable-table'}`} onClick={sending ? ()=>{} : ()=>{openModal('deleteOrder')}}><GiCancel className='mr-1' /> Cancelar</div>
       </div>
       <DeleteModal
               isShow={modals.deleteOrder}

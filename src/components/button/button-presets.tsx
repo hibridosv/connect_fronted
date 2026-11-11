@@ -1,7 +1,7 @@
+import { Spinner } from "@/components/Spinner";
 import { AiFillPrinter, AiFillSave, AiOutlineClose, AiOutlineSend } from "react-icons/ai"
 import { GiCancel } from "react-icons/gi"
 import { RiCheckDoubleFill } from "react-icons/ri"
-import { ImSpinner5 } from "react-icons/im"
 import { AiOutlineCloseCircle, AiOutlinePlusCircle, AiOutlineMinusCircle } from "react-icons/ai"
 import { IoMdAddCircle } from "react-icons/io"
 import { FaEdit, FaInfoCircle } from "react-icons/fa";
@@ -98,20 +98,20 @@ export const iconPresets = {
   add: <IoMdAddCircle className="mr-3"/>,
   send: <AiOutlineSend className="mr-3"/>,
 
-  saving: <ImSpinner5 className="mr-3 animate-spin" />,
-  submitting: <ImSpinner5 className="mr-3 animate-spin" />,
-  loading: <ImSpinner5 className="mr-3 animate-spin" />,
+  saving: <Spinner color="current" className="mr-3" />,
+  submitting: <Spinner color="current" className="mr-3" />,
+  loading: <Spinner color="current" className="mr-3" />,
 
   link: "",
-  smallClose: <AiOutlineCloseCircle color="red" size={25} />,
+  smallClose: <AiOutlineCloseCircle className="text-danger" size={25} />,
   smallCloseDisable: <AiOutlineCloseCircle color="grey" size={25} />,
-  smallPlus: <AiOutlinePlusCircle color="green" size={25} />,
+  smallPlus: <AiOutlinePlusCircle className="text-success" size={25} />,
   smallPlusDisable: <AiOutlinePlusCircle color="grey" size={25} />,
-  smallMinus: <AiOutlineMinusCircle color="green" size={25} />,
+  smallMinus: <AiOutlineMinusCircle className="text-success" size={25} />,
   smallMinusDisable: <AiOutlineMinusCircle color="grey" size={25} />,
-  smallInfo: <FaInfoCircle color="#5DADE2" size={23} />,
-  smallEdit: <FaEdit color="#31B92F" size={23} />,
-  smallPrint: <AiFillPrinter color="#2FA0B9" size={25} />,
+  smallInfo: <FaInfoCircle className="text-info" size={23} />,
+  smallEdit: <FaEdit className="text-success" size={23} />,
+  smallPrint: <AiFillPrinter className="text-info" size={25} />,
   smallPrintDisable: <AiFillPrinter color="grey" size={25} />,
   back: <IoArrowBack className="mr-3" />,
 };

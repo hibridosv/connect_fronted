@@ -45,14 +45,14 @@ export function SearchProductModal({ onClose, isShow }: SearchProductModalI) {
                             {products.data.map((item: any) => {
                                 return (
                                     <li key={item.id} onClick={() => handleSelected(item)}>
-                                        <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable`}>
+                                        <div className={`flex justify-between items-center p-3 hover:bg-bg-subtle rounded-md transition-colors duration-150 clickeable-table`}>
                                             <span className="text-text-base text-left">
                                                 {item.cod} | 
                                                 {item.description} 
-                                                {item?.prices && <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1">{ numberToMoney(item?.prices[0]?.price ?? 0, system) }</span>}
+                                                {item?.prices && <span className="text-xs font-normal border border-text-muted ml-3 shadow-md rounded-md px-1">{ numberToMoney(item?.prices[0]?.price ?? 0, system) }</span>}
                                             </span>
                                             <span className="flex items-center">
-                                            <span className="text-xs font-normal border border-slate-500 ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
+                                            <span className="text-xs font-normal border border-text-muted ml-3 shadow-md rounded-md px-1 justify-end max-h-5 h-5">{item?.quantity}</span>
                                             {iconSvg}
                                             </span>
                                         </div>

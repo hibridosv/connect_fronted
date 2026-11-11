@@ -66,8 +66,8 @@ export function RestaurantProductsAdded({ order } : any) {
                 ()=>{ setElement('productOptionsGroupSelected', record); openModal('productOptionsGroup') } :
                 undefined }>
             { record.product }
-            { isSpecialSale && <MdInfo className="inline-block ml-1 text-red-500 text-center" size={12} title="Venta Especial" /> }
-            { hasOptions && <MdInfo className="inline-block ml-1 text-cyan-500 text-center" size={12} title="Venta con Opciones" /> }
+            { isSpecialSale && <MdInfo className="inline-block ml-1 text-danger text-center" size={12} title="Venta Especial" /> }
+            { hasOptions && <MdInfo className="inline-block ml-1 text-info text-center" size={12} title="Venta con Opciones" /> }
             </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums clickeable-table`} 
               onClick={()=> { 
@@ -84,9 +84,9 @@ export function RestaurantProductsAdded({ order } : any) {
                 {
                   isProductPendientToSend(getLastElement(order?.invoiceproducts, "cod", record?.cod)) ? (
                     <CodeRequestGuard permission="code-request-delete-product" onAuthorized={() => del(order.id, record.cod)}>
-                      <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-grey-800 clickeable"/>
+                      <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-text-muted hover:text-danger clickeable"/>
                     </CodeRequestGuard>) : (
-                    <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-red-800 clickeable"/>
+                    <AiFillCloseCircle onClick={() => del(order.id, record.cod)} size={20} className="text-danger clickeable"/>
                   )
                 }
             </td>
@@ -115,12 +115,12 @@ export function RestaurantProductsAdded({ order } : any) {
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Precio</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">Total</th>
               <th scope="col" className="px-2 py-1 font-bold tracking-wider border-r border-bg-subtle whitespace-nowrap">
-                { deleting ? <CgSpinner size={22} className={`text-red-800 animate-spin`}  /> :
+                { deleting ? <CgSpinner size={22} className={`text-danger animate-spin`}  /> :
                   orderHasSentProducts(order) ? (
                     <CodeRequestGuard permission="code-request-delete-product" onAuthorized={()=>{ cancel(order.id)} } >
-                      <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-red-800 clickeable`}  />
+                      <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-danger clickeable`}  />
                     </CodeRequestGuard>) :
-                  <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-red-800 clickeable`}  /> }
+                  <MdDelete onClick={()=>{ cancel(order.id)}} size={22} className={`text-danger clickeable`}  /> }
               </th>
             </tr>
           </thead>

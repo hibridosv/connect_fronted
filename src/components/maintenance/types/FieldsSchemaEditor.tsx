@@ -42,7 +42,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
               <div key={item.id} className="border border-bg-subtle rounded-lg bg-bg-content shadow-sm overflow-hidden">
                 <div className="flex items-center justify-between px-3 py-2 bg-bg-subtle/40 border-b border-bg-subtle">
                   <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 shrink-0 rounded-full bg-primary text-text-inverted flex items-center justify-center text-[10px] font-bold">
+                    <span className="w-5 h-5 shrink-0 rounded-full bg-primary text-text-inverted flex items-center justify-center text-2xs font-bold">
                       {index + 1}
                     </span>
                     <span className="text-xs font-semibold text-text-muted uppercase tracking-wide">Campo {index + 1}</span>
@@ -112,7 +112,7 @@ export function FieldsSchemaEditor({ control, register, watch, setValue }: Field
                     />
                     {fieldName && (
                       <span
-                        className="text-[11px] text-text-muted font-mono truncate max-w-full"
+                        className="text-xxs text-text-muted font-mono truncate max-w-full"
                         title={`custom_fields.${fieldName}`}
                       >
                         custom_fields.{fieldName}

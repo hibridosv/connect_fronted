@@ -1,18 +1,17 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { Alert } from '@/components/Alert/Alert';
 import { ChatbotProfileEditor } from '@/components/chatbot/profile/ChatbotProfileEditor';
 import { ChatbotQuestionnaire } from '@/components/chatbot/profile/ChatbotQuestionnaire';
 import { ChatbotSettingsCard } from '@/components/chatbot/settings/ChatbotSettingsCard';
 import { ChatbotSettingSwitch } from '@/components/chatbot/settings/ChatbotSettingSwitch';
 import { ChatbotSettingsSkeleton } from '@/components/skeleton/ChatbotSettingsSkeleton';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 import { useChatbotProfileLogic } from '@/hooks/chatbot/useChatbotProfileLogic';
 import { ChatbotSettings } from '@/interfaces/chatbot';
 import chatbotSettingsStore from '@/stores/chatbot/chatbotSettingsStore';
 import { useEffect, useState } from 'react';
 import { FaClock, FaComments, FaMagic, FaRobot, FaStore, FaUserCheck, FaUtensils, FaWhatsapp } from 'react-icons/fa';
-import { LuLoaderCircle } from 'react-icons/lu';
 
 export default function Page() {
   const { settings, loading, saving, loadSettings, updateSettings } = chatbotSettingsStore();
@@ -75,7 +74,7 @@ export default function Page() {
                   <div className="py-3">
                     <label className="input-label flex items-center gap-2">
                       Cuando el cliente confirma un pedido
-                      {updating === 'orders_to_kitchen' && <LuLoaderCircle className="animate-spin text-primary" size={14} />}
+                      {updating === 'orders_to_kitchen' && <Spinner size={14} />}
                     </label>
                     <select className="input-select w-full" value={settings.orders_to_kitchen} disabled={saving}
                       onChange={(e) => update('orders_to_kitchen', { orders_to_kitchen: Number(e.target.value) })}>
@@ -146,7 +145,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

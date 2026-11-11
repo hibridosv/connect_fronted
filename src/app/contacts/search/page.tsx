@@ -9,7 +9,6 @@ import { DeleteModal } from "@/components/DeleteModal";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useContactsLogic } from "@/hooks/contacts/useContactsLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -67,7 +66,6 @@ export default function Page() {
         text={`¿Estas seguro de eliminar este contacto?`}
         onDelete={() =>{ onDelete(getElement('deleteContact').id);  }}
         onClose={() => closeModal('deleteContact')} />
-    <ToasterMessage />
 </div>
   );
 }

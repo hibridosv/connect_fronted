@@ -1,11 +1,12 @@
 'use client';
+import { Badge } from "@/components/Badge";
+import { Spinner } from "@/components/Spinner";
 import { Alert } from '@/components/Alert/Alert';
 import { Button, Preset } from '@/components/button/button';
 import { formatDateAsDMY, formatHourAsHM } from '@/lib/date-formats';
 import { ChatbotProfileState } from '@/stores/chatbot/chatbotProfileStore';
 import { useEffect, useState } from 'react';
 import { FaCheckCircle, FaHistory, FaMagic, FaPen } from 'react-icons/fa';
-import { LuLoaderCircle } from 'react-icons/lu';
 
 export interface ChatbotProfileEditorI {
   profile: ChatbotProfileState;
@@ -52,15 +53,15 @@ export function ChatbotProfileEditor({ profile, saving, onGenerate, onSaveDraft,
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Button preset={Preset.primary} text={published || editable ? 'Volver a generar desde el cuestionario' : 'Generar perfil con IA'}
           disabled={saving || pending || noGenerations} onClick={() => onGenerate()} />
-        <span className={`text-xs font-medium px-2 py-1 rounded-md ${noGenerations ? 'bg-danger/10 text-danger' : 'bg-bg-subtle/60 text-text-muted'}`}>
+        <Badge variant={noGenerations ? 'danger' : 'muted'}>
           {noGenerations ? 'Ya no quedan generaciones hoy' : `Te quedan ${generations_left} generaciones hoy`}
-        </span>
+        </Badge>
       </div>
 
       {pending && (
         <div className="animate-fade-in rounded-lg border border-bg-subtle border-l-4 border-l-info bg-bg-content p-4">
           <div className="flex items-center gap-3 mb-3">
-            <LuLoaderCircle className="animate-spin text-info shrink-0" size={22} />
+            <Spinner size={22} color="info" className="shrink-0" />
             <div>
               <div className="text-sm font-semibold text-text-base">La IA está redactando el perfil</div>
               <div className="text-xs text-text-muted">Tarda unos segundos; aparece aquí solo cuando termine.</div>

@@ -201,7 +201,7 @@ export default function ExpiringPage() {
                 className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-danger flex items-center justify-center shadow-md shadow-danger/40"
                 style={{ animation: 'urgentBlink 1s ease-in-out infinite' }}
               >
-                <span className="text-white text-[9px] font-black leading-none">!</span>
+                <span className="text-white text-3xs font-black leading-none">!</span>
               </div>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function ExpiringPage() {
           <div className={`mb-4 transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <div className="flex items-center gap-2 mb-2">
               <div className="h-px flex-1 bg-bg-subtle" />
-              <span className="text-[10px] uppercase tracking-widest font-semibold text-text-muted/60">Facturas pendientes</span>
+              <span className="text-2xs uppercase tracking-widest font-semibold text-text-muted/60">Facturas pendientes</span>
               <div className="h-px flex-1 bg-bg-subtle" />
             </div>
             <div className="space-y-2">
@@ -248,7 +248,7 @@ export default function ExpiringPage() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-text-base leading-tight uppercase">Factura #{inv.id?.slice(-4)}</div>
-                      <div className="text-[11px] text-text-muted leading-tight">{new Date(inv.expires_at) < new Date() ? 'Venció' : 'Vence'}: {formatDateAsDMY(inv.expires_at)}</div>
+                      <div className="text-xxs text-text-muted leading-tight">{new Date(inv.expires_at) < new Date() ? 'Venció' : 'Vence'}: {formatDateAsDMY(inv.expires_at)}</div>
                     </div>
                   </div>
                   <span className="text-sm font-bold text-danger shrink-0">{numberToMoney(inv.total, system)}</span>
@@ -281,7 +281,7 @@ export default function ExpiringPage() {
           </div>
         </div>
 
-        <p className={`mt-4 text-[10px] font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`mt-4 text-2xs font-mono text-text-muted/25 tracking-[0.2em] uppercase transition-all duration-700 delay-[1100ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           Estado &middot; Suspensión inminente &middot; Último aviso
         </p>
       </div>

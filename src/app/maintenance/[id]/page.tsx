@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { ViewTitle } from "@/components/ViewTitle";
 import { Button, Preset } from "@/components/button/button";
@@ -9,14 +10,12 @@ import { MaintenanceEditForm } from "@/components/maintenance/details/Maintenanc
 import { MaintenanceImagesSection } from "@/components/maintenance/details/MaintenanceImagesSection";
 import { MaintenanceStatusHistoryTimeline } from "@/components/maintenance/details/MaintenanceStatusHistoryTimeline";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useMaintenanceDetailsLogic } from "@/hooks/maintenance/useMaintenanceDetailsLogic";
 import { formatDateAsDMY, formatHourAsHM } from "@/lib/date-formats";
 import useModalStore from "@/stores/modalStorage";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
-import { LuLoader } from "react-icons/lu";
 
 export default function Page() {
   const params = useParams();
@@ -54,7 +53,7 @@ export default function Page() {
           <FaArrowLeft size={16} />
         </Link>
         <ViewTitle text={maintenance.asset_label || maintenance.type?.name || 'Orden de mantenimiento'} />
-        {loading && <LuLoader className="animate-spin text-text-muted shrink-0" size={16} />}
+        {loading && <Spinner size={16} color="muted" className="shrink-0" />}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-10 gap-4 px-2 sm:px-4 mt-2">
@@ -132,7 +131,6 @@ export default function Page() {
         saving={saving}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

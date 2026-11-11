@@ -58,7 +58,7 @@ export function TableCard({ record }: TableCardProps) {
             <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full ring-2 ring-bg-content ${status.dot}`} />
           </div>
 
-          <p className="w-full text-center text-[13px] leading-tight font-bold text-text-base uppercase tracking-wide truncate">
+          <p className="w-full text-center text-xs leading-tight font-bold text-text-base uppercase tracking-wide truncate">
             {record?.name}
           </p>
 
@@ -67,7 +67,7 @@ export function TableCard({ record }: TableCardProps) {
             { isOccupied &&
               <>
                 <TbClock className="w-3 h-3 shrink-0 text-danger" />
-                <span className="text-[10px] font-semibold tabular-nums">
+                <span className="text-2xs font-semibold tabular-nums">
                   {/* la mesa unida cuenta el tiempo desde que se ocupo la principal */}
                   <TablesTime record={principal ?? record} isShow={true} rowSearch="updated_at" />
                 </span>
@@ -80,12 +80,12 @@ export function TableCard({ record }: TableCardProps) {
           { principal ? (
             <>
               <TbLink className={`w-3.5 h-3.5 shrink-0 ${status.iconText}`} />
-              <span className={`text-[10px] font-semibold truncate ${status.iconText}`}>
+              <span className={`text-2xs font-semibold truncate ${status.iconText}`}>
                 Unida a {principal.name}
               </span>
             </>
           ) : (
-            <span className={`text-[10px] font-semibold uppercase tracking-wider ${status.iconText}`}>
+            <span className={`text-2xs font-semibold uppercase tracking-wider ${status.iconText}`}>
               {status.label}
             </span>
           )}

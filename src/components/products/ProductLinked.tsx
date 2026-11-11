@@ -44,7 +44,7 @@ export function ProductLinked(props: ProductLinkedProps) {
 
         <div className="text-text-base"> 
           { record.product_type == 2 && (
-          <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
+          <div className="p-3 text-center bg-info/10 text-info rounded-lg">
             Este producto es un servicio, por lo que no tiene detalles adicionales.
           </div>
           )}
@@ -72,7 +72,7 @@ export function ProductLinked(props: ProductLinkedProps) {
                     </table>
                 </div>
             ) : (
-                <div className="p-3 text-center bg-blue-500/10 text-blue-500 rounded-lg">
+                <div className="p-3 text-center bg-info/10 text-info rounded-lg">
                     <p>No hay productos vinculados a este item.</p>
                 </div>
             )}

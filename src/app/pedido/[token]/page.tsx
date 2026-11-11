@@ -163,7 +163,7 @@ export default function Page({ params }: { params: { token: string } }) {
                   <div className="mt-auto pt-2 flex items-center gap-2">
                     <span className="font-bold text-primary">{numberToMoney(dish.price, money)}</span>
                     {dish.options.length > 0 && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-bg-subtle text-text-muted">Personalizable</span>
+                      <span className="text-xxs px-2 py-0.5 rounded-full bg-bg-subtle text-text-muted">Personalizable</span>
                     )}
                   </div>
                 </div>

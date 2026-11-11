@@ -10,7 +10,6 @@ import { ProductsRegistersTable } from "@/components/products/remove/ProductsReg
 import { RemoveInitialForm } from "@/components/products/remove/RemoveInitialForm";
 import { RemoveProductsForm } from "@/components/products/remove/RemoveProductsForm";
 import { RemoveProductsSearch } from "@/components/products/remove/RemoveProductsSearch";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useProductRemoveLogic } from "@/hooks/products/useProductRemoveLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -59,7 +58,6 @@ export default function Page() {
       </div> 
       <ChangeLotModal isShow={modals.ChangeLot} onClose={()=>closeModal("ChangeLot")} product={getElement("productRemoveSelected")}/>
       <LotDetailsModal isShow={modals.viewDetails} onClose={()=>closeModal("viewDetails")} product={getElement("viewDetails")}/>
-      <ToasterMessage />
     </div>
   );
 }

@@ -144,57 +144,55 @@ body {
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
 }
+/* Input compacto para celdas de tablas (cantidad, precio); el ancho y la alineación van en cada uso */
+.input-sm {
+  @apply bg-bg-content border border-bg-subtle rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm
+}
 .input-label {
-  @apply truncate block text-gray-700 text-sm font-bold
+  @apply truncate block text-text-base text-sm font-bold
 }
 .input-radio {
-  @apply relative float-left -ml-[1.5rem] mr-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-neutral-300 before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:border-neutral-600 dark:checked:border-primary dark:checked:after:border-primary dark:checked:after:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:border-primary dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]  
+  @apply relative float-left -ml-[1.5rem] mr-1 mt-0.5 h-5 w-5 appearance-none rounded-full border-2 border-solid border-bg-subtle before:pointer-events-none before:absolute before:h-4 before:w-4 before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] after:absolute after:z-[1] after:block after:h-4 after:w-4 after:rounded-full after:content-[''] checked:border-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:left-1/2 checked:after:top-1/2 checked:after:h-[0.625rem] checked:after:w-[0.625rem] checked:after:rounded-full checked:after:border-primary checked:after:bg-primary checked:after:content-[''] checked:after:[transform:translate(-50%,-50%)] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:border-primary checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_rgb(var(--color-primary))] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]
 }
 
 .button-href {
-  @apply py-2 px-4 flex justify-center items-center text-white text-center text-base font-semibold shadow-md rounded-lg bg-sky-600 hover:bg-sky-700 clickeable
+  @apply py-2 px-4 flex justify-center items-center text-white text-center text-base font-semibold shadow-md rounded-lg bg-primary hover:bg-primary/90 clickeable
 }
 
 
 .status-success {
-  @apply text-lime-500 font-bold
+  @apply text-success font-bold
 }
 .status-danger {
-  @apply text-red-500 font-bold
+  @apply text-danger font-bold
 }
 .status-info {
-  @apply text-sky-500 font-bold
+  @apply text-info font-bold
 }
 .status-warning {
-  @apply text-orange-400 font-bold
+  @apply text-warning font-bold
 }
 
 
 /* Botones*/
 
 .button-grey {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-zinc-600 hover:bg-zinc-800 focus:ring-zinc-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-secondary hover:bg-secondary/90 focus:ring-secondary
 }
 .button-lime {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-lime-600 hover:bg-lime-700 focus:ring-lime-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-success hover:bg-success/90 focus:ring-success
 }
 .button-cyan {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-cyan-600 hover:bg-cyan-700 focus:ring-cyan-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-info hover:bg-info/90 focus:ring-info
 }
 .button-green {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-zinc-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-success hover:bg-success/90 focus:ring-success
 }
 .button-red {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-red-600 hover:bg-red-800 focus:ring-red-500 focus:ring-offset-zinc-200
-}
-.button-green-dark {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-700 hover:bg-green-800 focus:ring-green-700 focus:ring-offset-zinc-400
-}
-.button-disabled {
-  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-gray-300 hover:bg-gray-400 focus:ring-gray-300 focus:ring-offset-gray-200
+  @apply py-2 px-4 flex justify-center items-center text-white transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-danger hover:bg-danger/90 focus:ring-danger
 }
 .button-options-sales {
-  @apply w-full uppercase text-slate-700 py-2 px-4 hover:bg-slate-100 clickeable text-[12px] font-medium
+  @apply w-full uppercase text-text-base py-2 px-4 hover:bg-bg-subtle clickeable-table text-xs font-medium
 }
 
 /* QR Reader — Transmission animations */

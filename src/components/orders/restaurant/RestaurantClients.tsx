@@ -40,7 +40,7 @@ const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.ma
           )}
         </div>
 
-        <span className={`text-[11px] font-semibold transition-colors duration-300
+        <span className={`text-xxs font-semibold transition-colors duration-300
           ${isActive ? 'text-accent' : 'text-text-muted group-hover:text-text-base'}`}>
           Cliente {record}
         </span>
@@ -57,7 +57,7 @@ const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.ma
           <HiCheck className="w-3 h-3 text-white" />
         </div>
       </div>
-      <span className="text-[11px] font-semibold text-accent">Cliente 1</span>
+      <span className="text-xxs font-semibold text-accent">Cliente 1</span>
     </div>
   );
 
@@ -68,7 +68,7 @@ const listItems = order?.attributes && JSON.parse(order?.attributes.clients)?.ma
       <div className="relative w-12 h-12 rounded-full flex items-center justify-center border-2 border-dashed border-success/60 bg-success/10 transition-all duration-300 group-hover:scale-105 group-hover:bg-success/20">
         <HiUserPlus className="w-5 h-5 text-success" />
       </div>
-      <span className="text-[11px] font-semibold text-success">Nuevo</span>
+      <span className="text-xxs font-semibold text-success">Nuevo</span>
     </div>
   );
 

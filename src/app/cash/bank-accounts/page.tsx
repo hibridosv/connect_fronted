@@ -3,7 +3,6 @@ import { ViewTitle } from "@/components/ViewTitle";
 import { AccountForm } from "@/components/cash/accounts/AccountForm";
 import { AccountsTable } from "@/components/cash/accounts/AccountsTable";
 import { AccountsTransfersModal } from "@/components/cash/accounts/AccountsTransfersModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useCashAccountLogic } from "@/hooks/cash/useCashAccountLogic";
 import useModalStore from "@/stores/modalStorage";
 import { MdCurrencyExchange } from "react-icons/md";
@@ -26,14 +25,13 @@ export default function Page() {
     <div className="md:col-span-6">
         <div className="flex justify-between items-center">
           <ViewTitle text="Listado de cuentas" />
-          <MdCurrencyExchange size={28} className="clickeable mr-4 animate-pulse" color="red" onClick={()=> openModal("AccountsTransfers")} />
+          <MdCurrencyExchange size={28} className="clickeable mr-4 animate-pulse text-danger" onClick={()=> openModal("AccountsTransfers")} />
         </div>
         <div className="p-4">
           <AccountsTable />
         </div>
     </div> 
     <AccountsTransfersModal isShow={modals.AccountsTransfers} onClose={()=>{ closeModal("AccountsTransfers")}} />
-    <ToasterMessage />
 </div>
   );
 }

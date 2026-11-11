@@ -4,7 +4,6 @@ import { ChatbotOrderDetailsModal } from "@/components/chatbot/ChatbotOrderDetai
 import { ChatbotOrdersTable } from "@/components/chatbot/ChatbotOrdersTable";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useChatbotOrdersLogic } from "@/hooks/chatbot/useChatbotOrdersLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -78,7 +77,6 @@ export default function Page() {
         onCancel={cancel}
         onReady={ready}
       />
-      <ToasterMessage />
     </div>
   );
 }

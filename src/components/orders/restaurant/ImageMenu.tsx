@@ -68,7 +68,7 @@ export function ImageMenu(props: ImageMenuI) {
           transition-all duration-100
           ${isSending ? 'bg-primary/10' : isProduct
             ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
-            : 'bg-slate-300 group-hover:bg-accent/25'
+            : 'bg-bg-subtle group-hover:bg-accent/25'
           }
         `}>
           {isSending ? (
@@ -78,7 +78,7 @@ export function ImageMenu(props: ImageMenuI) {
               <span className="inline-block h-1 w-1 rounded-full bg-primary animate-bounce" style={{ animationDuration: '0.4s', animationDelay: '0.2s' }} />
             </div>
           ) : (
-            <p className={`w-full text-center text-[12px] font-semibold uppercase leading-tight line-clamp-2 ${isProduct ? 'text-text-base' : 'text-black'}`}>
+            <p className={`w-full text-center text-xs font-semibold uppercase leading-tight line-clamp-2 text-text-base`}>
               {label}
             </p>
           )}

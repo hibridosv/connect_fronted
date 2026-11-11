@@ -11,7 +11,6 @@ import { Pagination } from "@/components/Pagination";
 import { ClientsSearch } from "@/components/search/ClientsSearch";
 import { ShowClientSearched } from "@/components/search/ShowClientSearched";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useAccountReceivableLogic } from "@/hooks/accounts/useAccountReceivableLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -85,7 +84,6 @@ export default function Page() {
     </div> 
     <AddReceivableAddModal onClose={() => closeModal('paymentReceivableAdd')} isShow={modals.paymentReceivableAdd} />
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.id} />
-    <ToasterMessage />
 </div>
   );
 }

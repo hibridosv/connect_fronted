@@ -35,7 +35,7 @@ export function QrHistoryList() {
         </p>
         <button
           onClick={clearHistory}
-          className="flex items-center gap-1 text-[10px] font-semibold text-text-muted hover:text-danger transition-colors clickeable"
+          className="flex items-center gap-1 text-2xs font-semibold text-text-muted hover:text-danger transition-colors clickeable"
           title="Limpiar historial"
         >
           <LuTrash2 size={11} />
@@ -62,7 +62,7 @@ export function QrHistoryList() {
                   <p className={`truncate font-medium leading-tight ${isActive ? 'text-primary' : 'text-text-base'}`}>
                     {entry.fileName}
                   </p>
-                  <p className="text-text-muted text-[10px] mt-0.5 leading-tight">
+                  <p className="text-text-muted text-2xs mt-0.5 leading-tight">
                     {dteType} · {formatDateTime(entry.readAt)}
                   </p>
                 </div>

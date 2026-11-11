@@ -55,14 +55,14 @@ export function CatalogSearchSelect(props: CatalogSearchSelectProps) {
       <input
         type="text"
         id={id}
-        className="input pr-10"
+        className="input !pr-10"
         autoComplete="off"
         placeholder={placeholder}
         value={isOpen ? search : selected ? `${selected.code} - ${selected.name}` : ""}
         onFocus={() => setIsOpen(true)}
         onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
         onKeyDown={(e) => {
-          if (e.key === "Escape") { setIsOpen(false); setSearch(""); }
+          if (e.key === "Escape") { e.stopPropagation(); setIsOpen(false); setSearch(""); }
           if (e.key === "Enter") { e.preventDefault(); if (results.length) handleSelect(results[0]); }
         }}
       />

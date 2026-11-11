@@ -35,7 +35,7 @@ Documento de referencia técnica, convenciones y patrones del proyecto.
 - **Callbacks**: `jwt` y `session` almacenan y exponen el `accessToken`, `refreshToken`, `expiresAt` y `url` obtenidos de Laravel.
 - **Extensión de sesión**: Definida en `src/types/next-auth.d.ts`.
 - **Página de login**: Configurada en la ruta raíz (`/`) vía la opción `pages: { signIn: '/' }`.
-- **Middleware**: `src/middleware.ts` protege rutas específicas (`/dashboard`, `/protected`, `/products`) redirigiendo usuarios no autenticados al login.
+- **Middleware**: `src/middleware.ts` protege rutas específicas (`/dashboard`, `/products`, `/settings`...) redirigiendo usuarios no autenticados al login.
 
 ---
 
@@ -278,6 +278,20 @@ El componente `Modal` (`src/components/modal/Modal.tsx`) acepta un prop `size` p
 
 Subcomponentes: `Modal.Header`, `Modal.Body`, `Modal.Footer`.
 
+Mientras está abierto, `Modal` (igual que `DeleteModal`) usa `useModalBehavior` (`src/hooks/useModalBehavior.ts`): Escape cierra solo el modal de arriba y sigue la regla de `closeOnOverlayClick` (si el fondo no lo cierra, Escape tampoco; `DeleteModal` no se cierra mientras `isSending`), bloquea el scroll de la página, mueve el foco al modal (respeta un campo con `autoFocus`) y lo devuelve al cerrar. Un componente dentro de un modal que use Escape para lo suyo (cerrar un desplegable, cancelar una edición) llama `e.stopPropagation()` para no cerrar el modal.
+
+Indicador de carga: siempre `<Spinner />` (`src/components/Spinner.tsx`, `LuLoaderCircle` que gira). Props: `size` (número; por defecto `1em`), `color` (`primary` por defecto, `muted`, `info`, `danger`, `inverted` o `current` para heredar el color del texto, p. ej. dentro de un botón) y `className` para espaciado. No uses otros íconos de `react-icons` con `animate-spin`.
+
+Colores: siempre tokens del tema (`text-danger`, `bg-bg-subtle`, `text-text-muted`...), nunca `bg-red-500`, `text-gray-600` ni `color="red"`. La única excepción son las paletas de categorías, que usan varios tonos para distinguir cosas y no estados (`PercentSalesType`, `ContactKpiCards`, `redirects/info`), las ilustraciones SVG y el buscador por código de la venta (`OrderProductsSearchByCode`, decisión del usuario).
+
+Pastillas de estado, etiquetas y contadores: siempre `<Badge>` (`src/components/Badge.tsx`), con `variant` (`primary` por defecto, `success`, `danger`, `warning`, `info`, `accent`, `muted`) y `size` (`md` = `text-xs`, por defecto; `sm` = 10px en mayúsculas para tarjetas densas). No armes pastillas con `rounded-full px-2 bg-x/10` a mano. `Indicator` (punto de color + texto, sin fondo) sigue siendo el de los estados en columnas de tablas.
+
+Inputs: `.input` en formularios, `.input-select` en `<select>` (`.input` les quita la flecha) e `.input-sm` para inputs compactos dentro de celdas de tablas (el ancho y la alineación van en cada uso). Las clases de `globals.css` no están en `@layer` y les ganan a las utilidades: para cambiar algo que ya definen (padding, borde) usa `!` (`input !pl-10`, `input-sm !border-danger`).
+
+Tamaños de letra menores que `text-xs` (12px): `text-xxs` (11px), `text-2xs` (10px) y `text-3xs` (9px), definidos en `tailwind.config.ts`. No uses `text-[Npx]`.
+
+`.clickeable` (encoge al 75 %) es para botones pequeños, íconos y tarjetas; filas de listas o buscadores, labels a lo ancho y los botones de acción de la venta (Opciones, Guardar, Cobrar, Cancelar, Precuenta, los selectores de arriba, descuentos, propinas y los ítems de `.button-options-sales`) usan `.clickeable-table` (95 %), para que no se muevan tanto.
+
 ### 9. Sistema de Botones
 
 El componente `Button` (`src/components/button/`) utiliza un sistema de **presets** con 30+ variantes predefinidas:
@@ -318,7 +332,7 @@ deleteDato(url)             // DELETE → toast éxito/error
 1. **Un store por dominio funcional** — Cada módulo (productos, contactos, caja, etc.) tiene su propio store.
 2. **Loading/error combinados** — Cada store maneja sus propios estados de carga y error.
 3. **Las acciones llaman servicios** — Las acciones del store invocan `getServices`, `createService`, etc. del servicio centralizado.
-4. **Toast en acciones** — Tras operaciones exitosas o fallidas, se muestra un toast vía `toastMessageStore`.
+4. **Toast en acciones** — Tras operaciones exitosas o fallidas, se muestra un toast vía `toastMessageStore`. El único `<ToasterMessage />` está en `src/providers/providers.tsx`: las páginas y componentes no montan otro (ni un `<Toaster>`), porque cada toast saldría dos veces.
 5. **Modales separados** — El estado de visibilidad de modales se gestiona en `modalStorage.ts`, no en los stores de dominio.
 6. **Selecciones temporales** — Para pasar datos a modales de detalle se usa `tempSelectedElementStore`.
 
@@ -340,13 +354,7 @@ deleteDato(url)             // DELETE → toast éxito/error
 
 ### IDs de Modales en Uso
 
-```
-contactAdd, contactDetails, deleteContact,
-paymentPayableAdd, paymentReceivableAdd, creditNoteAdd,
-cashDrawerOpen, cashDrawerDetails,
-productDetails, productAdd,
-paymentSuccess
-```
+Hay más de 60 y cambian seguido: búscalos con `grep -rn "openModal('" src` en lugar de mantener una lista aquí.
 
 ### Mapa de Stores por Dominio
 

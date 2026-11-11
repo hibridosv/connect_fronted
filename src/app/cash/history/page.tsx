@@ -5,7 +5,6 @@ import { Button, Preset } from "@/components/button/button";
 import { AccountsTransfersModal } from "@/components/cash/accounts/AccountsTransfersModal";
 import { CashTotal } from "@/components/cash/history/CashTotal";
 import { HistoryTable } from "@/components/cash/history/HistoryTable";
-import { ToasterMessage } from "@/components/toaster-message";
 import { useCashHistoryLogic } from "@/hooks/cash/useCashHistoryLogic";
 import { usePagination } from "@/hooks/usePagination";
 import cashTransferStore from "@/stores/cash/cashTransferStore";
@@ -38,7 +37,6 @@ export default function Page() {
         </div>
     </div>  
     <AccountsTransfersModal isShow={modals.AccountsTransfers} onClose={()=>{ closeModal("AccountsTransfers")}} />
-    <ToasterMessage />
 </div>
   );
 }

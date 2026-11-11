@@ -2,7 +2,6 @@
 import { QrHistoryList } from '@/components/annexes/qr-reader/QrHistoryList';
 import { QrImportSection } from '@/components/annexes/qr-reader/QrImportSection';
 import { QrInvoiceView } from '@/components/annexes/qr-reader/QrInvoiceView';
-import { ToasterMessage } from '@/components/toaster-message';
 import { ViewTitle } from '@/components/ViewTitle';
 
 export default function Page() {
@@ -19,7 +18,6 @@ export default function Page() {
         <QrHistoryList />
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }

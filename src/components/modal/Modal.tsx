@@ -1,5 +1,6 @@
 "use client";
-import { FC, ReactNode } from "react";
+import { useModalBehavior } from "@/hooks/useModalBehavior";
+import { FC, ReactNode, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 
 interface ModalProps {
@@ -29,6 +30,10 @@ const Modal: FC<ModalProps> & {
   Body: FC<ModalSubComponentProps>;
   Footer: FC<ModalSubComponentProps>;
 } = ({ show, onClose, children, size = "md", closeOnOverlayClick = true, headerTitle, hideCloseButton = false, removeTitle = false }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  // Escape sigue la misma regla que el clic en el fondo
+  useModalBehavior(show, onClose, closeOnOverlayClick, dialogRef);
+
   if (!show) return null;
 
   const maxWidthClass = {
@@ -52,7 +57,12 @@ const Modal: FC<ModalProps> & {
       onClick={closeOnOverlayClick ? onClose : undefined} // Conditional onClick
     >
       <div
-        className={`relative flex flex-col w-full ${maxWidthClass} max-h-[90vh] p-6 bg-white rounded-lg shadow-lg`}
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={headerTitle}
+        tabIndex={-1}
+        className={`relative flex flex-col w-full ${maxWidthClass} max-h-[90vh] p-6 bg-bg-content rounded-lg shadow-lg focus:outline-none`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -70,18 +80,18 @@ const ModalHeader: FC<ModalHeaderProps> = ({ title, onClose, hideCloseButton, re
   }
 
   return (
-  <div className="flex-shrink-0 flex items-center justify-between pb-3 mb-4 border-b border-gray-200 ">
-    <h3 className="text-xl font-semibold text-gray-900 uppercase">
+  <div className="flex-shrink-0 flex items-center justify-between pb-3 mb-4 border-b border-bg-subtle">
+    <h3 className="text-xl font-semibold text-text-base uppercase">
       {title}
     </h3>
     {!hideCloseButton && (
       <button
         type="button"
-        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+        className="text-text-muted bg-transparent hover:bg-bg-subtle hover:text-text-base rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
         onClick={onClose}
       >
         <IoClose size={24} />
-        <span className="sr-only">Close modal</span>
+        <span className="sr-only">Cerrar</span>
       </button>
     )}
   </div>
@@ -93,7 +103,7 @@ const ModalBody: FC<ModalSubComponentProps> = ({ children }) => (
 );
 
 const ModalFooter: FC<ModalSubComponentProps> = ({ children }) => (
-  <div className="flex-shrink-0 flex justify-end gap-4 pt-4 mt-4 border-t border-gray-200 ">
+  <div className="flex-shrink-0 flex justify-end gap-4 pt-4 mt-4 border-t border-bg-subtle">
     {children}
   </div>
 );

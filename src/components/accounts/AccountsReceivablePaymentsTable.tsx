@@ -33,7 +33,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
 
   const listItems = reversed.map((record: any) => {
     return (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && 'bg-red-50'}`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 0 && '!bg-danger/10'}`}>
       <td className="px-2 whitespace-nowrap font-medium text-primary">
         {formatDateAsDMY(record?.created_at)}  {formatHourAsHM(record?.created_at)}
       </td>
@@ -58,7 +58,7 @@ export function AccountsReceivablePaymentsTable(props: AccountsReceivablePayment
         getFirstElement(reversed, "account_type", record?.account_type)?.id == record.id && (
         activeConfig && activeConfig.includes("print-link") ? 
         <ButtonDownloadGet autoclass={false} href={`id=${record.id}&route=download.pdf.creditPayment`}>
-         <FaPrint className="clickeable ml-2" size={25} color="blue" />
+         <FaPrint className="clickeable ml-2 text-info" size={25} />
         </ButtonDownloadGet> :          
         <Button preset={Preset.smallPrint} noText onClick={isPrint} style="ml-2" />)
         } 

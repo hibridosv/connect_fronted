@@ -118,7 +118,7 @@ export function TransferProductsTable({ products, onDelete, onUpdateQuantity, se
               </td>
               <td className="px-3 py-3 text-center tabular-nums">{totalQuantity}</td>
               <td className="px-3 py-3 text-right">
-                <span className="text-[10px] font-semibold text-text-muted normal-case tracking-normal block leading-none mb-0.5">Valor total</span>
+                <span className="text-2xs font-semibold text-text-muted normal-case tracking-normal block leading-none mb-0.5">Valor total</span>
                 <span className="text-sm font-extrabold text-primary tabular-nums">{numberToMoney(total, system)}</span>
               </td>
               <td />

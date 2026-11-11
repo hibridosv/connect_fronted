@@ -1,14 +1,13 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { ViewTitle } from '@/components/ViewTitle';
 import { InvoicePayDetailsModal } from '@/components/settings/InvoicePayDetailsModal';
 import { InvoiceSystemTable } from '@/components/settings/InvoiceSystemTable';
-import { ToasterMessage } from '@/components/toaster-message';
 import { useInvoicesLogic } from '@/hooks/settings/useInvoicesLogic';
 import useModalStore from '@/stores/modalStorage';
 import useTempStorage from '@/stores/useTempStorage';
 import Image from 'next/image';
-import { LuLoaderCircle } from 'react-icons/lu';
 
 export default function Page() {
   const { modals, closeModal } = useModalStore();
@@ -43,7 +42,7 @@ export default function Page() {
             <div className="animate-slide-up-delay bg-bg-content rounded-lg shadow-sm border border-bg-subtle px-4 py-3">
               <div className="text-center text-text-muted text-sm">Generando enlace de pago</div>
               <div className="flex justify-center py-3">
-                <LuLoaderCircle className="animate-spin text-primary" size={28} />
+                <Spinner size={28} />
               </div>
             </div>
           ) : payLink?.urlQrCodeEnlace && total > 0 && (
@@ -132,7 +131,6 @@ export default function Page() {
         record={getElement('invoicePayDetails')}
       />
 
-      <ToasterMessage />
     </div>
   );
 }

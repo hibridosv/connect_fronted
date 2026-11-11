@@ -3,7 +3,6 @@ import { Alert } from "@/components/Alert/Alert";
 import { Button, Preset } from "@/components/button/button";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
-import { ToasterMessage } from "@/components/toaster-message";
 import { AdjustmentsDetailsModal } from "@/components/tools/AdjustmentsDetailsModal";
 import { AdjustmentSetModal } from "@/components/tools/AdjustmentSetModal";
 import { AdjustmentsProductsToChangeTable } from "@/components/tools/AdjustmentsProductsToChangeTable";
@@ -72,7 +71,6 @@ export default function Page() {
     </div> 
     <AdjustmentsDetailsModal isShow={modals.adjustmentDetails} onClose={() => closeModal('adjustmentDetails')} />
     <AdjustmentSetModal isShow={modals.setAdjustment} onClose={() => closeModal('setAdjustment')} sending={sending} sendAdjustment={sendAdjustment} />
-    <ToasterMessage />
 </div>
   );
 }

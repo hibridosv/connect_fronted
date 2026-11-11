@@ -4,7 +4,6 @@ import { RemissionNoteTable } from "@/components/invoicing/RemissionNoteTable";
 import { Pagination } from "@/components/Pagination";
 import { SearchInput } from "@/components/Search";
 import { ShowTotal } from "@/components/ShowTotal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useRemissionNoteLogic } from "@/hooks/invoicing/useRemissionNoteLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -42,7 +41,6 @@ export default function Page() {
         </div>
     </div> 
     <RemissionNoteModal isShow={modals.remissionNote} onClose={() => closeModal('remissionNote')} document={documentSelected} />
-    <ToasterMessage />
 </div>
   );
 }

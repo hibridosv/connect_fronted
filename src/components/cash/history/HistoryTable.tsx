@@ -29,11 +29,11 @@ export function HistoryTable() {
             </td>
             <td className="px-3 py-2 text-center font-semibold" >
             {record?.from_cash_accounts_id ?  record?.account_from?.bank  :
-            <span className="ml-4 text-red-500 font-semibold text-center">N/A</span> }
+            <span className="ml-4 text-danger font-semibold text-center">N/A</span> }
             </td>
             <td className={`px-3 py-2 text-center font-semibold`}>
             { record?.to_cash_accounts_id ? record?.account_to?.bank  :
-            <span className="ml-4 text-red-500 font-semibold text-center">N/A</span> }
+            <span className="ml-4 text-danger font-semibold text-center">N/A</span> }
             </td>       
             <td className="px-3 py-2 text-center" >
                 { numberToMoney(record?.quantity ? record?.quantity : 0, system) }

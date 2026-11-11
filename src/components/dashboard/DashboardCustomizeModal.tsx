@@ -78,7 +78,7 @@ export function DashboardCustomizeModal({ isShow, onClose }: DashboardCustomizeM
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-text-base truncate">{widget.title}</p>
-                  <p className="text-[11px] text-text-muted truncate">{typeNames[widget.type] ?? widget.type} · {widget.description}</p>
+                  <p className="text-xxs text-text-muted truncate">{typeNames[widget.type] ?? widget.type} · {widget.description}</p>
                 </div>
                 <Switch checked={item.visible} onChange={(visible) => toggle(index, visible)} label="" sizing="sm" name={`visible-${item.key}`} />
               </li>

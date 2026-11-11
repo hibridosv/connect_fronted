@@ -53,14 +53,14 @@ export function EconomicActivitySelect(props: EconomicActivitySelectProps) {
       <input
         type="text"
         id="activity_code_search"
-        className="input pr-10"
+        className="input !pr-10"
         autoComplete="off"
         placeholder="Buscar por código o actividad"
         value={isOpen ? search : selected ? `${selected.code} - ${selected.activity}` : ""}
         onFocus={() => setIsOpen(true)}
         onChange={(e) => { setSearch(e.target.value); setIsOpen(true); }}
         onKeyDown={(e) => {
-          if (e.key === "Escape") { setIsOpen(false); setSearch(""); }
+          if (e.key === "Escape") { e.stopPropagation(); setIsOpen(false); setSearch(""); }
           if (e.key === "Enter") { e.preventDefault(); if (results.length) handleSelect(results[0]); }
         }}
       />

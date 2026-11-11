@@ -37,13 +37,13 @@ export function PayButton({ isSplit = false }: any) {
             <button
               disabled={disabledButonPay}
               type="submit"
-              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`}
+              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable-table'}`}
             >
               <FaRegMoneyBillAlt className="mr-1.5" size={20} /> Cobrar
             </button>
             :
             <div
-              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable'}`}
+              className={`button-cyan w-full transition-opacity duration-200 ${disabledButonPay ? 'opacity-50 cursor-not-allowed' : 'clickeable-table'}`}
               title="Cobrar"
               onClick={(disabledButonPay) ? ()=>{} : isSplit ? ()=>paySplit({ cash: 0 }) : ()=>pay({ cash: 0 })}
             >

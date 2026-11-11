@@ -29,10 +29,10 @@ export function WidgetAi({ widget }: WidgetAiProps) {
   const canRequest = !!manual && manual.remaining > 0 && !pending && !aiRequesting;
 
   const status = last?.status === 'pending'
-    ? <span className="flex items-center gap-1 text-[11px] font-bold text-info"><FiLoader className="animate-spin" /> Generando análisis</span>
+    ? <span className="flex items-center gap-1 text-xxs font-bold text-info"><FiLoader className="animate-spin" /> Generando análisis</span>
     : last?.status === 'error'
-      ? <span className="flex items-center gap-1 text-[11px] font-bold text-warning" title="Se muestra el último análisis que salió bien"><FiAlertCircle /> El último intento falló</span>
-      : report && <span className="flex items-center gap-1 text-[11px] font-bold text-success"><FiCheckCircle /> Al día</span>;
+      ? <span className="flex items-center gap-1 text-xxs font-bold text-warning" title="Se muestra el último análisis que salió bien"><FiAlertCircle /> El último intento falló</span>
+      : report && <span className="flex items-center gap-1 text-xxs font-bold text-success"><FiCheckCircle /> Al día</span>;
 
   return (
     <WidgetCard widget={widget} loading={ai === null && aiLoading} badge={status}>
@@ -48,7 +48,7 @@ export function WidgetAi({ widget }: WidgetAiProps) {
             </div>
             <div className="min-w-0">
               <p className="text-sm text-text-base leading-relaxed whitespace-pre-line">{report.summary}</p>
-              <p className="text-[11px] text-text-muted mt-2">{generatedText(report.generated_at, report.period_from)}</p>
+              <p className="text-xxs text-text-muted mt-2">{generatedText(report.generated_at, report.period_from)}</p>
             </div>
           </div>
           {(report.highlights ?? []).length > 0 && (
@@ -65,7 +65,7 @@ export function WidgetAi({ widget }: WidgetAiProps) {
       )}
       {manual && (
         <div className="mt-3 pt-3 border-t border-bg-subtle flex flex-wrap items-center justify-between gap-2">
-          <span className="text-[11px] text-text-muted">
+          <span className="text-xxs text-text-muted">
             {manual.remaining > 0
               ? `Puedes pedir ${manual.remaining} análisis más hoy con las ventas de hasta ahora`
               : 'Ya usaste los análisis de hoy. Mañana a las 6:15 llega uno nuevo'}

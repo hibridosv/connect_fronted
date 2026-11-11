@@ -43,7 +43,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
 
   if (!order) return null;
 
-  const status = orderStatusModalMap[order?.status] || { label: 'Desconocido', className: 'bg-gray-500/10 text-gray-500' };
+  const status = orderStatusModalMap[order?.status] || { label: 'Desconocido', className: 'bg-bg-subtle text-text-muted' };
   const clientName = order?.order_type === 2 ? tableNames(order) : order?.client?.name;
 
   return (
@@ -51,7 +51,7 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
       <Modal.Body>
         <div className="px-4">
 
-          <div className="flex items-center justify-center text-red-700 mb-3 font-medium">
+          <div className="flex items-center justify-center text-danger mb-3 font-medium">
             <BiTimeFive className="mr-2 animate-spin" />
             <span className='text-sm'>Inicio: {formatDateAsDMY(order?.created_at)} {formatHourAsHM(order?.created_at)} </span>
             <span className='text-xs ml-3'> (Hace {relativeTime})</span>
@@ -121,12 +121,12 @@ export function OrderDetailsModal({ isShow, onClose, order }: OrderDetailsModalP
 
           <div className="flex flex-wrap justify-center items-center gap-2 mt-4 pt-4 border-t border-bg-subtle">
             <InfoPill label="Tipo" value={orderTypeMap[order?.order_type] ?? 'N/A'} className="bg-primary/10 text-primary" />
-            <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type]?.label ?? 'N/A'} className="bg-cyan-500/10 text-cyan-500" />
+            <InfoPill label="Entrega" value={deliveryTypeMap[order?.delivery_type]?.label ?? 'N/A'} className="bg-info/10 text-info" />
             <InfoPill label="Estado" value={status.label} className={status.className} />
           </div>
 
           <div className="text-center text-xs text-text-muted/80 mt-3">
-            <BiInfoCircle className="inline-block mr-1 text-orange-600" />
+            <BiInfoCircle className="inline-block mr-1 text-warning" />
             <span>La propina no se encuentra incluida en el total.</span>
           </div>
         </div>

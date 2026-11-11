@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { Button, Preset } from "@/components/button/button";
 import { ContactAddGT } from "@/components/contacs/ContactAddGT";
@@ -9,7 +10,6 @@ import { contactFieldHints, DteDiagnosisItem, knownDiagnosis } from "@/component
 import { tipoDTE } from "@/components/invoicing/utils";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useContactDetailsLogic } from "@/hooks/contacts/useContactDetailsLogic";
 import { formatDateAsDMY } from "@/lib/date-formats";
@@ -22,7 +22,6 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { FiAlertTriangle, FiCheckCircle, FiFileText } from "react-icons/fi";
-import { LuLoader } from "react-icons/lu";
 
 /**
  * Editar un contacto en su propia pagina (el mismo formulario del modal de Contactos).
@@ -78,7 +77,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <NothingHere text="No se encontró el contacto" />
-        <ToasterMessage />
       </div>
     );
   }
@@ -87,7 +85,6 @@ export default function Page() {
     return (
       <div className="p-4">
         <SkeletonTable rows={8} columns={4} />
-        <ToasterMessage />
       </div>
     );
   }
@@ -103,7 +100,7 @@ export default function Page() {
           <FaArrowLeft size={16} />
         </Link>
         <ViewTitle text={`Editar: ${contact.name}`} />
-        {loading && <LuLoader className="animate-spin text-text-muted shrink-0" size={16} />}
+        {loading && <Spinner size={16} color="muted" className="shrink-0" />}
       </div>
 
       <div className={`grid grid-cols-1 gap-4 px-2 sm:px-4 mt-2 ${showPanel ? 'md:grid-cols-10' : ''}`}>
@@ -195,7 +192,6 @@ export default function Page() {
         )}
       </div>
 
-      <ToasterMessage />
     </div>
   );
 }

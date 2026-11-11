@@ -1,8 +1,8 @@
 "use client";
+import { Spinner } from "@/components/Spinner";
 
 import { useGetRequest } from '@/hooks/request/useGetRequest';
 import { useEffect } from 'react';
-import { LuLoader } from 'react-icons/lu';
 
 export interface ButtonDownloadGetProps {
   href: string;
@@ -33,7 +33,7 @@ export function ButtonDownloadGet({ href, children, titleText = "Descargar", aut
       className={`${autoclass ? 'button-href ' : 'clickeable '} ${style}`}
       title={titleText}
     >
-      {loading ? <LuLoader className="animate-spin" /> : children}
+      {loading ? <Spinner color="current" /> : children}
     </button>
   );
 }

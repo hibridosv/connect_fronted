@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { NothingHere } from '@/components/NothingHere';
 import { LuArrowRight, LuBuilding2 } from 'react-icons/lu';
 
@@ -41,9 +42,9 @@ export function SelectBranch({ records, onSelect, loading }: SelectBranchProps) 
         <p className="text-xs font-bold uppercase tracking-wider text-text-muted">
           Seleccionar destino
         </p>
-        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+        <Badge size="sm">
           {records.length} sucursal{records.length !== 1 ? 'es' : ''}
-        </span>
+        </Badge>
       </div>
 
       <div className="space-y-2">
@@ -51,13 +52,13 @@ export function SelectBranch({ records, onSelect, loading }: SelectBranchProps) 
           <button
             key={record.id}
             onClick={() => onSelect(record)}
-            className="group w-full flex items-center gap-4 px-4 py-3.5 bg-bg-content rounded-xl border border-bg-subtle hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm transition-all duration-200 text-left clickeable"
+            className="group w-full flex items-center gap-4 px-4 py-3.5 bg-bg-content rounded-xl border border-bg-subtle hover:border-primary/40 hover:bg-primary/5 hover:shadow-sm transition-all duration-200 text-left clickeable-table"
           >
             <div className="shrink-0 relative">
               <div className="w-10 h-10 rounded-lg bg-bg-subtle group-hover:bg-primary/10 flex items-center justify-center transition-colors duration-200">
                 <LuBuilding2 size={18} className="text-text-muted group-hover:text-primary transition-colors duration-200" />
               </div>
-              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-bg-content border border-bg-subtle text-[9px] font-bold text-text-muted flex items-center justify-center leading-none">
+              <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-bg-content border border-bg-subtle text-3xs font-bold text-text-muted flex items-center justify-center leading-none">
                 {index + 1}
               </span>
             </div>
@@ -66,7 +67,7 @@ export function SelectBranch({ records, onSelect, loading }: SelectBranchProps) 
               <p className="font-semibold text-sm text-text-base group-hover:text-primary transition-colors duration-200 truncate uppercase leading-tight">
                 {record?.to?.description}
               </p>
-              <p className="text-[10px] text-text-muted mt-0.5 leading-tight">
+              <p className="text-2xs text-text-muted mt-0.5 leading-tight">
                 Transferir a esta sucursal
               </p>
             </div>

@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from "@/components/Badge";
 import { Button, Preset } from "@/components/button/button";
 import Modal from "@/components/modal/Modal";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -130,9 +131,9 @@ export function PurchasesDuplicateReviewModal({ isShow, onClose }: Props) {
             </div>
 
             <div className="flex items-center justify-between">
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${diffs.length > 0 ? 'bg-danger/15 text-danger' : 'bg-success/15 text-success'}`}>
+              <Badge variant={diffs.length > 0 ? 'danger' : 'success'}>
                 {diffs.length} diferencia{diffs.length !== 1 ? 's' : ''} encontrada{diffs.length !== 1 ? 's' : ''}
-              </span>
+              </Badge>
               <button
                 onClick={() => setOnlyDiffs(v => !v)}
                 className="text-xs text-primary hover:underline clickeable"

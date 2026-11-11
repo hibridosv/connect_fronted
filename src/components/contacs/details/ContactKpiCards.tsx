@@ -90,9 +90,9 @@ export function ContactKpiCards({ summary, loading }: ContactKpiCardsProps) {
           </div>
 
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-none mb-1">{card.title}</p>
+            <p className="text-2xs font-bold text-text-muted uppercase tracking-widest leading-none mb-1">{card.title}</p>
             <p className="text-base sm:text-lg font-extrabold text-text-base tracking-tight leading-tight tabular-nums truncate">{card.value}</p>
-            {card.hint && <p className="text-[10px] text-text-muted truncate mt-0.5">{card.hint}</p>}
+            {card.hint && <p className="text-2xs text-text-muted truncate mt-0.5">{card.hint}</p>}
           </div>
         </div>
       ))}

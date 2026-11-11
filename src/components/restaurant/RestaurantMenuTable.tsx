@@ -55,10 +55,10 @@ export function RestaurantMenuTable() {
       <td className="px-3 py-2 whitespace-nowrap font-medium">
         <div className="flex"> 
           <span>{ record?.description }</span> 
-          <span className="mt-1 ml-2">{record.menu_order?.special === 1 && <FaStar size={8} color="#009eff" /> }</span>
+          <span className="mt-1 ml-2">{record.menu_order?.special === 1 && <FaStar size={8} className="text-info" /> }</span>
           { record.restaurant?.whatsapp_enabled === 1 && <span className="mt-0.5 ml-2 text-success" title="Disponible en WhatsApp"><FaWhatsapp size={14} /></span> }
         </div>
-        { record.menu_order?.status === 0 && <div className="uppercase text-red-700">Inhabilitado</div> }
+        { record.menu_order?.status === 0 && <div className="uppercase text-danger">Inhabilitado</div> }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap" >
         { record?.category?.name}
@@ -133,13 +133,13 @@ export function RestaurantMenuTable() {
           </DropdownItem>
           <DropdownDivider />
           <DropdownItem onClick={() => handleToggleStatus(record)}>
-            <span className={`flex justify-items-start font-semibold ${record.menu_order?.status === 0 ? 'text-green-700' : 'text-red-700'}`}>
-              <span className="mt-1">{record.menu_order?.status === 0 ? <FaCheckCircle color="green" /> : <IoMdCloseCircleOutline />}</span>
+            <span className={`flex justify-items-start font-semibold ${record.menu_order?.status === 0 ? 'text-success' : 'text-danger'}`}>
+              <span className="mt-1">{record.menu_order?.status === 0 ? <FaCheckCircle /> : <IoMdCloseCircleOutline />}</span>
               <span className="ml-2">{record.menu_order?.status === 0 ? 'Habilitar Producto' : 'Inhabilitar Producto'}</span>
             </span>
           </DropdownItem>
           <DropdownItem onClick={() => handleOpenDeleteModal(record)}>
-            <span className="flex justify-items-start font-semibold text-red-700">
+            <span className="flex justify-items-start font-semibold text-danger">
               <MdDelete className="mt-1" />
               <span className="ml-2">Eliminar Producto</span>
             </span>

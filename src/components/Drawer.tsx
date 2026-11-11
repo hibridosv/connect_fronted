@@ -260,7 +260,7 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose }) => {
 
           {/* Theme selector — commented intentionally */}
           {/* <div className="relative px-4 py-3 border-t border-bg-subtle shrink-0">
-            <p className="text-[9px] font-bold uppercase tracking-widest text-text-muted mb-2">Tema</p>
+            <p className="text-3xs font-bold uppercase tracking-widest text-text-muted mb-2">Tema</p>
             <div className="flex items-center gap-2.5">
               {THEMES.map((t) => (
                 <button key={t.id} title={t.label} onClick={() => setTheme(t.id)}

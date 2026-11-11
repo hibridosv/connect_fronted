@@ -123,7 +123,7 @@ export function ContactSearch({
           autoComplete="off"
           placeholder={placeholder}
           onChange={handleInputChange}
-          className="bg-bg-content appearance-none border-2 border-bg-subtle rounded-md w-full py-2 pl-10 pr-8 text-text-base leading-tight focus:outline-none focus:bg-bg-content focus:border-primary shadow-sm"
+          className="input !pl-10 !pr-8"
         />
         {searchTerm && (
           <button

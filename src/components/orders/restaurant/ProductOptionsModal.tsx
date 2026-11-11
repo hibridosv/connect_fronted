@@ -46,12 +46,12 @@ const handleUpdate = (data: any) => {
                         <div className="relative">
                             <Image loader={imageLoader} src={record?.option?.image} alt="Icono" width={96} height={96} className="rounded-t-md" />
                             {record?.option?.price > 0 && (
-                                <span className="absolute top-1 right-1 bg-black/50 text-white text-[10px] leading-none px-1.5 py-0.5 rounded-full">
+                                <span className="absolute top-1 right-1 bg-black/50 text-white text-2xs leading-none px-1.5 py-0.5 rounded-full">
                                     +{numberToMoney(record.option.price, system)}
                                 </span>
                             )}
                         </div>
-                        <p className={`w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-black font-medium p-1 h-9 bg-slate-300`}
+                        <p className={`w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-text-base font-medium p-1 h-9 bg-bg-subtle`}
                         style={{ maxWidth: '96px',  wordBreak: 'keep-all', lineHeight: '1.2em' }}>
                             {record?.option?.name}
                         </p>

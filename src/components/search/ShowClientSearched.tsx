@@ -20,7 +20,7 @@ export function ShowClientSearched(props: ShowClientSearchedI) {
 
 
     return (
-          <div className="mt-2 p-3 flex justify-between text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+          <div className="mt-2 p-3 flex justify-between text-text-base border border-bg-subtle rounded-lg bg-bg-content">
             <span className="font-semibold uppercase">{ elementSelected?.name}</span> 
             <Button preset={Preset.smallClose} onClick={handleClose} />
           </div>         

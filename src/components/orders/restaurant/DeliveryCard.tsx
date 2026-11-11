@@ -44,13 +44,13 @@ export function DeliveryCard({ record }: DeliveryCardProps) {
           </div>
 
           <div className="flex items-center gap-1 w-full justify-center">
-            <span className={`text-[10px] font-semibold uppercase tracking-wider ${status.iconText}`}>
+            <span className={`text-2xs font-semibold uppercase tracking-wider ${status.iconText}`}>
               {status.label}
             </span>
           </div>
 
           {record.status !== 3 && (
-            <div className="flex items-center gap-1 text-[10px] font-semibold text-danger tabular-nums">
+            <div className="flex items-center gap-1 text-2xs font-semibold text-danger tabular-nums">
               <TbClock className="w-3 h-3" />
               <TablesTime record={record} isShow={true} rowSearch="created_at" />
             </div>
@@ -60,15 +60,15 @@ export function DeliveryCard({ record }: DeliveryCardProps) {
         <div className={`px-2.5 py-1.5 rounded-b-xl border-t bg-bg-subtle/30 ${status.border}`}>
           <div className="flex items-center gap-1.5 mb-0.5" title={client?.name}>
             <HiUser className="w-3 h-3 text-primary/60 shrink-0" />
-            <p className="text-[11px] font-semibold text-text-base truncate">
+            <p className="text-xxs font-semibold text-text-base truncate">
               {client?.name ?? 'Sin cliente'}
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-text-muted">
+            <span className="text-2xs text-text-muted">
               {productCount} {productCount === 1 ? 'producto' : 'productos'}
             </span>
-            <span className="text-[11px] font-bold text-primary tabular-nums">
+            <span className="text-xxs font-bold text-primary tabular-nums">
               {numberToMoney(total ?? 0)}
             </span>
           </div>

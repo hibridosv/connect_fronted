@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from '@/components/button/button';
 import Modal from '@/components/modal/Modal';
 import useConfigStore from '@/stores/configStore';
@@ -6,7 +7,6 @@ import productImagesStore from '@/stores/products/productImagesStore';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { LuLoader } from 'react-icons/lu';
 import { MdImage, MdZoomIn } from 'react-icons/md';
 
 interface ProductImagesViewerProps {
@@ -37,7 +37,7 @@ export function ProductImagesViewer({ productId }: ProductImagesViewerProps) {
           className="flex items-center gap-2 text-xs font-semibold text-text-muted hover:text-primary transition-colors disabled:cursor-not-allowed"
         >
           {loading
-            ? <LuLoader size={14} className="animate-spin text-primary" />
+            ? <Spinner size={14} />
             : <MdImage size={16} />
           }
           {loading ? 'Cargando imágenes...' : 'Ver imágenes'}
@@ -74,7 +74,7 @@ export function ProductImagesViewer({ productId }: ProductImagesViewerProps) {
               </div>
               {image.description && (
                 <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-1 py-0.5">
-                  <p className="text-white text-[9px] truncate">{image.description}</p>
+                  <p className="text-white text-3xs truncate">{image.description}</p>
                 </div>
               )}
             </div>

@@ -29,19 +29,19 @@ export function ContactAddHN(props: ContactAddHNProps) {
 
           <div className="w-full px-3 mb-2 flex justify-between">
             <div>
-              <input className="bg-lime-600 rounded-full" type="checkbox" {...register('is_client')} />
+              <input className="accent-primary rounded-full" type="checkbox" {...register('is_client')} />
               <span className="ml-2 font-medium">Cliente</span>
             </div>
             <div>
-              <input className="bg-lime-600 rounded-full" type="checkbox" {...register('is_provider')} />
+              <input className="accent-primary rounded-full" type="checkbox" {...register('is_provider')} />
               <span className="ml-2 font-medium">Proveedor</span>
             </div>
             <div>
-              <input className="bg-lime-600 rounded-full" type="checkbox" {...register('is_employee')} />
+              <input className="accent-primary rounded-full" type="checkbox" {...register('is_employee')} />
               <span className="ml-2 font-medium">Repartidor</span>
             </div>
             <div>
-              <input className="bg-lime-600 rounded-full" type="checkbox" {...register('is_referred')} />
+              <input className="accent-primary rounded-full" type="checkbox" {...register('is_referred')} />
               <span className="ml-2 font-medium">Referido</span>
             </div>
           </div>

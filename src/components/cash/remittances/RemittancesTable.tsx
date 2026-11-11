@@ -1,3 +1,4 @@
+import { Spinner } from "@/components/Spinner";
 import { DeleteButton } from "@/components/button/DeleteButton";
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -5,7 +6,6 @@ import { formatDate, formatHourAsHM } from "@/lib/date-formats";
 import { numberToMoney } from "@/lib/utils";
 import cashRemittancesStore from "@/stores/cash/cashRemittancesStore";
 import useConfigStore from "@/stores/configStore";
-import { FaSpinner } from "react-icons/fa";
 
 
 export function RemittancesTable() {
@@ -41,7 +41,7 @@ export function RemittancesTable() {
                 { record?.account?.account }
             </td>
             <td className="px-3 py-2 flex justify-center">
-              { deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
+              { deleting ? <Spinner size={20} /> :
                 <DeleteButton id={record.id} url="cash/remittances" onDeleteConfirm={deleteRemittance} disabled={record.status === 0 || deleting} />
               }
             </td>

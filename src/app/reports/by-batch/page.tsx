@@ -5,7 +5,6 @@ import { Pagination } from "@/components/Pagination";
 import { ReportLotTable } from "@/components/reports/ReportLotTable";
 import { ProductsSearch } from "@/components/search/ProductsSearch";
 import { ShowProductSearched } from "@/components/search/ShowProductSearched";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 import { usePagination } from "@/hooks/usePagination";
@@ -47,7 +46,6 @@ export default function Page() {
           <LinksList links={links} text="DESCARGAS" />
         </div>
       </div>
-      <ToasterMessage />
     </div>
   );
 }

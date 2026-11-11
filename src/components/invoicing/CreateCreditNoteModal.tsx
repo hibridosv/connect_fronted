@@ -202,7 +202,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                               step="any"
                               {...field}
                               min={0}
-                              className="w-20 bg-bg-content border border-bg-subtle rounded-md shadow-sm text-center focus:ring-primary focus:border-primary sm:text-sm"
+                              className="input-sm w-20 text-center"
                               onBlur={() => {
                                 field.onBlur();
                                 updateTotalAfterBlur();
@@ -236,7 +236,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                             <input
                               type="number"
                               {...field}
-                              className="w-24 bg-bg-content border border-bg-subtle rounded-md shadow-sm px-2 py-1 text-right focus:ring-primary focus:border-primary sm:text-sm"
+                              className="input-sm w-24 px-2 py-1 text-right"
                               onBlur={() => {
                                 field.onBlur();
                                 updateTotalAfterBlur();

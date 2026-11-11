@@ -69,5 +69,5 @@ export const validateInvoiceFieldsTrue = (receptor: any, requiredFields: string[
         }
     });
 
-    return missingFields.length > 0 && <div>Faltan los siguientes campos del cliente para facturar: <div className="text-red-500">{`${missingFields.join(', ')}.`}</div></div>;
+    return missingFields.length > 0 && <div>Faltan los siguientes campos del cliente para facturar: <div className="text-danger">{`${missingFields.join(', ')}.`}</div></div>;
 }

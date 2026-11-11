@@ -1,7 +1,8 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 import { ViewTitle } from "@/components/ViewTitle";
 import { ANEXO_OPTIONS, SUCURSAL_OPTIONS, useTaxAnnexesLogic } from "@/hooks/reports/useTaxAnnexesLogic";
-import { LuDownload, LuLoader } from "react-icons/lu";
+import { LuDownload } from "react-icons/lu";
 
 export default function Page() {
   const { months, selectedSucursal, setSelectedSucursal, handleDownload, isUrlLoading } = useTaxAnnexesLogic();
@@ -62,7 +63,7 @@ export default function Page() {
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium active:scale-95 transition-all duration-150 clickeable disabled:opacity-50 disabled:cursor-not-allowed ${downloadBtnClass}`}
                       >
                         {isUrlLoading(month, opt.value)
-                          ? <LuLoader size={13} className="animate-spin" />
+                          ? <Spinner size={13} color="current" />
                           : <LuDownload size={13} />
                         }
                         Descargar

@@ -91,7 +91,7 @@ const handleKeyboardChange = (inputValue: string) => {
           { activeConfig && activeConfig.includes("input-sales-keyboard") ? <div>
           { showInput &&
             <Keyboard inputName='cash' display={{'{bksp}': '<'}} layout={{ default: ["1 2 3", "4 5 6", "7 8 9", ". 0 {bksp}"] }}  onKeyPress={handleKeyPress} keyboardRef={r => setKeyboard(r)}/> }
-            <div onClick={()=>setShowInput(!showInput)} className='clickeable p-1'>
+            <div onClick={()=>setShowInput(!showInput)} className='clickeable-table p-1'>
                 <input className="input-disabled" type="text" {...register('cash')} value={input} placeholder="Ingrese una cantidad" readOnly />
             </div>
           </div> :
@@ -101,7 +101,7 @@ const handleKeyboardChange = (inputValue: string) => {
         <div className={`${ isSplit ? 'flex justify-end' : 'grid grid-cols-[2fr_1fr_2fr]'}`}>
           { !isSplit &&
             <Popper label={
-            <div className="button-grey clickeable">
+            <div className="button-grey clickeable-table">
               <IoMdOptions className="mr-1.5" /> Opciones
             </div>
           }>

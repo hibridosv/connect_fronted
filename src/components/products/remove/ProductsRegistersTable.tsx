@@ -1,8 +1,8 @@
+import { Spinner } from "@/components/Spinner";
 import { Button, Preset } from "@/components/button/button";
 import { NothingHere } from "@/components/NothingHere";
 import { formatDateAsDMY } from "@/lib/date-formats";
 import productRemovedStore from "@/stores/products/productRemovedStore";
-import { FaSpinner } from "react-icons/fa";
 
 
 export function ProductsRegistersTable() {
@@ -31,7 +31,7 @@ export function ProductsRegistersTable() {
           </td>
           <td className="px-3 py-2  flex justify-center items-center">
             {
-            deleting ? <FaSpinner className="animate-spin" size={20} color="red" /> :
+            deleting ? <Spinner size={20} /> :
             (formatDateAsDMY(record?.created_at) == formatDateAsDMY(new Date().toISOString()) && record?.status === 1) ? 
             <Button preset={Preset.smallClose} style="clickeable" noText onClick={()=> deleteProduct(`removes/product/${record.id}`)} disabled={deleting} /> :
             <Button preset={Preset.smallCloseDisable} noText disabled />

@@ -103,7 +103,7 @@ export function ChangeRowProductModal(props: ChangeRowProductModalI) {
       <Modal.Footer>
         {
         rowToUpdate == "comment" && 
-          <MdDeleteSweep title="Eliminar Comentario" size={32} className="text-red-700 clickeable justify-start w-full" onClick={clean} />
+          <MdDeleteSweep title="Eliminar Comentario" size={32} className="text-danger clickeable justify-start w-full" onClick={clean} />
         }
         <Button onClick={onClose} preset={Preset.close} disabled={sending} /> 
       </Modal.Footer>

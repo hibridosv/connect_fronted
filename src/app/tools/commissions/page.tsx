@@ -4,7 +4,6 @@ import { Button, Preset } from '@/components/button/button';
 import { Pagination } from '@/components/Pagination';
 import { ClientsSearch } from '@/components/search/ClientsSearch';
 import { ShowClientSearched } from '@/components/search/ShowClientSearched';
-import { ToasterMessage } from '@/components/toaster-message';
 import { CommissionsListTable } from '@/components/tools/CommissionsListTable';
 import { CommissionsProductsTable } from '@/components/tools/CommissionsProductsTable';
 import { CommissionViewModal } from '@/components/tools/CommissionViewModal';
@@ -86,7 +85,6 @@ export default function Page() {
       </div>
 
           <CommissionViewModal isShow={modals.commissionDetail} onClose={() => closeModal('commissionDetail')} record={elements.commissionDetail} />
-          <ToasterMessage />
     </div>
   );
 }

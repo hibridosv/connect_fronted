@@ -30,9 +30,9 @@ export function WidgetList({ widget, data, loading, currency }: WidgetListProps)
       loading={loading || !data}
       error={data?.error}
       empty={items.length === 0}
-      badge={summary && <span className="shrink-0 text-[11px] font-bold text-text-muted bg-bg-subtle/60 px-2 py-1 rounded-full">{summary}</span>}
+      badge={summary && <span className="shrink-0 text-xxs font-bold text-text-muted bg-bg-subtle/60 px-2 py-1 rounded-full">{summary}</span>}
     >
-      <div className="max-h-72 overflow-y-auto custom-scrollbar">
+      <div className="max-h-72 overflow-auto custom-scrollbar">
         <table className="w-full text-xs">
           <thead className="sticky top-0 bg-bg-content">
             <tr className="text-text-muted border-b border-bg-subtle">

@@ -61,7 +61,7 @@ export function ContactPurchasesChart({ months, loading, hasPeriod }: ContactPur
       <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-primary/60 via-accent/40 to-transparent" />
       <div className="mb-4">
         <h3 className="text-sm font-bold text-text-base">Compras por mes</h3>
-        <p className="text-[11px] text-text-muted mt-0.5 font-medium">{hasPeriod ? 'Meses del período seleccionado' : 'Últimos 12 meses'}</p>
+        <p className="text-xxs text-text-muted mt-0.5 font-medium">{hasPeriod ? 'Meses del período seleccionado' : 'Últimos 12 meses'}</p>
       </div>
       <div className="h-64">
         {loading && <div className="bg-bg-subtle rounded-lg animate-pulse h-full w-full" />}

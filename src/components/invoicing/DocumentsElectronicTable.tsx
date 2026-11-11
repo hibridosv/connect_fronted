@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components/Spinner";
 
 import { NothingHere } from "@/components/NothingHere";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
@@ -7,7 +8,7 @@ import useModalStore from "@/stores/modalStorage";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
 import { DateTime } from "luxon";
-import { FaEdit, FaSpinner } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { Dropdown } from "../dropDown/Dropdown";
 import { DropdownItem } from "../dropDown/DropdownItem";
 import { status, tipoDTE } from "./utils";
@@ -54,7 +55,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       <td className={`px-3 py-2 whitespace-nowrap font-medium text-primary`}>
         { record?.fecha_procesamiento ?? "N/A" }
       </td>
-      <td className={`px-3 py-2 whitespace-nowrap ${!isDownloader && 'text-red-500'}`}>
+      <td className={`px-3 py-2 whitespace-nowrap ${!isDownloader && 'text-danger'}`}>
         { isDownloader ?
         <a target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`} title="Descargar PDF" className="clickeable">
           { tipoDTE(record?.tipo_dte) }
@@ -79,7 +80,7 @@ export function DocumentsElectronicTable(props: DocumentsElectronicTableI) {
       </td>
       <td className={`px-3 py-2 text-center whitespace-nowrap`}>
          { isReSending && InvoiceResending == record?.codigo_generacion ? 
-            <FaSpinner className="animate-spin" size={20} />
+            <Spinner size={20} color="current" />
           : <Dropdown label={<FaEdit size={18} /> }>
             <DropdownItem disabled={!isDocumentVisible} onClick={() => { setElement('documentSelected', record); openModal('documentDetail')  }}>Detalles del Documento</DropdownItem>
             <DropdownItem disabled={!isDownloader} target="_blank" href={`${API_URL}documents/download/pdf/${record?.codigo_generacion}/${record?.client_id}`}>Descargar PDF</DropdownItem>

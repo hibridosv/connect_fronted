@@ -5,7 +5,6 @@ import { DocumentErrorsModal } from "@/components/invoicing/DocumentErrorsModal"
 import { DocumentsElectronicTable } from "@/components/invoicing/DocumentsElectronicTable";
 import { InvoiceDetailsModal } from "@/components/invoicing/InvoiceDetailsModal";
 import { SendEmailDocumentModal } from "@/components/invoicing/SendEmailDocumentModal";
-import { ToasterMessage } from "@/components/toaster-message";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceTypesElectronicLogic } from "@/hooks/invoicing/useInvoiceTypesElectronicLogic";
 import { useInvoicingElectronicLogic } from "@/hooks/invoicing/useInvoicingElectronicLogic";
@@ -51,7 +50,6 @@ export default function Page() {
     <InvoiceDetailsModal isShow={modals.documentDetail} onClose={() => closeModal('documentDetail')} documentId={documentSelected?.codigo_generacion} />
     <DocumentErrorsModal isShow={modals.documentErrors} onClose={() => closeModal('documentErrors')} document={documentSelected}
       onResend={(codigo) => { closeModal('documentErrors'); resendDocument(codigo); }} />
-    <ToasterMessage />
 </div>
   );
 }
