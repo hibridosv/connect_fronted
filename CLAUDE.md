@@ -282,6 +282,8 @@ Mientras está abierto, `Modal` (igual que `DeleteModal`) usa `useModalBehavior`
 
 Indicador de carga: siempre `<Spinner />` (`src/components/Spinner.tsx`, `LuLoaderCircle` que gira). Props: `size` (número; por defecto `1em`), `color` (`primary` por defecto, `muted`, `info`, `danger`, `inverted` o `current` para heredar el color del texto, p. ej. dentro de un botón) y `className` para espaciado. No uses otros íconos de `react-icons` con `animate-spin`.
 
+Colores: siempre tokens del tema (`text-danger`, `bg-bg-subtle`, `text-text-muted`...), nunca `bg-red-500`, `text-gray-600` ni `color="red"`. La única excepción son las paletas de categorías, que usan varios tonos para distinguir cosas y no estados (`PercentSalesType`, `ContactKpiCards`, `redirects/info`) y las ilustraciones SVG.
+
 Pastillas de estado, etiquetas y contadores: siempre `<Badge>` (`src/components/Badge.tsx`), con `variant` (`primary` por defecto, `success`, `danger`, `warning`, `info`, `accent`, `muted`) y `size` (`md` = `text-xs`, por defecto; `sm` = 10px en mayúsculas para tarjetas densas). No armes pastillas con `rounded-full px-2 bg-x/10` a mano. `Indicator` (punto de color + texto, sin fondo) sigue siendo el de los estados en columnas de tablas.
 
 Inputs: `.input` en formularios, `.input-select` en `<select>` (`.input` les quita la flecha) e `.input-sm` para inputs compactos dentro de celdas de tablas (el ancho y la alineación van en cada uso). Las clases de `globals.css` no están en `@layer` y les ganan a las utilidades: para cambiar algo que ya definen (padding, borde) usa `!` (`input !pl-10`, `input-sm !border-danger`).

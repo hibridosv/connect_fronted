@@ -25,13 +25,13 @@ export function OptionsSelect( { order }: any) {
       return (
             <div>
               <div className="flex justify-around w-full h-7 shadow-md">
-                <div className="w-full font-medium clickeable bg-gray-200 items-center text-center border-r-2" onClick={()=>{ openModal('deliveryType') }}>
+                <div className="w-full font-medium clickeable bg-bg-subtle items-center text-center border-r-2" onClick={()=>{ openModal('deliveryType') }}>
                   { deliveryTypeRestaurant(deliveryType) }
                 </div>
-                <div className="w-full font-medium clickeable bg-sky-200 items-center text-center" onClick={()=>{ openModal('invoiceType') }}>
+                <div className="w-full font-medium clickeable bg-info/20 items-center text-center" onClick={()=>{ openModal('invoiceType') }}>
                   { invoiceTypeSelected.name }
                 </div>
-                <div className="w-full font-medium clickeable bg-gray-200 items-center text-center border-l-2" onClick={()=> { openModal('payMethod') }}>
+                <div className="w-full font-medium clickeable bg-bg-subtle items-center text-center border-l-2" onClick={()=> { openModal('payMethod') }}>
                   {getPaymentTypeName(payMethod)}
                 </div>
             </div>

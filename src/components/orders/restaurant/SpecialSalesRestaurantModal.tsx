@@ -68,10 +68,10 @@ const handleClose = ()=>{
       <Modal.Body>
         <div className="p-4">
           <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-              <div className="col-span-5 border-r md:border-sky-600">
+              <div className="col-span-5 border-r md:border-primary">
                 <RestaurantMenu />
               </div>
-              <div className="col-span-5 border-l md:border-sky-600">
+              <div className="col-span-5 border-l md:border-primary">
                 <OrderSpecialSalesTable records={order} isLoading={sending}
                   onQuantityClick={(record) => { setElement('productSelected', record); openModal('changeQuantity'); }} />
                   {special && special.length > 0 &&

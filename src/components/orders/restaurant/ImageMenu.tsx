@@ -68,7 +68,7 @@ export function ImageMenu(props: ImageMenuI) {
           transition-all duration-100
           ${isSending ? 'bg-primary/10' : isProduct
             ? 'bg-bg-subtle/80 group-hover:bg-bg-subtle'
-            : 'bg-slate-300 group-hover:bg-accent/25'
+            : 'bg-bg-subtle group-hover:bg-accent/25'
           }
         `}>
           {isSending ? (

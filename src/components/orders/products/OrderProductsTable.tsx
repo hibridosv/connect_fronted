@@ -53,7 +53,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
     return (
         <tr key={record.id}
             className={`${sending ? 'opacity-50' : 'opacity-100'} transition-all duration-500 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base`}>
-          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable-table'} ${record?.actual_stock <= 0 ? 'text-red-600' : 'text-black'}`} 
+          <td className={`px-2 py-1 whitespace-nowrap font-medium text-center ${!isDisabled && 'clickeable-table'} ${record?.actual_stock <= 0 ? 'text-danger' : 'text-black'}`} 
             onClick={isOtherSales ? ()=>{} : ()=>{ setElement('productSelected', record); openModal('changeQuantity') }}>
             { record.quantity }
           </td>
@@ -64,7 +64,7 @@ export function OrderProductsTable(props: OrderProductsTableI) {
             {/* { record.product.slice(0, 50) } */}
             <span className={`${!isOtherSales && 'clickeable-table ' } w-full`} 
             onClick={ isOtherSales ? ()=>{} : ()=> { openModal('productDetailsList'); setElement('productDetailsOnNavbar', record.cod); }}>
-            { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-red-600">(E)</span> }
+            { record.product.slice(0, 50) } { record.operation_type == 2 && <span title="Exento" className="text-danger">(E)</span> }
             </span>
             { isChangeName && <span title="Cambiar Nombre del producto" className="ml-2 clickeable-table" 
             onClick={()=> { setElement('rowToUpdate', 'product'); openModal('changeRow'); setElement('productSelected', record); }}><FaPen color="black" /></span> }

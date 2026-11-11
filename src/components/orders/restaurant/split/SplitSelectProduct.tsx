@@ -53,9 +53,9 @@ export function SplitSelectProduct({ order}: any) {
             </td>
             <td className={`px-2 py-1 text-right whitespace-nowrap tabular-nums`}>
               {record.attributes.client == clientActive ? 
-                <AiFillCloseCircle size={24} className="text-red-600" /> 
+                <AiFillCloseCircle size={24} className="text-danger" /> 
                 :
-                <FaCheckSquare size={24} className="text-green-600 clickeable" onClick={()=>changeClient(record.id)}/>
+                <FaCheckSquare size={24} className="text-success clickeable" onClick={()=>changeClient(record.id)}/>
                 }
             </td>
         </tr>

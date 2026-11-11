@@ -80,9 +80,9 @@ export function TipsModal(props: TipsModalI) {
       <Modal.Body>
         <div className="p-4 space-y-4">
           <div className="bg-bg-base rounded-lg border border-bg-subtle/80 divide-y divide-bg-subtle flex justify-between">
-              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfTips == 1 ? 'bg-slate-300' : 'bg-slate-100 clickeable'}`} 
+              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfTips == 1 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable'}`} 
               onClick={()=> { setElement('typeOfTips', 1)}}>Cantidad</div>
-              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfTips == 2 ? 'bg-slate-300' : 'bg-slate-100 clickeable'}`} 
+              <div className={`m-2 uppercase font-semibold w-full h-full text-center rounded-lg ${ typeOfTips == 2 ? 'bg-bg-subtle' : 'bg-bg-subtle/60 clickeable'}`} 
               onClick={()=> { setElement('typeOfTips', 2)}}>Porcentaje</div>
           </div>
           <form className="w-full" onSubmit={handleSubmit(onSubmit)} >

@@ -26,11 +26,11 @@ export function InitialButtons() {
     <div className="flex justify-center space-x-4 mt-4">
               { isOtherSales && 
               <CodeRequestGuard permission="code-request-others-sales" onAuthorized={()=> openModal('otherSales')} > 
-                <MdOutlinePointOfSale className="clickeable text-lime-500 shadow-md" size={24} title="Otras Ventas" /> 
+                <MdOutlinePointOfSale className="clickeable text-success shadow-md" size={24} title="Otras Ventas" /> 
               </CodeRequestGuard>
               }
               { isSpecial && 
-              <MdMoney className="clickeable text-teal-500 shadow-md" size={24} title="Ventas Especiales" onClick={()=> openModal('specialSales')} />
+              <MdMoney className="clickeable text-info shadow-md" size={24} title="Ventas Especiales" onClick={()=> openModal('specialSales')} />
               }
     </div>
     );

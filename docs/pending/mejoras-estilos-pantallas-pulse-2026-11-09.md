@@ -2,7 +2,7 @@
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
 Estado: en curso en `develop`. Hecho: E1, E2, E3, A2, C1, C2,
-C3 (sin L5), C4, P1, P2, P4 y P6. P3 y P7 descartados.
+C3 (sin L5), C4, P1, P2, P4 y P6; E4 en la venta. P3 y P7 descartados.
 
 Comparación de `src/` contra el patrón de diseño de `CLAUDE.md` (sección "Sistema de Temas y Estilos") y
 `THEME_GUIDE.md`. El patrón: colores solo con tokens del tema (`bg-bg-content`, `text-text-base`, `text-primary`,
@@ -112,6 +112,14 @@ Equivalencias para el reemplazo:
 
 Sugerencia: hacerlo por módulo (cortes y caja primero, que es lo que más ve el cajero) y agregar una regla de lint
 o un `grep` en el pre-commit que avise de nuevos `-(gray|red|blue|green)-[0-9]`.
+
+**En curso (2026-11-11), hecha la venta:** decisiones del usuario: ir por módulo empezando por la venta (`components/orders`,
+`components/restaurant`); dejar las paletas de categorías (`PercentSalesType`, `ContactKpiCards`, `redirects/info`,
+`AutomationFlowIllustration`, SVG) y `OrderProductsSearchByCode` (P5); grises de los selectores a neutros del tema
+(`slate-100` → `bg-bg-subtle/60`, `slate-200/300` y `gray-200` → `bg-bg-subtle`, `slate-600` → `bg-secondary
+ text-text-inverted`, `sky-200` → `bg-info/20`); íconos de `InitialButtons` a `success`/`info`; los divisores
+`md:border-sky-600` a `md:border-primary` (como las columnas 7/3). Se cambiaron 21 archivos; en la venta solo quedan los
+dos excluidos. Sin aviso en el lint hasta terminar E4 (decisión del usuario). Pendiente: los demás módulos (~45 archivos).
 
 ---
 

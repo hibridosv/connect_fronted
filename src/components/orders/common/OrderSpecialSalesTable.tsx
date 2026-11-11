@@ -22,7 +22,7 @@ export function OrderSpecialSalesTable(props: OrderSpecialSalesTableI) {
     return <NothingHere width="150" height="150" text="Agregue un producto"/>;
   }
   const listItems = special && special.map((record: any) => (
-    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-red-200'}`}>
+    <tr key={record.id} className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${record?.status == 2 && '!bg-danger/20'}`}>
       <td className={`px-3 py-2 whitespace-nowrap font-medium text-primary ${onQuantityClick ? 'clickeable-table' : ''}`}
         onClick={ onQuantityClick ? () => onQuantityClick(record) : undefined }>
         { record.quantity }
@@ -31,7 +31,7 @@ export function OrderSpecialSalesTable(props: OrderSpecialSalesTableI) {
         { record?.product }
       </td>
       <td className="px-3 py-2 text-left whitespace-nowrap flex justify-center items-center" >
-       <AiFillCloseCircle size={20} title="Editar" className="text-red-600 clickeable" onClick={()=> { del(record.id) }} />
+       <AiFillCloseCircle size={20} title="Editar" className="text-danger clickeable" onClick={()=> { del(record.id) }} />
       </td>
     </tr>
   ));

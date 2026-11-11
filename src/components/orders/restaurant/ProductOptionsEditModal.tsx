@@ -100,7 +100,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
         <span className="uppercase flex-grow">{product.product}</span>
       </div>
       { product.quantity > 1 && (
-        <p className="text-xs text-amber-600 mb-2">Al agregar una opción se separará una unidad de este producto.</p>
+        <p className="text-xs text-warning mb-2">Al agregar una opción se separará una unidad de este producto.</p>
       )}
       <div className="mb-4">
         { activeOptions(product).length === 0 ?
@@ -114,14 +114,14 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
                     <span className="ml-1.5 text-xs text-text-muted">(+{numberToMoney(option.option.price, system)})</span>
                   )}
                 </span>
-                <AiFillCloseCircle className="text-red-500 clickeable" size={20} title="Quitar opción" onClick={() => handleRemove(option.id)} />
+                <AiFillCloseCircle className="text-danger clickeable" size={20} title="Quitar opción" onClick={() => handleRemove(option.id)} />
               </li>
             ))}
           </ul>
         }
       </div>
       { hasPendingOptions ?
-        <p className="text-sm text-red-500">Primero seleccione las opciones pendientes del producto.</p> :
+        <p className="text-sm text-danger">Primero seleccione las opciones pendientes del producto.</p> :
         loadingOptions ? <Spinner size={60} /> :
         !options || options.length === 0 ? <NothingHere width="150" height="150" text="No hay opciones registradas" /> :
         options.map((group: any) => group.variants?.length > 0 && (
@@ -139,7 +139,7 @@ export function ProductOptionsEditModal(props: ProductOptionsEditModalI) {
                         </span>
                       )}
                     </div>
-                    <p className="w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-black font-medium p-1 h-9 bg-slate-300"
+                    <p className="w-full content-center text-center rounded-b-md overflow-hidden uppercase text-xs text-black font-medium p-1 h-9 bg-bg-subtle"
                       style={{ maxWidth: '96px', wordBreak: 'keep-all', lineHeight: '1.2em' }}>
                       {variant.name}
                     </p>

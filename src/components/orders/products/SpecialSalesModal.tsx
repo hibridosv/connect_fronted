@@ -66,10 +66,10 @@ const handleClose = ()=>{
       <Modal.Body>
         <div className="p-4">
           <div className="grid grid-cols-1 md:grid-cols-10 pb-10">
-              <div className="col-span-4 border-r md:border-sky-600">
+              <div className="col-span-4 border-r md:border-primary">
                 <OrderProductsSearchPrincipal />
               </div>
-              <div className="col-span-6 border-l md:border-sky-600">
+              <div className="col-span-6 border-l md:border-primary">
                 <OrderSpecialSalesTable records={order} isLoading={sending} />
                   {special && special.length > 0 &&
                     <div className="mx-4 rounded-sm shadow-md ">
