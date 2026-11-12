@@ -24,7 +24,7 @@ Documento de referencia técnica, convenciones y patrones del proyecto.
 ## Integración con Backend
 
 - **API**: El frontend consume una API REST de Laravel.
-- **URL Base**: Configurada vía `process.env.NEXT_PUBLIC_API_URL` (en `.env.local`).
+- **URL Base**: Configurada vía `process.env.NEXT_PUBLIC_URL_API` (en `.env`).
 - **Formato de URL**: `recurso?sort=campo&included=relacion1,relacion2&filterWhere[campo]==valor&perPage=15&page=1&filter[campo]=busqueda`
 
 ### Autenticación (NextAuth.js)

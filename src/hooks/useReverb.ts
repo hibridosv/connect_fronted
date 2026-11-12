@@ -1,6 +1,6 @@
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 declare global {
   interface Window {
@@ -26,28 +26,32 @@ async function getEchoInstance(): Promise<Echo<'reverb'>> {
   return echoInstance;
 }
 
+// Cuantos componentes escuchan cada canal: solo se sale del canal cuando el ultimo se desmonta,
+// para no cortarle los eventos a los demas (p. ej. el Navbar y la pagina de pagos en -channel-pay)
+const channelSubscribers = new Map<string, number>();
+
 const useReverb = (channelName: string, eventName: string, status = false) => {
   const [data, setData] = useState<any>(null);
   const [random, setRandom] = useState(0);
-  const channelRef = useRef<any>(null);
 
   useEffect(() => {
     if (!status) return;
 
     let cancelled = false;
+    let channel: any = null;
+    const callback = (eventData: any) => {
+      setRandom(Math.random());
+      setData(eventData);
+    };
 
     const subscribe = async () => {
       try {
         const echo = await getEchoInstance();
         if (cancelled) return;
 
-        const channel = echo.channel(channelName);
-        channelRef.current = channel;
-
-        channel.listen(eventName, (eventData: any) => {
-          setRandom(Math.random());
-          setData(eventData);
-        });
+        channel = echo.channel(channelName);
+        channelSubscribers.set(channelName, (channelSubscribers.get(channelName) ?? 0) + 1);
+        channel.listen(eventName, callback);
       } catch (error) {
         console.error('Error al conectar con Reverb:', error);
       }
@@ -57,10 +61,16 @@ const useReverb = (channelName: string, eventName: string, status = false) => {
 
     return () => {
       cancelled = true;
-      if (channelRef.current) {
-        channelRef.current.stopListening(eventName);
-        if (echoInstance) echoInstance.leave(channelName);
-        channelRef.current = null;
+      if (!channel) return;
+
+      // quita solo el callback de este componente
+      channel.stopListening(eventName, callback);
+      const remaining = (channelSubscribers.get(channelName) ?? 1) - 1;
+      if (remaining > 0) {
+        channelSubscribers.set(channelName, remaining);
+      } else {
+        channelSubscribers.delete(channelName);
+        echoInstance?.leave(channelName);
       }
     };
   }, [channelName, eventName, status]);

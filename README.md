@@ -51,14 +51,14 @@ Asegúrate de tener instalado lo siguiente:
     ```
 
 4.  **Configura las variables de entorno:**
-    Crea un archivo `.env.local` en la raíz del proyecto. Este archivo es **obligatorio** para el correcto funcionamiento de la aplicación.
+    Crea un archivo `.env` en la raíz del proyecto. Este archivo es **obligatorio** para el correcto funcionamiento de la aplicación.
 
     ```dotenv
     # ========================
     # API y Autenticación
     # ========================
     # URL base de la API de Laravel
-    NEXT_PUBLIC_API_URL=http://pulse-api.test/api
+    NEXT_PUBLIC_URL_API=http://pulse-api.test/api
 
     # URL completa de tu aplicación Next.js (para NextAuth)
     NEXTAUTH_URL=http://localhost:3000

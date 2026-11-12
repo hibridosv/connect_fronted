@@ -1,7 +1,9 @@
 # Auditoría de pulse: seguridad, lógica, recargas, storage y toasts
 
 Fecha: 2026-11-09 · Rama revisada: `developer` (`2d9d582`)
-Estado: en curso (SEC1 aplicado en código, falta cambiar el secreto; el resto por implementar)
+Estado: en curso. Revisado contra `develop` (`d748e0a`) el 2026-11-11: hechos SEC1 (falta cambiar el secreto), SEC2,
+SEC3, T1, T2 (con los códigos HTTP del 2026-11-10) y casi todo T4; L1 era falso positivo. R3 hecho el 2026-11-11. El
+resto sigue igual.
 
 Revisión del código de `src/` (752 archivos). `npx tsc --noEmit` y `npx next lint` salen limpios, pero el lint no ve
 mucho porque hay 49 `eslint-disable react-hooks/exhaustive-deps`. Algunos puntos dependen de connect o billing; se
@@ -14,11 +16,11 @@ Los análisis anteriores `IDLE_FREEZE_BUG_ANALYSIS.md` y `SEARCH_LOADING_BUG_ANA
 
 | # | ID | Qué | Esfuerzo |
 |---|----|-----|----------|
-| 1 | SEC1 | Quitar `tenantUrl` del login (se filtra el `client_secret`) | bajo |
-| 2 | SEC2 | No dejar que el cliente cambie `tenantStatus` (saltarse la suspensión) | bajo |
-| 3 | T1 | Un solo `<ToasterMessage />` en el layout (hay 41 páginas sin él) | bajo |
-| 4 | T2 | Listas vacías (404): sin toast rojo y sin datos viejos | medio |
-| 5 | R3 | `useReverb` se sale del canal para todos los que lo comparten | bajo |
+| 1 | SEC1 | Quitar `tenantUrl` del login (se filtra el `client_secret`) — hecho, falta cambiar el secreto | bajo |
+| 2 | SEC2 | No dejar que el cliente cambie `tenantStatus` (saltarse la suspensión) — hecho | bajo |
+| 3 | T1 | Un solo `<ToasterMessage />` en el layout (hay 41 páginas sin él) — hecho | bajo |
+| 4 | T2 | Listas vacías (404): sin toast rojo y sin datos viejos — hecho | medio |
+| 5 | R3 | `useReverb` se sale del canal para todos los que lo comparten — hecho | bajo |
 | 6 | S2 | Permisos y flags cacheados 24 h sin aviso de cambio | medio |
 | 7 | SEC3, SEC4, SEC5 | `refreshToken` en el cliente, HTML de notificaciones sin sanear y headers de seguridad | bajo |
 | 8 | R1, R2 | Suscripciones a stores completos y layouts duplicados | medio/alto |
@@ -123,8 +125,9 @@ Cualquiera puede meter el POS en un iframe (clickjacking sobre botones de cobro 
 La clave es `NEXT_PUBLIC_ENCRYPT_CLIENT_ID` (va en el bundle) con respaldo `'default_client_id'`. En `config-storage` se
 guardan el usuario, los permisos, el rol, la caja y los datos fiscales del negocio (`client`). Es ofuscación: está bien
 mantenerla, pero no debe tomarse como protección.
-- **Arreglo:** documentarlo así, quitar el respaldo `'default_client_id'` y borrar `NEXT_PUBLIC_ENCRYPT_SECRET_ID` del
-  `.env`: no se usa, y por ser `NEXT_PUBLIC_` acabaría en el bundle si alguien lo usa. Ver también S3 (limpiar al salir).
+- **Arreglo:** documentarlo así y quitar el respaldo `'default_client_id'`. Ver también S3 (limpiar al salir).
+- `NEXT_PUBLIC_ENCRYPT_SECRET_ID` se borró del `.env` local el 2026-11-11 (no se usaba); falta quitarla del `.env` de
+  los servidores.
 
 ### SEC7 · Bajo · Canales de Reverb públicos con id de tenant secuencial **[connect]**
 `src/hooks/useReverb.ts:44` (`echo.channel(...)`)
@@ -142,7 +145,7 @@ código). Aun así, revela la actividad del negocio en tiempo real.
 - `/payments` no está en `protectedRoutes` ni en el `matcher`.
 - Un token con `error: 'RefreshAccessTokenError'` cuenta como sesión válida; `SessionSyncer` lo corrige en el
   cliente, pero la página alcanza a renderizar.
-- `/protected` y `/protected-ssr` son páginas de ejemplo de NextAuth: borrarlas.
+- ~~`/protected` y `/protected-ssr` son páginas de ejemplo de NextAuth: borrarlas.~~ Borradas (`5e5b926`).
 
 ### SEC9 · Bajo · Código muerto con "autenticación" por `md5(fecha-hora)`
 `src/components/button/button-download.tsx` · `src/lib/utils.ts:27` (`dateToNumberValidate`)
@@ -156,6 +159,9 @@ código). Aun así, revela la actividad del negocio en tiempo real.
 
 ### L1 · Medio · "Cancelar" en el ingreso de productos borra el ingreso entero sin confirmar
 `src/app/products/add/page.tsx:41`
+
+> **Estado (2026-11-11):** falso positivo. "Cancelar" solo aparece cuando el ingreso no tiene productos
+> (`product?.registers.length > 0` muestra "Guardar Todo"), así que no borra productos cargados. T1 ya da el aviso.
 
 El botón "Cancelar" llama `deletePrincipal('registers/principal/{id}')` directamente: un clic borra el registro
 principal con todos los productos cargados. Además, la página no tiene `<ToasterMessage />` (T1), así que no sale
@@ -233,6 +239,11 @@ operaciones con toast:
 
 ### T2 · Alto · Una lista vacía muestra un toast rojo y deja los datos anteriores
 
+> **Estado (2026-11-11):** hecho con los códigos HTTP del 2026-11-10 (`eee73ca`, `b6141c9`): connect responde 200 con
+> `type: 'empty'` y la misma variable, así que el `load*` reemplaza los datos y no hay toast rojo. Los loaders que
+> dispara el usuario avisan con `notifyEmpty()` (`src/lib/httpError.ts`). Ante un error real, los stores siguen
+> conservando los datos anteriores (p. ej. `productStore`), y eso queda bien así.
+>
 > **Estado (2026-11-09):** en espera. El usuario quiere revisar connect antes (cómo responde las listas vacías) y decidir
 > si se arregla allá, en pulse o en los dos. Ojo: con T1 aplicado, la pantalla de cocina (`screenOrdersStore`) ya
 > muestra el toast "No se encuentran ordenes" al quedar sin órdenes. En esta rama hay 53 cargas que muestran el toast
@@ -265,6 +276,10 @@ connect responde `errorJson('No se encontraron registros', [], 404)` cuando no h
   `electronic/send` (que debería ser POST, ver L7).
 
 ### T4 · Medio · Mensajes en inglés o técnicos
+
+> **Estado (2026-11-11):** casi hecho. `getErrorMessage()` en `src/lib/httpError.ts` ignora las cancelaciones y
+> traduce los errores sin conexión, 401, 403, 404, 429 y 5xx. Falta el `timeout` de `src/services/httpService.ts`.
+
 `src/hooks/useToastMessage.ts:15`: `error?.response?.data?.message || error.message`
 
 - Sin conexión sale "Network Error"; con un 502 del proxy (HTML sin `message`), "Request failed with status code
@@ -313,6 +328,12 @@ sale de los canales de Reverb, se piden de nuevo las notificaciones y parpadea `
 
 ### R3 · Alto · `useReverb` se sale del canal para todos los que lo usan
 `src/hooks/useReverb.ts:61-62`
+
+> **Estado (2026-11-11):** aplicado. Cada componente quita solo su callback (`stopListening(eventName, callback)`) y un
+> contador por canal (`channelSubscribers`) hace `leave` solo cuando se desmonta el último. Al revisarlo, el único caso
+> real era `-channel-pay` (Navbar + `settings/payments`); los hooks del chatbot están en páginas distintas.
+> `useInvoicesLogic` ya no se suscribe sin tenant (`undefined-channel-pay`). connect-app no lo necesita:
+> `src/services/realtime.ts` ya cuenta los listeners por canal.
 
 ```ts
 channelRef.current.stopListening(eventName);    // quita TODOS los listeners de ese evento
