@@ -30,6 +30,8 @@ Estado: por revisar.
 
 **Corrección:** `npm audit fix` para lo que no rompe y planear la subida de `next` y `next-auth`. Anotar el cambio para connect-app en `cambios-pendientes-pulse.md` si también lo necesita.
 
+**Avance (2026-11-11):** `npm audit fix` sin `--force` (commit `3b1a5ed`) subió `next-auth` a 4.24.15 (cierra la crítica del normalizador de email), `axios` a 1.21.1 y parcheó `follow-redirects`, `form-data`, `ws`, `socket.io-parser`, `nanoid`, `uuid`, `preact` y `source-map-js`. Queda `next` 14.2.32, con su `postcss` interno y la cadena de desarrollo de `eslint-config-next`: se sube a 15.5.29 con `docs/pending/plan-next-15.md`.
+
 ## 2. MEDIA — XSS en notificaciones
 
 `src/components/notifications/NotificationBell.tsx:133`: `dangerouslySetInnerHTML={{ __html: selectedNotification.content }}`. El contenido lo escribe cualquier usuario del manager de billing (sin roles, por decisión) y se envía a todos los tenants o a los elegidos. Una cuenta del manager robada ejecuta JS en el pulse de todos los clientes y, con el 3, se lleva sus sesiones.
