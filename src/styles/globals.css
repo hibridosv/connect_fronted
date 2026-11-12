@@ -225,3 +225,13 @@ body {
   60%  { opacity: 0.15; }
   100% { opacity: 0; }
 }
+
+/* Login: sin movimiento si el sistema lo pide */
+@media (prefers-reduced-motion: reduce) {
+  .login-motion,
+  .login-motion * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

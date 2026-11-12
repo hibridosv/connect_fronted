@@ -15,7 +15,7 @@ const initials = (user: RememberedUser) => {
 export function RememberedUserAvatar({ user, size = 'md' }: { user: RememberedUser; size?: 'md' | 'lg' }) {
   const sizes = size === 'lg' ? 'w-16 h-16 text-xl' : 'w-11 h-11 text-sm';
   return (
-    <div className={`${sizes} shrink-0 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center border border-primary/20`}>
+    <div className={`${sizes} shrink-0 rounded-full transition-transform duration-300 group-hover:scale-105 bg-primary/10 text-primary font-bold flex items-center justify-center border border-primary/20`}>
       {initials(user)}
     </div>
   );
@@ -30,13 +30,13 @@ interface Props {
 
 export function RememberedUsersList({ users, onSelect, onRemove, onOtherAccount }: Props) {
   return (
-    <div className="space-y-3 animate-slide-up">
-      {users.map((user) => (
-        <div key={user.username} className="group relative">
+    <div className="space-y-3">
+      {users.map((user, index) => (
+        <div key={user.username} className="group relative animate-login-rise" style={{ animationDelay: `${0.2 + index * 0.06}s` }}>
           <button
             type="button"
             onClick={() => onSelect(user)}
-            className="w-full flex items-center gap-3 p-3 pr-11 rounded-xl border border-bg-subtle bg-bg-base hover:border-primary/40 hover:bg-primary/5 transition-colors duration-200 text-left"
+            className="w-full flex items-center gap-3 p-3 pr-11 rounded-xl border border-bg-subtle bg-bg-base hover:border-primary/40 hover:bg-primary/5 hover:-translate-y-px hover:shadow-md active:translate-y-0 transition-all duration-200 text-left"
           >
             <RememberedUserAvatar user={user} />
             <div className="min-w-0">
@@ -52,7 +52,7 @@ export function RememberedUsersList({ users, onSelect, onRemove, onOtherAccount 
             type="button"
             onClick={() => onRemove(user)}
             title="Quitar esta cuenta"
-            className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-full text-text-muted/60 hover:text-danger hover:bg-danger/10 transition-colors duration-200"
+            className="absolute top-1/2 -translate-y-1/2 right-2 p-1.5 rounded-full text-text-muted/60 hover:text-danger hover:bg-danger/10 sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 transition-all duration-200"
           >
             <IoClose size={18} />
           </button>
@@ -62,7 +62,8 @@ export function RememberedUsersList({ users, onSelect, onRemove, onOtherAccount 
       <button
         type="button"
         onClick={onOtherAccount}
-        className="w-full flex items-center gap-3 p-3 rounded-xl border border-dashed border-bg-subtle hover:border-primary/40 hover:bg-primary/5 transition-colors duration-200 text-left"
+        style={{ animationDelay: `${0.2 + users.length * 0.06}s` }}
+        className="animate-login-rise w-full flex items-center gap-3 p-3 rounded-xl border border-dashed border-bg-subtle hover:border-primary/40 hover:bg-primary/5 transition-colors duration-200 text-left"
       >
         <div className="w-11 h-11 shrink-0 rounded-full bg-bg-subtle/60 text-text-muted flex items-center justify-center">
           <FaUserPlus size={16} />
