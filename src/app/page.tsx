@@ -1,13 +1,15 @@
 'use client';
 import { Spinner } from "@/components/Spinner";
+import { RememberedUserAvatar, RememberedUsersList, displayUsername } from "@/components/login/RememberedUsersList";
 
 import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import { clearTenantStorage } from "@/lib/clearTenantStorage";
+import { RememberedUser, forgetUser, getRememberedUsers, rememberUser } from "@/lib/rememberedUsers";
 import useConfigStore from "@/stores/configStore";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
@@ -17,10 +19,16 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [errorKey, setErrorKey] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [rememberedUsers, setRememberedUsers] = useState<RememberedUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<RememberedUser | null>(null);
+  const [showAccounts, setShowAccounts] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [brand, setBrand] = useState(defaultBrand);
   const custom = isCustomBrand(brand);
   const c = brand.colors;
@@ -29,7 +37,51 @@ export default function Home() {
     setBrand(getBrand());
     clearTenantStorage();
     useConfigStore.getState().clearConfig();
+    const users = getRememberedUsers();
+    setRememberedUsers(users);
+    setShowAccounts(users.length > 0);
   }, []);
+
+  useEffect(() => {
+    if (selectedUser) passwordRef.current?.focus();
+  }, [selectedUser]);
+
+  const resetForm = () => {
+    setPassword("");
+    setError(null);
+    setMessage(null);
+    setShowPassword(false);
+  };
+
+  const handleSelectUser = (user: RememberedUser) => {
+    resetForm();
+    setSelectedUser(user);
+    setUsername(user.username);
+    setRemember(true);
+    setShowAccounts(false);
+  };
+
+  const handleRemoveUser = (user: RememberedUser) => {
+    forgetUser(user.username);
+    const users = getRememberedUsers();
+    setRememberedUsers(users);
+    if (users.length === 0) setShowAccounts(false);
+  };
+
+  const handleOtherAccount = () => {
+    resetForm();
+    setSelectedUser(null);
+    setUsername("");
+    setRemember(false);
+    setShowAccounts(false);
+  };
+
+  const handleBackToAccounts = () => {
+    resetForm();
+    setSelectedUser(null);
+    setUsername("");
+    setShowAccounts(true);
+  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,9 +99,12 @@ export default function Home() {
       });
       if (result?.error) {
         setError(result.error);
+        setErrorKey((k) => k + 1);
         setLoading(false);
         setMessage(null);
       } else if (result?.ok) {
+        if (remember) rememberUser(usernameNew);
+        else forgetUser(usernameNew);
         setMessage("Sesión iniciada correctamente");
         setRedirecting(true);
         setLoading(false);
@@ -67,7 +122,7 @@ export default function Home() {
 
   return (
     <div
-      className={`min-h-screen flex ${!custom ? 'bg-primary' : ''}`}
+      className={`login-motion min-h-screen flex ${!custom ? 'bg-primary' : ''}`}
       style={custom ? { backgroundColor: c.panel } : undefined}
     >
       {/* Panel Izquierdo - Branding */}
@@ -117,9 +172,9 @@ export default function Home() {
         {/* Contenido de marca */}
         <div className="relative z-10 text-center px-12">
           {/* Logo */}
-          <div className="mb-10 animate-scale-in flex justify-center">
+          <div className="mb-10 animate-login-logo flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 rounded-2xl blur-2xl bg-white/10 scale-110" />
+              <div className="absolute inset-0 rounded-2xl blur-2xl bg-white/10 animate-login-breathe" />
               <Image
                 src={brand.image}
                 alt={brand.name}
@@ -131,14 +186,14 @@ export default function Home() {
           </div>
 
           {/* Feature pills */}
-          <div className="mt-4 flex flex-wrap justify-center gap-3 animate-fade-in-delay">
-            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm">
+          <div className="mt-4 flex flex-wrap justify-center gap-3">
+            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm animate-login-rise" style={{ animationDelay: '0.5s' }}>
               Inventario
             </span>
-            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm">
+            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm animate-login-rise" style={{ animationDelay: '0.6s' }}>
               Facturación
             </span>
-            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm">
+            <span className="px-4 py-1.5 bg-white/[0.08] border border-white/10 rounded-full text-xs text-white/50 backdrop-blur-sm animate-login-rise" style={{ animationDelay: '0.7s' }}>
               Reportes
             </span>
           </div>
@@ -176,7 +231,7 @@ export default function Home() {
 
         <div className="relative z-10 w-full max-w-md">
           {/* Logo para móvil */}
-          <div className="lg:hidden text-center mb-10 animate-scale-in flex justify-center">
+          <div className="lg:hidden text-center mb-10 animate-login-logo flex justify-center">
             <Image
               src={brand.image}
               alt={brand.name}
@@ -187,7 +242,7 @@ export default function Home() {
           </div>
 
           {/* Tarjeta del formulario */}
-          <div className="bg-bg-content rounded-2xl shadow-2xl shadow-black/[0.08] border border-bg-subtle/50 p-8 sm:p-10 animate-fade-in relative overflow-hidden">
+          <div className="bg-bg-content rounded-2xl shadow-2xl shadow-black/[0.08] border border-bg-subtle/50 p-8 sm:p-10 animate-login-enter relative overflow-hidden">
             {/* Barra superior */}
             <div className={`absolute top-0 left-0 right-0 h-1 ${loading ? 'bg-bg-subtle overflow-hidden' : redirecting ? 'bg-success' : ''} transition-colors duration-500`}>
               {!loading && !redirecting && (
@@ -198,7 +253,7 @@ export default function Home() {
               )}
               {loading && (
                 <div
-                  className={`h-full w-1/3 rounded-full animate-[shimmer_1s_ease-in-out_infinite] ${!custom ? 'bg-gradient-to-r from-primary via-accent to-primary' : ''}`}
+                  className={`h-full w-1/3 rounded-full animate-login-progress ${!custom ? 'bg-gradient-to-r from-primary via-accent to-primary' : ''}`}
                   style={custom ? { background: `linear-gradient(to right, ${c.panel}, ${c.accent}, ${c.panel})` } : undefined}
                 />
               )}
@@ -209,11 +264,12 @@ export default function Home() {
               <div className="absolute inset-0 z-20 bg-bg-content/95 backdrop-blur-sm flex flex-col items-center justify-center gap-4 animate-fade-in rounded-2xl">
                 <div className="relative">
                   <div className="absolute inset-0 bg-success/20 rounded-full blur-xl animate-pulse-glow" />
-                  <div className="relative w-16 h-16 bg-success/10 rounded-full flex items-center justify-center border-2 border-success/30 animate-scale-in">
+                  <div className="absolute inset-0 rounded-full border-2 border-success/40 animate-login-ring" />
+                  <div className="relative w-16 h-16 bg-success/10 rounded-full flex items-center justify-center border-2 border-success/30 animate-login-pop">
                     <FaCheck className="text-success" size={28} />
                   </div>
                 </div>
-                <div className="text-center animate-slide-up">
+                <div className="text-center animate-login-rise" style={{ animationDelay: '0.15s' }}>
                   <p className="text-lg font-semibold text-text-base">{message}</p>
                   <div className="flex items-center justify-center gap-2 mt-3">
                     <Spinner size={14} />
@@ -223,20 +279,40 @@ export default function Home() {
               </div>
             )}
 
-            <div className="text-center mb-8 animate-slide-up">
+            <div className="text-center mb-8 animate-login-rise" style={{ animationDelay: '0.15s' }}>
               <h2 className="text-2xl font-bold text-text-base">Bienvenido de nuevo</h2>
-              <p className="mt-2 text-sm text-text-muted">Inicia sesión en tu cuenta</p>
+              <p className="mt-2 text-sm text-text-muted">
+                {showAccounts ? 'Selecciona tu cuenta para continuar' : 'Inicia sesión en tu cuenta'}
+              </p>
             </div>
 
+            <div key={showAccounts ? 'accounts' : selectedUser?.username ?? 'form'} className="animate-login-swap">
+            {showAccounts ? (
+              <RememberedUsersList
+                users={rememberedUsers}
+                onSelect={handleSelectUser}
+                onRemove={handleRemoveUser}
+                onOtherAccount={handleOtherAccount}
+              />
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="border-l-4 border-danger bg-danger/8 rounded-r-lg px-4 py-3.5 flex items-start gap-3 animate-slide-up" role="alert">
+                <div key={errorKey} className="border-l-4 border-danger bg-danger/8 rounded-r-lg px-4 py-3.5 flex items-start gap-3 animate-login-shake" role="alert">
                   <div>
                     <p className="text-xs text-danger/80 mt-0.5">{error}</p>
                   </div>
                 </div>
               )}
-              <div className="animate-slide-up-delay">
+              {selectedUser ? (
+                <div className="flex flex-col items-center gap-2 animate-login-rise">
+                  <RememberedUserAvatar user={selectedUser} size="lg" />
+                  <p className="text-base font-semibold text-text-base text-center">{selectedUser.name || displayUsername(selectedUser.username)}</p>
+                  {selectedUser.name && (
+                    <p className="-mt-2 text-xs text-text-muted text-center">{displayUsername(selectedUser.username)}</p>
+                  )}
+                </div>
+              ) : (
+              <div className="animate-login-rise" style={{ animationDelay: '0.2s' }}>
                 <label htmlFor="username" className="block text-sm font-medium text-text-muted mb-1.5">
                   Usuario
                 </label>
@@ -249,11 +325,12 @@ export default function Home() {
                   disabled={loading || redirecting}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className={`input ${(loading || redirecting) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`input transition-[border-color,box-shadow] duration-200 focus:ring-4 focus:ring-primary/10 ${(loading || redirecting) ? 'opacity-50 cursor-not-allowed' : ''}`}
                   placeholder="Tu nombre de usuario o email"
                 />
               </div>
-              <div className="animate-slide-up-delay-2">
+              )}
+              <div className="animate-login-rise" style={{ animationDelay: '0.28s' }}>
                 <label htmlFor="password" className="block text-sm font-medium text-text-muted mb-1.5">
                   Contraseña
                 </label>
@@ -261,13 +338,14 @@ export default function Home() {
                   <input
                     id="password"
                     name="password"
+                    ref={passwordRef}
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     required
                     disabled={loading || redirecting}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`input pr-11 ${(loading || redirecting) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`input pr-11 transition-[border-color,box-shadow] duration-200 focus:ring-4 focus:ring-primary/10 ${(loading || redirecting) ? 'opacity-50 cursor-not-allowed' : ''}`}
                     placeholder="Tu contraseña"
                   />
                   <button
@@ -280,13 +358,25 @@ export default function Home() {
                   </button>
                 </div>
               </div>
-              <div className="pt-2 animate-fade-in-delay">
+              <label className="flex items-center gap-2 text-sm text-text-muted cursor-pointer select-none w-fit animate-login-rise" style={{ animationDelay: '0.34s' }}>
+                <input
+                  type="checkbox"
+                  className="accent-primary h-4 w-4"
+                  checked={remember}
+                  disabled={loading || redirecting}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Recordar usuario
+              </label>
+              <div className="pt-2 animate-login-rise" style={{ animationDelay: '0.4s' }}>
                 <button
                   type="submit"
                   disabled={loading || redirecting}
-                  className={`group w-full flex justify-center items-center gap-2.5 py-3.5 px-4 rounded-xl text-sm font-semibold text-text-inverted shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-xl ${!custom ? 'bg-primary hover:bg-primary/90 focus:ring-primary shadow-primary/25 hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-offset-2' : ''}`}
+                  className={`group relative overflow-hidden w-full flex justify-center items-center gap-2.5 py-3.5 px-4 rounded-xl text-sm font-semibold text-text-inverted shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-xl ${!custom ? 'bg-primary hover:bg-primary/90 focus:ring-primary shadow-primary/25 hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-offset-2' : ''}`}
                   style={custom ? { backgroundColor: c.panel, boxShadow: `0 10px 25px ${c.panel}40` } : undefined}
                 >
+                  {/* Brillo que cruza el botón al pasar el mouse */}
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full group-disabled:hidden transition-transform duration-700 ease-out bg-gradient-to-r from-transparent via-white/15 to-transparent" />
                   {loading ? <Spinner size={18} color="current" /> : <BiSave size={18} className="transition-transform duration-300 group-hover:scale-110" />}
                   {loading ? 'Verificando...' : 'Iniciar Sesión'}
                 </button>
@@ -296,12 +386,24 @@ export default function Home() {
                     <span className="text-sm text-text-muted">{message}</span>
                   </div>
                 )}
+                {rememberedUsers.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleBackToAccounts}
+                    disabled={loading || redirecting}
+                    className="mt-4 w-full text-center text-sm text-primary hover:underline disabled:opacity-50"
+                  >
+                    {selectedUser ? '¿No eres tú? Cambiar de cuenta' : 'Volver a mis cuentas'}
+                  </button>
+                )}
               </div>
             </form>
+            )}
+            </div>
           </div>
 
           {/* Pie sutil */}
-          <p className="text-center text-xs text-text-muted/30 mt-8 tracking-widest uppercase animate-fade-in-delay">
+          <p className="text-center text-xs text-text-muted/30 mt-8 tracking-widest uppercase animate-login-rise" style={{ animationDelay: '0.6s' }}>
             {brand.footer}
           </p>
         </div>

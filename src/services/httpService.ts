@@ -11,6 +11,29 @@ let unauthorizedCount = 0;
 let lastUnauthorizedToken: string | null = null;
 const MAX_UNAUTHORIZED = 3;
 
+// Una sola renovacion a la vez: Passport revoca el refresh token al usarlo, y si varias peticiones
+// renovaran con el mismo, todas menos la primera fallarian y sacarian al usuario
+let renewing: Promise<string | null> | null = null;
+
+function renewSession(): Promise<string | null> {
+  if (!renewing) {
+    // getSession() corre el callback jwt de NextAuth, que renueva el token si ya vencio
+    renewing = getSession()
+      .then((fresh) => {
+        if (fresh?.accessToken && fresh?.url && !fresh.error) {
+          sessionStore.getState().setSession(fresh.accessToken, fresh.url);
+          return fresh.accessToken as string;
+        }
+        return null;
+      })
+      .catch(() => null)
+      .finally(() => {
+        renewing = null;
+      });
+  }
+  return renewing;
+}
+
 const httpService = axios.create({
   headers: {
     'Content-Type': 'application/json',
@@ -64,6 +87,19 @@ httpService.interceptors.response.use(
 
     if (error.response?.status === 401) {
       const failedToken = originalRequest.headers?.Authorization as string | undefined;
+
+      // El token vencio: se renueva y se repite la peticion una vez. El 401 lo da auth:api antes del controller, asi que repetir un POST es seguro
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        const currentToken = sessionStore.getState().accessToken;
+        const newToken = currentToken && `Bearer ${currentToken}` !== failedToken
+          ? currentToken
+          : await renewSession();
+
+        if (newToken && `Bearer ${newToken}` !== failedToken) {
+          return httpService(originalRequest);
+        }
+      }
 
       if (failedToken !== lastUnauthorizedToken) {
         lastUnauthorizedToken = failedToken ?? null;

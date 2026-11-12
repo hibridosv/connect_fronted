@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 
 // Estados de billing que muestran un aviso con "Continuar"; Suspended no esta porque bloquea el sistema
 const DISMISSIBLE_STATUSES = ['Info', 'Expiring', 'Overdue'];
+const REFRESH_MARGIN_MS = 30_000;
 
 async function refreshAccessToken(token: any) {
   try {
@@ -99,7 +100,8 @@ const handler = NextAuth({
         return token
       }
 
-      if (Date.now() < token.expiresAt) {
+      // Margen por si el reloj del servidor va adelantado: renueva antes de que connect lo rechace
+      if (Date.now() < token.expiresAt - REFRESH_MARGIN_MS) {
         return token
       }
 
@@ -117,6 +119,21 @@ const handler = NextAuth({
     async redirect({ url, baseUrl }) {
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
+  },
+  events: {
+    // Corre en el servidor con cualquier signOut(): revoca el token en connect para que no sirva aunque alguien lo haya copiado
+    async signOut({ token }: any) {
+      if (!token?.accessToken || !token?.url) return;
+      try {
+        await fetch(`${token.url}/api/v2/logout`, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token.accessToken}` },
+          signal: AbortSignal.timeout(5000),
+        });
+      } catch {
+        // Si connect no responde el usuario sale igual; el token vence solo
+      }
+    },
   },
   pages: {
     signIn: '/',
