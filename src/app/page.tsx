@@ -1,13 +1,15 @@
 'use client';
 import { Spinner } from "@/components/Spinner";
+import { RememberedUserAvatar, RememberedUsersList, displayUsername } from "@/components/login/RememberedUsersList";
 
 import { defaultBrand, getBrand, isCustomBrand } from "@/lib/brand";
 import { clearTenantStorage } from "@/lib/clearTenantStorage";
+import { RememberedUser, forgetUser, getRememberedUsers, rememberUser } from "@/lib/rememberedUsers";
 import useConfigStore from "@/stores/configStore";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSave } from "react-icons/bi";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
@@ -21,6 +23,11 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [rememberedUsers, setRememberedUsers] = useState<RememberedUser[]>([]);
+  const [selectedUser, setSelectedUser] = useState<RememberedUser | null>(null);
+  const [showAccounts, setShowAccounts] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [brand, setBrand] = useState(defaultBrand);
   const custom = isCustomBrand(brand);
   const c = brand.colors;
@@ -29,7 +36,51 @@ export default function Home() {
     setBrand(getBrand());
     clearTenantStorage();
     useConfigStore.getState().clearConfig();
+    const users = getRememberedUsers();
+    setRememberedUsers(users);
+    setShowAccounts(users.length > 0);
   }, []);
+
+  useEffect(() => {
+    if (selectedUser) passwordRef.current?.focus();
+  }, [selectedUser]);
+
+  const resetForm = () => {
+    setPassword("");
+    setError(null);
+    setMessage(null);
+    setShowPassword(false);
+  };
+
+  const handleSelectUser = (user: RememberedUser) => {
+    resetForm();
+    setSelectedUser(user);
+    setUsername(user.username);
+    setRemember(true);
+    setShowAccounts(false);
+  };
+
+  const handleRemoveUser = (user: RememberedUser) => {
+    forgetUser(user.username);
+    const users = getRememberedUsers();
+    setRememberedUsers(users);
+    if (users.length === 0) setShowAccounts(false);
+  };
+
+  const handleOtherAccount = () => {
+    resetForm();
+    setSelectedUser(null);
+    setUsername("");
+    setRemember(false);
+    setShowAccounts(false);
+  };
+
+  const handleBackToAccounts = () => {
+    resetForm();
+    setSelectedUser(null);
+    setUsername("");
+    setShowAccounts(true);
+  };
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,6 +101,8 @@ export default function Home() {
         setLoading(false);
         setMessage(null);
       } else if (result?.ok) {
+        if (remember) rememberUser(usernameNew);
+        else forgetUser(usernameNew);
         setMessage("Sesión iniciada correctamente");
         setRedirecting(true);
         setLoading(false);
@@ -225,9 +278,19 @@ export default function Home() {
 
             <div className="text-center mb-8 animate-slide-up">
               <h2 className="text-2xl font-bold text-text-base">Bienvenido de nuevo</h2>
-              <p className="mt-2 text-sm text-text-muted">Inicia sesión en tu cuenta</p>
+              <p className="mt-2 text-sm text-text-muted">
+                {showAccounts ? 'Selecciona tu cuenta para continuar' : 'Inicia sesión en tu cuenta'}
+              </p>
             </div>
 
+            {showAccounts ? (
+              <RememberedUsersList
+                users={rememberedUsers}
+                onSelect={handleSelectUser}
+                onRemove={handleRemoveUser}
+                onOtherAccount={handleOtherAccount}
+              />
+            ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
                 <div className="border-l-4 border-danger bg-danger/8 rounded-r-lg px-4 py-3.5 flex items-start gap-3 animate-slide-up" role="alert">
@@ -236,6 +299,15 @@ export default function Home() {
                   </div>
                 </div>
               )}
+              {selectedUser ? (
+                <div className="flex flex-col items-center gap-2 animate-slide-up">
+                  <RememberedUserAvatar user={selectedUser} size="lg" />
+                  <p className="text-base font-semibold text-text-base text-center">{selectedUser.name || displayUsername(selectedUser.username)}</p>
+                  {selectedUser.name && (
+                    <p className="-mt-2 text-xs text-text-muted text-center">{displayUsername(selectedUser.username)}</p>
+                  )}
+                </div>
+              ) : (
               <div className="animate-slide-up-delay">
                 <label htmlFor="username" className="block text-sm font-medium text-text-muted mb-1.5">
                   Usuario
@@ -253,6 +325,7 @@ export default function Home() {
                   placeholder="Tu nombre de usuario o email"
                 />
               </div>
+              )}
               <div className="animate-slide-up-delay-2">
                 <label htmlFor="password" className="block text-sm font-medium text-text-muted mb-1.5">
                   Contraseña
@@ -261,6 +334,7 @@ export default function Home() {
                   <input
                     id="password"
                     name="password"
+                    ref={passwordRef}
                     type={showPassword ? "text" : "password"}
                     autoComplete="current-password"
                     required
@@ -280,6 +354,16 @@ export default function Home() {
                   </button>
                 </div>
               </div>
+              <label className="flex items-center gap-2 text-sm text-text-muted cursor-pointer select-none w-fit">
+                <input
+                  type="checkbox"
+                  className="accent-primary h-4 w-4"
+                  checked={remember}
+                  disabled={loading || redirecting}
+                  onChange={(e) => setRemember(e.target.checked)}
+                />
+                Recordar usuario
+              </label>
               <div className="pt-2 animate-fade-in-delay">
                 <button
                   type="submit"
@@ -296,8 +380,19 @@ export default function Home() {
                     <span className="text-sm text-text-muted">{message}</span>
                   </div>
                 )}
+                {rememberedUsers.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleBackToAccounts}
+                    disabled={loading || redirecting}
+                    className="mt-4 w-full text-center text-sm text-primary hover:underline disabled:opacity-50"
+                  >
+                    {selectedUser ? '¿No eres tú? Cambiar de cuenta' : 'Volver a mis cuentas'}
+                  </button>
+                )}
               </div>
             </form>
+            )}
           </div>
 
           {/* Pie sutil */}

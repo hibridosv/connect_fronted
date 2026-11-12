@@ -2,6 +2,7 @@ import { CashDrawer } from '@/interfaces/cashdrawers';
 import { User } from '@/interfaces/user';
 import { extractActiveFeature } from '@/lib/config/config';
 import { encryptedStorage } from '@/lib/encryptedStorage';
+import { updateRememberedUser } from '@/lib/rememberedUsers';
 import { getServices, updateService } from '@/services/services';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
@@ -93,6 +94,7 @@ const useConfigStore = create(
           set({ isLoaded: true });
           set({ error: false });
           set({ lastLoadedAt: Date.now() });
+          updateRememberedUser(data.user?.email, { name: data.user?.name, business: data.client?.name });
         } catch (error) {
           useToastMessageStore.getState().setError(error);
           set({ error: true, isLoaded: false });
