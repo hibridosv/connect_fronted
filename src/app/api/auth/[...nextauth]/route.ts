@@ -120,6 +120,21 @@ const handler = NextAuth({
       return url.startsWith(baseUrl) ? url : baseUrl;
     }
   },
+  events: {
+    // Corre en el servidor con cualquier signOut(): revoca el token en connect para que no sirva aunque alguien lo haya copiado
+    async signOut({ token }: any) {
+      if (!token?.accessToken || !token?.url) return;
+      try {
+        await fetch(`${token.url}/api/v2/logout`, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token.accessToken}` },
+          signal: AbortSignal.timeout(5000),
+        });
+      } catch {
+        // Si connect no responde el usuario sale igual; el token vence solo
+      }
+    },
+  },
   pages: {
     signIn: '/',
   }
