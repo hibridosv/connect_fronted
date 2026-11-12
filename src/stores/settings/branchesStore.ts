@@ -5,19 +5,26 @@ import useToastMessageStore from '../toastMessageStore';
 interface BranchesStoreI {
   remoteUrls: any;
   tenants: any;
+  linkedSystems: any[];
   loading: boolean;
+  loadingTenants: boolean;
+  loadingLinked: boolean;
   sending: boolean;
   error: boolean;
 
   loadRemoteUrls: (email: string) => Promise<void>;
   loadTenants: () => Promise<void>;
+  loadLinked: () => Promise<void>;
   linkTenant: (tenantId: number) => Promise<boolean>;
 }
 
 const branchesStore = create<BranchesStoreI>((set) => ({
   remoteUrls: null,
   tenants: null,
+  linkedSystems: [],
   loading: false,
+  loadingTenants: false,
+  loadingLinked: false,
   sending: false,
   error: false,
 
@@ -37,6 +44,7 @@ const branchesStore = create<BranchesStoreI>((set) => ({
   },
 
   loadTenants: async () => {
+    set({ loadingTenants: true });
     try {
       const response = await getServices('tenants');
       if (response.data) {
@@ -44,6 +52,21 @@ const branchesStore = create<BranchesStoreI>((set) => ({
       }
     } catch (error) {
       useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loadingTenants: false });
+    }
+  },
+
+  // Sistemas ya vinculados con el actual
+  loadLinked: async () => {
+    set({ loadingLinked: true });
+    try {
+      const response = await getServices('tenants/linked');
+      set({ linkedSystems: response.data?.data ?? [] });
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+    } finally {
+      set({ loadingLinked: false });
     }
   },
 

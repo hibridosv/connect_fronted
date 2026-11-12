@@ -120,7 +120,8 @@ export const configuraciones: HelpSection = {
       features: [
         'INFORMACION: nombre, responsable, documento, teléfono, email, dirección y país de cada sucursal.',
         'CAMBIAR SISTEMA: entra a otra sucursal vinculada ingresando su contraseña.',
-        'VINCULAR SISTEMA (solo usuario root): vincula una nueva sucursal.',
+        'SISTEMAS VINCULADOS: muestra las sucursales ya vinculadas con la actual y desde cuándo.',
+        'VINCULAR SISTEMA (solo usuario root): busca una sucursal por nombre y vincúlala; pide confirmación y no lista las que ya están vinculadas.',
       ],
     },
     {
