@@ -10,6 +10,9 @@ import { Button, Preset } from "../button/button";
 import { Switch } from "../button/Switch";
 import Modal from "../modal/Modal";
 
+// redondea a centavos como PHP (1.275 -> 1.28); Math.round(1.275 * 100) da 127 y connect rechaza la propina por 1 centavo
+const roundMoney = (value: number) => Math.round(value * 100 + Math.sign(value) * 1e-8) / 100;
+
 export interface CreateCreditNoteModalI {
   onClose: () => void;
   isShow: boolean;
@@ -41,7 +44,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   // propina de la orden (fuera de su total): la nota la devuelve aparte, hasta lo que no devolvieron las otras
   const orderTips = Number(record?.attributes?.tips ?? 0);
   const returnedTips = activeNotes.reduce((sum: number, note: any) => sum + Number(note.tips ?? 0), 0);
-  const availableTips = Math.max(Math.round((orderTips - returnedTips) * 100) / 100, 0);
+  const availableTips = Math.max(roundMoney(orderTips - returnedTips), 0);
   const productsRef = useRef<any[]>([]);
 
   useEffect(() => {
@@ -93,7 +96,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     const currentTotal = calculateTotal();
     setTotalState(currentTotal);
     const totalIsDiferent = Math.abs(currentTotal - record.total) >= 0.01;
-    const tips = Math.round((Number(tipsState) || 0) * 100) / 100;
+    const tips = roundMoney(Number(tipsState) || 0);
     // la total lleva todos los productos y toda la propina; si falta cualquiera de los dos, es parcial
     const tipsIsDiferent = Math.abs(tips - orderTips) >= 0.01;
     const showError = (message: string) => {
