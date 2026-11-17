@@ -85,12 +85,12 @@ export default function Page() {
                 { productType === 1 && (<>
                 <div className="w-full md:w-1/2 px-3 mb-2">
                   <label htmlFor="quantity" className="input-label">Cantidad</label>
-                  <input type="number" id="quantity" {...register("quantity", { required: true, min: 0 })} className="input" />
+                  <input type="number" step="any" id="quantity" {...register("quantity", { required: true, min: 0 })} className="input" />
                 </div>
 
                 <div className="w-full md:w-1/2 px-3 mb-2">
                   <label htmlFor="minimum_stock" className="input-label">Minimo de Stock</label>
-                  <input type="number" id="minimum_stock" {...register("minimum_stock", { required: true, min: 0 })} className="input" />
+                  <input type="number" step="any" id="minimum_stock" {...register("minimum_stock", { required: true, min: 0 })} className="input" />
                 </div> </>)}
 
 
