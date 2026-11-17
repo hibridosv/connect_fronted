@@ -26,8 +26,12 @@ export function InvoiceDetailsButtons(props: InvoiceDetailsButtonsI) {
     const API_URL = process.env.NEXT_PUBLIC_URL_API;
     const isSending = printing;
     const isCreditNoteAvailable = (order?.invoice_assigned?.type == 3 || order?.invoice_assigned?.type == 2);
-    const creditNotesTotal = order?.creditnotes?.filter((note: any) => note.status === 1).reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0) ?? 0;
-    const hasCreditNote = creditNotesTotal > 0 && creditNotesTotal >= Number(order?.total ?? 0);
+    const activeCreditNotes = order?.creditnotes?.filter((note: any) => note.status === 1) ?? [];
+    const creditNotesTotal = activeCreditNotes.reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0);
+    const creditNotesTips = activeCreditNotes.reduce((sum: number, note: any) => sum + Number(note.tips ?? 0), 0);
+    // sin saldo de productos ni de propina ya no cabe otra nota (la propina va fuera del total de la orden)
+    const hasCreditNote = activeCreditNotes.length > 0 && creditNotesTotal >= Number(order?.total ?? 0)
+      && creditNotesTips >= Number(order?.attributes?.tips ?? 0) - 0.005;
     const isActive = order?.status == 3;
     const isDeleted = order?.status == 4;
     const isElectronic = order?.invoice_assigned?.is_electronic === 1;
