@@ -24,6 +24,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   const [isProductReturn, setIsProductReturn] = useState(true);
   const [formProducts, setFormProducts] = useState<any[]>([]);
   const [totalState, setTotalState] = useState(0);
+  const [tipsState, setTipsState] = useState(0);
   const { system } = useConfigStore();
   const { setError, setMessage } = useToastMessageStore();
   const {loadingOrder, fetchOrder } = useInvoiceDetailsStore();
@@ -33,9 +34,14 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
   });
   const taxesPercent = 1 + (getCountryProperty(parseInt(system?.country)).taxes / 100);
   // con notas activas solo cabe una parcial por el saldo: la total anula toda la venta y connect la rechaza
-  const activeCreditNotes = record?.creditnotes?.filter((note: any) => note.status === 1).reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0) ?? 0;
-  const hasCreditNotes = activeCreditNotes > 0;
+  const activeNotes = record?.creditnotes?.filter((note: any) => note.status === 1) ?? [];
+  const activeCreditNotes = activeNotes.reduce((sum: number, note: any) => sum + Number(note.total ?? 0), 0);
+  const hasCreditNotes = activeNotes.length > 0;
   const available = Math.max(Number(record?.total ?? 0) - activeCreditNotes, 0);
+  // propina de la orden (fuera de su total): la nota la devuelve aparte, hasta lo que no devolvieron las otras
+  const orderTips = Number(record?.attributes?.tips ?? 0);
+  const returnedTips = activeNotes.reduce((sum: number, note: any) => sum + Number(note.tips ?? 0), 0);
+  const availableTips = Math.max(Math.round((orderTips - returnedTips) * 100) / 100, 0);
   const productsRef = useRef<any[]>([]);
 
   useEffect(() => {
@@ -57,6 +63,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
       });
       
       setTotalState(calculateTotal(initializedProducts));
+      setTipsState(availableTips);
     }
     // eslint-disable-next-line
   }, [record?.products, setValue, isShow]);
@@ -86,10 +93,19 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
     const currentTotal = calculateTotal();
     setTotalState(currentTotal);
     const totalIsDiferent = Math.abs(currentTotal - record.total) >= 0.01;
-    if (hasCreditNotes && currentTotal - available >= 0.01) {
-      const message = `El monto supera el saldo disponible para notas de crédito (${numberToMoney(available, system)})`;
+    const tips = Math.round((Number(tipsState) || 0) * 100) / 100;
+    // la total lleva todos los productos y toda la propina; si falta cualquiera de los dos, es parcial
+    const tipsIsDiferent = Math.abs(tips - orderTips) >= 0.01;
+    const showError = (message: string) => {
       setError({ message });
       setErrorMessage(message);
+    };
+    if (hasCreditNotes && currentTotal - available >= 0.01) {
+      showError(`El monto supera el saldo disponible para notas de crédito (${numberToMoney(available, system)})`);
+      return;
+    }
+    if (tips < 0 || tips - availableTips >= 0.01) {
+      showError(`La propina a devolver debe estar entre ${numberToMoney(0, system)} y ${numberToMoney(availableTips, system)}`);
       return;
     }
     
@@ -117,8 +133,9 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
       })
       .filter((item) => item !== null);
       
-      if (formattedData.length === 0) {
-        setError({ message: "Debe tener al menos un producto con cantidad mayor a 0"});
+      // una nota parcial puede ser solo de propina
+      if (formattedData.length === 0 && tips <= 0) {
+        setError({ message: "Debe tener al menos un producto con cantidad mayor a 0 o propina a devolver"});
         return;
       }
       
@@ -128,7 +145,8 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
         subtotal: currentTotal / taxesPercent,
         taxes: currentTotal - (currentTotal / taxesPercent),
         total: currentTotal,
-        credit_note_type: totalIsDiferent || hasCreditNotes ? 2 : 1, // 1 for full credit note, 2 for partial
+        tips,
+        credit_note_type: totalIsDiferent || tipsIsDiferent || hasCreditNotes ? 2 : 1, // 1 for full credit note, 2 for partial
         is_product_return: isProductReturn
     };
 
@@ -172,7 +190,7 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
             ) : (
               <Alert
                 type="info"
-                text="Para emitir una Nota de Crédito por el total del documento, haga clic directamente en 'Crear Nota de Crédito'. Para una nota parcial, modifique las cantidades de los productos antes de enviarla."
+                text={`Para emitir una Nota de Crédito por el total del documento, haga clic directamente en 'Crear Nota de Crédito'. Para una nota parcial, modifique las cantidades de los productos${orderTips > 0 ? ' o la propina' : ''} antes de enviarla.`}
                 isDismissible={false}
                 className="mb-6"
               />
@@ -253,11 +271,37 @@ export function CreateCreditNoteModal(props: CreateCreditNoteModalI) {
                 </tbody>
                 <tfoot className="bg-bg-subtle/60">
                   <tr>
-                    <td colSpan={4} className="text-right font-bold py-3 px-4 border-t-2 border-bg-subtle">TOTAL:</td>
+                    <td colSpan={4} className="text-right font-bold py-3 px-4 border-t-2 border-bg-subtle">{orderTips > 0 ? 'TOTAL PRODUCTOS:' : 'TOTAL:'}</td>
                     <td className="py-3 px-4 border-t-2 border-bg-subtle font-bold text-right">
                       {numberToMoney(totalState, system)}
                     </td>
                   </tr>
+                  {orderTips > 0 && (
+                    <>
+                      <tr>
+                        <td colSpan={4} className="text-right font-bold py-3 px-4">
+                          PROPINA A DEVOLVER <span className="font-normal text-xs">(disponible {numberToMoney(availableTips, system)})</span>:
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <input
+                            type="number"
+                            step="any"
+                            min={0}
+                            max={availableTips}
+                            value={tipsState}
+                            onChange={(e) => setTipsState(e.target.value === '' ? 0 : Number(e.target.value))}
+                            className="input-sm w-24 px-2 py-1 text-right"
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={4} className="text-right font-bold py-3 px-4">TOTAL A DEVOLVER:</td>
+                        <td className="py-3 px-4 font-bold text-right">
+                          {numberToMoney(totalState + (Number(tipsState) || 0), system)}
+                        </td>
+                      </tr>
+                    </>
+                  )}
                   <tr>
                     <td colSpan={4} className="text-right font-bold py-3 px-4">RETORNAR PRODUCTOS AL INVENTARIO:</td>
                     <td className="py-3 px-4 font-bold flex justify-end">

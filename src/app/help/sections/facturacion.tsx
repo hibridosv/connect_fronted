@@ -34,6 +34,7 @@ export const facturacion: HelpSection = {
           steps: [
             'Abra el detalle del documento y haga clic en "Nota C.".',
             'Indique la cantidad de cada producto a acreditar (para el total del documento, use la opción indicada en la ventana).',
+            'Si la venta tiene propina, indique cuánto se devuelve en "Propina a devolver" (viene con la propina pendiente). La nota es total solo con todos los productos y toda la propina; también puede emitir una parcial solo de propina. La propina se devuelve únicamente si el crédito fiscal la incluyó.',
             'Marque si los productos regresan al inventario.',
             'Haga clic en "Crear Nota de Crédito". Las notas emitidas se listan en el detalle y se pueden descargar o anular.',
           ],

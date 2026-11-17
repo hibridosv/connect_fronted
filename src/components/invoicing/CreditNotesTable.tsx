@@ -22,6 +22,7 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
   const [selectedCreditNote, setSelectedCreditNote] = useState<any | null>(null);
 
   const activeCreditNotes = creditnotes.filter((cn) => cn.status === 1);
+  const hasTips = creditnotes.some((cn) => Number(cn.tips ?? 0) > 0);
 
   
   return (
@@ -38,6 +39,7 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
               <th scope="col" className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle text-center">Número</th>
               <th scope="col" className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Fecha</th>
               <th scope="col" className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle">Emitida por</th>
+              {hasTips && <th scope="col" className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle text-right">Propina</th>}
               <th scope="col" className="px-3 py-2 font-bold tracking-wider border-r border-bg-subtle text-right">Total</th>
               {onDeleteCreditNote && <th scope="col" className="px-3 py-2 font-bold tracking-wider text-center">Anular</th>}
             </tr>
@@ -69,6 +71,11 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
                   </td>
                   <td className="px-3 py-1 whitespace-nowrap">{formatDateAsDMY(creditnote.emited_at)} {formatHourAsHM(creditnote.emited_at)}</td>
                   <td className="px-3 py-1 whitespace-nowrap">{creditnote.emited_by?.name ?? '—'}</td>
+                  {hasTips && (
+                    <td className="px-3 py-1 text-right">
+                      <span className={isCancelled ? 'line-through' : ''}>{numberToMoney(creditnote.tips ?? 0, system)}</span>
+                    </td>
+                  )}
                   <td className="px-3 py-1 text-right font-bold">
                     <span className={isCancelled ? 'line-through' : ''}>{numberToMoney(creditnote.total, system)}</span>
                   </td>
@@ -89,6 +96,7 @@ export function CreditNotesTable({ creditnotes, orderStatus, onDeleteCreditNote,
             })}
             <tr className="border-t-2 border-bg-subtle bg-bg-subtle/60 font-bold">
               <td colSpan={4} className="px-3 py-1 text-right uppercase text-xs">Total:</td>
+              {hasTips && <td className="px-3 py-1 text-right">{numberToMoney(getTotalOfItem(activeCreditNotes, 'tips'), system)}</td>}
               <td className="px-3 py-1 text-right">{numberToMoney(getTotalOfItem(activeCreditNotes, 'total'), system)}</td>
               {onDeleteCreditNote && <td />}
             </tr>
