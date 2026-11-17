@@ -90,7 +90,7 @@ const handleClose = ()=>{
                                   <label htmlFor="total" className="input-label" >Precio</label>
                                   <input type="number" step="any" {...register("total", {
                                     required: "El precio es requerido",
-                                    validate: (value) => Number(value) > 0 || "El precio debe ser mayor a 0",
+                                    validate: (value) => Number(value) >= 0 || "El precio no puede ser negativo",
                                   })} className="input" />
                               </div>
                               <div className="w-full">
