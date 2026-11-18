@@ -74,11 +74,17 @@ export const sumarCantidad = (datos: any): number => {
   return totalSuma;
 }
 
+// Retención del 1% a gran contribuyente: la factura de exportación (type 11) no la lleva (igual que PayOrder::checkAndAddRetention en connect)
+export const hasLargeTaxpayerRetention = (records: any): boolean => {
+  if (records?.invoice_assigned?.type == 11) return false;
+  return records?.client?.taxpayer_type == 2 && sumarSubtotal(records?.invoiceproducts) >= 100;
+}
+
 export const sumarSalesTotal = (records: any): number => {
   const total = sumarTotales(records?.invoiceproducts);
   const subtotal = sumarSubtotal(records?.invoiceproducts);
 
-  if (records?.client?.taxpayer_type == 2 && subtotal >= 100) { // gran contribuyente
+  if (hasLargeTaxpayerRetention(records)) { // gran contribuyente
     const retention = subtotal * 0.01;
     return (total - retention)
   }
