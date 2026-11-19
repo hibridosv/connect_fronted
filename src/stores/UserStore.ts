@@ -17,6 +17,7 @@ interface UserStoreProps {
   updateUserPhone: (url: string, data: any) => Promise<boolean>;
   updateUserPassword: (url: string, data: any) => Promise<boolean>;
   updateUserRole: (data: any) => Promise<boolean>;
+  forcePasswordChange: (url: string, data: any) => Promise<boolean>;
 }
 
 const useUserStore = create<UserStoreProps>((set) => ({
@@ -105,6 +106,22 @@ const useUserStore = create<UserStoreProps>((set) => ({
   },
 
   updateUserPassword: async (url: string, data: any) => {
+    set({ saving: true });
+    try {
+      const response = await updateService(url, data);
+      useToastMessageStore.getState().setMessage(response);
+      set({ error: false });
+      return true;
+    } catch (error) {
+      useToastMessageStore.getState().setError(error);
+      set({ error: true });
+      return false;
+    } finally {
+      set({ saving: false });
+    }
+  },
+
+  forcePasswordChange: async (url: string, data: any) => {
     set({ saving: true });
     try {
       const response = await updateService(url, data);

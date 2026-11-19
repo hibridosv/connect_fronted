@@ -32,7 +32,7 @@ export default function Page() {
   const { register, handleSubmit, reset, watch, setValue } = useForm<NewUserFormValues>({
     defaultValues: { type: 'Gerencia', country_code: PHONE_COUNTRY_CODES[0].code },
   });
-  const { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, userType, saving } = useUsersLogic();
+  const { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, onForcePasswordChange, userType, saving } = useUsersLogic();
   const { modals, closeModal } = useModalStore();
   const { getElement } = useTempStorage();
   const [showAll, setShowAll] = useState(false);
@@ -156,7 +156,7 @@ export default function Page() {
           </div>
         </div>
         <div className="px-4">
-          <UsersTable showAll={showAll} />
+          <UsersTable showAll={showAll} onForcePasswordChange={onForcePasswordChange} />
         </div>
       </div>
 
