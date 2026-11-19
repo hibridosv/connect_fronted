@@ -14,10 +14,11 @@ import { FiSettings } from 'react-icons/fi';
 
 interface UsersTableProps {
   showAll: boolean;
+  onForcePasswordChange: (userId: string, mustChange: boolean) => Promise<boolean>;
 }
 
-export function UsersTable({ showAll }: UsersTableProps) {
-  const { users, loading, deleting } = useUserStore();
+export function UsersTable({ showAll, onForcePasswordChange }: UsersTableProps) {
+  const { users, loading, deleting, saving } = useUserStore();
   const { setElement } = useTempStorage();
   const { openModal } = useModalStore();
   const { role: currentRole, user: currentUser } = useConfigStore();
@@ -56,12 +57,17 @@ export function UsersTable({ showAll }: UsersTableProps) {
           {filteredUsers.map((user: any) => {
             const manageable = canManageUser(currentRole ?? '', currentUser?.id, user);
             const editable = canEditUser(currentRole ?? '', currentUser?.id, user);
+            // solo Root, y no sobre sí mismo ni sobre otro Root (lo mismo que valida connect)
+            const canForcePassword = currentRole === 'Root' && user.id !== currentUser?.id && user.roles?.[0]?.name !== 'Root';
             return (
             <tr
               key={user.id}
               className={`transition-colors duration-150 odd:bg-bg-subtle/40 hover:bg-bg-subtle divide-x divide-bg-subtle text-text-base ${user.status === 0 ? 'opacity-50 bg-danger/10' : ''}`}
             >
-              <td className="px-2 py-1 font-medium truncate">{user.name}</td>
+              <td className="px-2 py-1 font-medium truncate">
+                {user.name}
+                {user.must_change_password && <span className="ml-2 text-xs font-normal text-warning" title="Debe cambiar su contraseña al iniciar sesión">(cambio de password pendiente)</span>}
+              </td>
               <td className="px-2 py-1 truncate">{getDisplayEmail(user.email)}</td>
               <td className="px-2 py-1 uppercase text-center">{user.roles?.[0]?.name}</td>
               <td className="px-2 py-1 text-center">
@@ -71,6 +77,11 @@ export function UsersTable({ showAll }: UsersTableProps) {
                   <Dropdown label={<FiSettings size={16} />}>
                     <DropdownItem disabled={user.status === 0 || !editable} onClick={() => handleAction(user, 'editUser')}>Editar</DropdownItem>
                     <DropdownItem disabled={user.status === 0 || !editable} onClick={() => handleAction(user, 'editUserPassword')}>Cambiar password</DropdownItem>
+                    {canForcePassword && (
+                      <DropdownItem disabled={user.status === 0 || saving} onClick={() => onForcePasswordChange(user.id, !user.must_change_password)}>
+                        {user.must_change_password ? 'Quitar cambio obligatorio de password' : 'Obligar cambio de password'}
+                      </DropdownItem>
+                    )}
                     <DropdownItem disabled={user.status === 0 || !manageable} onClick={() => handleAction(user, 'editUserRole')}>Cambiar rol</DropdownItem>
                     <DropdownDivider />
                     <DropdownItem disabled={user.status === 0 || !manageable} onClick={() => handleAction(user, 'deleteUser')}>

@@ -6,7 +6,7 @@ import { useCallback, useEffect } from 'react';
 const USERS_URL = 'users?filterWhere[is_visible]==1&included=roles&sort=-created_at';
 
 export function useUsersLogic() {
-  const { loadUsers, createUser, deleteUser, updateUserName, updateUserPhone, updateUserPassword, updateUserRole, saving, deleting } = useUserStore();
+  const { loadUsers, createUser, deleteUser, updateUserName, updateUserPhone, updateUserPassword, updateUserRole, forcePasswordChange, saving, deleting } = useUserStore();
   const { closeModal } = useModalStore();
   const { tenant } = useConfigStore();
 
@@ -61,6 +61,13 @@ export function useUsersLogic() {
     return success;
   };
 
+  // solo Root: activa o quita la obligación de cambiar la contraseña al iniciar sesión
+  const onForcePasswordChange = async (userId: string, mustChange: boolean) => {
+    const success = await forcePasswordChange(`users/${userId}/force-password-change`, { must_change_password: mustChange });
+    if (success) reload();
+    return success;
+  };
+
   const onUpdateRole = async (userId: string, roleName: string) => {
     const success = await updateUserRole({ role: roleName, user: userId });
     if (success) {
@@ -70,5 +77,5 @@ export function useUsersLogic() {
     return success;
   };
 
-  return { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, userType, saving, deleting };
+  return { onCreateUser, onDeleteUser, onUpdateUser, onUpdatePassword, onUpdateRole, onForcePasswordChange, userType, saving, deleting };
 }

@@ -15,6 +15,7 @@ import Drawer from './Drawer'; // Restauramos la importación del Drawer
 import { SearchProductModal } from './modal/SearchProductModal';
 import { NotificationBell } from './notifications/NotificationBell';
 import { ProductDetailsGetModal } from './products/ProductDetailsGetModal';
+import { ForcePasswordChangeModal } from './settings/ForcePasswordChangeModal';
 
 export const Navbar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Estado para el Drawer
@@ -83,6 +84,7 @@ export const Navbar = () => {
 
         </div>
       </nav>
+      <ForcePasswordChangeModal />
       <Drawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
       <SearchProductModal isShow={modals.searchProductOnBar} onClose={()=>{ closeModal('searchProductOnBar')}} />
       <ProductDetailsGetModal isShow={modals.productDetailsOnNavbar} onClose={() => closeModal('productDetailsOnNavbar')} row='cod' /> 
