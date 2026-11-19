@@ -4,7 +4,7 @@ import { User } from 'next-auth';
 import { useEffect, useState } from 'react';
 
 
-export function useLoadUsersByFormLogic(isShow: boolean, showAllUsers: boolean = false) {
+export function useLoadUsersByFormLogic(isShow: boolean, showAllUsers: boolean = false, includeAllOption: boolean = false) {
     const { loadUsers, users } = useUserStore();
     const [ fieldUsers, setFieldUsers ] = useState<AdditionalField[]>()
 
@@ -23,6 +23,7 @@ export function useLoadUsersByFormLogic(isShow: boolean, showAllUsers: boolean =
                   label: user.name
               }
             })
+            if (includeAllOption) filterUser.unshift({ value: 'all', label: 'Todos los usuarios' })
             const fieldUsersActive: AdditionalField[] = [{
               name: 'userId',
               label: 'Seleccione un usuario',
@@ -33,7 +34,7 @@ export function useLoadUsersByFormLogic(isShow: boolean, showAllUsers: boolean =
             setFieldUsers(fieldUsersActive);
 
     }
-  }, [isShow, users]);
+  }, [isShow, users, includeAllOption]);
 
   return { fieldUsers } 
 
