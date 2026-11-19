@@ -94,7 +94,7 @@ export function PayedRestaurantModal(props: PayedRestaurantModalI) {
               <div className="flex justify-center text-7xl mb-6 text-danger font-bold">{numberToMoney(change, system)}
             </div>
           </> : 
-          <div className='flex justify-center text-xl font-semibold uppercase text-info'>
+          <div className='flex justify-center text-center text-xl font-semibold uppercase text-info'>
             { payMethod === 5 ? 
             <span>Crédito Otorgado Correctamente</span> : orderPayed?.invoice_assigned?.type == 8 ? <span>Nota de Envío Realizada</span> :
             <span>Pago Realizado con {nameOfPaymentType(payMethod)}</span> }

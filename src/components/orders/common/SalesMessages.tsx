@@ -6,7 +6,7 @@ import useConfigStore from "@/stores/configStore";
 import ordersStore from "@/stores/orders/ordersStore";
 import useTempStorage from "@/stores/useTempStorage";
 import { DteWarnings } from "./DteWarnings";
-import { sumarSubtotal, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
+import { hasLargeTaxpayerRetention, sumarTotalRetentionRenta, sumarTotalRetentionSujetoExcluido } from "../utils";
 
 
 
@@ -51,7 +51,7 @@ export function SalesMessages() {
           <Alert type="danger" text="Ingrese el monto en efectivo el resto se cobrara con tarjeta" isDismissible={false} className='my-1' />
         }
 
-        { (order?.client?.taxpayer_type == 2 && sumarSubtotal(order?.invoiceproducts) >= 100) && 
+        { hasLargeTaxpayerRetention(order) &&
           <Alert type="info" title="Atención" text="Factura con retención del 1%" isDismissible={false} className='my-1' />
            }
 
