@@ -167,7 +167,6 @@ export const menuItems: MenuItem[] = [
       { label: "Libros de compras", href: "/annexes/purchases", permission: "reports-attaches" },
       { label: "Descargas de Documentos", href: "/annexes/downloads", permission: "reports-attaches" },
       { label: "Lector de JSON", href: "/annexes/json-reader" },
-      { label: "Descargas del sistema", href: "/annexes/system-downloads" },
     ],
   },
   {
