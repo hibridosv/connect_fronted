@@ -1,6 +1,6 @@
 # Plan: subir Next.js de 14.2.32 a 15.5.29
 
-Estado: por revisar (2026-11-11).
+Estado: implementado en `develop` el 2026-11-20 (fases 1 y 2, commits `2182026`, `d8f80cb`, `1b74e33`); falta la fase 3 (pruebas a mano en testing, que es donde corre pulse en Vercel) y publicar. Al terminar, resúmelo en `docs/planes-terminados.md` y bórralo de aquí.
 
 ## Por qué
 
@@ -92,7 +92,16 @@ connect-app es Expo, no Next: no se anota en `cambios-pendientes-pulse.md`.
 
 Si el upgrade tarda y pulse corre con `next start` en un servidor propio, el riesgo crítico es `/_next/image`. Se puede reducir con `images: { unoptimized: true }` en `next.config.mjs`: las imágenes se sirven sin optimizar y sin pasar por ese endpoint, a cambio de pesar más. Antes de depender de esto, comprueba en el build que `/_next/image` ya no procese imágenes. Si pulse está en Vercel, la optimización corre en la infraestructura de Vercel y este punto pesa menos.
 
-## Por decidir
+## Decisiones (2026-11-20)
+
+- pulse corre en Vercel con Node 24.x: no hace falta la mitigación `unoptimized`.
+- `lint` se queda con `next lint`.
+- Las pruebas manuales se hacen solo en testing.
+- `http://connect.test` en `remotePatterns` no se toca.
+- Además de los 5 archivos de `params`, React 19 pidió tipar como `RefObject<T | null>` en `useModalBehavior.ts` y `annexes/downloads/page.tsx`; el build también agregó `target: ES2017` a `tsconfig.json`.
+- Tras subir, `npm audit --omit=dev` ya no marca el RCE de imágenes. Queda solo el `postcss` interno de `next`, que solo se corrige en Next 16.
+
+## Por decidir (resuelto arriba)
 
 - Si pulse corre con `next start` en un servidor propio (y en qué versión de Node) o en Vercel.
 - Si se aplica la mitigación de `unoptimized` antes del upgrade.

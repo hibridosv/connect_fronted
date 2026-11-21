@@ -32,6 +32,8 @@ Estado: por revisar.
 
 **Avance (2026-11-11):** `npm audit fix` sin `--force` (commit `3b1a5ed`) subió `next-auth` a 4.24.15 (cierra la crítica del normalizador de email), `axios` a 1.21.1 y parcheó `follow-redirects`, `form-data`, `ws`, `socket.io-parser`, `nanoid`, `uuid`, `preact` y `source-map-js`. Queda `next` 14.2.32, con su `postcss` interno y la cadena de desarrollo de `eslint-config-next`: se sube a 15.5.29 con `docs/pending/plan-next-15.md`.
 
+**Avance (2026-11-20):** `next` 15.5.29, `eslint-config-next` 15.5.29 y React 19 implementados en `develop` (commits `2182026`, `d8f80cb`, `1b74e33`), pendientes de probar en testing. Cierra la crítica de RCE en `/_next/image` y la cadena de `eslint-config-next`. Queda 1 alta (`postcss` interno de `next`, solo se corrige en Next 16).
+
 ## 2. MEDIA — XSS en notificaciones
 
 `src/components/notifications/NotificationBell.tsx:133`: `dangerouslySetInnerHTML={{ __html: selectedNotification.content }}`. El contenido lo escribe cualquier usuario del manager de billing (sin roles, por decisión) y se envía a todos los tenants o a los elegidos. Una cuenta del manager robada ejecuta JS en el pulse de todos los clientes y, con el 3, se lleva sus sesiones.
