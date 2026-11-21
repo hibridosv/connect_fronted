@@ -3,6 +3,7 @@ import { PublicCheckout } from "@/components/chatbot/public/PublicCheckout";
 import { PublicOptionsModal } from "@/components/chatbot/public/PublicOptionsModal";
 import { ChosenOption, PublicDish, usePublicOrderLogic } from "@/hooks/chatbot/usePublicOrderLogic";
 import { numberToMoney } from "@/lib/utils";
+import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 
@@ -19,8 +20,10 @@ function Countdown({ expiresAt }: { expiresAt: number }) {
 /**
  * Pantalla publica (sin sesion) donde el cliente del restaurante arma su pedido con el enlace que le mando el bot.
  */
-export default function Page({ params }: { params: { token: string } }) {
-  const { status, error, data, cart, itemsTotal, sending, orderNumber, expiresAt, addToCart, changeQuantity, confirm } = usePublicOrderLogic(params.token);
+export default function Page() {
+  const params = useParams();
+  const token = params?.token as string;
+  const { status, error, data, cart, itemsTotal, sending, orderNumber, expiresAt, addToCart, changeQuantity, confirm } = usePublicOrderLogic(token);
   const [category, setCategory] = useState<string | null>(null);
   const [selected, setSelected] = useState<PublicDish | null>(null);
   const [checkout, setCheckout] = useState(false);
