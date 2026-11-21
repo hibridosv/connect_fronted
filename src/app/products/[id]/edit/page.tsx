@@ -20,12 +20,13 @@ import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useStateStore from "@/stores/stateStorage";
 import useTempStorage from "@/stores/useTempStorage";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function Page() {
+  const params = useParams();
+  const id = params?.id as string;
   const { register, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm();
   const { activeConfig } = useConfigStore();
   const { subCategories, brands, quantityUnits, locations, loadingSelects } = useProductNewLogic();

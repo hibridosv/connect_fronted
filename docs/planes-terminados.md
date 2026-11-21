@@ -63,3 +63,33 @@ resumen). Comparaba `src/` con el patrón de diseño del `CLAUDE.md` y `THEME_GU
 ### Commits clave (pulse, `develop`)
 `11ab7e3` (E1–E3, A2, C1–C4), `5e5b926` (P1, P2, P4, P6), `b9b3aa2` (P5 y P7), `8602e2a` (colores de `.button-*`),
 `aaf170c` (E4 en la venta), `130d0fa` (`clickeable-table` en los botones de venta), `09a1e18` (E4 en el resto).
+
+
+---
+
+## Subida de Next.js 14.2 a 15.5 (2026-11-11 → 2026-11-20)
+
+Plan original: `docs/pending/plan-next-15.md` (borrado en el commit que agrega este resumen). Next 14 ya no recibía parches
+y tenía un RCE crítico en `/_next/image`. Se trabajó en `develop` y se probó a mano en testing.
+
+### Qué se hizo
+- **Dependencias:** `next` y `eslint-config-next` 15.5.29 (rama `backport`, sin saltar a 16), `react` y `react-dom` 19,
+  `@types/react` y `@types/react-dom` 19.
+- **`params`:** `products/[id]/edit`, `products/[id]/kardex`, `invoicing/search/[id]` y `pedido/[token]` pasaron a
+  `useParams()`; `pedido/[token]/layout.tsx` usa `await params` en `generateMetadata`.
+- **Tipos de React 19:** `RefObject<T | null>` en `useModalBehavior.ts` y `annexes/downloads/page.tsx`.
+- **Sin cambios:** `middleware.ts`, `next.config.mjs`, `next/image` y los `fetch` (ya llevaban `no-store`).
+
+### Decisiones vigentes
+- pulse corre en Vercel con Node 24.x; no se usó `images.unoptimized`.
+- `lint` sigue con `next lint` (avisa que se retira en 16).
+- `http://connect.test` sigue en `images.remotePatterns`.
+
+### Cosas que cuidar
+- Queda 1 alta en `npm audit`: el `postcss` interno de `next`, que solo se corrige en Next 16.
+- Next 15 agregó `target: ES2017` a `tsconfig.json` y la referencia a `.next/types/routes.d.ts` en `next-env.d.ts`: no los
+  quites.
+- En Next 16 `middleware` pasa a `proxy`, `next lint` desaparece y Turbopack es el default.
+
+### Commits clave (pulse, `develop`)
+`2182026` (dependencias), `d8f80cb` (`params`), `1b74e33` (tipos de `ref` y `tsconfig`).

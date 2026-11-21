@@ -6,7 +6,7 @@ Documento de referencia técnica, convenciones y patrones del proyecto.
 
 ## Tecnologías Principales
 
-- **Framework**: Next.js (v14.2) con App Router
+- **Framework**: Next.js (v15.5) con App Router
 - **Lenguaje**: TypeScript 5
 - **Estilos**: Tailwind CSS 3.4 + Variables CSS personalizadas
 - **Estado Global**: Zustand 4.5 (con middleware `persist` donde aplique)

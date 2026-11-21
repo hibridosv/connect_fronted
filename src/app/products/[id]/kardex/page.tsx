@@ -11,11 +11,12 @@ import { urlConstructor } from "@/lib/urlConstructor";
 import useModalStore from "@/stores/modalStorage";
 import useProductStore from "@/stores/products/productStore";
 import useTempStorage from "@/stores/useTempStorage";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function Page() {
+  const params = useParams();
+  const id = params?.id as string;
   const { kardex, loadKardex, loading, product } = useProductStore();
   useKardexLogic(id);
   const { modals, closeModal } = useModalStore();

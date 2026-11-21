@@ -23,7 +23,7 @@ function MonthDropdown({ label, disabled, onSelect, buttonRef }: {
   label: string;
   disabled: boolean;
   onSelect: (value: number) => void;
-  buttonRef: React.RefObject<HTMLButtonElement>;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
 }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState({ top: 0, left: 0 });

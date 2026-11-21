@@ -11,7 +11,7 @@ let previousOverflow = '';
  * - Mueve el foco a `focusRef` al abrir (si un campo con autoFocus ya lo tiene, lo respeta)
  *   y lo devuelve al elemento que lo tenía al cerrar.
  */
-export function useModalBehavior(show: boolean, onClose: () => void, closeOnEscape: boolean, focusRef: RefObject<HTMLElement>) {
+export function useModalBehavior(show: boolean, onClose: () => void, closeOnEscape: boolean, focusRef: RefObject<HTMLElement | null>) {
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
   const closeOnEscapeRef = useRef(closeOnEscape);

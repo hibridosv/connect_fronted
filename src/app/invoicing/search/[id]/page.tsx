@@ -8,12 +8,13 @@ import { InvoiceDetailsButtons } from "@/components/invoicing/InvoiceDetailsButt
 import { ViewTitle } from "@/components/ViewTitle";
 import { useInvoiceDetailsLogic } from "@/hooks/invoicing/useInvoiceDetailsLogic";
 import useModalStore from "@/stores/modalStorage";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 
 
-export default function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function Page() {
+  const params = useParams();
+  const id = params?.id as string;
   const { order, loadingOrder, deletingCreditNote, deleteCreditNote, deletingReturn, deleteReturn } = useInvoiceDetailsLogic(id, true);
   const isLoading = loadingOrder;
   const isDeletingCreditNote = deletingCreditNote;

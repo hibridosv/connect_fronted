@@ -9,12 +9,13 @@ const fallback: Metadata = {
  * Vista previa del enlace (Open Graph) cuando el bot lo manda como texto: nombre y logo del negocio. Solo lee
  * los datos publicos del enlace; si vencio o no responde a tiempo queda la vista previa generica.
  */
-export async function generateMetadata({ params }: { params: { token: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
   try {
-    const route = await fetch(`${process.env.NEXT_PUBLIC_URL_API}order-links/${params.token}`, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
+    const { token } = await params;
+    const route = await fetch(`${process.env.NEXT_PUBLIC_URL_API}order-links/${token}`, { cache: 'no-store', signal: AbortSignal.timeout(3000) });
     if (!route.ok) return fallback;
     const url = (await route.json())?.data?.url;
-    const response = await fetch(`${url}/api/v2/public/orders/${params.token}`, { cache: 'no-store', headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(3000) });
+    const response = await fetch(`${url}/api/v2/public/orders/${token}`, { cache: 'no-store', headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(3000) });
     if (!response.ok) return fallback;
     const business = (await response.json())?.data?.business;
     const title = business?.name ? `Haz tu pedido en ${business.name}` : fallback.title as string;
