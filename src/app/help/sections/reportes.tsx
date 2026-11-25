@@ -1,4 +1,4 @@
-import { LuChartBar, LuPackage, LuPackageMinus, LuPackagePlus, LuQrCode, LuReceipt } from 'react-icons/lu';
+import { LuChartBar, LuPackageMinus, LuPackagePlus, LuQrCode, LuReceipt } from 'react-icons/lu';
 import { HelpSection } from './types';
 
 export const reportes: HelpSection = {
@@ -75,14 +75,6 @@ export const reportes: HelpSection = {
       route: '/reports/damaged',
       menu: 'Reportes › Productos Averiados',
       description: 'Salidas registradas en Descontar Productos: fecha, producto, costo, cantidad, razón y empleado. Sirve para medir pérdidas.',
-    },
-    {
-      id: 'reportes-inventario',
-      title: 'Inventario a una fecha',
-      icon: <LuPackage size={18} />,
-      route: '/reports/inventory',
-      menu: 'Reportes › Inventario a una fecha',
-      description: 'Cantidad, costo y valor de cada producto al cierre de la fecha elegida, según el kardex. Incluye los productos que hoy están eliminados y los que quedaron en cero. Requiere el permiso de existencias.',
     },
   ],
 };

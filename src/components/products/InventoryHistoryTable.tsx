@@ -9,12 +9,12 @@ import useConfigStore from "@/stores/configStore";
 import { useMemo, useState } from "react";
 
 
-export interface ReportInventoryTableI {
+export interface InventoryHistoryTableI {
   records: InventoryHistoryRecord[] | null;
   isLoading?: boolean;
 }
 
-export function ReportInventoryTable(props: ReportInventoryTableI) {
+export function InventoryHistoryTable(props: InventoryHistoryTableI) {
   const { records, isLoading } = props;
   const { system } = useConfigStore();
   const [search, setSearch] = useState('');

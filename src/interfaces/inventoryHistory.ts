@@ -1,4 +1,4 @@
-// Fila de GET reports/inventory: saldo del kardex de un producto al cierre de la fecha consultada
+// Fila de GET inventory/history: saldo del kardex de un producto al cierre de la fecha consultada
 export interface InventoryHistoryRecord {
   id: string;
   cod: string;

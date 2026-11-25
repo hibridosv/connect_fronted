@@ -1,20 +1,20 @@
 'use client';
 import { DateRange, DateRangeValues } from "@/components/button/DateRange";
 import { LinksList } from "@/components/button/LinkList";
-import { ReportInventoryTable } from "@/components/reports/ReportInventoryTable";
+import { InventoryHistoryTable } from "@/components/products/InventoryHistoryTable";
 import { ViewTitle } from "@/components/ViewTitle";
 import { useReportsLogic } from "@/hooks/reports/useReportsLogic";
 
 
 export default function Page() {
   // loadAtStart en false: el usuario elige la fecha y aplica
-  const { history, handleGet, loading, links } = useReportsLogic('reports/inventory', 'download.excel.reports.inventory', false);
+  const { history, handleGet, loading, links } = useReportsLogic('inventory/history', 'download.excel.inventory.history', false);
   const isLoading = loading.history ?? false;
 
   const handleFormSubmit = async (values: DateRangeValues) => {
     // el inventario se consulta al cierre del día: solo se envía la fecha, sin hora
     const initialDate = String(values.initialDate ?? '').slice(0, 10);
-    await handleGet({ option: '1', initialDate }, 'reports/inventory', 'download.excel.reports.inventory');
+    await handleGet({ option: '1', initialDate }, 'inventory/history', 'download.excel.inventory.history');
   }
 
   return (
@@ -22,7 +22,7 @@ export default function Page() {
       <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Inventario a una fecha" />
         <div className="p-4">
-          <ReportInventoryTable records={history} isLoading={isLoading} />
+          <InventoryHistoryTable records={history} isLoading={isLoading} />
         </div>
       </div>
       <div className="md:col-span-3">
