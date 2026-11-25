@@ -26,10 +26,17 @@ export function ReportInventoryTable(props: ReportInventoryTableI) {
       `${record.cod ?? ''} ${record.description ?? ''}`.toLowerCase().includes(term));
   }, [records, search]);
 
-  const totals = useMemo(() => filtered.reduce((acc, record) => ({
-    quantity: acc.quantity + Number(record.qty_balance ?? 0),
-    total: acc.total + Number(record.total_balance ?? 0),
-  }), { quantity: 0, total: 0 }), [filtered]);
+  // los totales se redondean a 2 decimales para no mostrar residuos de la suma de decimales
+  const totals = useMemo(() => {
+    const sum = filtered.reduce((acc, record) => ({
+      quantity: acc.quantity + Number(record.qty_balance ?? 0),
+      total: acc.total + Number(record.total_balance ?? 0),
+    }), { quantity: 0, total: 0 });
+    return {
+      quantity: Math.round(sum.quantity * 100) / 100,
+      total: Math.round(sum.total * 100) / 100,
+    };
+  }, [filtered]);
 
   if (isLoading) return <SkeletonTable rows={5} columns={5} />
 
