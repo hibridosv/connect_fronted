@@ -109,7 +109,7 @@ src/
 | `chatbot` | Conversaciones y pedidos del chatbot de WhatsApp. |
 | `settings` | Configuración general, sucursales, usuarios, permisos, productos, pagos y chatbots. |
 | `payments` | Mensualidad del negocio. |
-| `pedido/[token]` | Pantalla pública de pedido para los clientes del chatbot. No requiere sesión. |
+| `public/orders/[token]` | Pantalla pública de pedido para los clientes del chatbot. No requiere sesión. |
 | `redirects` | Avisos según el estado del negocio: por vencer, vencido, suspendido y mantenimiento. |
 
 ## Temas
