@@ -27,6 +27,14 @@ export function SalesMessages() {
   let isSuspended = tenant?.status == 2 ? true : false;
   const isCreditActive = payMethod == 5 && !order?.client_id;
 
+  // Solo productos: líneas vendidas con precio neto (con descuento, sin IVA) menor al costo
+  const belowCostProducts = isRestaurant(tenant?.system) ? [] : (order?.invoiceproducts ?? []).filter((p: any) => {
+    const cost = Number(p?.unit_cost ?? 0);
+    const quantity = Number(p?.quantity ?? 0);
+    if (cost <= 0 || quantity <= 0) return false;
+    return Number(p?.subtotal ?? 0) / quantity < cost;
+  });
+
   const retentionSujetoExcluido = sumarTotalRetentionSujetoExcluido(order);
   const retentionRenta = sumarTotalRetentionRenta(order);
 
@@ -63,7 +71,11 @@ export function SalesMessages() {
           <Alert type="info" title="Atención" text="Cliente Exento de impuestos" isDismissible={false} className='my-1' />
         }
 
-        { !cashdrawer && 
+        { belowCostProducts.length > 0 &&
+          <Alert type="warning" title="Atención" text={`Se está vendiendo por debajo del precio de compra: ${belowCostProducts.map((p: any) => p.product).join(', ')}`} isDismissible={false} className='my-1' />
+        }
+
+        { !cashdrawer &&
         <Alert type="danger" title="Error" text="Debe seleccionar una caja para poder cobrar" isDismissible={false} className='my-1' /> 
         }
 

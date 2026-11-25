@@ -1,10 +1,10 @@
 'use client';
-import { ChosenOption, PublicDish } from "@/hooks/chatbot/usePublicOrderLogic";
+import { ChosenOption, PublicDish } from "@/hooks/public/orders/usePublicOrderLogic";
 import { numberToMoney } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-export interface PublicOptionsModalI {
+export interface PublicOrderOptionsModalI {
   dish: PublicDish | null;
   money: any;
   onClose: () => void;
@@ -12,7 +12,7 @@ export interface PublicOptionsModalI {
 }
 
 /** Como en la pantalla de cobro: se elige una variante de cada grupo de opciones del platillo */
-export function PublicOptionsModal({ dish, money, onClose, onAdd }: PublicOptionsModalI) {
+export function PublicOrderOptionsModal({ dish, money, onClose, onAdd }: PublicOrderOptionsModalI) {
   const [chosen, setChosen] = useState<Record<string, string>>({});
   const [quantity, setQuantity] = useState(1);
 

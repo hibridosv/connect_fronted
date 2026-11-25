@@ -43,6 +43,7 @@ export const menuItems: MenuItem[] = [
       { label: "Bajas Existencias", href: "/products/stock", permission: "inventory-stock" },
       { label: "Proximos Vencimientos", href: "/products/expiring", permission: "inventory-expiration" },
       { label: "Kardex", href: "/products/search?page=kardex", permission: "inventory-karex" },
+      { label: "Inventario a una fecha", href: "/inventory/history", permission: "inventory-stock" },
     ],
   },
   {

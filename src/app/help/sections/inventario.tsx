@@ -198,5 +198,13 @@ export const inventario: HelpSection = {
         },
       ],
     },
+    {
+      id: 'inventario-historial',
+      title: 'Inventario a una fecha',
+      icon: <LuPackage size={18} />,
+      route: '/inventory/history',
+      menu: 'Inventario › Inventario a una fecha',
+      description: 'Cantidad, costo y valor de cada producto al cierre de la fecha elegida, según el kardex. Incluye los productos que hoy están eliminados y los que quedaron en cero. Requiere el permiso de existencias.',
+    },
   ],
 };
