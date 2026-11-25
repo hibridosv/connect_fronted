@@ -29,9 +29,10 @@ type DateRangeProps = {
   onSubmit: (values: DateRangeValues) => void;
   loading?: boolean;
   additionalFields?: AdditionalField[];
+  singleDate?: boolean; // solo una fecha: oculta la opción de rango
 };
 
-export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false, additionalFields }) => {
+export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false, additionalFields, singleDate = false }) => {
   const [option, setOption] = useState('1');
   const [initialDate, setInitialDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
@@ -79,7 +80,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
 
   return (<div>
     <form onSubmit={handleSubmit}>
-    <div className="flex justify-center">
+    {!singleDate && <div className="flex justify-center">
         <div className="mb-[0.125rem] mr-4 inline-block min-h-[1.5rem] pl-[1.5rem]" >
           <input
             className="input-radio"
@@ -100,7 +101,7 @@ export const DateRange: React.FC<DateRangeProps> = ({ onSubmit, loading = false,
           />
           <label className="mt-px inline-block pl-[0.15rem] hover:cursor-pointer" htmlFor="inlineRadio1" >Rango de Fechas </label>
       </div>
-    </div>
+    </div>}
 
 
 

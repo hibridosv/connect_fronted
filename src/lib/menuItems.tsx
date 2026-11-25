@@ -128,13 +128,14 @@ export const menuItems: MenuItem[] = [
   },
   {
     label: "Reportes", icon: <MdReport size={15} />,
-    permissions: ["reports-sales", "reports-bills", "reports-products"],
+    permissions: ["reports-sales", "reports-bills", "reports-products", "inventory-stock"],
     children: [
       { label: "Detalle de Ventas", href: "/reports/sales", permission: "reports-sales" },
       { label: "Detalle de Gastos", href: "/reports/expenses", permission: "reports-bills" },
       { label: "Productos Ingresados", href: "/reports/entered", permission: "reports-products" },
       { label: "Productos por lote", href: "/reports/by-batch", permission: "reports-products" },
       { label: "Productos Averiados", href: "/reports/damaged", permission: "reports-products" },
+      { label: "Inventario a una fecha", href: "/reports/inventory", permission: "inventory-stock" },
     ],
   },
   {
