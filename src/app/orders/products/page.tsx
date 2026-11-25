@@ -46,14 +46,14 @@ export default function Page() {
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">
-            <div className="w-full">
+            <div className="w-full md:pb-16">
               <ShowOrders />
               <ShowTotal order={order} />
-              {/* Los avisos van en el flujo, debajo del total; los botones quedan fijos abajo sin tapar nada */}
+              {/* Los avisos van en el flujo, debajo del total; en desktop los botones se fijan al pie de la columna derecha (40%) y centrados */}
               <div className="px-1 pt-2">
                 <SalesMessages />
               </div>
-              <div className="md:sticky md:bottom-2 z-10 mt-2 px-1 py-1">
+              <div className="mt-2 px-1 md:fixed md:bottom-2 md:right-0 md:z-10 md:mt-0 md:flex md:w-[40%] md:justify-center">
                 <OrderButtons order={order} />
               </div>
             </div>
