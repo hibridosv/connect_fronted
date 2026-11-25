@@ -1,6 +1,7 @@
 'use client';
 
 import { NothingHere } from "@/components/NothingHere";
+import { SearchInput } from "@/components/Search";
 import SkeletonTable from "@/components/skeleton/skeleton-table";
 import { InventoryHistoryRecord } from "@/interfaces/inventoryHistory";
 import { numberToMoney } from "@/lib/utils";
@@ -56,13 +57,9 @@ export function ReportInventoryTable(props: ReportInventoryTableI) {
 
   return (
     <div className="m-4">
-      <input
-        className="input mb-3"
-        type="search"
-        placeholder="Buscar por código o producto"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="mb-3">
+        <SearchInput handleSearchTerm={setSearch} placeholder="Buscar por código o producto" />
+      </div>
       <div className="relative overflow-x-auto bg-bg-content rounded-lg shadow-sm border border-bg-subtle">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-text-base uppercase bg-bg-subtle/60 border-b-2 border-bg-subtle">
