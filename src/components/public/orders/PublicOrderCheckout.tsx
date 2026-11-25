@@ -1,11 +1,11 @@
 'use client';
 import { Badge } from "@/components/Badge";
-import { CartItem, CheckoutData } from "@/hooks/chatbot/usePublicOrderLogic";
+import { CartItem, CheckoutData } from "@/hooks/public/orders/usePublicOrderLogic";
 import { numberToMoney } from "@/lib/utils";
 import { useState } from "react";
 import { IoArrowBack, IoTrashOutline } from "react-icons/io5";
 
-export interface PublicCheckoutI {
+export interface PublicOrderCheckoutI {
   cart: CartItem[];
   itemsTotal: number;
   shippingAmount: number;
@@ -22,7 +22,7 @@ export interface PublicCheckoutI {
   onConfirm: (data: CheckoutData) => void;
 }
 
-export function PublicCheckout(props: PublicCheckoutI) {
+export function PublicOrderCheckout(props: PublicOrderCheckoutI) {
   const { cart, itemsTotal, shippingAmount, customerName, customerAddress, customerReference, images, money, sending, error, acceptingOrders, onBack, onChangeQuantity, onConfirm } = props;
   // a domicilio por defecto, con la ultima direccion que dio el cliente
   const [form, setForm] = useState<CheckoutData>({
