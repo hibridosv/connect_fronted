@@ -6,6 +6,7 @@ import { ChangePriceProductModal } from "@/components/orders/common/ChangePriceP
 import { ChangeRowProductModal } from "@/components/orders/common/ChangeRowProductModal";
 import { DiscountsModal } from "@/components/orders/common/DiscountsModal";
 import { InvoiceTypesModal } from "@/components/orders/common/InvoiceTypesModal";
+import { SalesMessages } from "@/components/orders/common/SalesMessages";
 import { OrderProductsSearchPrincipal } from "@/components/orders/common/OrderProductsSearchPrincipal";
 import { ChangeLotModal } from "@/components/orders/products/changeLotModal";
 import { ChangeQuantityModal } from "@/components/orders/products/ChangeQuantityModal";
@@ -45,10 +46,16 @@ export default function Page() {
             </div>
           </div>
           <div className="md:col-span-4 flex justify-center ">
-            <ShowOrders />
-            <ShowTotal order={order} />
-            <div className="absolute bottom-2 ">
+            <div className="w-full">
+              <ShowOrders />
+              <ShowTotal order={order} />
+              {/* Los avisos van en el flujo, debajo del total; los botones quedan fijos abajo sin tapar nada */}
+              <div className="px-1 pt-2">
+                <SalesMessages />
+              </div>
+              <div className="md:sticky md:bottom-2 z-10 mt-2 px-1 py-1">
                 <OrderButtons order={order} />
+              </div>
             </div>
           </div>
         <ChangeLotModal isShow={modals.changeLot} onClose={()=>{ closeModal('changeLot')}} />

@@ -13,7 +13,6 @@ import { AiFillSave } from 'react-icons/ai';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { GiCancel } from 'react-icons/gi';
 import { IoMdOptions } from 'react-icons/io';
-import { SalesMessages } from '../common/SalesMessages';
 import { Buttons } from './Buttons';
 
 export interface OrderButtonsI {
@@ -42,9 +41,6 @@ export function OrderButtons(props: OrderButtonsI) {
   let payDisabled = sending || !cashdrawer || (!invoice?.client_id && (invoice?.invoice_assigned?.type == 3 || invoice?.invoice_assigned?.type == 4)) || fieldsRequired && fieldsRequired.length > 0 || isSuspended;
 
   return (<div>
-
-        <SalesMessages />
-        
         <div className='grid grid-cols-2 gap-1.5 sm:flex sm:gap-0'>
           <Popper label={ <div className='button-grey rounded-lg sm:rounded-l-lg sm:rounded-r-none text-xs sm:text-sm clickeable-table w-full h-full py-2.5 sm:py-2'><IoMdOptions className='mr-1' /> Opciones</div>} >
             <Buttons order={order} />
