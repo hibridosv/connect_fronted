@@ -1,0 +1,2588 @@
+{
+  "version": 1,
+  "sections": [
+    {
+      "id": "inicio",
+      "label": "Primeros pasos",
+      "icon": "LuCompass",
+      "color": "text-primary",
+      "description": "Lo básico para empezar a trabajar en Pulse: cómo entrar, moverse por el sistema y entender los permisos y códigos de autorización.",
+      "subsections": [
+        {
+          "id": "inicio-login",
+          "title": "Iniciar y cerrar sesión",
+          "icon": "LuLogIn",
+          "description": "Cada persona entra con su propio usuario. Lo que puede ver y hacer depende del rol y los permisos que le asignó el administrador.",
+          "guides": [
+            {
+              "title": "Entrar al sistema",
+              "steps": [
+                "Abra la dirección de Pulse en su navegador.",
+                "En \"Usuario\" escriba su nombre de usuario o su email.",
+                "En \"Contraseña\" escriba su contraseña y presione Enter o el botón para iniciar sesión.",
+                "Espere el mensaje \"Preparando tu espacio de trabajo...\". El sistema lo lleva a la pantalla de ventas o al panel principal, según su rol."
+              ]
+            },
+            {
+              "title": "Entrar con un usuario recordado",
+              "steps": [
+                "En la pantalla de inicio de sesión marque \"Recordar usuario\" al entrar la primera vez.",
+                "La próxima vez aparecerán sus cuentas guardadas: elija la suya y escriba solo la contraseña.",
+                "Si no es usted, haga clic en \"¿No eres tú? Cambiar de cuenta\"; con \"Volver a mis cuentas\" regresa a la lista."
+              ]
+            },
+            {
+              "title": "Cerrar sesión",
+              "steps": [
+                "Haga clic en el icono de menú (tres líneas) en la esquina superior izquierda.",
+                "Al final del menú lateral haga clic en \"Cerrar Sesión\"."
+              ]
+            }
+          ],
+          "tips": [
+            "Si comparte la computadora con otros cajeros, cierre sesión al terminar su turno: todas las ventas quedan registradas a nombre del usuario que inició sesión.",
+            "Si olvidó su contraseña, pida al administrador que la cambie desde Configuraciones › Usuarios.",
+            "En la contraseña use el icono del ojo para verla y comprobar que la escribió bien."
+          ],
+          "warnings": [
+            "Si el administrador marcó su usuario para cambiar la contraseña, al entrar aparece \"Cambia tu contraseña\": no se puede cerrar ni usar el sistema hasta guardar una nueva contraseña (escríbala dos veces)."
+          ]
+        },
+        {
+          "id": "inicio-navegacion",
+          "title": "Moverse por el sistema",
+          "icon": "LuMenu",
+          "description": "La barra superior siempre está visible y desde el menú lateral se llega a todos los módulos.",
+          "features": [
+            "Icono de menú (izquierda): abre el menú lateral con todos los módulos a los que tiene acceso. Al final del menú puede cambiar el tema (claro u oscuro) y cerrar sesión.",
+            "Centro de la barra: su nombre de usuario y el nombre del negocio o sucursal en la que está trabajando.",
+            "Campana: notificaciones del sistema (avisos, mantenimientos programados, novedades). Puede marcarlas todas como leídas.",
+            "Lupa (solo negocios de productos): busca rápidamente un producto por código o descripción y muestra su precio, existencia y detalles sin salir de la pantalla en la que está.",
+            "Casa: lo regresa directamente a la pantalla de ventas.",
+            "Punto blanco parpadeante: aparece cuando hay una factura del servicio pendiente de pago; al hacer clic lo lleva a Configuraciones › Pagos.",
+            "Flecha circular: aparece si no se pudo cargar la configuración del negocio; haga clic para recargar."
+          ],
+          "tips": [
+            "Si una opción del menú no le aparece, es porque su usuario no tiene el permiso o porque la función no está activada para su negocio.",
+            "Las tablas largas tienen paginación al pie; los botones \"DESCARGAS\" generan el mismo reporte en PDF o Excel."
+          ]
+        },
+        {
+          "id": "inicio-permisos",
+          "title": "Permisos y funciones activadas",
+          "icon": "LuShieldCheck",
+          "description": "Pulse se adapta a cada negocio. Hay dos cosas que deciden qué ve cada usuario: los permisos de su rol y las funciones activadas en la configuración del negocio.",
+          "features": [
+            "Permisos: se asignan por rol (Gerencia, Administración, Cajero, Contador) en Configuraciones › Permisos de Usuario. Controlan qué módulos y acciones puede usar cada persona.",
+            "Funciones activadas: se encienden o apagan en Configuraciones › Principal. Por ejemplo, descuentos, venta especial, cotizaciones, vendedor, repartidor, multiprecio, lotes o vencimientos.",
+            "Tipo de sistema: un negocio de productos vende desde una búsqueda de productos; un restaurante vende desde un menú con mesas, delivery y pantalla de cocina."
+          ],
+          "tips": [
+            "Esta guía describe todas las funciones. Si algo de lo que lee aquí no le aparece, consulte con el administrador si está activado para su negocio o su usuario."
+          ]
+        },
+        {
+          "id": "inicio-codigos",
+          "title": "Códigos de autorización",
+          "icon": "LuKeyRound",
+          "description": "Algunas acciones delicadas (cambiar precios, aplicar descuentos, eliminar productos de una orden, otras ventas, cambiar el tipo de precio) pueden requerir un código que da el administrador.",
+          "guides": [
+            {
+              "title": "Usar una acción que pide código (cajero)",
+              "steps": [
+                "Haga clic en la acción que desea realizar (por ejemplo, el precio de un producto en la orden).",
+                "Si aparece la ventana \"Autorización requerida\", el sistema ya envió la solicitud al administrador.",
+                "Pida el código al administrador. Tiene 15 minutos para ingresarlo.",
+                "Escriba el código en la casilla y haga clic en \"Acceder\". La acción se abre normalmente."
+              ]
+            },
+            {
+              "title": "Entregar un código (administrador)",
+              "steps": [
+                "Vaya a Panel Principal. Si hay solicitudes pendientes, el botón \"Código\" muestra un número rojo.",
+                "Haga clic en \"Código\" para ver los códigos activos.",
+                "Copie el código con el botón de copiar y compártalo con el cajero.",
+                "Si quiere que el cajero pueda usarlo varias veces, haga clic en \"+15 min\": el código se vuelve reutilizable hasta que venza."
+              ]
+            }
+          ],
+          "tips": [
+            "Cada código es de un solo uso y vence a los 15 minutos, salvo que el administrador lo extienda.",
+            "El candado junto al tipo de precio indica si cambiarlo requiere código (rojo) o no (verde)."
+          ]
+        },
+        {
+          "id": "inicio-flujo",
+          "title": "Flujo de trabajo diario recomendado",
+          "icon": "LuRoute",
+          "description": "El orden típico de un día de trabajo en Pulse, de la apertura al cierre.",
+          "guides": [
+            {
+              "title": "Un día normal de trabajo",
+              "steps": [
+                "Abra su caja en Control de cajas e ingrese el efectivo con el que inicia.",
+                "Venda desde la pantalla de ventas (icono de casa). Sin caja abierta no se puede cobrar.",
+                "Registre los gastos pagados con dinero de la caja en Efectivo › Registro de Gastos.",
+                "Si retira efectivo para depositarlo, regístrelo en Efectivo › Remesas de Efectivo.",
+                "Reciba los abonos de clientes con crédito en Cuentas › Cuentas por cobrar.",
+                "Al terminar el turno, cuente el efectivo y cierre la caja en Control de cajas ingresando el monto contado.",
+                "Revise el corte en Historiales › Cortes de Caja para verificar si hubo diferencia."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inicio-avisos",
+          "title": "Avisos de la cuenta",
+          "icon": "LuBell",
+          "description": "En algunos casos, al entrar el sistema muestra una pantalla de aviso antes de continuar.",
+          "features": [
+            "Novedades del sistema: muestra las mejoras nuevas después de una actualización. Haga clic en \"Continuar al sistema\".",
+            "Facturación pendiente de pago: hay pagos pendientes del servicio. El sistema sigue funcionando, pero algunas funciones (emisión de documentos, historiales y reportes) pueden quedar limitadas. Puede \"Realizar Pago\" o \"Continuar\".",
+            "Suspensión inminente: el sistema está por suspenderse por facturas vencidas. Muestra las facturas pendientes y permite pagar o continuar.",
+            "Servicio suspendido: no se puede usar el sistema hasta pagar. Haga clic en \"Realizar Pago\"; al pagar, la cuenta se restablece de inmediato.",
+            "Sistema en mantenimiento: se están haciendo mejoras. Espere unos minutos y haga clic en \"Reintentar\"."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "panel",
+      "label": "Panel y cajas",
+      "icon": "LuLayoutDashboard",
+      "color": "text-info",
+      "description": "El resumen del negocio en tiempo real y la apertura y cierre de las cajas de cobro.",
+      "subsections": [
+        {
+          "id": "panel-dashboard",
+          "title": "Panel Principal",
+          "icon": "LuLayoutDashboard",
+          "route": "/dashboard",
+          "menu": "Panel Principal",
+          "description": "Vista general del negocio hecha de widgets (indicadores, gráficas, listas y recomendaciones) para el período que elija. Cada usuario puede escoger qué widgets ver y en qué orden.",
+          "features": [
+            "Selector de período: Hoy, Ayer, 7 días, Este mes, Mes anterior o Personalizado (con fechas de inicio y fin). Todas las cifras se comparan con el período anterior equivalente, que se indica junto al selector.",
+            "Botón de actualizar (flechas circulares): trae los datos más recientes. El panel no se refresca solo; el punto verde junto al título indica que el período incluye hoy y conviene actualizar.",
+            "Indicadores (KPI): ventas, órdenes y demás cifras principales del período, con su comparación.",
+            "Gráficas y distribuciones: ventas por día u hora, métodos de pago y otros desgloses.",
+            "Listas: últimas órdenes, productos más vendidos y cajas abiertas con sus ventas, gastos y saldo.",
+            "Proyección y resumen del período.",
+            "Recomendaciones: avisos ordenados por urgencia (Urgente, Atención, Sugerencia) con un botón \"Revisar\" que lleva a la pantalla indicada. Márquelas \"Hecho\" o descártelas con la X.",
+            "Análisis con IA: resumen en texto y puntos destacados del negocio. Se genera cada día a las 6:15 con las ventas del día anterior; también puede pedirlo con \"Actualizar análisis\" (hay un número limitado de análisis por día).",
+            "Botón \"Personalizar\": elija qué widgets ver y su orden.",
+            "Botón \"Código\" (solo con permiso): muestra los códigos de autorización solicitados por los cajeros, con un contador de pendientes."
+          ],
+          "guides": [
+            {
+              "title": "Revisar cómo va el día",
+              "steps": [
+                "Abra Panel Principal desde el menú.",
+                "Deje seleccionado \"Hoy\" y haga clic en el botón de actualizar para traer lo último.",
+                "Revise los indicadores superiores y compárelos con el período anterior.",
+                "Baje a las gráficas para ver en qué horas se vende más.",
+                "En las cajas abiertas verifique cuánto efectivo debería haber en cada una."
+              ]
+            },
+            {
+              "title": "Cambiar el período",
+              "steps": [
+                "En la barra superior haga clic en Ayer, 7 días, Este mes o Mes anterior.",
+                "Para otro rango elija \"Personalizado\", escriba la fecha de inicio y la de fin y haga clic en \"Aplicar\"."
+              ]
+            },
+            {
+              "title": "Personalizar los widgets",
+              "steps": [
+                "Haga clic en \"Personalizar\" (arriba a la derecha).",
+                "Use las flechas para subir o bajar cada widget y el interruptor para mostrarlo u ocultarlo.",
+                "Haga clic en \"Guardar\". Si quiere volver al diseño original use \"Restablecer\"."
+              ]
+            }
+          ],
+          "tips": [
+            "Los cambios de \"Personalizar\" son solo para su usuario; los demás ven su propio diseño.",
+            "Si no ve ningún widget, el panel avisa \"No tienes widgets visibles\": use Personalizar para activarlos.",
+            "El análisis de IA y las recomendaciones son una ayuda: verifique las cifras en los reportes antes de decidir."
+          ]
+        },
+        {
+          "id": "panel-cajas",
+          "title": "Control de cajas",
+          "icon": "LuMonitor",
+          "route": "/cashdrawers",
+          "menu": "Control de cajas",
+          "description": "Apertura y cierre de las cajas de cobro y consulta de los cortes. Para cobrar ventas, registrar gastos o recibir abonos es obligatorio tener una caja abierta.",
+          "features": [
+            "Cajas disponibles (panel izquierdo): cada tarjeta muestra el nombre de la caja, su estado y el usuario que la tiene. \"Disponible\" (verde) se puede abrir, \"Aperturada\" (azul, con su nombre) es la que usted tiene abierta y \"Ocupada\" (gris, con candado) la tiene abierta otro usuario.",
+            "Mientras usted tiene una caja abierta, las demás se atenúan y no se pueden abrir: solo puede hacer clic en la suya (para cerrarla).",
+            "Aviso \"Facturas vencidas\": aparece sobre las cajas cuando el servicio tiene facturas pendientes de pago, con los días de vencido y el botón \"Consultar facturas\" que lleva a Configuraciones › Pagos.",
+            "Últimos cortes (panel derecho): 10 por página con fecha de apertura, fecha de cierre (\"Sin Corte\" si la caja sigue abierta), cajero y diferencia (azul si sobra, rojo si falta). Un corte eliminado se marca en rojo. Con los botones \"Todos\" y \"Míos\" elige ver los de todos o solo los suyos (por defecto \"Míos\").",
+            "Detalle del corte: al hacer clic en una fila se abre \"Detalles del corte\" con el cajero, la caja, el estado (Abierto, Cerrado o Eliminado), la apertura y el cierre, el efectivo de apertura y de cierre, y los detalles financieros: ventas en efectivo y total, gastos en efectivo y total, remesas, cuentas por pagar y por cobrar (efectivo y total), retenciones (efectivo y total) y, solo en restaurante, propinas (efectivo, otros medios y total). Al pie, el efectivo en caja y la diferencia.",
+            "Descarga: en el detalle del corte, el icono de descarga genera el corte en PDF.",
+            "Columna DEL (solo con permiso): elimina un corte; ver la advertencia más abajo."
+          ],
+          "guides": [
+            {
+              "title": "Abrir la caja al iniciar el turno",
+              "steps": [
+                "Vaya a Control de cajas.",
+                "Haga clic en una caja con estado \"Disponible\".",
+                "En la ventana \"Apertura de caja\" escriba la cantidad de apertura: el efectivo con el que inicia (el fondo de caja). Puede ser 0.",
+                "Haga clic en Guardar. La caja queda como \"Aperturada\" a su nombre y ya puede cobrar."
+              ]
+            },
+            {
+              "title": "Cerrar la caja (hacer el corte)",
+              "steps": [
+                "Cuente todo el efectivo que hay en la caja.",
+                "Vaya a Control de cajas y haga clic en su caja \"Aperturada\".",
+                "En la ventana \"Cierre de caja\" escriba la cantidad de cierre: el efectivo contado. Haga clic en Guardar (esta ventana no se cierra con la X; use el botón \"Cerrar\" si se arrepiente).",
+                "El sistema genera el corte y muestra enseguida \"Detalles del corte\" con el efectivo de apertura y de cierre, las salidas, las entradas y la diferencia entre lo que debería haber y lo que usted contó.",
+                "Más tarde puede volver a revisar el corte completo en \"Últimos cortes\" haciendo clic sobre él."
+              ]
+            },
+            {
+              "title": "Eliminar el último corte (con permiso)",
+              "steps": [
+                "En \"Últimos cortes\" busque el corte más reciente: solo ese se puede eliminar, y debe estar cerrado.",
+                "Haga clic en el icono de eliminar de la columna DEL y confirme \"¿Estas seguro de eliminar este corte?\"."
+              ]
+            }
+          ],
+          "tips": [
+            "Una diferencia positiva (azul) indica que sobra efectivo; una negativa (roja), que falta. Revise gastos, remesas o cobros que no se hayan registrado.",
+            "Solo puede tener una caja abierta a la vez.",
+            "Los cortes de otros usuarios se consultan con el botón \"Todos\"."
+          ],
+          "warnings": [
+            "No cierre la caja con órdenes sin cobrar: las ventas que se cobren después quedarán en el siguiente corte.",
+            "La columna DEL solo se ve con el permiso para eliminar cortes. Al eliminar un corte, ese corte queda como \"Eliminado\" y la caja se vuelve a abrir con el mismo efectivo de apertura."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ventas",
+      "label": "Ventas",
+      "icon": "LuShoppingCart",
+      "color": "text-success",
+      "system": "products",
+      "description": "La pantalla de ventas para negocios de productos: agregar productos, ajustar la orden, asignar cliente y cobrar.",
+      "subsections": [
+        {
+          "id": "ventas-pantalla",
+          "title": "Pantalla de ventas",
+          "icon": "LuShoppingCart",
+          "route": "/orders/products",
+          "menu": "Icono de casa en la barra superior",
+          "description": "Desde aquí se crean y cobran las ventas. A la izquierda se buscan y agregan productos y se ve la orden; a la derecha están las órdenes pendientes, el total y los botones Opciones, Guardar, Cobrar y Cancelar.",
+          "features": [
+            "Buscador: por defecto funciona por código (con la función \"Iniciar venta con nombre del producto\" activada, arranca buscando por descripción) (ideal para lector de código de barras). El icono a la derecha del buscador cambia a búsqueda por código o descripción, que muestra una lista con código, descripción, precio y existencia; al hacer clic en un producto se agrega a la orden.",
+            "Tabla de la orden: Cant (cantidad), Producto, Precio, Descuento, Total, OP (botones − y + para restar o sumar una unidad) y Del (quita el producto). Al pie se suman el descuento y el total.",
+            "Columnas opcionales según la configuración del negocio: Cod (código del producto, si el negocio lo activó) y Comisión (con la comisión predeterminada activada y el permiso correspondiente).",
+            "Total: aparece en grande sobre los datos de la orden cuando ya tiene productos.",
+            "Datos de la orden: tipo de documento y tipo de precio, el vendedor (si está activado mostrarlo), el cliente con su documento, el referido, el repartidor y la nota de la orden.",
+            "Órdenes pendientes: cuando no hay una orden abierta se listan las guardadas, con \"Cliente: ...\" (o \"Usuario: ...\" si no tiene cliente), fecha y hora. Al pasar sobre una se ven sus productos y el icono de descarga genera su PDF. Si no hay ninguna, se muestra el logo del negocio.",
+            "Tipo de documento: el nombre del documento (Ticket, Factura, Crédito Fiscal, etc.) aparece sobre el total; al hacer clic se puede cambiar.",
+            "Tipo de precio (si el negocio tiene multiprecio): al hacer clic cambia entre Precio Normal, Mayorista y Promoción, solo entre los que estén activados. Un candado indica si cambiarlo pide código de autorización. Si no es el precio normal, aparece un aviso en rojo.",
+            "Productos exentos: se marcan con (E) en rojo junto al nombre.",
+            "Cantidad en rojo: el producto ya no tiene existencia.",
+            "Sin orden abierta, bajo la tabla aparecen los iconos de Otras Ventas y Ventas Especiales (si están activadas).",
+            "Botones de la orden: Opciones, Guardar, Cobrar y Cancelar. En pantallas grandes quedan fijos al pie de la columna derecha."
+          ],
+          "guides": [
+            {
+              "title": "Hacer una venta paso a paso",
+              "steps": [
+                "Verifique que tiene una caja abierta (Control de cajas). Sin caja no se puede cobrar.",
+                "Escriba o escanee el código del producto y presione Enter. Si no conoce el código, cambie el modo del buscador con el icono de la derecha, escriba parte de la descripción y haga clic en el producto de la lista.",
+                "Repita para cada producto. Si agrega el mismo producto otra vez, se suma a la cantidad.",
+                "Revise la tabla: use + y − para ajustar cantidades o haga clic en la cantidad para escribir una nueva.",
+                "Si el documento debe ir a nombre de un cliente, abra \"Opciones\" › \"Asignar Cliente\".",
+                "Haga clic en el nombre del documento (sobre el total) si necesita cambiar el tipo de documento.",
+                "Haga clic en \"Cobrar\", elija el método de pago y complete el cobro (ver \"Cobrar una orden\")."
+              ]
+            },
+            {
+              "title": "Guardar una orden para después",
+              "steps": [
+                "Con la orden abierta, haga clic en \"Guardar\".",
+                "La orden se cierra y aparece en \"Órdenes Pendientes\".",
+                "Para retomarla, haga clic en el nombre del cliente o usuario de la lista de pendientes."
+              ]
+            },
+            {
+              "title": "Cancelar una orden",
+              "steps": [
+                "Con la orden abierta, haga clic en \"Cancelar\".",
+                "Confirme en la ventana \"¿Estas seguro de eliminar esta orden?\". La orden se elimina y los productos no se descuentan del inventario."
+              ]
+            }
+          ],
+          "tips": [
+            "Haga clic en el nombre de un producto de la orden para ver sus detalles (precios, existencia, categoría, etc.).",
+            "Con un lector de código de barras, deje el buscador en modo \"código\": el cursor regresa solo al campo después de cada producto.",
+            "Cada producto que agrega se envía en orden: si escanea varios seguidos, el sistema los procesa uno por uno y la tabla se ve atenuada mientras trabaja.",
+            "Cambiar el precio de un producto, aplicar descuentos, cambiar el tipo de precio y usar Otras Ventas pueden pedir código de autorización, según los permisos del negocio."
+          ],
+          "warnings": [
+            "Si ya hay una orden abierta no se ven las órdenes pendientes: guárdela o cóbrela primero."
+          ]
+        },
+        {
+          "id": "ventas-ajustes",
+          "title": "Ajustar productos de la orden",
+          "icon": "LuTag",
+          "menu": "Pantalla de ventas › tabla de la orden",
+          "description": "Cada fila de la orden tiene acciones para corregir cantidades, precios, descuentos y otros datos. Algunas solo aparecen si están activadas para el negocio y pueden pedir código de autorización.",
+          "guides": [
+            {
+              "title": "Cambiar la cantidad",
+              "steps": [
+                "Haga clic en el número de la columna \"Cant\" (se abre \"Cambiar Cantidad\").",
+                "Escriba la nueva cantidad (puede llevar decimales) y guarde. Si no cambia el valor, no se envía nada. También puede usar los botones − y + de la columna OP."
+              ]
+            },
+            {
+              "title": "Cambiar el precio de un producto",
+              "steps": [
+                "Haga clic en el precio del producto.",
+                "Si se pide, ingrese el código de autorización.",
+                "Escriba el \"Nuevo Precio\" y guarde."
+              ]
+            },
+            {
+              "title": "Aplicar un descuento",
+              "steps": [
+                "Para un solo producto: haga clic en el valor de la columna \"Descuento\" de ese producto.",
+                "Para toda la orden: abra \"Opciones\" › \"Agregar Descuento\".",
+                "Elija si el descuento es por \"Cantidad\" (monto fijo) o por \"Porcentaje\".",
+                "Revise el resumen: precio sin descuento, descuento aplicado y total con descuento. Guarde."
+              ]
+            },
+            {
+              "title": "Otros ajustes de la fila (si están activados)",
+              "steps": [
+                "Lápiz junto al nombre: cambia el nombre del producto solo para esta venta.",
+                "Segundo lápiz (verde si ya tiene): agrega un comentario al producto (la ventana se llama \"Cambiar Comentario\"). En ella, el icono de basurero elimina el comentario.",
+                "Icono de lote (rojo si ya tiene uno asignado): abre \"Seleccionar lote a descontar\" con los lotes del producto. Un lote sin cantidad suficiente no se puede elegir.",
+                "Columna \"Comisión\": define el porcentaje de comisión de ese producto (solo si el negocio y su usuario lo tienen activado)."
+              ]
+            }
+          ],
+          "warnings": [
+            "Los productos con lote asignado y las \"Otras Ventas\" no se pueden sumar o restar con + y −; cambie la cantidad haciendo clic en ella o elimínelos y agréguelos de nuevo."
+          ],
+          "tips": [
+            "El descuento por producto solo se puede editar si la función de descuentos está activada para el negocio; si no, la columna muestra 0."
+          ]
+        },
+        {
+          "id": "ventas-opciones",
+          "title": "Menú \"Opciones\" de la orden",
+          "icon": "LuSlidersHorizontal",
+          "menu": "Pantalla de ventas › botón Opciones",
+          "description": "El botón \"Opciones\", junto a Guardar, agrupa las acciones sobre la orden completa. Solo aparecen las que están activadas para su negocio.",
+          "features": [
+            "Agregar Descuento: descuento sobre toda la orden.",
+            "Asignar Cliente: busca un cliente o lo registra en el momento con \"Registrar Cliente\". Los clientes con crédito bloqueado se indican.",
+            "Asignar Vendedor: atribuye la venta a otro usuario (para comisiones o control).",
+            "Asignar Referido: asocia la venta a un referido para calcular su comisión.",
+            "Asignar Repartidor: indica quién entrega el pedido.",
+            "Otras Ventas: agrega un producto o servicio que no está en el inventario, con cantidad, precio, descripción, tipo de operación (Gravado, Exento, No Sujeto) y tipo de venta (Producto o Servicio).",
+            "Venta Especial: agrupa varios productos del inventario en una sola línea con la descripción y el precio que usted indique. Los productos se descuentan del inventario, pero el documento muestra solo la descripción especial.",
+            "Agregar comentario: nota de 5 a 250 caracteres que se imprime en el documento.",
+            "Guardar como Cotización: guarda la orden como cotización (necesita cliente). Se consulta luego en Herramientas › Cotizaciones.",
+            "Crear Nota de Remisión: genera una nota de remisión (necesita cliente) eligiendo el motivo: Depósito, Propiedad, Consignación, Traslado u Otros."
+          ],
+          "guides": [
+            {
+              "title": "Registrar una venta especial",
+              "steps": [
+                "Abra \"Opciones\" › \"Venta Especial\".",
+                "En la ventana, busque y agregue los productos que forman la venta (se descontarán del inventario).",
+                "Escriba la \"Descripción\" que verá el cliente en el documento y el \"Precio\" total.",
+                "Elija el tipo de operación (Gravado, Exento o No Sujeto) y guarde."
+              ]
+            },
+            {
+              "title": "Vender algo que no está en el inventario",
+              "steps": [
+                "Abra \"Opciones\" › \"Otras Ventas\" (o el icono verde bajo la orden cuando está vacía). Puede pedir código.",
+                "Escriba la cantidad, el precio y la descripción.",
+                "Elija el tipo de operación y si es producto o servicio. Guarde."
+              ]
+            }
+          ],
+          "tips": [
+            "Guardar como Cotización y Crear Nota de Remisión necesitan un cliente: si no lo tiene, el sistema avisa \"Debe agregar un cliente primero\".",
+            "Asignar Cliente muestra por cada contacto su tipo (Cliente, Proveedor, Empleado, Referido) y \"Crédito bloqueado\" cuando aplica. Asignar Vendedor y Asignar Repartidor abren una lista de usuarios.",
+            "En Otras Ventas y Venta Especial la descripción debe tener de 3 a 250 caracteres y sin símbolos raros.",
+            "La ventana de Venta Especial no se puede cerrar con la X: complete la venta o elimine los productos que agregó."
+          ]
+        },
+        {
+          "id": "ventas-cobro",
+          "title": "Cobrar una orden",
+          "icon": "LuBanknote",
+          "menu": "Pantalla de ventas › botón Cobrar",
+          "description": "Al cobrar se emite el documento, se descuenta el inventario y el dinero entra a la caja abierta.",
+          "guides": [
+            {
+              "title": "Cobro en efectivo",
+              "steps": [
+                "Haga clic en \"Cobrar\".",
+                "En la parte inferior de la ventana verifique que esté seleccionado \"Efectivo\".",
+                "Escriba la cantidad de efectivo que entrega el cliente.",
+                "Haga clic en \"Cobrar\". La ventana final muestra el descuento, los impuestos, el subtotal, el TOTAL y el CAMBIO a devolver.",
+                "Haga clic en \"Imprimir\" si necesita el comprobante, o en \"Cerrar\" (también cierra al hacer clic sobre el resumen)."
+              ]
+            },
+            {
+              "title": "Cobro con tarjeta, transferencia u otro método",
+              "steps": [
+                "Haga clic en \"Cobrar\".",
+                "En la parte inferior elija el método (Tarjeta, Transferencia, Cheque, etc.): solo aparecen los métodos habilitados del negocio.",
+                "Haga clic en \"Pagar con ...\".",
+                "Para pagos mixtos (efectivo y tarjeta) elija \"Mixto\": escriba el monto en efectivo y el resto se cobra con tarjeta. Si escribe un efectivo igual o mayor al total, se cobra como efectivo."
+              ]
+            },
+            {
+              "title": "Venta al crédito",
+              "steps": [
+                "Asigne primero el cliente a la orden (Opciones › Asignar Cliente).",
+                "Haga clic en \"Cobrar\" y elija el método \"Crédito\".",
+                "Elija el tipo de crédito: \"Libre (abonos)\" para que el cliente abone cualquier monto hasta pagar, o \"Por cuotas\" para un plan de pagos con fechas.",
+                "En \"Por cuotas\": elija una plantilla (opcional), la frecuencia, el número de cuotas (hasta el máximo permitido), la primera cuota (opcional) y, si aplica, la prima con su forma de pago (Efectivo, Tarjeta o Transferencia; con transferencia elija la cuenta). Espere a que diga \"Calculando plan...\" y se muestre el plan.",
+                "Haga clic en \"Asignar Credito\". Verá el mensaje \"Crédito Otorgado Correctamente\"."
+              ]
+            }
+          ],
+          "features": [
+            "Si el cliente supera su límite de crédito, aparece un aviso con su saldo, el total de esta venta y su límite.",
+            "Un cliente con crédito bloqueado no puede recibir crédito.",
+            "Si el tipo de documento es Nota de Envío, el botón dice \"Crear nota de Envío\": no afecta el efectivo de la caja.",
+            "Ventana final: si el negocio tiene activado el enlace de impresión aparece \"Imprimir\"; con impresión local, el comprobante se envía solo a la impresora.",
+            "Al cobrar, la ventana se bloquea con \"Procesando cobro\" hasta terminar: espere sin cerrarla."
+          ],
+          "warnings": [
+            "El botón \"Cobrar\" queda deshabilitado si no hay caja abierta, si la cuenta está suspendida o si el documento es Crédito Fiscal y falta el cliente o alguno de sus datos fiscales. Los mensajes sobre la orden indican qué falta.",
+            "Al cobrar con crédito sin cliente la ventana avisa \"Debe agregar un cliente para continuar con el credito\"; con un cliente bloqueado, \"Cliente bloqueado para otorgar crédito\"."
+          ],
+          "tips": [
+            "Con documentos electrónicos, antes de cobrar puede aparecer \"Revisa antes de cobrar\" con datos que Hacienda suele rechazar (por ejemplo, del cliente). Solo avisa: puede cobrar igual, pero conviene corregirlo con \"Editar contacto\" para evitar un rechazo.",
+            "Otras ventas y ventas especiales aceptan precio 0."
+          ]
+        },
+        {
+          "id": "ventas-documentos",
+          "title": "Tipos de documento y mensajes",
+          "icon": "LuFileText",
+          "menu": "Pantalla de ventas › nombre del documento",
+          "description": "El tipo de documento define qué se emite al cobrar. Se cambia haciendo clic en su nombre, sobre el total de la orden (ventana \"Tipo de factura\": el documento actual aparece resaltado y la nota de crédito no se ofrece). Bajo la orden aparecen mensajes que explican por qué algo no se puede hacer.",
+          "features": [
+            "Ticket o Factura (consumidor final): no necesitan cliente.",
+            "Crédito Fiscal: necesita un cliente con sus datos fiscales completos (documento, registro, actividad, dirección, etc.).",
+            "Nota de Envío: registra la salida de productos sin afectar el efectivo.",
+            "Mensaje \"Faltan los siguientes campos del cliente para facturar\": edite el cliente en Directorio y complete los datos indicados.",
+            "Mensaje \"Factura con retención del 1%\": el cliente es gran contribuyente y se aplica la retención.",
+            "Mensaje \"Cliente Exento de impuestos\": la venta se emite sin impuestos.",
+            "Error \"Debe seleccionar una caja para poder cobrar\": abra una caja en Control de cajas.",
+            "Error \"Su cuenta está suspendida por falta de pago\": no se puede cobrar hasta regularizar el pago.",
+            "Error \"Seleccione un cliente para el CCF\" o \"... para el Sujeto Excluido\": asigne un cliente a la orden.",
+            "Aviso \"Retención Sujeto Excluido\" o \"Retención Renta\": muestra el monto que se retendrá en el documento.",
+            "Aviso amarillo \"Se está vendiendo por debajo del precio de compra\": el producto indicado tiene un precio neto (con descuento y sin impuesto) menor a su costo. Solo avisa.",
+            "Aviso \"Las notas de envío no afectan el efectivo\" con documento Nota de Envío."
+          ]
+        },
+        {
+          "id": "ventas-busqueda",
+          "title": "Consultar un producto desde cualquier pantalla",
+          "icon": "LuCreditCard",
+          "menu": "Barra superior › lupa",
+          "description": "La lupa de la barra superior permite consultar precio y existencias sin interrumpir la venta.",
+          "guides": [
+            {
+              "title": "Consultar precio y existencia",
+              "steps": [
+                "Haga clic en la lupa de la barra superior.",
+                "Escriba el código o la descripción del producto y haga clic en el resultado.",
+                "Revise código, precios, existencia, categoría y demás detalles.",
+                "Haga clic en \"Ver Disponibilidad\" para ver la existencia del producto en cada sucursal."
+              ]
+            }
+          ],
+          "tips": [
+            "También puede hacer clic en el nombre de un producto de la orden para ver sus detalles sin salir de la venta."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ventas-restaurante",
+      "label": "Ventas restaurante",
+      "icon": "LuConciergeBell",
+      "color": "text-success",
+      "system": "restaurant",
+      "description": "La pantalla de ventas del restaurante: venta rápida, servicio a mesa y delivery, con envío de comandas a cocina.",
+      "subsections": [
+        {
+          "id": "restaurante-pantalla",
+          "title": "Pantalla de ventas del restaurante",
+          "icon": "LuConciergeBell",
+          "route": "/orders/restaurant",
+          "menu": "Icono de casa en la barra superior",
+          "description": "A la izquierda se elige la mesa o el cliente y se marcan los productos del menú; a la derecha se ve la orden, su total y los botones para guardar o cobrar.",
+          "features": [
+            "Tipo de servicio (arriba a la derecha): \"Delivery\", \"Venta Rapida\" y \"Servicio Mesa\". Solo aparecen los activados para el negocio y permitidos al usuario; el que está en uso se ve resaltado.",
+            "Menú: iconos de categorías y productos con su foto. Al tocar una categoría se abren sus productos.",
+            "Orden: cantidad, producto, precio y total de lo marcado. Un icono azul indica un producto con opciones y uno rojo una venta especial. Eliminar un producto ya enviado a cocina puede pedir código.",
+            "Resumen del total: Sub total, Descuento, Extras (precio adicional de las opciones), Propina (con su porcentaje) y Total.",
+            "Barra de opciones bajo los botones (con productos en la orden): tipo de entrega (\"Comer Aqui\", \"Para Llevar\" o \"Delivery\"), tipo de documento y método de pago. Haga clic en cada uno para cambiarlo.",
+            "Campo de efectivo: aparece con método efectivo o mixto; con la función activada se usa un teclado numérico en pantalla y/o el cursor se posiciona solo en el campo.",
+            "Botones: Opciones, Guardar y Cobrar. El botón Guardar envía las comandas a cocina.",
+            "Barra de porcentajes (si está activada): con la pantalla vacía muestra qué porcentaje de las ventas de hoy es \"Facturado\" y cuál \"No Facturado\".",
+            "Delivery: arriba se ve el cliente elegido (con su dirección) y debajo los pedidos pendientes como tarjetas con su estado: Pendiente, Preparando, En camino o Entregado."
+          ],
+          "guides": [
+            {
+              "title": "Venta rápida (para llevar o mostrador)",
+              "steps": [
+                "Seleccione \"Venta Rapida\" arriba a la derecha.",
+                "Toque la categoría y luego los productos que pide el cliente. Si el producto tiene opciones (por ejemplo, término de la carne o tipo de bebida), elija la opción o toque \"Saltar Opción\".",
+                "Revise la orden a la derecha; toque la cantidad de un producto para agregar más unidades.",
+                "Verifique abajo el tipo de entrega, el documento y el método de pago.",
+                "Si paga en efectivo, escriba la cantidad recibida.",
+                "Toque \"Cobrar\". La ventana final muestra el total y el cambio; toque \"Imprimir\" si necesita el comprobante."
+              ]
+            },
+            {
+              "title": "Atender una mesa",
+              "steps": [
+                "Seleccione \"Servicio Mesa\". Se muestran las mesas por zona: verde \"Disponible\", roja ocupada con el tiempo transcurrido.",
+                "Toque una mesa disponible y marque los productos del menú.",
+                "Toque \"Guardar\" para enviar las comandas a cocina; la mesa queda ocupada y puede seguir atendiendo otras.",
+                "Para agregar más productos después, toque la mesa ocupada: se abre su orden.",
+                "Cuando el cliente pida la cuenta, use \"Opciones\" › \"Imprimir pre cuenta\".",
+                "Para cobrar, abra la mesa, elija documento y método de pago y toque \"Cobrar\". La mesa vuelve a quedar disponible."
+              ]
+            },
+            {
+              "title": "Pedido a domicilio (Delivery)",
+              "steps": [
+                "Seleccione \"Delivery\".",
+                "Busque el cliente en \"Buscar Cliente Delivery\" o regístrelo si es nuevo.",
+                "Marque los productos del pedido.",
+                "Si cobra envío, use \"Opciones\" › \"Agregar envío\" y escriba el monto.",
+                "Guarde o cobre el pedido. Los pedidos pendientes se listan con su estado: Pendiente, Preparando, En camino o Entregado."
+              ]
+            }
+          ],
+          "tips": [
+            "Al cambiar de tipo de servicio con una orden abierta, el sistema la guarda automáticamente. En venta rápida debe cobrar o eliminar la orden antes de cambiar.",
+            "Eliminar un producto que ya se envió a cocina puede pedir código de autorización y queda registrado en Restaurante › Productos Eliminados.",
+            "Con un método distinto de efectivo, el botón Cobrar cobra directo; con efectivo o mixto, escriba antes la cantidad recibida."
+          ],
+          "warnings": [
+            "El botón Cobrar queda deshabilitado si no hay caja abierta, la cuenta está suspendida, el documento es Crédito Fiscal o Sujeto Excluido sin cliente (o con datos fiscales incompletos), se eligió crédito sin cliente, o (Guatemala) el total llega a 2,500 sin cliente. Los mensajes sobre los botones indican qué falta."
+          ]
+        },
+        {
+          "id": "restaurante-opciones",
+          "title": "Opciones de la orden del restaurante",
+          "icon": "LuSlidersHorizontal",
+          "menu": "Pantalla de ventas › botón Opciones",
+          "description": "El botón \"Opciones\" reúne las acciones sobre la orden. Algunas solo aparecen en servicio a mesa o delivery, o si están activadas para el negocio.",
+          "features": [
+            "Agregar Descuento: por monto o porcentaje sobre la orden.",
+            "Asignar Propina: abre \"Establecer Propina\" por Cantidad o Porcentaje. Se muestra como línea \"Propina | %\" y se suma al total que paga el cliente; en el corte se reporta aparte de las ventas.",
+            "Asignar Cliente, Vendedor, Referido o Repartidor.",
+            "Otras Ventas y Venta Especial: igual que en la venta de productos.",
+            "Agregar comentario: nota general para la orden (también se muestra en cocina).",
+            "Agregar/Quitar opciones: agrega o quita modificadores a productos ya marcados. Al agregar una opción se separa una unidad del producto.",
+            "Imprimir pre cuenta: guarda la orden e imprime la precuenta para el cliente.",
+            "Agregar envío (delivery): suma el costo de envío.",
+            "Agregar cliente a la mesa (mesa): crea \"Cliente 2\", \"Cliente 3\", etc. para llevar la cuenta de cada persona.",
+            "Agregar nombre a la mesa (mesa): identifica la orden con un nombre (por ejemplo, el del cliente).",
+            "Dividir Cuenta (mesa con varios clientes): abre la pantalla para cobrar a cada cliente por separado."
+          ],
+          "guides": [
+            {
+              "title": "Dividir la cuenta de una mesa",
+              "steps": [
+                "Mientras marca productos, use \"Opciones\" › \"Agregar cliente a la mesa\" para cada comensal y seleccione el cliente activo arriba antes de marcar sus productos.",
+                "Cuando pidan la cuenta, abra \"Opciones\" › \"Dividir Cuenta\".",
+                "En la pantalla de división, asigne cada producto al cliente correspondiente.",
+                "Seleccione el cliente, revise su total, elija método de pago y toque \"Cobrar\". Repita con cada cliente.",
+                "Use \"Imprimir Precuenta\" si el cliente quiere ver su parte antes de pagar, y \"Regresar\" para volver a la mesa."
+              ]
+            }
+          ],
+          "tips": [
+            "Agregar envío solo aparece en pedidos a domicilio que todavía no tienen envío; el monto debe ser mayor a 0."
+          ]
+        },
+        {
+          "id": "restaurante-mesas",
+          "title": "Unir, cambiar y renombrar mesas",
+          "icon": "LuTag",
+          "menu": "Servicio Mesa › tres puntos de cada mesa",
+          "description": "Cada mesa tiene un menú de tres puntos con acciones según su estado. Una mesa unida comparte la orden y el tiempo de la mesa principal.",
+          "guides": [
+            {
+              "title": "Unir mesas (grupo grande)",
+              "steps": [
+                "Toque los tres puntos de la mesa ocupada que será la principal y elija \"Unir mesas\".",
+                "En la ventana, cambie de zona si hace falta y toque las mesas libres que quiere unir.",
+                "Las mesas unidas muestran \"Unida a ...\" y todo se cobra en la orden de la principal.",
+                "Desde una mesa libre también puede usar \"Unir a una mesa ocupada\" y elegir la mesa principal."
+              ]
+            },
+            {
+              "title": "Cambiar la orden de mesa",
+              "steps": [
+                "Toque los tres puntos de la mesa ocupada y elija \"Cambiar de mesa\".",
+                "Toque la mesa libre de destino (o \"Mover aquí\" en una de sus mesas unidas). La orden conserva su tiempo."
+              ]
+            },
+            {
+              "title": "Separar o renombrar",
+              "steps": [
+                "Para separar una mesa unida: tres puntos › \"Separar mesa\" (o \"Separar\" en la ventana de unir mesas).",
+                "Para ir a la orden desde una mesa unida: tres puntos › \"Ir a la mesa principal\".",
+                "Para renombrar: tres puntos de la mesa ocupada › \"Renombrar mesa\", escriba el nombre y guarde."
+              ]
+            },
+            {
+              "title": "Ver los detalles de la orden",
+              "steps": [
+                "Tres puntos de la mesa ocupada (o unida) › \"Detalles de la orden\": muestra los productos, el total, el mesero y si la orden está aperturada.",
+                "Si está aperturada, indica qué usuario la tiene abierta. Si está guardada, puede abrirla desde ahí con \"Abrir orden\"."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "restaurante",
+      "label": "Restaurante",
+      "icon": "LuUtensilsCrossed",
+      "color": "text-warning",
+      "system": "restaurant",
+      "description": "Administración del menú, la pantalla de cocina y el seguimiento de las órdenes del restaurante.",
+      "subsections": [
+        {
+          "id": "restaurante-nuevo",
+          "title": "Registrar Producto",
+          "icon": "LuPackagePlus",
+          "route": "/restaurant/new",
+          "menu": "Restaurante › Registrar Producto",
+          "description": "Crea un producto del menú con su precio, categoría, modificadores, estación de cocina e imagen. Aparece de inmediato en la pantalla de ventas del restaurante.",
+          "guides": [
+            {
+              "title": "Agregar un platillo o bebida al menú",
+              "steps": [
+                "Escriba el \"Nombre del producto\".",
+                "Ingrese el \"Precio de costo\" y el \"Precio de venta\".",
+                "En \"Categoria\" elija la categoría donde aparecerá en el menú. Si no existe, haga clic en el texto \"Categoria (Click para agregar)\": escriba el nombre, elija su imagen y guarde.",
+                "Si el producto lleva opciones (término, salsa, tamaño), marque en \"Modificadores\" los que apliquen. Para crear uno nuevo haga clic en \"Modificadores (Click para agregar)\".",
+                "En \"Espacio de trabajo\" elija la estación de cocina que lo prepara (cocina, bar, etc.) o \"Ninguno\" si no pasa por cocina.",
+                "Haga clic en la imagen de \"Seleccionar Imagen\", busque el icono o imagen que verá el cajero y selecciónelo.",
+                "Opcional: escriba información adicional y guarde."
+              ]
+            }
+          ],
+          "tips": [
+            "Si aparece \"Sin Modificadores\" o \"Sin espacios de trabajo\", todavía no hay ninguno creado: los modificadores se crean desde el mismo formulario; para las estaciones consulte con soporte.",
+            "Después de registrar el producto puede ajustar cualquier dato desde Restaurante › Productos de Menú."
+          ]
+        },
+        {
+          "id": "restaurante-menu",
+          "title": "Productos de Menú",
+          "icon": "LuUtensilsCrossed",
+          "route": "/restaurant/menu",
+          "menu": "Restaurante › Productos de Menu",
+          "description": "Lista de todos los productos del menú, con búsqueda, y a la derecha la administración de modificadores y categorías.",
+          "features": [
+            "Búsqueda de productos por nombre (arriba a la derecha) y paginación de la tabla.",
+            "Tabla con imagen, nombre, categoría, modificadores asignados, panel (estación), precio y costo. Los productos inhabilitados se marcan \"INHABILITADO\" y los que se ofrecen por WhatsApp llevan el icono de WhatsApp.",
+            "Menú de cada producto (icono de la columna OP): Cambiar Precio, Cambiar Costo, Cambiar Nombre, Cambiar Modificadores, Cambiar Categorias, Cambiar Panel, Cambiar Imagen, Productos a descontar, Ofrecer en WhatsApp (o Quitar de WhatsApp), Habilitar o Inhabilitar Producto y Eliminar Producto.",
+            "Cambiar Modificadores: la ventana separa los \"Disponibles\" (con + para asignarlos) y los \"Asignados\" (con basurero para quitarlos).",
+            "Productos a descontar: indica qué productos del inventario se descuentan al vender el platillo (receta).",
+            "Inhabilitar Producto: deja de ofrecerse en ventas sin borrarlo; \"Habilitar Producto\" lo devuelve.",
+            "Panel derecho \"Modificadores\": lista con el signo + para crear uno. Haga clic en el nombre para ver o agregar sus variantes; el lápiz renombra y el basurero elimina.",
+            "Panel derecho \"Categorias\": lista con el signo + para crear una. La categoría principal no se puede renombrar ni eliminar.",
+            "Botón \"Ordenar iconos\" (al pie del panel derecho): cambia el orden en que aparecen las categorías y productos en la pantalla de ventas."
+          ],
+          "guides": [
+            {
+              "title": "Crear un modificador con variantes",
+              "steps": [
+                "En el panel \"Modificadores\" haga clic en el signo +.",
+                "Escriba el \"Nombre del modificador\" (por ejemplo, \"Término de la carne\"), elija su imagen y guarde.",
+                "Haga clic en el nombre del modificador para abrir sus variantes y agregue cada una con nombre, precio (0 si no tiene costo extra) e imagen.",
+                "Asigne el modificador a los productos con \"Cambiar Modificadores\" en el menú de cada producto."
+              ]
+            },
+            {
+              "title": "Ofrecer un platillo por WhatsApp",
+              "steps": [
+                "Abra el menú del producto (icono de la columna OP).",
+                "Elija \"Ofrecer en WhatsApp\". El producto muestra el icono de WhatsApp.",
+                "Para dejar de ofrecerlo, elija \"Quitar de WhatsApp\"."
+              ]
+            },
+            {
+              "title": "Reordenar los iconos del menú",
+              "steps": [
+                "Haga clic en \"Ordenar iconos\".",
+                "Seleccione una categoría (o \"Principal\" para el orden de las categorías).",
+                "Arrastre los iconos al orden deseado y guarde. Use \"Regresar\" para volver."
+              ]
+            }
+          ],
+          "warnings": [
+            "Eliminar un producto no se puede deshacer: si solo quiere dejar de venderlo por un tiempo, use \"Inhabilitar Producto\".",
+            "Un modificador no puede quedarse con menos de dos variantes: el basurero de la variante se deshabilita cuando quedan dos o menos."
+          ],
+          "tips": [
+            "Los cambios de precio, costo y nombre abren una ventana con el campo y el botón \"Guardar\"."
+          ]
+        },
+        {
+          "id": "restaurante-pantalla-cocina",
+          "title": "Pantalla de cocina",
+          "icon": "LuMonitor",
+          "route": "/restaurant/screen",
+          "menu": "Restaurante › Pantalla",
+          "description": "Muestra en tiempo real las comandas que se envían al guardar o cobrar órdenes. Pensada para una pantalla en la cocina o el bar.",
+          "features": [
+            "Cada tarjeta muestra el número de orden, la mesa o el cliente, la fecha y hora con el tiempo transcurrido, el comentario de la orden (resaltado), los productos con sus cantidades y opciones, quién atiende y el tipo de entrega.",
+            "Solo se muestran los productos de la estación seleccionada; una orden sin productos para su estación no aparece.",
+            "Botones de estación (abajo a la derecha): cambian entre cocina, bar u otra estación. Al entrar se muestra la primera estación.",
+            "Con la actualización en tiempo real activada, las comandas nuevas llegan solas al guardar o cobrar en ventas.",
+            "Cuando hay comandas pendientes suena un aviso.",
+            "Tarjetas \"ELIMINADA\": la orden se eliminó después de enviarse a cocina."
+          ],
+          "guides": [
+            {
+              "title": "Despachar comandas",
+              "steps": [
+                "Elija su estación con los botones de abajo a la derecha.",
+                "Al terminar un producto, tóquelo para marcarlo como despachado.",
+                "Para despachar toda la orden de una vez, toque el encabezado de la tarjeta.",
+                "Si la orden tiene productos de varias estaciones (candado junto al número), cada estación debe despachar sus productos por separado."
+              ]
+            }
+          ],
+          "tips": [
+            "Deje esta pantalla abierta en un navegador dedicado en la cocina o el bar y suba el volumen para oír los avisos."
+          ]
+        },
+        {
+          "id": "restaurante-ordenes",
+          "title": "Listado de Órdenes",
+          "icon": "LuClipboardList",
+          "route": "/restaurant/orders",
+          "menu": "Restaurante › Listado de Ordenes",
+          "description": "Las órdenes más recientes del restaurante, de la más nueva a la más antigua, con su estado, para dar seguimiento al servicio. Se actualiza sola cuando llegan cambios.",
+          "features": [
+            "Datos generales (panel derecho): órdenes pendientes (las guardadas), servicio en mesa y delivery. Cuentan las órdenes de la página que está viendo.",
+            "Tabla de órdenes (15 por página): número, cantidad de clientes, quién atiende, servicio (Venta Rápida, En Mesa o Delivery), tipo de entrega (Comer Aquí, Para Llevar o Delivery), tiempo transcurrido y estado (Activo, Guardado, Pagado, Anulado o Eliminada).",
+            "Icono de información: abre el detalle de la orden con cliente o mesas, quién atendió, productos con sus opciones, descuentos y total, además del tipo, la entrega y el estado. La propina no se incluye en el total."
+          ]
+        },
+        {
+          "id": "restaurante-eliminados",
+          "title": "Productos Eliminados",
+          "icon": "LuPackageMinus",
+          "route": "/restaurant/deleted",
+          "menu": "Restaurante › Productos Eliminados",
+          "description": "Registro de los productos quitados de las órdenes, para controlar pérdidas o abusos. Quitar un producto ya enviado a cocina puede pedir código de autorización.",
+          "guides": [
+            {
+              "title": "Revisar productos eliminados",
+              "steps": [
+                "En \"Seleccionar fechas\" elija el rango y haga clic en \"Aplicar\".",
+                "Revise fecha, hora, orden, cantidad, producto, total, usuario y quién lo eliminó.",
+                "Al pie se ven el total de productos y el monto eliminado. Use \"DESCARGAS\" para exportar."
+              ]
+            }
+          ],
+          "tips": [
+            "La columna \"Usuario\" es quien atendía la orden y \"Eliminado por\" quien quitó el producto."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inventario",
+      "label": "Inventario",
+      "icon": "LuPackage",
+      "color": "text-success",
+      "description": "Registro de productos, ingresos de compras, salidas por averías u otros motivos, existencias y kardex.",
+      "subsections": [
+        {
+          "id": "inventario-lista",
+          "title": "Ver Productos",
+          "icon": "LuPackage",
+          "route": "/products",
+          "menu": "Inventario › Ver Productos",
+          "description": "El catálogo completo con precios, existencias, categoría, ubicación y marca. Desde aquí se consulta, edita, revisa el kardex y elimina un producto.",
+          "features": [
+            "Búsqueda por código o descripción (panel derecho) y paginación de 15 productos; solo se listan los productos activos.",
+            "Tabla: Cod, Producto (con un icono según sea producto, servicio o relacionado), Precio, Cant (en rojo cuando está en el mínimo de stock o por debajo), Categoría, Ubicación y Marca (solo si el negocio las usa) y Min (mínimo de stock).",
+            "Orden: haga clic en el título de las columnas Cod, Producto, Cant, Categoría, Ubicación o Marca para ordenar por ella; un segundo clic invierte el orden.",
+            "Estadísticas: total de registros, productos, servicios y relacionados.",
+            "Ver Producto (clic en el código o la descripción): detalle con precios por cantidad, stock, existencia actual, categoría, marca, ubicación, proveedor, costo unitario, impuesto, información, descuento y comisión por defecto, si vence y si requiere receta, y hasta 3 imágenes. El costo unitario no se muestra a ciertos roles.",
+            "Ver Disponibilidad (solo con sucursales vinculadas): dentro del detalle, muestra la existencia del producto en cada sucursal.",
+            "Menú de cada producto (icono de engranaje): Ver Producto, Actualizar Precios, Editar, Kardex y Eliminar. Editar y Eliminar requieren su permiso; sin él aparecen deshabilitados.",
+            "Descargas (con permiso de descarga de inventario): listas del inventario en PDF o Excel y la opción \"Actualizar precios\" para todo el catálogo."
+          ],
+          "guides": [
+            {
+              "title": "Actualizar precios desde la casa matriz (sucursales)",
+              "steps": [
+                "Para un solo producto: abra su menú › \"Actualizar Precios\". Se actualiza de inmediato.",
+                "Para todos: en \"DESCARGAS\" haga clic en \"Actualizar precios\" y confirme \"Sí, actualizar\".",
+                "El sistema borra los precios actuales y los vuelve a crear con los de la casa matriz."
+              ]
+            },
+            {
+              "title": "Eliminar un producto",
+              "steps": [
+                "Abra el menú del producto › \"Eliminar\" (con permiso).",
+                "Confirme \"¿Estas seguro de eliminar el producto ...?\"."
+              ]
+            }
+          ],
+          "warnings": [
+            "\"Actualizar precios\" reemplaza los precios que tenga cargados (incluidos los de varias cantidades, mayorista o promoción) por los de la casa matriz. Úselo solo si los precios de su negocio vienen de la casa matriz.",
+            "Eliminar un producto lo quita del catálogo; verifique antes que no tenga existencias ni ventas pendientes."
+          ],
+          "tips": [
+            "Para poner varios precios por cantidad a un producto use Editar › \"Editar Precios\" (ver el tema Editar Producto)."
+          ]
+        },
+        {
+          "id": "inventario-nuevo",
+          "title": "Registrar Producto",
+          "icon": "LuPlus",
+          "route": "/products/new",
+          "menu": "Inventario › Registrar Producto",
+          "description": "Crea un producto, un servicio o un producto relacionado (compuesto por otros productos).",
+          "guides": [
+            {
+              "title": "Registrar un producto nuevo",
+              "steps": [
+                "En \"Tipo de Registro\" elija Producto, Servicio o Relacionado.",
+                "Escriba el \"Codigo\" (o escanéelo) y la \"Descripción\".",
+                "En un producto, ingrese la \"Cantidad\" inicial y el \"Minimo de Stock\" (para las alertas de bajas existencias).",
+                "Ingrese el \"Precio Costo\" (opcional) y el \"Precio de venta\", y elija si es Gravado o Exento de impuestos.",
+                "Elija la \"Categoria\" y la \"Unidad de Medida\", busque el \"Proveedor\" y, si aplica, la Ubicación y la Marca. Si alguno no existe, haga clic en su título para crearlo.",
+                "Complete los campos opcionales activados para su negocio: medida, descuento y comisión por defecto, lote, fecha de vencimiento o \"Solicitar Receta\".",
+                "Haga clic en Guardar. El producto aparece en \"Ultimos Productos\" a la derecha."
+              ]
+            },
+            {
+              "title": "Registrar un producto relacionado (combo o kit)",
+              "steps": [
+                "Elija \"Relacionado\" en \"Tipo de Registro\" y complete los datos del producto.",
+                "Al guardar se abre \"Productos vinculados\": busque cada producto que forma el combo e indique la \"Cantidad a vincular\".",
+                "Para cerrar la ventana debe tener al menos un producto vinculado. Al vender el combo se descuentan sus componentes."
+              ]
+            }
+          ],
+          "tips": [
+            "La cantidad y el stock mínimo admiten decimales (por ejemplo 0.5)."
+          ],
+          "features": [
+            "Tipo de Registro: Producto, Servicio o Relacionado. Un servicio y un relacionado solo piden código, descripción, costo, precio de venta, Gravado o Exento e información; no llevan cantidad, stock, categoría, proveedor ni lote.",
+            "Campos obligatorios: código, descripción, precio de venta y, en un producto, cantidad y mínimo de stock. El precio costo es opcional.",
+            "Campos que aparecen según lo activado para el negocio: Ubicación, Marca, Medida, Descuento por Defecto %, Comisión por Defecto %, Fecha de vencimiento y Solicitar Receta.",
+            "Los títulos \"Categoria (Click para agregar)\", \"Proveedor (Click para agregar)\", Ubicación y Marca abren una ventana para crear uno nuevo sin salir del formulario.",
+            "Lote: campo de texto para el lote de la cantidad inicial.",
+            "\"Ultimos Productos\" (panel derecho): los últimos registrados."
+          ]
+        },
+        {
+          "id": "inventario-editar",
+          "title": "Editar Producto",
+          "icon": "LuPencil",
+          "menu": "Inventario › Editar Producto",
+          "description": "Modifica los datos de un producto existente, sus precios por cantidad y sus imágenes.",
+          "guides": [
+            {
+              "title": "Editar un producto",
+              "steps": [
+                "Abra Inventario › Editar Producto y busque el producto por código o descripción.",
+                "Haga clic en el producto para abrir el formulario \"Editar Producto\".",
+                "Cambie los datos necesarios (descripción, mínimo de stock, costo, Gravado o Exento, categoría, unidad, proveedor, ubicación, marca, etc.) y guarde.",
+                "Use \"Regresar\" para volver a la lista."
+              ]
+            },
+            {
+              "title": "Poner varios precios a un producto",
+              "steps": [
+                "En el formulario de edición, en el panel \"Detalles\", busque \"Editar Precios\".",
+                "Si el negocio usa precio mayorista o de promoción, elija primero el tipo de precio.",
+                "Escriba la \"Cantidad\" (desde cuántas unidades aplica) y el \"Precio\" (por ejemplo, desde 10 unidades a 1.50) y haga clic en \"Agregar Precio\".",
+                "Para quitar un precio, use el basurero de su fila y confirme."
+              ]
+            },
+            {
+              "title": "Agregar imágenes al producto",
+              "steps": [
+                "En la sección \"Imágenes\" haga clic en \"Agregar\" (el contador muestra cuántas lleva de 3).",
+                "Elija la imagen (JPG, PNG o WEBP), escriba una descripción opcional y guarde.",
+                "Use la lupa para ver una imagen más grande y el basurero para eliminarla."
+              ]
+            }
+          ],
+          "tips": [
+            "También puede llegar aquí desde Ver Productos › menú del producto › Editar.",
+            "El vencimiento se activa o desactiva con un interruptor en el formulario de edición.",
+            "En el detalle del producto (y en la lupa de la barra superior) se ven sus imágenes, hasta 3 por producto."
+          ],
+          "features": [
+            "El código y la cantidad aparecen bloqueados: la cantidad solo cambia con Agregar Productos, Descontar Productos o Ajustar Inventario."
+          ]
+        },
+        {
+          "id": "inventario-agregar",
+          "title": "Agregar Productos (ingreso de compras)",
+          "icon": "LuPackagePlus",
+          "route": "/products/add",
+          "menu": "Inventario › Agregar Productos",
+          "description": "Registra la entrada de mercadería al inventario, normalmente al recibir una compra. Opcionalmente registra la compra como gasto o como cuenta por pagar.",
+          "guides": [
+            {
+              "title": "Ingresar una compra al inventario",
+              "steps": [
+                "Complete el documento: número, tipo (Ninguno, Ticket, Factura, Crédito Fiscal), proveedor y comentario. Sin proveedor se usa el predeterminado y sin comentario queda \"Ingreso de productos\".",
+                "Active \"Sumar Impuestos\" si los costos que ingresará no incluyen impuestos.",
+                "Si pagó la compra con dinero de la caja o una cuenta, active \"Registrar como Gasto\" y complete nombre, cantidad, tipo de pago (Efectivo, Tarjeta, Transferencia o Cheque) y categoría de gasto; con transferencia elija la cuenta.",
+                "Si la compra es al crédito, active \"Crear Cuenta por Pagar\" con su nombre, cantidad y fecha de vencimiento. Los campos con * son obligatorios: si faltan, el sistema avisa \"Faltan algunos datos importantes para continuar!\".",
+                "Guarde para continuar: se muestra el \"Resumen de la Compra\".",
+                "Busque cada producto, escriba la cantidad, el precio de costo y, si aplica, el lote y la fecha de vencimiento (solo se habilita si el producto vence). Guarde cada producto con el botón de la ficha.",
+                "Revise la lista \"Productos ingresados\"; con el botón de cierre de una fila puede quitar un producto.",
+                "Haga clic en \"Guardar Todo\" para aplicar el ingreso. Mientras no haya ningún producto agregado, el botón es \"Cancelar\" y descarta el ingreso."
+              ]
+            }
+          ],
+          "warnings": [
+            "Si agrega un producto que ya estaba en el mismo ingreso, el sistema lo avisa: revise los lotes antes de continuar.",
+            "El ingreso afecta el inventario y el costo promedio al guardar. Los errores de costo o lote se corrigen en Reportes › Productos Ingresados (con permiso)."
+          ],
+          "features": [
+            "\"Ultimos Ingresos\" (panel derecho, sin ingreso en curso): los ingresos anteriores con documento, productos, proveedor, registro y fecha; haga clic en uno para ver su detalle."
+          ]
+        },
+        {
+          "id": "inventario-descontar",
+          "title": "Descontar Productos",
+          "icon": "LuPackageMinus",
+          "route": "/products/remove",
+          "menu": "Inventario › Descontar Productos",
+          "description": "Registra salidas de inventario que no son ventas: averías, traslados, devoluciones, cambios u otros.",
+          "guides": [
+            {
+              "title": "Registrar una salida de inventario",
+              "steps": [
+                "Elija el \"Tipo de Salida\": Avería, Traslado, Devolución, Cambio u Otros, escriba un comentario y guarde para abrir el registro.",
+                "Busque el producto. Se muestran su código y existencia.",
+                "Escriba la cantidad (no puede ser mayor a la existencia disponible) y guárdela. Si el producto maneja lotes, haga clic antes en el icono de lote (rojo cuando ya eligió uno) para abrir \"Asignar Lote\" y elegir de cuál sale; un lote sin cantidad suficiente no se puede elegir.",
+                "Repita con los demás productos; con el botón de cierre de una fila puede quitar un producto.",
+                "Haga clic en \"Guardar todo\". Mientras no haya productos, el botón es \"Cancelar\" y descarta el registro."
+              ]
+            }
+          ],
+          "features": [
+            "\"Ultimos Registros\" muestra las salidas anteriores; haga clic en una para ver su detalle."
+          ],
+          "warnings": [
+            "Aparece \"Registros sin terminar\" cuando otro empleado dejó una salida abierta: solo quien la abrió puede guardarla o cancelarla.",
+            "Si agrega un producto que ya descontó en el mismo registro, el sistema lo avisa: revise los lotes antes de continuar."
+          ]
+        },
+        {
+          "id": "inventario-relacionados",
+          "title": "Productos Relacionados",
+          "icon": "LuLink2",
+          "route": "/products/linked",
+          "menu": "Inventario › Productos Relacionados",
+          "description": "Lista de los productos compuestos (combos o kits) activos y de los productos que los forman. Se ordena por código y se puede buscar.",
+          "guides": [
+            {
+              "title": "Revisar o cambiar los componentes de un combo",
+              "steps": [
+                "Busque el producto relacionado.",
+                "Haga clic en él para ver los \"Productos Vinculados\" con su cantidad y su existencia.",
+                "Con el icono de editar abra \"Administrar Productos Vinculados\": busque un producto, indique la \"Cantidad a vincular\" (hasta 100) y guarde; con el basurero quita un componente."
+              ]
+            }
+          ],
+          "tips": [
+            "Los productos vinculados en rojo son los que ya están en el mínimo de stock o por debajo. Al vender el combo se descuentan sus componentes."
+          ]
+        },
+        {
+          "id": "inventario-bajas",
+          "title": "Bajas Existencias",
+          "icon": "LuTrendingDown",
+          "route": "/products/stock",
+          "menu": "Inventario › Bajas Existencias",
+          "description": "Productos cuya existencia está en el mínimo de stock o por debajo (no incluye los productos de restaurante). Úsela para preparar sus pedidos a proveedores.",
+          "tips": [
+            "Configure el \"Minimo de Stock\" de cada producto al registrarlo o editarlo para que aparezca aquí a tiempo."
+          ],
+          "features": [
+            "Misma tabla y búsqueda que Ver Productos, con el menú de cada producto, y el total de registros en las estadísticas.",
+            "Haga clic en el código o la descripción para ver el detalle del producto."
+          ]
+        },
+        {
+          "id": "inventario-vencimientos",
+          "title": "Próximos Vencimientos",
+          "icon": "LuCalendarClock",
+          "route": "/products/expiring",
+          "menu": "Inventario › Proximos Vencimientos",
+          "description": "Lotes vencidos o próximos a vencer, con proveedor, cantidad, costo y fecha de expiración.",
+          "features": [
+            "Estadísticas de vencimiento: total mostrado, expirados y próximos a expirar.",
+            "Tabla: producto, lote, proveedor, cantidad, costo, fecha de expiración y estado (\"Expirado\" en rojo o \"Por Expirar\" en verde). Haga clic en un producto para ver sus detalles."
+          ],
+          "tips": [
+            "Para vender primero un lote próximo a vencer, use el icono de lote en la orden de venta."
+          ]
+        },
+        {
+          "id": "inventario-kardex",
+          "title": "Kardex",
+          "icon": "LuHistory",
+          "menu": "Inventario › Kardex",
+          "description": "Historial de todos los movimientos de un producto con entradas, salidas y saldo, valorizado por costo promedio ponderado.",
+          "guides": [
+            {
+              "title": "Consultar el kardex de un producto",
+              "steps": [
+                "Abra Inventario › Kardex y busque el producto; haga clic en él (también se llega desde Ver Productos › menú del producto › Kardex).",
+                "En \"Busqueda\" elija el rango de fechas y aplique; sin fechas la tabla indica \"Sin registros, seleccione una fecha\".",
+                "Arriba se ven el código, la categoría, el stock actual y el método de cálculo (costo promedio ponderado).",
+                "Cada movimiento muestra fecha, detalle, costo, entradas (cantidad y total), salidas (cantidad y total) y saldo (cantidad y total).",
+                "Haga clic en un movimiento para ver \"Detalles de la Transacción\": venta, ingreso de producto, inventario inicial, avería (también traslados, devoluciones y cambios), ajuste de inventario, retorno o transferencia desde o hacia una sucursal.",
+                "Use \"Regresar\" para volver."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "inventario-historial",
+          "title": "Inventario a una fecha",
+          "icon": "LuPackage",
+          "route": "/inventory/history",
+          "menu": "Inventario › Inventario a una fecha",
+          "description": "Cantidad, costo y valor de cada producto al cierre de la fecha elegida, según el kardex. Incluye los productos que hoy están eliminados y los que quedaron en cero. Requiere el permiso de existencias.",
+          "guides": [
+            {
+              "title": "Consultar el inventario de un día",
+              "steps": [
+                "Abra Inventario › Inventario a una fecha.",
+                "En \"Seleccionar fecha\" elija el día (una sola fecha) y aplique: el inventario se consulta al cierre de ese día.",
+                "Revise la tabla con código, producto, costo unitario, cantidad y total.",
+                "En \"DESCARGAS\" exporte el resultado a Excel."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "efectivo",
+      "label": "Efectivo",
+      "icon": "LuWallet",
+      "color": "text-warning",
+      "description": "Movimientos de dinero fuera de las ventas: gastos, remesas, cuentas bancarias y transferencias entre cuentas.",
+      "subsections": [
+        {
+          "id": "efectivo-gastos",
+          "title": "Registro de Gastos",
+          "icon": "LuReceipt",
+          "route": "/cash/expenses",
+          "menu": "Efectivo › Registro de Gastos",
+          "description": "Registra los gastos del negocio. Los pagados en efectivo se restan de la caja abierta y aparecen en el corte.",
+          "guides": [
+            {
+              "title": "Registrar un gasto",
+              "steps": [
+                "Verifique que tiene una caja abierta.",
+                "Escriba el \"Nombre del Gasto\" y, si quiere, una descripción.",
+                "Elija \"Sin Comprobante\" o \"Con Comprobante\". Con comprobante, indique el tipo (Ticket, Factura, Crédito Fiscal) y su número.",
+                "Elija el tipo de pago: Efectivo, Tarjeta, Transferencia, Cheque, BTC u Otro. Si no es efectivo, seleccione la cuenta de la que salió el dinero.",
+                "Elija la categoría de gasto. Para crear una nueva haga clic en el título \"Categoria de gasto +\": escriba el nombre (por ejemplo \"Oficina\" o \"Transporte\") y guarde; la ventana también lista las categorías existentes.",
+                "Escriba la cantidad y guarde."
+              ]
+            },
+            {
+              "title": "Adjuntar la foto del comprobante",
+              "steps": [
+                "En \"Ultimos movimientos\", haga clic en el icono de imagen del gasto.",
+                "Seleccione una imagen JPG, PNG o WEBP y guárdela. Desde la misma ventana puede verla o eliminarla."
+              ]
+            },
+            {
+              "title": "Anular un gasto",
+              "steps": [
+                "En \"Ultimos movimientos\" use el basurero de la fila del gasto y confirme.",
+                "El gasto queda en rojo (anulado) y deja de sumarse al total."
+              ]
+            }
+          ],
+          "features": [
+            "\"Ultimos movimientos\" lista los gastos de \"Hoy\" o \"Todos\" (con paginación), con fecha y hora, nombre y descripción, cantidad y tipo de pago, y el total de gastos al pie (sin contar los anulados)."
+          ],
+          "warnings": [
+            "Sin caja abierta aparece \"Debe aperturar caja para agregar gastos\"."
+          ],
+          "tips": [
+            "Un gasto con comprobante puede llevar la foto: use el icono de imagen de la fila (JPG, PNG o WEBP); desde la misma ventana puede verla o eliminarla."
+          ]
+        },
+        {
+          "id": "efectivo-remesas",
+          "title": "Remesas de Efectivo",
+          "icon": "LuArrowUpDown",
+          "route": "/cash/remittances",
+          "menu": "Efectivo › Remesas de Efectivo",
+          "description": "Registra el efectivo que se retira de la caja para depositarlo en una cuenta bancaria o guardarlo en otro lugar.",
+          "guides": [
+            {
+              "title": "Registrar una remesa",
+              "steps": [
+                "Con la caja abierta, escriba el \"Nombre de la remesa\" y, si quiere, una descripción.",
+                "Elija la \"Cuenta a transferir\" donde se deposita el dinero (cada opción muestra cuenta, banco y saldo).",
+                "Escriba la cantidad y guarde. La remesa se resta del efectivo de la caja y se suma a la cuenta."
+              ]
+            },
+            {
+              "title": "Anular una remesa",
+              "steps": [
+                "En \"Ultimas remesas\" use el basurero de la fila y confirme. La remesa queda en rojo y no se suma al total."
+              ]
+            }
+          ],
+          "features": [
+            "\"Ultimas remesas\": hora, descripción, cantidad y cuenta de cada remesa, y el total de remesas al pie."
+          ],
+          "warnings": [
+            "Sin caja abierta el formulario no se puede usar: aparece el aviso de que debe aperturar caja."
+          ]
+        },
+        {
+          "id": "efectivo-cuentas",
+          "title": "Cuentas Bancarias",
+          "icon": "LuBuilding2",
+          "route": "/cash/bank-accounts",
+          "menu": "Efectivo › Cuentas Bancarias",
+          "description": "Las cuentas donde el negocio guarda su dinero: caja chica, cuentas de banco, chequeras y tarjetas.",
+          "guides": [
+            {
+              "title": "Crear una cuenta",
+              "steps": [
+                "En \"Nueva Cuenta\" escriba el nombre o número de cuenta y el nombre del banco (obligatorios).",
+                "Elija el tipo: Caja Chica, Cuenta, Chequera o Tarjeta.",
+                "Escriba la \"Cantidad Inicial\" (saldo actual) y guarde."
+              ]
+            },
+            {
+              "title": "Eliminar una cuenta",
+              "steps": [
+                "En \"Listado de cuentas\" use el basurero de la fila y confirme."
+              ]
+            }
+          ],
+          "features": [
+            "\"Listado de cuentas\" muestra cuenta, banco, tipo y saldo de cada una, y el balance total."
+          ],
+          "warnings": [
+            "La cuenta principal no se puede eliminar, y una cuenta ya eliminada queda en rojo."
+          ]
+        },
+        {
+          "id": "efectivo-flujo",
+          "title": "Flujo de Efectivo",
+          "icon": "LuArrowLeftRight",
+          "route": "/cash/transfers",
+          "menu": "Efectivo › Flujo de Efectivo",
+          "description": "Registra entradas o salidas de dinero de las cuentas que no son ventas ni gastos (por ejemplo, un aporte de capital o un retiro del dueño).",
+          "guides": [
+            {
+              "title": "Registrar una entrada o salida",
+              "steps": [
+                "En el selector elija \"Ingreso de efectivo\" o \"Salida de efectivo\".",
+                "Escriba la descripción (obligatoria), elija la cuenta y la cantidad.",
+                "Guarde. El movimiento aparece en el \"Listado de transacciones\" con su indicador verde (ingreso) o rojo (salida)."
+              ]
+            }
+          ],
+          "tips": [
+            "Un movimiento mal registrado se anula con el basurero de su fila; queda en rojo."
+          ]
+        },
+        {
+          "id": "efectivo-historial",
+          "title": "Historial de Transferencias",
+          "icon": "LuHistory",
+          "route": "/cash/history",
+          "menu": "Efectivo › Historial de Transferencias",
+          "description": "Historial de los movimientos de las cuentas y del total disponible en ellas, con la opción de transferir dinero entre cuentas.",
+          "guides": [
+            {
+              "title": "Transferir dinero entre cuentas",
+              "steps": [
+                "Haga clic en \"Transferir entre cuentas\".",
+                "Elija la cuenta origen y la cuenta destino (deben ser distintas).",
+                "Escriba la cantidad a transferir (mayor a cero) y guarde."
+              ]
+            }
+          ],
+          "features": [
+            "\"Historial de transacciones\": nombre del movimiento (rojo si el dinero salió de una cuenta, verde si entró), cuenta de origen y de destino, cantidad y usuario.",
+            "\"Total en cuentas\": una tarjeta por cuenta con su banco y saldo (en rojo si es negativo)."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cuentas",
+      "label": "Cuentas",
+      "icon": "LuCreditCard",
+      "color": "text-danger",
+      "description": "Créditos otorgados a clientes (cuentas por cobrar) y deudas con proveedores (cuentas por pagar).",
+      "subsections": [
+        {
+          "id": "cuentas-cobrar",
+          "title": "Cuentas por cobrar",
+          "icon": "LuTrendingUp",
+          "route": "/accounts/receivable",
+          "menu": "Cuentas › Cuentas por cobrar",
+          "description": "Los créditos que se dieron al vender. Aquí se reciben los abonos de los clientes y se administran los planes de cuotas.",
+          "features": [
+            "Resumen (panel derecho): cantidad de créditos pendientes y total pendiente de lo que muestra la tabla.",
+            "Filtros Todos, Pagadas o Pendientes y búsqueda por cliente.",
+            "Tabla: cliente (al pasar el cursor, la fecha en que se otorgó), factura, vencimiento, total, saldo y estado (ACTIVO o PAGADO). En créditos por cuotas indica cuántas cuotas están vencidas. Una fila en rojo es un crédito ya pagado por completo.",
+            "Descargas: seleccione un cliente y un rango de fechas para generar su \"Descargar Estado de Cuenta\".",
+            "Tabla de abonos: cada abono con su tipo de pago y un botón de eliminar; un abono eliminado queda en rojo y, al pasar el cursor, indica quién lo borró y cuándo. Con el enlace de impresión activo, el icono de impresora imprime el comprobante."
+          ],
+          "guides": [
+            {
+              "title": "Recibir un abono",
+              "steps": [
+                "Verifique que tiene una caja abierta.",
+                "Busque el cliente y haga clic en el botón de abonos del crédito.",
+                "Revise el detalle: saldo, abonos anteriores, productos y, en créditos por cuotas, las cuotas vencidas y la próxima.",
+                "Elija el tipo de pago (y la cuenta, si no es efectivo) y escriba la cantidad. No puede ser mayor al saldo.",
+                "En créditos por cuotas puede usar \"Pagar a la fecha\" (lo vencido) o \"Liquidar\" (todo el crédito hoy).",
+                "Guarde el abono. Puede imprimir el comprobante."
+              ]
+            },
+            {
+              "title": "Créditos por cuotas: mora y reestructuración",
+              "steps": [
+                "En el detalle del crédito, la tabla de cuotas muestra vencimiento, capital, interés, mora, cuota, saldo y estado.",
+                "Un usuario con permiso puede usar \"Condonar mora\" en una cuota vencida.",
+                "Para cambiar el plan, use \"Reestructurar crédito\": elija la nueva frecuencia, número de cuotas y primera cuota, revise el plan calculado y confirme.",
+                "Descargue el \"Plan de pagos (PDF)\" para entregarlo al cliente."
+              ]
+            }
+          ],
+          "tips": [
+            "Cada abono paga primero lo vencido (mora, interés y capital). Lo que se abona antes de la fecha se descuenta de las últimas cuotas, solo a capital.",
+            "El interés y la mora se facturan en cada abono con el mismo tipo de documento de la venta."
+          ],
+          "warnings": [
+            "Si un abono se registró mal, elimínelo desde la tabla de abonos del crédito (puede ser de cualquier día); queda registrado como eliminado, con quién lo borró y cuándo."
+          ]
+        },
+        {
+          "id": "cuentas-antiguedad",
+          "title": "Cartera por antigüedad",
+          "icon": "LuCalendarClock",
+          "route": "/accounts/aging",
+          "menu": "Cuentas › Cartera por antigüedad",
+          "description": "Clasifica lo que deben los clientes según los días de atraso, para priorizar el cobro.",
+          "features": [
+            "Resumen con el total por cobrar y el total vencido.",
+            "Columnas por cliente: Al día, 1-30 días, 31-60 días, 61-90 días, Más de 90 días y Total, con la suma de cada columna al pie.",
+            "Búsqueda por cliente y botón \"Descargar Excel\"."
+          ]
+        },
+        {
+          "id": "cuentas-pagar",
+          "title": "Cuentas por Pagar",
+          "icon": "LuTrendingDown",
+          "route": "/accounts/payable",
+          "menu": "Cuentas › Cuentas por Pagar",
+          "description": "Las deudas con proveedores, creadas desde un ingreso de compra o manualmente.",
+          "guides": [
+            {
+              "title": "Crear una cuenta por pagar",
+              "steps": [
+                "Haga clic en el botón para agregar cuenta.",
+                "Busque el proveedor y escriba el nombre de la cuenta (obligatorio) y, si quiere, una descripción.",
+                "Elija el tipo de documento (Ninguno, Ticket, Factura o Crédito Fiscal) y su número.",
+                "Escriba la cantidad (obligatoria) y la fecha de vencimiento y guarde."
+              ]
+            },
+            {
+              "title": "Registrar un pago al proveedor",
+              "steps": [
+                "Con la caja abierta, haga clic en el botón de abonos de la cuenta.",
+                "Elija el tipo de pago (y la cuenta, si no es efectivo) y la cantidad (no mayor al saldo).",
+                "Guarde. El saldo se actualiza y el abono aparece en la tabla de abonos."
+              ]
+            },
+            {
+              "title": "Registrar notas de crédito del proveedor (si está activado)",
+              "steps": [
+                "En la cuenta abra \"notas de credito\". Se listan todas las notas registradas, cada una con su basurero.",
+                "Escriba el número de la nota, la factura afectada, la fecha de emisión y la cantidad (no mayor al saldo que se muestra) y guarde. Todos los campos son obligatorios.",
+                "Una cuenta puede tener varias notas de crédito. Para eliminar una use su basurero y confirme \"Seguro que desea eliminar la nota de credito?\"; no se puede si la cuenta tiene abonos activos."
+              ]
+            }
+          ],
+          "tips": [
+            "Use los filtros Todos, Pagadas y Pendientes y la búsqueda por proveedor para encontrar una cuenta rápidamente."
+          ],
+          "features": [
+            "Resumen: créditos pendientes y total pendiente.",
+            "Filtros Todos, Pagadas y Pendientes, y búsqueda por proveedor; el estado es ACTIVO o PAGADO y las cuentas pagadas se marcan en rojo.",
+            "Tabla de abonos de cada cuenta, con el botón de eliminar un abono (queda en rojo como eliminado)."
+          ]
+        },
+        {
+          "id": "cuentas-cliente",
+          "title": "Ver el crédito desde el cliente",
+          "icon": "LuUsers",
+          "menu": "Directorio › Contactos › Ver Dashboard",
+          "description": "El dashboard de cada cliente muestra su crédito: saldo pendiente, vencido, límite y disponible, con un acceso directo a cuentas por cobrar."
+        }
+      ]
+    },
+    {
+      "id": "directorio",
+      "label": "Directorio",
+      "icon": "LuUsers",
+      "color": "text-info",
+      "description": "Clientes, proveedores, repartidores y referidos del negocio.",
+      "subsections": [
+        {
+          "id": "directorio-contactos",
+          "title": "Contactos",
+          "icon": "LuUsers",
+          "route": "/contacts/search",
+          "menu": "Directorio › Contactos (o Clientes, Repartidores, Proveedores, Referidos)",
+          "description": "Lista de contactos con búsqueda. Las opciones Clientes, Repartidores, Proveedores y Referidos del menú muestran solo ese tipo.",
+          "features": [
+            "Búsqueda por nombre y total de contactos (panel derecho); \"Agregar Contacto\" abre el formulario y \"DESCARGAS\" exporta la lista.",
+            "Menú de cada contacto (engranaje): Ver Contacto (ficha con todos sus datos), Ver Dashboard, Editar y Eliminar.",
+            "El contacto predeterminado del sistema (consumidor final) solo permite cambiar su nombre."
+          ],
+          "guides": [
+            {
+              "title": "Registrar un cliente para Crédito Fiscal",
+              "steps": [
+                "Haga clic en \"Agregar Contacto\".",
+                "Marque el tipo: Cliente (puede marcar también Proveedor, Repartidor o Referido).",
+                "Escriba el nombre completo (obligatorio), número de documento, teléfono, dirección, email y fecha de nacimiento.",
+                "En \"Datos de contribuyente\" complete nombre del contribuyente, documento (NIT), registro (NRC), actividad económica (búsquela por código o nombre), giro, dirección, departamento y municipio.",
+                "Elija el tipo de contribuyente (Contribuyente o Gran Contribuyente) y, si aplica, marque \"Cliente Exento\".",
+                "Opcional: límite de crédito (vacío es sin límite), \"Bloquear Credito al cliente\" y vendedor asignado.",
+                "Para clientes del exterior use \"+ Agregar datos de exportación\": tipo de régimen (EX-1, EX-2, EX-3 o TA-1), recinto fiscal, régimen y país.",
+                "Guarde."
+              ]
+            },
+            {
+              "title": "Editar o eliminar un contacto",
+              "steps": [
+                "Busque el contacto y abra su menú.",
+                "Elija \"Editar\", cambie los datos y guarde; o \"Eliminar\" y confirme."
+              ]
+            },
+            {
+              "title": "Corregir un contacto rechazado por Hacienda",
+              "steps": [
+                "En Facturación › Documentos Rechazados abra el documento y use \"Editar contacto\".",
+                "La pantalla \"Editar: nombre\" muestra el documento rechazado y \"Qué corregir\"; el formulario marca en rojo los campos que Hacienda rechazó.",
+                "Corrija, guarde y use \"Volver a documentos rechazados\" para reenviar el documento."
+              ]
+            }
+          ],
+          "tips": [
+            "También puede registrar un cliente desde la pantalla de ventas: Opciones › Asignar Cliente › \"Registrar Cliente\".",
+            "Los campos del formulario cambian según el país del negocio (por ejemplo NIT en Guatemala o RTN en Honduras).",
+            "Para editar un contacto abra su ficha y use la edición: desde un documento rechazado el formulario marca qué datos corregir."
+          ]
+        },
+        {
+          "id": "directorio-dashboard",
+          "title": "Dashboard del contacto",
+          "icon": "LuChartBar",
+          "menu": "Directorio › Contactos › menú del contacto › Ver Dashboard",
+          "description": "Resumen comercial de un cliente para conocer sus hábitos de compra.",
+          "features": [
+            "Ficha del cliente con sus datos y el selector de período para todas las cifras (\"Ver todo el historial\" quita el período).",
+            "Indicadores: total comprado, compras, ticket promedio, unidades, última compra, frecuencia, cliente desde y producto favorito.",
+            "Gráfico de compras por mes y los 10 productos más comprados.",
+            "Historial de compras: haga clic en un documento para ver su detalle.",
+            "Devoluciones: notas de crédito, eventos de retorno y ventas anuladas.",
+            "Crédito: saldo pendiente, vencido, límite y disponible, con acceso a cuentas por cobrar."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "historiales",
+      "label": "Historiales",
+      "icon": "LuHistory",
+      "color": "text-text-muted",
+      "description": "Consultas de lo ocurrido en un rango de fechas: ventas, gastos, cortes, descuentos, anulaciones y más. Todas funcionan igual.",
+      "subsections": [
+        {
+          "id": "historiales-uso",
+          "title": "Cómo usar cualquier historial",
+          "icon": "LuCalendarClock",
+          "menu": "Historiales",
+          "description": "Todas las páginas de historiales tienen el mismo panel a la derecha para elegir fechas y descargar.",
+          "guides": [
+            {
+              "title": "Consultar un historial",
+              "steps": [
+                "Abra el historial que necesita desde el menú Historiales.",
+                "En \"Seleccionar fechas\" elija una fecha o un \"Rango de Fechas\" (fecha inicial y \"Fecha Final\").",
+                "Si el historial lo pide, elija también el cliente, usuario o producto (panel derecho, sobre las fechas).",
+                "Haga clic en \"Aplicar\". Los resultados y sus totales aparecen a la izquierda.",
+                "Use \"DESCARGAS\" para obtener el mismo reporte en PDF o Excel."
+              ]
+            }
+          ],
+          "tips": [
+            "En los historiales de ventas, haga clic en el número de factura para ver el detalle del documento y sus opciones (imprimir, nota de crédito, anular, etc.)."
+          ]
+        },
+        {
+          "id": "historiales-ventas",
+          "title": "Ventas",
+          "icon": "LuPackage",
+          "route": "/history/sales",
+          "menu": "Historiales › Ventas",
+          "description": "Productos vendidos en el período, agrupados: código, producto, cantidad, precio, descuento y total, con unidades vendidas y total de ventas."
+        },
+        {
+          "id": "historiales-listado",
+          "title": "Listado de Ventas",
+          "icon": "LuClipboardList",
+          "route": "/history/list",
+          "menu": "Historiales › Listado de Ventas",
+          "description": "Cada documento cobrado en el período: fecha, cajero, factura, tipo de pago, descuento y total."
+        },
+        {
+          "id": "historiales-usuario",
+          "title": "Ventas por Usuario",
+          "icon": "LuUser",
+          "route": "/history/by-user",
+          "menu": "Historiales › Ventas por Usuario",
+          "description": "Las ventas de un cajero o vendedor con fecha cobrada, factura, cliente, tipo de pago, descuentos y totales; en restaurante también la propina. Elija el usuario antes de aplicar.",
+          "tips": [
+            "Puede elegir \"Todos los usuarios\" para ver las ventas de todos juntos."
+          ]
+        },
+        {
+          "id": "historiales-cliente",
+          "title": "Ventas por Cliente",
+          "icon": "LuUsers",
+          "route": "/history/by-customer",
+          "menu": "Historiales › Ventas por Cliente",
+          "description": "Las compras de un cliente en el período. Seleccione el contacto antes de aplicar."
+        },
+        {
+          "id": "historiales-producto",
+          "title": "Ventas por Producto",
+          "icon": "LuTag",
+          "route": "/history/by-product",
+          "menu": "Historiales › Ventas por Producto",
+          "description": "A quién y cuándo se vendió un producto, con cantidad, precio, descuento y totales. En negocios de productos también muestra el código y el lote. Seleccione el producto antes de aplicar.",
+          "tips": [
+            "Con la función de cambiar lote en ventas activada, aparece un buscador de lote para filtrar por él. En restaurante solo se ofrecen los platillos y no se muestran código ni lote."
+          ]
+        },
+        {
+          "id": "historiales-dia",
+          "title": "Ventas por Día",
+          "icon": "LuCalendarClock",
+          "route": "/history/by-day",
+          "menu": "Historiales › Ventas por Dia",
+          "description": "Totales de cada día: subtotal, IVA, exento, gravado y total. Útil para cuadrar con la contabilidad."
+        },
+        {
+          "id": "historiales-descuentos",
+          "title": "Ventas con descuento",
+          "icon": "LuTag",
+          "route": "/history/discounted",
+          "menu": "Historiales › Ventas con descuento",
+          "description": "Documentos que tuvieron descuento, con el monto descontado, para controlar su uso."
+        },
+        {
+          "id": "historiales-gastos",
+          "title": "Gastos",
+          "icon": "LuReceipt",
+          "route": "/history/expenses",
+          "menu": "Historiales › Gastos",
+          "description": "Gastos registrados con fecha, empleado, documento y número, categoría, nombre del gasto, tipo de pago, cuenta y monto, más el total de gastos."
+        },
+        {
+          "id": "historiales-remesas",
+          "title": "Remesas",
+          "icon": "LuWallet",
+          "route": "/history/remittances",
+          "menu": "Historiales › Remesas",
+          "description": "Remesas de efectivo registradas con fecha, nombre, descripción, tipo de pago, cajero y cantidad, más el total de remesas."
+        },
+        {
+          "id": "historiales-cortes",
+          "title": "Cortes de Caja",
+          "icon": "LuBanknote",
+          "route": "/history/cash-closures",
+          "menu": "Historiales › Cortes de Caja",
+          "description": "Cada corte con apertura, cierre, efectivo inicial y final, cajero, entradas, salidas y diferencia.",
+          "tips": [
+            "Eliminar un corte solo está disponible con el permiso correspondiente y únicamente para el último corte cerrado de cada cajero; al eliminarlo se vuelve a abrir la caja con el mismo efectivo inicial."
+          ],
+          "warnings": [
+            "Un cajero solo puede tener una caja abierta a la vez."
+          ]
+        },
+        {
+          "id": "historiales-anuladas",
+          "title": "Órdenes Eliminadas",
+          "icon": "LuTrash2",
+          "route": "/history/deleted",
+          "menu": "Historiales › Ordenes Eliminadas",
+          "description": "Documentos anulados: fecha de cobro, fecha de anulación, cajero, factura, tipo de pago y total."
+        },
+        {
+          "id": "historiales-costos",
+          "title": "Listado de costos",
+          "icon": "LuChartBar",
+          "route": "/history/costs",
+          "menu": "Historiales › Listado de costos",
+          "description": "Ingresos de mercadería con cantidad, existencia, precio de costo, precio de venta, utilidad unitaria y total, porcentaje de utilidad y proveedor. Este historial no usa fechas: se ve el listado completo (25 por página) o el de un producto si lo elige."
+        },
+        {
+          "id": "historiales-envios",
+          "title": "Notas de Envío",
+          "icon": "LuTruck",
+          "route": "/history/shipping-notes",
+          "menu": "Historiales › Notas de Envio",
+          "description": "Notas de envío emitidas, con cliente, productos y total."
+        },
+        {
+          "id": "historiales-abonos",
+          "title": "Abonos Recibidos",
+          "icon": "LuWallet",
+          "route": "/history/payments",
+          "menu": "Historiales › Abonos Recibidos",
+          "description": "Abonos de clientes a sus créditos con fecha, cajero, factura, cliente, productos y el total de abonos."
+        },
+        {
+          "id": "historiales-comisiones",
+          "title": "Comisiones Pagadas",
+          "icon": "LuStar",
+          "route": "/history/commissions",
+          "menu": "Historiales › Comisiones Pagadas",
+          "description": "Comisiones de un contacto referido en el período, por documento (normales o de puntos de oro) con su estado: fecha, tipo, cliente, facturas, total, comisión y estado. Busque el contacto en el panel derecho; la descarga es en PDF."
+        },
+        {
+          "id": "historiales-acciones",
+          "title": "Historial de Acciones",
+          "icon": "LuShieldCheck",
+          "route": "/history/activity",
+          "menu": "Historiales › Historial de Acciones",
+          "description": "Quién hizo cada cambio sensible (anulaciones, descuentos, cambios de precio, caja, inventario, usuarios y configuración), cuándo y qué cambió. Filtre por módulo, acción o usuario y haga clic en una fila para ver el usuario, el antes y el después. Si la acción se autorizó con código, la descripción lo indica. Se guardan los últimos 15 días."
+        }
+      ]
+    },
+    {
+      "id": "herramientas",
+      "label": "Herramientas",
+      "icon": "LuWrench",
+      "color": "text-text-muted",
+      "description": "Cotizaciones, comisiones de referidos, puntos de oro y ajuste de inventario físico.",
+      "subsections": [
+        {
+          "id": "herramientas-cotizaciones",
+          "title": "Cotizaciones",
+          "icon": "LuClipboardList",
+          "route": "/tools/quotes",
+          "menu": "Herramientas › Cotizaciones",
+          "description": "Las cotizaciones guardadas desde la pantalla de ventas, con cliente, fecha y vencimiento.",
+          "guides": [
+            {
+              "title": "Crear una cotización",
+              "steps": [
+                "En la pantalla de ventas agregue los productos y asigne el cliente.",
+                "Abra \"Opciones\" › \"Guardar como Cotización\"."
+              ]
+            },
+            {
+              "title": "Convertir una cotización en venta",
+              "steps": [
+                "Busque la cotización por número o cliente y haga clic en \"Ver detalles\".",
+                "Revise los productos: solicitados, disponibles y faltantes en inventario.",
+                "Haga clic en \"Facturar\". La cotización se carga como orden en la pantalla de ventas para cobrarla."
+              ]
+            }
+          ],
+          "features": [
+            "Lista con número, cliente, documento, fecha y fecha de expiración de cada cotización. Búsqueda por número o cliente.",
+            "El icono \"Ver detalles\" abre la cotización con el cliente, su dirección, la fecha de creación y el número, y la tabla de productos con lo solicitado y lo disponible.",
+            "Al pie del detalle un aviso indica si \"Todos los productos tienen existencias disponibles\" o cuáles no alcanzan."
+          ]
+        },
+        {
+          "id": "herramientas-comisiones",
+          "title": "Detalle de Comisiones",
+          "icon": "LuPercent",
+          "route": "/tools/commissions",
+          "menu": "Herramientas › Detalle de Comisiones",
+          "description": "Calcula y paga las comisiones de los referidos sobre las ventas asociadas a ellos.",
+          "guides": [
+            {
+              "title": "Generar y pagar una comisión",
+              "steps": [
+                "Busque el contacto en \"Buscar Referido\" y selecciónelo.",
+                "Haga clic en \"AGREGAR\": el panel pasa a \"NUEVA COMISION\" con las \"FACTURAS PENDIENTES DE PAGAR\" de ese referido.",
+                "En la tabla active el interruptor de cada producto que va a incluir en la comisión (las ventas al crédito pendiente no se pueden incluir).",
+                "Haga clic en \"Guardar\" para crear la comisión, o en \"Cancelar\" para salir sin crearla (Guardar se habilita cuando marcó al menos un producto).",
+                "En el listado, abra la comisión: verá el cliente referido, facturas, productos, ventas, comisión bruta, retención (10%) y total a pagar.",
+                "Haga clic en \"PAGAR\" para registrarla como pagada, o en \"ELIMINAR\" si se creó por error. Una comisión eliminada muestra quién la eliminó."
+              ]
+            }
+          ],
+          "tips": [
+            "Para que una venta genere comisión, asigne el referido en la venta (Opciones › Asignar Referido)."
+          ],
+          "features": [
+            "Estados de una comisión: Creado, Activo, Pagado y Eliminado. El tipo puede ser Normal o de Puntos de Oro."
+          ]
+        },
+        {
+          "id": "herramientas-puntos",
+          "title": "Puntos de Oro",
+          "icon": "LuStar",
+          "route": "/tools/gold-points",
+          "menu": "Herramientas › Puntos de Oro",
+          "description": "Reportes de comisiones por puntos de oro en un rango de fechas.",
+          "guides": [
+            {
+              "title": "Crear un reporte de puntos de oro",
+              "steps": [
+                "En \"SELECCIONAR FECHA\" elija el rango y aplique para crear el reporte (si no hay datos, la pantalla pide seleccionar un rango).",
+                "Abra el reporte (\"RESUMEN DE COMISIONES PAGADAS\") para ver órdenes afectadas, total de comisiones, total de puntos de oro, retenciones y total a pagar.",
+                "Haga clic en \"PAGAR REPORTE\" o \"ELIMINAR REPORTE\" mientras esté en estado Creado."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "herramientas-ajuste",
+          "title": "Ajustar Inventario",
+          "icon": "LuSlidersHorizontal",
+          "route": "/tools/adjustments",
+          "menu": "Herramientas › Ajustar Inventario",
+          "description": "Iguala el inventario del sistema con el conteo físico. Cada diferencia queda registrada en el kardex como ajuste.",
+          "guides": [
+            {
+              "title": "Hacer un conteo físico",
+              "steps": [
+                "Haga clic en \"Iniciar ajuste de inventario\" (solo si no hay otro en curso).",
+                "Busque cada producto contado.",
+                "Si la cantidad del sistema es correcta, haga clic en \"Aceptar\".",
+                "Si no coincide, haga clic en \"Cambiar\", escriba la cantidad real en \"Actualizar Cantidad\" y guarde.",
+                "Cuando termine, haga clic en \"Finalizar ajuste de inventario\".",
+                "Revise el ajuste en el listado (estado \"Finalizado\"): haga clic en él para ver \"Productos cambiados\" con la cantidad anterior, la establecida y la diferencia."
+              ]
+            }
+          ],
+          "warnings": [
+            "La cantidad de cada producto se compara con la existencia del sistema al momento de guardarlo. Puede seguir vendiendo durante el ajuste, pero guarde cada producto apenas lo cuente.",
+            "Solo puede haber un ajuste de inventario en curso: si otro usuario lo inició, aparece \"... tiene un ajuste de inventario en curso desde ...\" y no podrá iniciar otro hasta que se finalice."
+          ]
+        },
+        {
+          "id": "herramientas-importar",
+          "title": "Importar productos desde Excel",
+          "icon": "LuDownload",
+          "route": "/tools/import",
+          "description": "Carga masiva de productos al inventario desde un archivo de Excel con el formato correcto. Esta pantalla no aparece en el menú: se entra por la dirección /tools/import o con ayuda de soporte.",
+          "guides": [
+            {
+              "title": "Importar un archivo",
+              "steps": [
+                "En \"Agregar archivo\" elija el archivo de Excel con el formato correcto.",
+                "Haga clic en \"Iniciar Importación\" y espere sin salir de la página: puede tardar unos minutos.",
+                "Al terminar se avisa \"Importación completada con éxito\"; revise su inventario."
+              ]
+            }
+          ],
+          "warnings": [
+            "Si el archivo no tiene el formato correcto la importación falla o la información no se agrega. Si todos los productos ya existían, termina \"sin nuevos productos agregados\"."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "whatsapp",
+      "label": "WhatsApp",
+      "icon": "FaWhatsapp",
+      "color": "text-success",
+      "description": "Chatbot de WhatsApp para clientes: el bot atiende preguntas y arma pedidos; usted atiende las conversaciones y convierte los pedidos en ventas. Solo aparece si la función \"Activar el chatbot de WhatsApp para clientes\" está activada en Configuraciones › Principal.",
+      "subsections": [
+        {
+          "id": "whatsapp-conversaciones",
+          "title": "Conversaciones",
+          "icon": "LuMessagesSquare",
+          "route": "/chatbot/conversations",
+          "menu": "WhatsApp › Conversaciones",
+          "description": "Todas las conversaciones de sus clientes con el bot. Puede leerlas y tomar el control de cualquiera para responder usted.",
+          "guides": [
+            {
+              "title": "Responder a un cliente como asesor",
+              "steps": [
+                "Busque la conversación por nombre o teléfono, o marque \"Solo las que atiende un asesor\".",
+                "Haga clic en la conversación para abrir los mensajes (\"Ver mensajes anteriores\" carga el historial).",
+                "Haga clic en \"Tomar el control\": el bot deja de responder en ese número por 12 horas o hasta que lo devuelva.",
+                "Escriba en \"Escribe un mensaje\" (puede adjuntar una imagen o PDF con el clip) y envíe.",
+                "Al terminar haga clic en \"Devolver al bot\"."
+              ]
+            }
+          ],
+          "tips": [
+            "WhatsApp solo permite escribir libremente dentro de las 24 horas siguientes al último mensaje del cliente."
+          ],
+          "warnings": [
+            "Si el bot está apagado para todo el negocio o se llegó al tope de respuestas del mes, el aviso amarillo lo indica y todas las conversaciones se responden a mano."
+          ]
+        },
+        {
+          "id": "whatsapp-pedidos",
+          "title": "Pedidos de WhatsApp",
+          "icon": "LuShoppingBag",
+          "route": "/chatbot/orders",
+          "menu": "WhatsApp › Pedidos de WhatsApp",
+          "description": "Pedidos que el bot arma con el cliente. Filtre por estado y búsquelos por cliente, teléfono o número.",
+          "guides": [
+            {
+              "title": "Atender un pedido",
+              "steps": [
+                "Filtre por \"Pendientes\" y haga clic en el pedido para ver el detalle.",
+                "Haga clic en \"Convertir en venta\": se abre como orden en Ventas, igual que una cotización.",
+                "Cobre y emita el documento con el flujo normal.",
+                "Si no se puede atender, use \"Cancelar pedido\", escriba el motivo (se le envía al cliente) y confirme."
+              ]
+            }
+          ],
+          "features": [
+            "Estados: Pendientes, En venta, Cobrados, Cancelados y Todos."
+          ],
+          "system": "products"
+        },
+        {
+          "id": "whatsapp-pedidos-restaurante",
+          "title": "Pedidos de WhatsApp",
+          "icon": "LuShoppingBag",
+          "route": "/chatbot/orders",
+          "menu": "WhatsApp › Pedidos de WhatsApp",
+          "description": "El bot manda al cliente una pantalla de pedido con el menú; allí elige platillos y opciones, si es para llevar o a domicilio y cómo paga. El pedido llega a esta lista.",
+          "guides": [
+            {
+              "title": "Atender un pedido",
+              "steps": [
+                "Filtre por \"Pendientes\" y haga clic en el pedido para ver el detalle.",
+                "Haga clic en \"Aceptar y enviar a cocina\": se crea la orden de delivery y se mandan las comandas.",
+                "Cuando esté preparado, haga clic en \"Listo para recoger\" (o \"En camino\" si es a domicilio) para avisar al cliente.",
+                "Cobre como cualquier orden de delivery.",
+                "Si no se puede atender, use \"Cancelar pedido\" y escriba el motivo."
+              ]
+            }
+          ],
+          "features": [
+            "Estados: Pendientes, En preparación, Listos, Cobrados, Cancelados y Todos."
+          ],
+          "warnings": [
+            "Según la configuración, el pedido espera a que alguien lo acepte (se cancela solo a los 30 minutos) o entra directo a cocina a nombre del usuario WhatsApp."
+          ],
+          "system": "restaurant"
+        }
+      ],
+      "feature": "chatbot-clients"
+    },
+    {
+      "id": "mantenimientos",
+      "label": "Mantenimientos",
+      "icon": "LuWrench",
+      "color": "text-warning",
+      "description": "Órdenes de servicio o reparación (vehículos, equipos, etc.) con técnico, estados, imágenes y factura asociada.",
+      "subsections": [
+        {
+          "id": "mantenimientos-tipos",
+          "title": "Tipos de Mantenimiento",
+          "icon": "LuSettings",
+          "route": "/maintenance/types",
+          "menu": "Mantenimientos › Tipos de Mantenimiento",
+          "description": "Define los servicios que ofrece (por ejemplo, \"Cambio de aceite\") y los campos extra que se piden en cada orden.",
+          "guides": [
+            {
+              "title": "Crear un tipo de mantenimiento",
+              "steps": [
+                "Haga clic en el botón para agregar tipo.",
+                "Escriba el nombre y una descripción breve.",
+                "En \"Campos del formulario\" haga clic en \"Agregar campo\" por cada dato que necesite (por ejemplo, \"Kilometraje actual\"): etiqueta, nombre interno, tipo y opciones. Marque \"Campo obligatorio\" si no puede quedar vacío.",
+                "Guarde. Los campos aparecerán al crear una orden de este tipo."
+              ]
+            }
+          ],
+          "tips": [
+            "Cada campo puede ser de tipo texto, texto largo, número u otros disponibles en la lista; los de selección piden sus opciones. Use el basurero del campo para quitarlo."
+          ]
+        },
+        {
+          "id": "mantenimientos-nueva",
+          "title": "Nueva Orden",
+          "icon": "LuPlus",
+          "route": "/maintenance/new",
+          "menu": "Mantenimientos › Nueva Orden",
+          "description": "Registra la recepción de un bien para mantenimiento, en dos pasos.",
+          "guides": [
+            {
+              "title": "Recibir un bien para mantenimiento",
+              "steps": [
+                "Paso \"Cliente y tipo\": busque el cliente y elija el tipo de mantenimiento. A la derecha verá el historial de órdenes anteriores del cliente. Haga clic en \"Continuar\".",
+                "Paso \"Detalles\": describa el bien o activo (por ejemplo, \"Toyota Corolla 2018 - Placa P123-456\"), asigne el técnico y escriba la descripción del problema.",
+                "Complete los campos adicionales del tipo de mantenimiento.",
+                "Revise el resumen y guarde. Use \"Atrás\" para corregir el paso anterior."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mantenimientos-ordenes",
+          "title": "Órdenes de Mantenimiento",
+          "icon": "LuClipboardList",
+          "route": "/maintenance",
+          "menu": "Mantenimientos › Órdenes de Mantenimiento",
+          "description": "Lista de órdenes con pestañas por estado, filtro por tipo y búsqueda por bien o activo.",
+          "guides": [
+            {
+              "title": "Dar seguimiento a una orden",
+              "steps": [
+                "Busque la orden y abra su menú › \"Ver Orden\".",
+                "Use \"Cambiar estado\" para avanzarla; agregue un comentario opcional. Cada cambio queda en el \"Historial de Estados\".",
+                "En \"Detalles de la orden\" › \"Editar\" registre el diagnóstico, la solución y el total.",
+                "En \"Imágenes\" agregue fotos (JPG, PNG o WEBP de hasta 3 MB) con su descripción, por ejemplo del estado al ingresar.",
+                "Cuando el cliente pague, use \"Asociar factura\": escriba el número de factura (solo se encuentran facturas pagadas de ese cliente), haga clic en \"Buscar\", elija la factura y acepte."
+              ]
+            }
+          ],
+          "warnings": [
+            "Eliminar una orden borra también sus imágenes y su historial de estados."
+          ],
+          "features": [
+            "Pestañas por estado: Todos, Recibido, En diagnóstico, En reparación, Listo, Entregado y Cancelado.",
+            "Filtro \"Tipo de mantenimiento\" y búsqueda por bien / activo.",
+            "Dentro de la orden: Información (cliente, tipo y técnico), Factura (con \"Ver documento\" si ya está asociada, o \"Sin factura asociada\" y el botón \"Asociar factura\") e Historial de Estados."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reportes",
+      "label": "Reportes",
+      "icon": "LuChartBar",
+      "color": "text-primary",
+      "description": "Reportes detallados de ventas con margen, gastos y movimientos de inventario. Se usan igual que los historiales: elija fechas, aplique y descargue.",
+      "subsections": [
+        {
+          "id": "reportes-ventas",
+          "title": "Detalle de Ventas",
+          "icon": "LuChartBar",
+          "route": "/reports/sales",
+          "menu": "Reportes › Detalle de Ventas",
+          "description": "Cada producto vendido con su costo, precio, descuento y margen. Es el reporte para conocer la rentabilidad.",
+          "features": [
+            "Columnas: fecha, producto, código, cantidad, costo unitario y total, precio unitario y total (con impuestos), descuento %, monto y total (con impuestos).",
+            "Margen $ y Margen %: la ganancia bruta de cada línea (al pasar el cursor por el título se explica cada columna).",
+            "Totales al pie: subtotal, impuestos, total de ventas, margen bruto y margen %."
+          ],
+          "guides": [
+            {
+              "title": "Conocer la ganancia de un período",
+              "steps": [
+                "En \"Seleccionar fechas\" elija el rango (por ejemplo, el mes) y haga clic en \"Aplicar\".",
+                "Revise el \"Margen bruto\" al pie del reporte.",
+                "Ordene o descargue el reporte en Excel desde \"DESCARGAS\" para analizarlo por producto."
+              ]
+            }
+          ],
+          "tips": [
+            "El margen depende del costo registrado. Si un producto muestra margen extraño, revise su costo en Reportes › Productos Ingresados."
+          ]
+        },
+        {
+          "id": "reportes-gastos",
+          "title": "Detalle de Gastos",
+          "icon": "LuReceipt",
+          "route": "/reports/expenses",
+          "menu": "Reportes › Detalle de Gastos",
+          "description": "Gastos del período con empleado, documento, categoría, tipo de pago, cuenta y monto."
+        },
+        {
+          "id": "reportes-ingresados",
+          "title": "Productos Ingresados",
+          "icon": "LuPackagePlus",
+          "route": "/reports/entered",
+          "menu": "Reportes › Productos Ingresados",
+          "description": "Ingresos de mercadería: producto, documento, cantidad, precio de costo, proveedor, caducidad, lote y usuario.",
+          "guides": [
+            {
+              "title": "Corregir un ingreso (con permiso)",
+              "steps": [
+                "Busque el ingreso en el período.",
+                "Haga clic en la opción de editar de la fila.",
+                "Corrija el lote, la fecha de vencimiento o el precio de costo y haga clic en \"Guardar\"."
+              ]
+            }
+          ],
+          "features": [
+            "Columnas: fecha, producto, código, documento, cantidad, precio costo, proveedor, caducidad, lote y usuario. El botón de editar solo aparece con el permiso de edición de reportes de productos."
+          ]
+        },
+        {
+          "id": "reportes-lotes",
+          "title": "Productos por lote",
+          "icon": "LuQrCode",
+          "route": "/reports/by-batch",
+          "menu": "Reportes › Productos por lote",
+          "description": "Ingresos por lote de un producto en un rango de fechas, con cantidad ingresada, existencia actual, precio de costo y de venta, caducidad y lote. Seleccione el producto y las fechas antes de aplicar.",
+          "guides": [
+            {
+              "title": "Corregir un lote (con permiso)",
+              "steps": [
+                "Seleccione el producto para ver sus lotes.",
+                "Haga clic en el botón de editar de la fila del lote.",
+                "Corrija lote, fecha de vencimiento o costo y haga clic en \"Guardar\"."
+              ]
+            }
+          ],
+          "tips": [
+            "El botón de editar solo aparece con el permiso de edición de reportes de productos."
+          ]
+        },
+        {
+          "id": "reportes-averiados",
+          "title": "Productos Averiados",
+          "icon": "LuPackageMinus",
+          "route": "/reports/damaged",
+          "menu": "Reportes › Productos Averiados",
+          "description": "Salidas registradas en Descontar Productos: fecha, código, producto, costo unitario, cantidad, razón, empleado y, si se eliminó, quién la eliminó. Sirve para medir pérdidas."
+        }
+      ]
+    },
+    {
+      "id": "facturacion",
+      "label": "Facturación",
+      "icon": "LuFileText",
+      "color": "text-info",
+      "description": "Documentos emitidos, documentos electrónicos (DTE), notas de crédito, retornos, anulaciones y notas de remisión.",
+      "subsections": [
+        {
+          "id": "facturacion-buscar",
+          "title": "Buscar Documentos y detalle de un documento",
+          "icon": "LuSearch",
+          "route": "/invoicing/search",
+          "menu": "Facturación › Buscar Documentos",
+          "description": "Busca cualquier documento por su número y muestra su detalle con todas las acciones posibles.",
+          "features": [
+            "Detalle: productos, totales, cliente, cajero, fecha, tipo de documento, forma de pago, código de generación y estado electrónico.",
+            "Avisos: \"Este Documento se envió electrónicamente\", \"tiene una numeración temporal\" o \"ha sido anulado\". Si no se envió, puede reintentarlo desde el enlace \"aquí\".",
+            "Botones: Imprimir, PDF DTE, Nota C. (nota de crédito), Retorno y Anular."
+          ],
+          "guides": [
+            {
+              "title": "Reimprimir o descargar un documento",
+              "steps": [
+                "Escriba el número en \"Buscar documento\" o elíjalo de \"ULTIMOS DOCUMENTOS\".",
+                "Abra el detalle del documento.",
+                "Haga clic en \"Imprimir\" para el ticket o en \"PDF DTE\" para el PDF electrónico."
+              ]
+            },
+            {
+              "title": "Emitir una nota de crédito",
+              "steps": [
+                "Abra el detalle del documento y haga clic en \"Nota C.\".",
+                "Indique la cantidad de cada producto a acreditar (para el total del documento, use la opción indicada en la ventana).",
+                "Si la venta tiene propina, indique cuánto se devuelve en \"Propina a devolver\" (viene con la propina pendiente). La nota es total solo con todos los productos y toda la propina; también puede emitir una parcial solo de propina. La propina se devuelve únicamente si el crédito fiscal la incluyó.",
+                "Marque si los productos regresan al inventario.",
+                "Haga clic en \"Crear Nota de Crédito\". Las notas emitidas se listan en el detalle y se pueden descargar o anular."
+              ]
+            },
+            {
+              "title": "Registrar una devolución de productos (retorno)",
+              "steps": [
+                "Abra el detalle del documento y haga clic en \"Retorno\".",
+                "Escriba la cantidad que el cliente devuelve de cada producto (no mayor a la disponible).",
+                "Haga clic en \"Crear Retorno\". Se envía un Evento de Retorno a Hacienda, los productos vuelven al inventario y el documento sigue vigente por el resto."
+              ]
+            },
+            {
+              "title": "Anular un documento",
+              "steps": [
+                "Abra el detalle del documento y haga clic en \"Anular\".",
+                "Si es electrónico, elija el tipo de anulación (Error en el documento, Rescindir la operación u Otro motivo) y escriba el motivo.",
+                "Si corresponde, busque el documento de reemplazo por su número.",
+                "Confirme. Se envía el Evento de Invalidación a Hacienda."
+              ]
+            }
+          ],
+          "warnings": [
+            "La anulación de un documento electrónico no se puede deshacer.",
+            "Si el documento tiene retornos, primero anule los retornos y luego el documento.",
+            "\"Nota C.\" y \"Anular\" se deshabilitan cuando el documento ya tiene una nota de crédito activa: primero anule la nota de crédito (y los retornos, si hay) y después el documento. Un documento ya anulado no admite más acciones."
+          ],
+          "tips": [
+            "Los botones Imprimir y PDF DTE dependen de lo activado para el negocio: con el enlace de impresión activo se abre el PDF del ticket; con documentos electrónicos se ofrece además el PDF DTE."
+          ]
+        },
+        {
+          "id": "facturacion-emitidos",
+          "title": "Documentos Emitidos",
+          "icon": "LuReceipt",
+          "route": "/invoicing/documents",
+          "menu": "Facturación › Documentos Emitidos",
+          "description": "Todos los documentos del período con tipo, número, estado (Pagado o Anulado), cliente, tipo de pago, cajero y total. Elija fechas y aplique; haga clic en un documento para ver su detalle."
+        },
+        {
+          "id": "facturacion-correlativos",
+          "title": "Correlativo de Documentos",
+          "icon": "LuListOrdered",
+          "route": "/invoicing/correlatives",
+          "menu": "Facturación › Correlativo de Documentos",
+          "description": "Resumen diario del rango de numeración usado por tipo de documento, con subtotal, exento, gravado y total.",
+          "guides": [
+            {
+              "title": "Obtener el correlativo del mes",
+              "steps": [
+                "Elija el tipo de documento.",
+                "Elija el mes y el año y haga clic en \"Aplicar\".",
+                "Revise por día la cantidad de facturas, la factura inicial y final y los montos. Descargue desde \"DESCARGAS\"."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "facturacion-electronicos",
+          "title": "Documentos Electrónicos",
+          "icon": "LuFileText",
+          "route": "/invoicing/electronic",
+          "menu": "Facturación › Documentos Electrónicos",
+          "description": "Los DTE enviados al Ministerio de Hacienda con su estado: Recibido, Firmado, Procesado, Rechazado o Anulado.",
+          "features": [
+            "Columnas: fecha, tipo de DTE, número de control, cliente, estado y email. Al pasar el cursor sobre el tipo se ven las observaciones, y sobre un estado rechazado, la causa.",
+            "Opciones de cada documento: Detalles del Documento, Descargar PDF, Descargas JSON, Reenviar Email y Reenviar Documento al MH.",
+            "Descargar PDF, JSON y Reenviar Email solo se habilitan en documentos ya aceptados por Hacienda; \"Reenviar Documento al MH\" solo en documentos rechazados con menos de dos meses."
+          ],
+          "guides": [
+            {
+              "title": "Reenviar un documento al cliente",
+              "steps": [
+                "Elija las fechas y aplique.",
+                "En el documento, abra las opciones y elija \"Reenviar Email\".",
+                "Elija \"Enviar al Cliente\" (a su correo registrado) o \"Enviar a Otro\" y escriba el correo de destino."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "facturacion-rechazados",
+          "title": "Documentos Rechazados",
+          "icon": "LuCircleAlert",
+          "route": "/invoicing/rejected",
+          "menu": "Facturación › Documentos Rechazados",
+          "description": "Documentos electrónicos que Hacienda rechazó y que deben corregirse. El sistema explica la causa y qué hacer para cada rechazo conocido.",
+          "guides": [
+            {
+              "title": "Resolver un documento rechazado",
+              "steps": [
+                "Abra la página y revise el total de documentos rechazados.",
+                "Haga clic en el documento para abrir \"Errores del Documento\": primero aparece la causa y qué hacer; el mensaje original de Hacienda queda en \"Ver mensaje de Hacienda\".",
+                "Si el problema son datos del cliente (correo, NIT, NRC, actividad, etc.), use \"Editar contacto\": el formulario marca los campos que Hacienda rechazó con su propio mensaje.",
+                "Guarde el contacto y use \"Volver a documentos rechazados\".",
+                "Haga clic en \"Reenviar\" (pie de la ventana de errores). El botón solo aparece cuando el sistema sabe que reenviar puede resolverlo; si no aparece, consulte a soporte."
+              ]
+            }
+          ],
+          "warnings": [
+            "Un documento rechazado no tiene validez fiscal hasta que se procese correctamente."
+          ],
+          "tips": [
+            "Si el rechazo no indica un dato del contacto, el formulario lo avisa: revise el mensaje de Hacienda."
+          ]
+        },
+        {
+          "id": "facturacion-remision",
+          "title": "Notas de Remisión",
+          "icon": "LuTruck",
+          "route": "/invoicing/remission-notes",
+          "menu": "Facturación › Notas de Remisión",
+          "description": "Notas de remisión creadas desde la pantalla de ventas, para mover mercadería antes de facturar.",
+          "guides": [
+            {
+              "title": "Facturar una nota de remisión",
+              "steps": [
+                "Busque la nota por número o cliente.",
+                "Abra su menú › \"Ver Nota de remisión\".",
+                "Revise productos y totales y haga clic en \"Facturar\" para convertirla en venta."
+              ]
+            }
+          ],
+          "tips": [
+            "Una nota de remisión se crea desde Ventas › Opciones › \"Crear Nota de Remisión\" (necesita cliente)."
+          ],
+          "features": [
+            "En el detalle de la nota: cajero, fecha, tipo de documento, productos, cliente, atendido por, referido y repartidor, y avisos como \"Este Documento se envió electrónicamente\" o \"Esta nota de remisión ya fue facturada\".",
+            "Botones: \"Reenviar DTE\" (si la nota es electrónica), \"Facturar\" (solo si aún no se factura) y \"Cerrar\". \"Eliminar Nota de remisión\" aparece deshabilitado."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "transferencias",
+      "label": "Transferencias",
+      "icon": "LuArrowLeftRight",
+      "color": "text-primary",
+      "description": "Envío de productos entre sucursales vinculadas, con solicitud, envío y recepción.",
+      "subsections": [
+        {
+          "id": "transferencias-crear",
+          "title": "Crear Transferencia",
+          "icon": "LuSend",
+          "route": "/transfers/new",
+          "menu": "Transferencias › Crear Transferencia",
+          "description": "Envía productos de esta sucursal a otra.",
+          "guides": [
+            {
+              "title": "Enviar productos a otra sucursal",
+              "steps": [
+                "En \"Seleccionar destino\" elija la sucursal y haga clic en \"Transferir a esta sucursal\".",
+                "Busque cada producto, escriba la cantidad y guárdelo. Se agrega a \"Productos Agregados\".",
+                "Corrija cantidades o elimine productos desde la tabla si hace falta.",
+                "Haga clic en \"Guardar\" para dejarla pendiente o en \"Enviar\" para despacharla. \"Cancelar\" la descarta.",
+                "Use el icono de descarga para obtener el PDF de la transferencia y enviarlo con la mercadería."
+              ]
+            }
+          ],
+          "tips": [
+            "Las solicitudes que otras sucursales le hacen aparecen en \"Últimas Transferencias\": haga clic en una para preparar el envío con los productos solicitados.",
+            "La cantidad de cada producto es obligatoria. Si una solicitud incluye un producto que no existe en su inventario, el detalle lo marca \"No Enviado\"."
+          ],
+          "warnings": [
+            "Si no aparece ninguna sucursal, el negocio no tiene sucursales vinculadas (Configuraciones › Sucursales)."
+          ],
+          "features": [
+            "En \"Últimas Transferencias\" cada fila muestra fecha de recepción, origen, destino, quién envía, quién recibe (o PENDIENTE), estado y un indicador final. Una fila azul es una transferencia guardada de su sucursal y una roja, una solicitud que le hicieron.",
+            "Icono de alerta amarillo: en una transferencia aceptada con productos rechazados, o rechazada, que usted envió, permite recuperar esos productos al inventario de su sucursal. Solo lo ve la sucursal de origen."
+          ]
+        },
+        {
+          "id": "transferencias-aceptar",
+          "title": "Aceptar Transferencia",
+          "icon": "LuCircleCheckBig",
+          "route": "/transfers/accept",
+          "menu": "Transferencias › Aceptar Transferencia",
+          "description": "Recibe las transferencias que otras sucursales enviaron a esta. Los productos se suman al inventario al aceptarlos.",
+          "guides": [
+            {
+              "title": "Recibir una transferencia",
+              "steps": [
+                "En \"Últimas Transferencias\" haga clic en \"Ver detalles\" de la transferencia recibida.",
+                "Cuente la mercadería y compárela con la lista.",
+                "Si algún producto no existe en su inventario, use el botón para crear su registro.",
+                "Haga clic en \"Aceptar todo\" si todo está correcto, o en \"Rechazar\" en un producto específico. También puede rechazar toda la transferencia."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "transferencias-solicitar",
+          "title": "Solicitar Transferencia",
+          "icon": "LuClipboardList",
+          "route": "/transfers/request",
+          "menu": "Transferencias › Solicitar Transferencia",
+          "description": "Pide productos a otra sucursal. La otra sucursal ve la solicitud y la convierte en envío.",
+          "guides": [
+            {
+              "title": "Pedir productos a otra sucursal",
+              "steps": [
+                "Elija la sucursal en \"Enviar solicitud a\".",
+                "Busque los productos y escriba la cantidad de cada uno.",
+                "Haga clic en \"Enviar solicitud\"."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "transferencias-listado",
+          "title": "Listado de Transferencias",
+          "icon": "LuArrowLeftRight",
+          "route": "/transfers/list",
+          "menu": "Transferencias › Listado de Transferencias",
+          "description": "Historial de transferencias enviadas y recibidas, con filtros por sucursal y estado.",
+          "features": [
+            "Filtros: sucursal, Todas / Enviadas / Recibidas y rango de fechas.",
+            "Estados: En Progreso, Activo, Aceptado, \"* Aceptado\" (aceptada con algún producto rechazado), Rechazado, Solicitando (desde la sucursal que pide), Solicitado (desde la que recibe la solicitud), Guardado y Eliminado.",
+            "Detalle: información general, trazabilidad (quién solicitó, envió, recibió o canceló y cuándo) y cantidades solicitadas, enviadas y aceptadas por producto.",
+            "Filtro de sucursal con \"Mostrar Todos\" y descarga de la lista en \"DESCARGAS\"."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anexos",
+      "label": "Anexos y Descargas",
+      "icon": "LuDownload",
+      "color": "text-success",
+      "description": "Anexos de IVA, libros de compras, descarga masiva de documentos electrónicos y lector de facturas JSON.",
+      "subsections": [
+        {
+          "id": "anexos-iva",
+          "title": "Anexos de IVA",
+          "icon": "LuFileText",
+          "route": "/annexes/annexes",
+          "menu": "Anexos y Descargas › Anexos de IVA",
+          "description": "Archivos para la declaración de IVA, organizados por tipo de anexo y mes.",
+          "guides": [
+            {
+              "title": "Descargar un anexo",
+              "steps": [
+                "Arriba a la derecha elija \"Esta Sucursal\" o \"Todas Las Sucursales\".",
+                "Ubique la fila del anexo: Ventas a Consumidor Final, Ventas a Contribuyentes, Documentos Anulados o Compras a Sujetos Excluidos.",
+                "Haga clic en la columna del mes que necesita para descargarlo."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "anexos-compras",
+          "title": "Libros de compras",
+          "icon": "LuBookOpen",
+          "route": "/annexes/purchases",
+          "menu": "Anexos y Descargas › Libros de compras",
+          "description": "Registra las compras a partir de los archivos JSON que entregan los proveedores y genera el libro de compras.",
+          "guides": [
+            {
+              "title": "Importar facturas de compra",
+              "steps": [
+                "En \"Importar facturas\" arrastre los archivos .json o haga clic para seleccionarlos.",
+                "Revise el resultado: documentos procesados y errores con su detalle.",
+                "Abra el libro del mes para ver los documentos (fecha, NIT, proveedor, crédito fiscal, total y retenciones). Haga clic en uno para ver su detalle.",
+                "Si un documento aparece con \"Revisar\", compárelo con el original duplicado y elimine el que sobra.",
+                "Use \"Descargar libro\" o \"Descargar anexo\" en el libro del período."
+              ]
+            }
+          ],
+          "tips": [
+            "Con la función premium, el sistema lee automáticamente los JSON que los proveedores envían a su correo y los registra sin intervención. Consulte con su asesor."
+          ],
+          "warnings": [
+            "Un período \"Cerrado\" ya no recibe cambios."
+          ]
+        },
+        {
+          "id": "anexos-descargas",
+          "title": "Descargas de Documentos",
+          "icon": "LuDownload",
+          "route": "/annexes/downloads",
+          "menu": "Anexos y Descargas › Descargas de Documentos",
+          "description": "Genera un ZIP con todos los documentos electrónicos de un período, en JSON (formato de Hacienda) y en PDF.",
+          "guides": [
+            {
+              "title": "Descargar los documentos del mes",
+              "steps": [
+                "Elija el período.",
+                "Haga clic en \"Generar JSON\". El estado cambia a \"Procesando\"; puede tardar varios minutos.",
+                "Haga clic en \"Actualizar estado\" hasta que diga \"Listo para descargar\" y descargue el ZIP.",
+                "Cuando el JSON esté listo, haga clic en \"Generar PDF\" para obtener la versión visual y descárguela igual."
+              ]
+            }
+          ],
+          "warnings": [
+            "Generar de nuevo reemplaza el archivo JSON o PDF activo del período."
+          ],
+          "tips": [
+            "Los períodos que se ofrecen son los meses anteriores al actual (los últimos doce). Mientras se genera un archivo puede salir de la página y volver más tarde a \"Actualizar estado\"."
+          ]
+        },
+        {
+          "id": "anexos-lector",
+          "title": "Lector de JSON",
+          "icon": "LuFileJson",
+          "route": "/annexes/json-reader",
+          "menu": "Anexos y Descargas › Lector de JSON",
+          "description": "Muestra una factura electrónica JSON como un documento legible, sin registrarla.",
+          "guides": [
+            {
+              "title": "Ver una factura JSON",
+              "steps": [
+                "Arrastre el archivo .json o haga clic para seleccionarlo.",
+                "Revise emisor, receptor, productos, tributos, totales y el sello de recepción de Hacienda.",
+                "Los archivos leídos quedan en \"Últimos archivos leídos\"; puede borrarlos uno a uno o con \"Limpiar todo\"."
+              ]
+            }
+          ],
+          "tips": [
+            "Si aparece \"Sin sello del Ministerio de Hacienda\", el documento puede estar pendiente de transmisión o no fue procesado."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "configuraciones",
+      "label": "Configuraciones",
+      "icon": "LuSettings",
+      "color": "text-text-muted",
+      "description": "Ajustes del negocio: funciones activadas, catálogos de productos, usuarios, permisos, sucursales, pagos del servicio y chatbot.",
+      "subsections": [
+        {
+          "id": "config-principal",
+          "title": "Principal",
+          "icon": "LuSettings",
+          "route": "/settings/general",
+          "menu": "Configuraciones › Principal",
+          "description": "Enciende o apaga las funciones del sistema para todo el negocio. Cada función tiene un interruptor que se guarda al instante; lo que aquí se apaga desaparece del menú y de las pantallas.",
+          "guides": [
+            {
+              "title": "Activar o desactivar una función",
+              "steps": [
+                "Elija la categoría: Sistema, Configuraciones, Inventario, Ventas, Facturación o Impresiones.",
+                "Busque la función en la lista (por ejemplo, descuentos, venta especial, cotizaciones, lotes o vencimientos).",
+                "Haga clic en su interruptor. El cambio se guarda al instante (\"Actualizando...\")."
+              ]
+            }
+          ],
+          "tips": [
+            "Muchas opciones de esta guía (Asignar Vendedor, Otras Ventas, Multiprecio, Notas de Remisión, etc.) solo aparecen si están activadas aquí.",
+            "Los usuarios pueden necesitar recargar la página para ver los cambios.",
+            "Las funciones disponibles dependen del tipo de negocio (productos o restaurante) y del plan; algunas de las descritas aquí pueden no aparecer en su lista y otras actúan solo en el servidor (por ejemplo, restringir la venta de productos agotados)."
+          ],
+          "features": [
+            "Sistema: transferencias entre sucursales, funciones de taller y mantenimiento (agrega el menú Mantenimientos), análisis del dashboard con inteligencia artificial, chatbot de WhatsApp para clientes (agrega el menú WhatsApp), funciones de ecommerce.",
+            "Configuraciones (de los contactos): campo de búsqueda flexible (código), campo de sujeto excluido, campo de país y, en negocios de productos, asignar un vendedor al contacto.",
+            "Inventario (productos): fecha de vencimiento, comisión y descuento predeterminados por producto, precios de promoción y de mayorista, marcas, medidas, ubicaciones y receta obligatoria al vender.",
+            "Ventas: descuentos, créditos a clientes, Otras Ventas, Venta Especial, repartidor, cambiar el vendedor, sonido al vender, comentario en la orden y en cada producto, y cambiar a Crédito Fiscal si el cliente tiene registro de contribuyente. En productos también: asignar referido, iniciar la venta buscando por nombre, descargar la pre-orden antes de cobrar, cambiar el nombre y el lote de un producto, mostrar el código y el vendedor en la tabla, notas de remisión y cotizaciones. Restringir la venta de productos agotados.",
+            "Ventas de restaurante: venta rápida, servicio en mesa y delivery, menú en orden alfabético, cerrar el menú de categorías después de marcar un producto, porcentaje de facturado, \"comer aquí\" por defecto en venta rápida o en mesa, y comentario obligatorio al eliminar un producto de la orden.",
+            "Facturación: notificaciones push, estado de órdenes en tiempo real y notas de crédito en cuentas por pagar.",
+            "Impresiones: facturas en tiempo real (el facturador recibe un aviso al emitir), impresión local (sin facturador) o impresión con enlace (abre el PDF); las tres son excluyentes. En restaurante también: comandas en pantalla en tiempo real, pantalla de despacho, foco automático en el campo de efectivo y teclado numérico en pantalla.",
+            "Otros precios: activa el multiprecio (Normal, Mayorista y Promoción) en la venta."
+          ]
+        },
+        {
+          "id": "config-productos",
+          "title": "Productos",
+          "icon": "LuPackage",
+          "route": "/settings/products",
+          "menu": "Configuraciones › Productos",
+          "description": "Catálogos y ajustes que usan los productos, la venta y los créditos.",
+          "features": [
+            "Categorías: categorías principales y subcategorías de productos.",
+            "Unidades de Medida: unidades disponibles para los productos.",
+            "Marcas: con proveedor opcional (si el negocio usa marcas).",
+            "Ubicaciones: lugares físicos donde se guardan los productos (si el negocio usa ubicaciones).",
+            "Documentos: tipos de documento del negocio, si son electrónicos o imprimibles, y su estado. Desde aquí se pueden deshabilitar.",
+            "Cajas de Cobro: cajas registradas con su apertura y estado.",
+            "Créditos (con permiso): días del crédito libre, si se permiten créditos por cuotas, frecuencias permitidas (diaria, semanal, cada 15 días, mensual), número máximo de cuotas, tipo de interés, mora y plantillas de plan.",
+            "Unidades de Medida y Cajas de Cobro: cada una tiene un interruptor Activo/Inactivo. Una caja inactiva deja de poder abrirse en Control de cajas."
+          ],
+          "guides": [
+            {
+              "title": "Configurar los créditos por cuotas",
+              "steps": [
+                "Elija la opción \"Créditos\".",
+                "Indique los días de vencimiento del crédito libre.",
+                "Active el crédito por cuotas y marque las frecuencias permitidas y el límite de cuotas.",
+                "Elija el interés: Sin interés, Simple (sobre el monto inicial) o Sobre saldo.",
+                "Elija la mora: Sin mora, Monto fijo por cuota vencida o Porcentaje de la cuota vencida, y los días de gracia.",
+                "Opcional: cree plantillas (por ejemplo, \"6 meses\") con frecuencia y número de cuotas para elegirlas rápido al cobrar."
+              ]
+            }
+          ],
+          "tips": [
+            "El interés, la mora y la regla de domingos se copian al crédito al otorgarlo: los cambios solo afectan créditos nuevos.",
+            "Documentos: el documento \"Predeterminado general\" lo usan las órdenes de quien no tiene caja abierta o de las cajas sin documento propio. Para cambiarlo, edite el documento y use \"Marcar como general\" (solo un documento habilitado puede serlo).",
+            "Cajas de Cobro: en la columna \"Documento predeterminado\" elija qué documento sale por defecto en cada caja; con la opción vacía la caja usa el general. La nota de crédito no se puede elegir."
+          ]
+        },
+        {
+          "id": "config-usuarios",
+          "title": "Usuarios",
+          "icon": "LuUserCog",
+          "route": "/settings/users",
+          "menu": "Configuraciones › Usuarios",
+          "description": "Crea y administra las cuentas de las personas que usan el sistema.",
+          "guides": [
+            {
+              "title": "Crear un usuario",
+              "steps": [
+                "En \"Ingresar Usuario\" escriba el nombre, el email y la contraseña (dos veces).",
+                "Elija el tipo de usuario: Gerencia, Administración, Cajero o Contador.",
+                "Opcional (Gerencia y Administración): número de WhatsApp para usar el chatbot.",
+                "Guarde. El usuario aparece en el \"Listado de Usuarios\"."
+              ]
+            },
+            {
+              "title": "Modificar un usuario",
+              "steps": [
+                "En el listado (filtre \"Activos\" o \"Todos\"), abra el menú del usuario.",
+                "Elija \"Editar\" (nombre y WhatsApp), \"Cambiar password\", \"Cambiar rol\" o \"Eliminar\".",
+                "Solo el usuario Root ve además \"Obligar cambio de password\": al entrar, ese usuario deberá poner una contraseña nueva antes de usar el sistema; \"Quitar cambio obligatorio de password\" lo cancela."
+              ]
+            }
+          ],
+          "features": [
+            "Un usuario con cambio de password pendiente se marca \"(cambio de password pendiente)\". Un usuario eliminado queda atenuado en rojo."
+          ],
+          "warnings": [
+            "No puede editar, cambiar el rol ni eliminar a usuarios de un rol superior al suyo, ni cambiar su propio rol o eliminarse."
+          ]
+        },
+        {
+          "id": "config-permisos",
+          "title": "Permisos de Usuario",
+          "icon": "LuShield",
+          "route": "/settings/permissions",
+          "menu": "Configuraciones › Permisos de Usuario",
+          "description": "Define qué puede hacer cada rol. Los permisos se aplican a todos los usuarios de ese rol.",
+          "guides": [
+            {
+              "title": "Cambiar los permisos de un rol",
+              "steps": [
+                "Elija el rol en \"Roles\".",
+                "Espere a que cargue la lista (\"Obteniendo permisos...\").",
+                "Active o desactive cada permiso. El cambio se guarda al instante."
+              ]
+            }
+          ],
+          "warnings": [
+            "Quitar un permiso del rol al que pertenece su propio usuario no es reversible desde su sesión: podría perder acceso a esta pantalla."
+          ]
+        },
+        {
+          "id": "config-sucursales",
+          "title": "Sucursales",
+          "icon": "LuBuilding2",
+          "route": "/settings/branches",
+          "menu": "Configuraciones › Sucursales",
+          "description": "Información del negocio y de las sucursales vinculadas, que permiten transferencias y cambio rápido de sistema.",
+          "features": [
+            "INFORMACION: nombre, responsable, documento, teléfono, email, dirección y país de cada sucursal.",
+            "CAMBIAR SISTEMA: entra a otra sucursal vinculada ingresando su contraseña.",
+            "SISTEMAS VINCULADOS: muestra las sucursales ya vinculadas con la actual y desde cuándo.",
+            "VINCULAR SISTEMA (solo usuario root): busca una sucursal por nombre y vincúlala; pide confirmación y no lista las que ya están vinculadas."
+          ],
+          "tips": [
+            "En \"CAMBIAR SISTEMA\" la sucursal actual aparece marcada \"Actual\" y hay un buscador por nombre; al elegir otra se pide la contraseña."
+          ]
+        },
+        {
+          "id": "config-pagos",
+          "title": "Pagos",
+          "icon": "LuCreditCard",
+          "route": "/settings/payments",
+          "menu": "Configuraciones › Pagos",
+          "description": "Facturas del servicio de Pulse y formas de pagarlas.",
+          "guides": [
+            {
+              "title": "Pagar una factura del servicio",
+              "steps": [
+                "Revise el \"SALDO PENDIENTE\" y las \"ULTIMAS FACTURAS\" (haga clic en una para ver su detalle).",
+                "Para pagar con tarjeta, haga clic en \"Pagar factura\": se genera un enlace de pago seguro (Wompi, Banco Agrícola).",
+                "Para pagar por transferencia, use el número de cuenta indicado e incluya el concepto mostrado para identificar su factura."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "config-chatbot",
+          "title": "Chatbot",
+          "icon": "LuMessageCircle",
+          "route": "/settings/chatbot",
+          "menu": "Configuraciones › Chatbot",
+          "description": "Consulte su negocio por WhatsApp: ventas, estadísticas, inventario, finanzas, impuestos, DTE, catálogo, compras, diagnóstico y gráficas.",
+          "guides": [
+            {
+              "title": "Vincular su WhatsApp",
+              "steps": [
+                "Escriba su número de WhatsApp y guárdelo.",
+                "Escanee el código desde su celular o use \"Escribir desde la web\" para abrir el chat.",
+                "Escriba su pregunta, por ejemplo \"¿Cuánto vendí hoy?\".",
+                "Para usar otro número, haga clic en \"Cambiar número\"."
+              ]
+            }
+          ],
+          "tips": [
+            "El chatbot solo responde a números vinculados a un usuario del sistema, por seguridad."
+          ]
+        },
+        {
+          "id": "config-chatbot-clientes",
+          "title": "Chatbot para clientes",
+          "icon": "LuBot",
+          "route": "/settings/chatbot-clients",
+          "menu": "Configuraciones › Chatbot para clientes",
+          "description": "Controla cómo responde el bot de WhatsApp a sus clientes y qué sabe del negocio. Solo aparece con la función del chatbot para clientes activada.",
+          "features": [
+            "Bot activo en todas las conversaciones: al apagarlo el bot no responde en ningún número y todo se atiende a mano; cada conversación conserva su estado al volver a encenderlo.",
+            "Datos del negocio (nombre, dirección y teléfono): se toman de los datos del negocio; para cambiarlos pida a Hibrido que los actualice.",
+            "Cuestionario del negocio: horario, entregas, formas de pago, preguntas frecuentes, otros datos y el tono del bot. El bot solo responde con estos datos; si un campo está vacío ofrece que un asesor responda.",
+            "Perfil redactado con IA: la IA ordena sus respuestas en un perfil que usted revisa, edita o ajusta; el bot lo usa solo cuando lo publica.",
+            "Solo restaurante: \"Aceptando pedidos\" y qué pasa al confirmar un pedido (espera aceptación, o entra directo a cocina)."
+          ],
+          "guides": [
+            {
+              "title": "Publicar el perfil del negocio",
+              "steps": [
+                "Complete el cuestionario y guárdelo.",
+                "En \"Perfil del negocio redactado con IA\" haga clic en generar.",
+                "Revise el borrador, edítelo o pida ajustes a la IA.",
+                "Haga clic en publicar. Mientras no haya uno publicado, el bot usa las respuestas del cuestionario tal como están."
+              ]
+            },
+            {
+              "title": "Elegir los platillos que se ofrecen (restaurante)",
+              "steps": [
+                "Vaya a Restaurante › Productos de Menú.",
+                "Abra el menú del producto (icono de la columna OP) y elija \"Ofrecer en WhatsApp\". Los productos ofrecidos muestran el icono de WhatsApp."
+              ]
+            }
+          ],
+          "warnings": [
+            "Si aparece \"Aún no llega ningún mensaje de WhatsApp\", pida a Hibrido que registre el número del negocio.",
+            "Al llegar al tope de respuestas del bot del mes, las conversaciones se responden a mano hasta el siguiente mes."
+          ],
+          "feature": "chatbot-clients"
+        }
+      ]
+    }
+  ]
+}
