@@ -1,4 +1,4 @@
-// Tipos del manual de usuario de la pagina de ayuda
+// Tipos del manual de usuario de la pagina de ayuda (el contenido vive en help.json)
 
 /** Sistema para el que aplica una seccion (si no se indica, aplica a todos) */
 export type HelpSystem = 'products' | 'restaurant';
@@ -12,7 +12,8 @@ export interface HelpGuide {
 export interface HelpSubsection {
   id: string;
   title: string;
-  icon: React.ReactNode;
+  /** Nombre del icono (ver icons.tsx) */
+  icon: string;
   /** Ruta de la pagina; solo rutas sin parametros para poder abrirla desde la guia */
   route?: string;
   /** Donde se encuentra en el menu lateral */
@@ -24,14 +25,23 @@ export interface HelpSubsection {
   tips?: string[];
   warnings?: string[];
   system?: HelpSystem;
+  /** Solo se muestra con esta configuracion principal activa (activeConfig), igual que el menu */
+  feature?: string;
 }
 
 export interface HelpSection {
   id: string;
   label: string;
-  icon: React.ReactNode;
+  /** Nombre del icono (ver icons.tsx) */
+  icon: string;
   color: string;
   description?: string;
   system?: HelpSystem;
+  /** Solo se muestra con esta configuracion principal activa (activeConfig), igual que el menu */
+  feature?: string;
   subsections: HelpSubsection[];
+}
+
+export interface HelpContent {
+  sections: HelpSection[];
 }

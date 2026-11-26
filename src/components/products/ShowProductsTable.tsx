@@ -28,8 +28,8 @@ export function ShowProductsTable(props: ShowProductsTableProps) {
   const { records, setSortBy, sortBy, loading } = props;
   const { system, activeConfig, permission } = useConfigStore();
   const { openModal, closeModal, modals } = useModalStore();
-  const isLocation = activeConfig?.includes("product-brand");
-  const isBrand = activeConfig?.includes("product-locations");
+  const isLocation = activeConfig?.includes("product-locations");
+  const isBrand = activeConfig?.includes("product-brand");
   const { deleteProduct, deleting } = useProductStore();
   const { postRequest, loading: loadingRequest } = usePostRequest();
   const { setElement, getElement } = useTempStorage();

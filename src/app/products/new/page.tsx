@@ -106,7 +106,7 @@ export default function Page() {
                 </div>
 
                 <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="saved" className={"input-label"}>Gavado</label>
+                  <label htmlFor="saved" className={"input-label"}>Gravado</label>
                   <select id="saved" {...register("saved")} className="input-select">
                     <option value={1}> Gravado </option>
                     <option  value={0}> Exento </option>

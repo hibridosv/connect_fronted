@@ -20,7 +20,7 @@ export function AccountsTransfersModal({ onClose, isShow }: AccountsTransfersMod
   
     const onSubmit = async(data: any)=>{
         if (data.from_cash_accounts_id == data.to_cash_accounts_id) {
-            useToastMessageStore.getState().setError({ message: "No puede tranferir a la misma cuenta"});
+            useToastMessageStore.getState().setError({ message: "No puede transferir a la misma cuenta"});
             return 
         }
         if (data.quantity <= 0) {

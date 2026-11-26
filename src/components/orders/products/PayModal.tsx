@@ -90,7 +90,7 @@ export function PayModal(props: PayModalI) {
                       { payMethod === 5 && !order?.client_id ?
                        <Alert text="Debe agregar un cliente para continuar con el credito" type="danger" isDismissible={false} /> :
                        payMethod === 5 && order?.client_id && order?.client?.is_credit_block == 1 ?
-                        <Alert text="Cliente bloqueado para otrorgar credito" type="danger" isDismissible={false} /> :
+                        <Alert text="Cliente bloqueado para otorgar credito" type="danger" isDismissible={false} /> :
                         <Button type="submit" preset={collecting ? Preset.saving : Preset.primary}
                         text={ payMethod === 5  ? `Asignar Credito` : `Pagar con ${nameOfPaymentType(payMethod)}`} disabled={collecting} />
                       }

@@ -19,6 +19,7 @@ import {
   LuSlidersHorizontal,
   LuX,
 } from 'react-icons/lu';
+import { HelpIcon } from './icons';
 import { HelpGuide, HelpSection, HelpSubsection, HelpSystem, SECTIONS } from './sections';
 
 /** Texto de una subseccion donde se busca */
@@ -91,7 +92,7 @@ function SubsectionCard({ sub, defaultOpen }: { sub: HelpSubsection; defaultOpen
         className="w-full flex items-center justify-between gap-2 px-4 py-3 hover:bg-bg-subtle/50 transition-colors text-left"
       >
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="text-primary shrink-0">{sub.icon}</span>
+          <span className="text-primary shrink-0"><HelpIcon name={sub.icon} size={18} /></span>
           <span className="font-bold text-text-base text-sm">{sub.title}</span>
           {sub.guides && sub.guides.length > 0 && (
             <Badge size="sm" className="hidden sm:inline-flex shrink-0">
@@ -179,7 +180,7 @@ function SubsectionCard({ sub, defaultOpen }: { sub: HelpSubsection; defaultOpen
 }
 
 export default function HelpPage() {
-  const { tenant } = useConfigStore();
+  const { tenant, activeConfig } = useConfigStore();
   const [activeSection, setActiveSection] = useState<string>(SECTIONS[0].id);
   const [searchTerm, setSearchTerm] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -195,10 +196,12 @@ export default function HelpPage() {
       if (system === 'products') return systemIsProducts;
       return true;
     };
+    // y las funciones activadas en Configuraciones > Principal, igual que el menu
+    const enabled = (feature?: string) => !feature || (Array.isArray(activeConfig) && activeConfig.includes(feature));
     return SECTIONS
-      .filter((s) => appliesTo(s.system))
-      .map((s) => ({ ...s, subsections: s.subsections.filter((sub) => appliesTo(sub.system)) }));
-  }, [systemIsRestaurant, systemIsProducts]);
+      .filter((s) => appliesTo(s.system) && enabled(s.feature))
+      .map((s) => ({ ...s, subsections: s.subsections.filter((sub) => appliesTo(sub.system) && enabled(sub.feature)) }));
+  }, [systemIsRestaurant, systemIsProducts, activeConfig]);
 
   const currentSection = useMemo(
     () => visibleSections.find((s) => s.id === activeSection) ?? visibleSections[0],
@@ -299,7 +302,7 @@ export default function HelpPage() {
                       : 'text-text-base hover:bg-bg-subtle'
                   }`}
                 >
-                  <span className={section.color}>{section.icon}</span>
+                  <span className={section.color}><HelpIcon name={section.icon} size={16} /></span>
                   <span className="truncate">{section.label}</span>
                   {currentSection.id === section.id && !isSearching && (
                     <LuChevronRight size={13} className="ml-auto text-primary" />
@@ -334,7 +337,7 @@ export default function HelpPage() {
                   {filteredSections.map((section) => (
                     <div key={section.id}>
                       <div className="flex items-center gap-2 mb-3">
-                        <span className={section.color}>{section.icon}</span>
+                        <span className={section.color}><HelpIcon name={section.icon} size={16} /></span>
                         <h2 className="text-sm font-bold uppercase tracking-widest text-text-muted">
                           {section.label}
                         </h2>
@@ -354,7 +357,7 @@ export default function HelpPage() {
               ref={(el) => { sectionRefs.current[currentSection.id] = el; }}
             >
               <div className="flex items-center gap-2.5 mb-2">
-                <span className={`${currentSection.color} text-xl`}>{currentSection.icon}</span>
+                <span className={`${currentSection.color} text-xl`}><HelpIcon name={currentSection.icon} size={22} /></span>
                 <h2 className="text-xl font-extrabold uppercase tracking-wide text-primary">
                   {currentSection.label}
                 </h2>
