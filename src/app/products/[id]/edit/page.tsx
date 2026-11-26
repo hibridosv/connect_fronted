@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Preset } from "@/components/button/button";
+import { Switch } from "@/components/button/Switch";
 import { AddContactModal } from "@/components/contacs/AddContactModal";
 import { NothingHere } from "@/components/NothingHere";
 import { ProductImageAddModal } from "@/components/products/images/ProductImageAddModal";
@@ -185,8 +186,7 @@ export default function Page() {
 
             { activeConfig && activeConfig.includes('product-expires') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="expires" className="input-label">Maneja fecha de vencimiento</label>
-                  <input type="checkbox" id="expires" {...register("expires")} />
+                  <Switch label="Maneja fecha de vencimiento" checked={!!watch("expires")} onChange={(checked) => setValue("expires", checked)} />
               </div> )}
 
               { activeConfig && activeConfig.includes('product-prescription') && (
