@@ -9,7 +9,8 @@ import { useEffect } from 'react'
 
 export function useProductEditLogic(id?: string, setValue?: any) {
 const { loadProduct, product } = useProductStore();
-  const { system } = useConfigStore();
+  const { system, activeConfig } = useConfigStore();
+  const hasExpiresConfig = !!activeConfig?.includes('product-expires');
   const { openLoading, closeLoading } = useStateStore();
 
   
@@ -35,11 +36,12 @@ const { loadProduct, product } = useProductStore();
       setValue("default_discount", product?.default_discount)
       setValue("default_commission", product?.default_commission)
       setValue("prescription", product?.prescription)
+      if (hasExpiresConfig) setValue("expires", product?.expires == 1)
       setValue("saved", product?.saved)
       setValue("unit_cost", product?.unit_cost)
 
       // eslint-disable-next-line
-    }, [product, setValue])
+    }, [product, setValue, hasExpiresConfig])
 
 
   const onSubmit = async (formData: any) => {
@@ -48,7 +50,8 @@ const { loadProduct, product } = useProductStore();
       const { cod, quantity, product_type, ...data } = formData;
       if (product?.product_type != 2) delete data.unit_cost;
       if (product?.product_type != 1) data.minimum_stock = 1;
-      if (data.expiration) data.expires = 1;
+      // el checkbox solo existe con la config product-expires y en productos (tipo 1); sin ella no se toca el valor del producto
+      if (hasExpiresConfig && product?.product_type == 1) data.expires = data.expires ? 1 : 0; else delete data.expires;
     data.taxes = getCountryProperty(parseInt(system?.country)).taxes;
     try {
       const response = await updateService(`products/${id}`, data);

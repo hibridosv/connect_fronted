@@ -16,8 +16,15 @@ export default function Page() {
   const productFilter = elementSelected?.id ? `&filterWhere[product_id]==${elementSelected.id}` : '';
   const baseUrl = `registers?perPage=15&included=product&sort=-created_at${productFilter}`;
   const { currentPage, handlePageNumber } = usePagination("&page=1");
-  const { history, handleGet, loading, links } = useReportsLogic(baseUrl, 'download.excel.reports.by-lot', true, currentPage);
+  const { history, setHistory, handleGet, loading, links } = useReportsLogic(baseUrl, 'download.excel.reports.by-lot', true, currentPage);
   const isLoading = loading.history ?? false;
+
+  // Reemplaza el registro editado dentro de la página actual
+  const handleUpdated = (updated: any) => {
+    setHistory((current: any) => current?.data
+      ? { ...current, data: current.data.map((record: any) => record.id === updated.id ? { ...record, ...updated } : record) }
+      : current);
+  };
 
   const handleFormSubmit = async (values: DateRangeValues) => {
     const params = elementSelected?.id ? [{ name: "product_id", value: elementSelected.id }] : null;
@@ -29,7 +36,7 @@ export default function Page() {
       <div className="md:col-span-7 md:border-r md:border-primary">
         <ViewTitle text="Ingresos por lotes" />
         <div className="p-4">
-          <ReportLotTable records={history?.data} isLoading={isLoading} />
+          <ReportLotTable records={history?.data} isLoading={isLoading} onUpdated={handleUpdated} />
           <Pagination records={history} handlePageNumber={handlePageNumber} />
         </div>
       </div>
