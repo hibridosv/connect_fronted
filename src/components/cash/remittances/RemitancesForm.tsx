@@ -27,7 +27,7 @@ export function RemittanceForm() {
       { !cashdrawer ? 
       (<div>
         <NothingHere />
-        <Alert title="Importente" type="danger" text="Debe aperturar caja para agregar gastos" className="mt-4" />
+        <Alert title="Importante" type="danger" text="Debe aperturar caja para agregar remesas" className="mt-4" />
       </div>) : (
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex flex-wrap -mx-3 mb-6">
