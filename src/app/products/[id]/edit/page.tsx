@@ -185,8 +185,8 @@ export default function Page() {
 
             { activeConfig && activeConfig.includes('product-expires') && (
               <div className="w-full md:w-1/3 px-3 mb-2">
-                  <label htmlFor="expiration" className="input-label">Fecha de vencimiento</label>
-                  <input type="date" id="expiration" {...register("expiration")} className="input" />
+                  <label htmlFor="expires" className="input-label">Maneja fecha de vencimiento</label>
+                  <input type="checkbox" id="expires" {...register("expires")} />
               </div> )}
 
               { activeConfig && activeConfig.includes('product-prescription') && (
